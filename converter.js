@@ -1,6 +1,6 @@
 
 // To dos:
-//  - move the global stuff into the class
+//  - add tests for the static functions in the class
 //  - expand set of tests for many new mathematical expressions in many languages,
 //    including expressions that bind variables
 //     - universal, existential, and existential unique quantifiers
@@ -25,86 +25,18 @@
 
 import { Grammar, Tokenizer } from 'earley-parser'
 
-// chains of syntactic type inclusions in mathematical writing
-const syntacticTypeHierarchies = [
-    [ 'expression', 'numberexpr', 'sum', 'product', 'factor', 'atomicnumber' ],
-    [ 'expression', 'sentence', 'conditional', 'disjunct', 'conjunct', 'atomicprop' ],
-    // [ 'conjunct', 'equation', 'inequality' ],
-    // [ 'set', 'union', 'intersection', 'atomicset' ]
-]
-
-const isSyntacticType = name =>
-    syntacticTypeHierarchies.some( hierarchy => hierarchy.includes( name ) )
-const isAtomicType = name => name.startsWith( 'atomic' )
-
-const supertypeGraph = { }
-syntacticTypeHierarchies.forEach( chain =>
-    chain.forEach( type => supertypeGraph[type] = [ ] ) )
-syntacticTypeHierarchies.forEach( chain => {
-    for ( let i = 0 ; i < chain.length - 1 ; i++ )
-        supertypeGraph[chain[i]].push( chain[i+1] )
-} )
-let closureAchieved
-do {
-    closureAchieved = true
-    Object.keys( supertypeGraph ).forEach( a => {
-        supertypeGraph[a].forEach( b => {
-            supertypeGraph[b].forEach( c => {
-                if ( !supertypeGraph[a].includes( c ) ) {
-                    supertypeGraph[a].push( c )
-                    closureAchieved = false
-                }
-            } )
-        } )
-    } )
-} while ( !closureAchieved )
-
-const isSupertype = ( a, b ) =>
-    supertypeGraph[a].includes( b )
-
 const escapeRegExp = ( str ) =>
     str.replace( /[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&' )
-
-const notationStringToArray = str => {
-    const result = [ ]
-    let match
-    let lastWasType
-    while ( str.length > 0 ) {
-        if ( match = /^\s+/.exec( str ) ) {
-            str = str.substring( match[0].length )
-            continue
-        }
-        let justSawType = false
-        for ( let i = 0 ; !justSawType && i < syntacticTypeHierarchies.length ; i++ )
-            for ( let j = 0 ; !justSawType && j < syntacticTypeHierarchies[i].length ; j++ )
-                if ( str.startsWith( syntacticTypeHierarchies[i][j] ) ) {
-                    result.push( syntacticTypeHierarchies[i][j] )
-                    str = str.substring( syntacticTypeHierarchies[i][j].length )
-                    justSawType = true
-                }
-        if ( justSawType ) {
-            lastWasType = true
-            continue
-        }
-        if ( result.length == 0 || lastWasType )
-            result.push( str[0] )
-        else
-            result[result.length-1] += str[0]
-        lastWasType = false
-        str = str.substring( 1 )
-    }
-    return result.map( piece =>
-        isSyntacticType( piece ) ? piece : new RegExp( escapeRegExp( piece ) ) )
-}
 
 export class Converter {
 
     constructor () {
+        Converter.computeSupertypeGraph()
         this.languages = new Map()
         this.concepts = new Map()
-        syntacticTypeHierarchies.forEach( hierarchy => {
+        Converter.syntacticTypeHierarchies.forEach( hierarchy => {
             const last = hierarchy[hierarchy.length-1]
-            if ( isAtomicType( last ) )
+            if ( Converter.isAtomicType( last ) )
                 this.addConcept( `grouped${last}`, { parentType : last } )
         } )
     }
@@ -113,16 +45,16 @@ export class Converter {
         const tokenizer = new Tokenizer()
         tokenizer.addType( /\s/, () => null )
         const grammar = new Grammar()
-        grammar.START = syntacticTypeHierarchies[0][0]
+        grammar.START = Converter.syntacticTypeHierarchies[0][0]
         this.languages.set( name,
             { tokenizer, grammar, leftGrouper, rightGrouper } )
-        syntacticTypeHierarchies.forEach( hierarchy => {
+        Converter.syntacticTypeHierarchies.forEach( hierarchy => {
             for ( let i = 0 ; i < hierarchy.length - 1 ; i++ )
                 grammar.addRule( hierarchy[i], hierarchy[i+1] )
             if ( hierarchy[0] == 'expression' ) {
                 const top = hierarchy[1]
                 const bottom = hierarchy[hierarchy.length-1]
-                if ( isAtomicType( bottom ) ) {
+                if ( Converter.isAtomicType( bottom ) ) {
                     this.addNotation( name, `grouped${bottom}`,
                         `${leftGrouper} ${top} ${rightGrouper}` )
                 }
@@ -151,9 +83,10 @@ export class Converter {
     addConcept ( name, data ) {
         if ( !data.hasOwnProperty( 'parentType' ) )
             throw new Error( `Cannot add concept ${name} with no parentType` )
-        if ( !isSyntacticType( data.parentType ) )
+        if ( !Converter.isSyntacticType( data.parentType ) )
             throw new Error( `Not a valid syntactic type: ${data.parentType}` )
-        if ( !isAtomicType( data.parentType ) && !data.hasOwnProperty( 'putdown' ) )
+        if ( !Converter.isAtomicType( data.parentType )
+          && !data.hasOwnProperty( 'putdown' ) )
             data.putdown = name
         this.concepts.set( name, data )
     }
@@ -175,7 +108,7 @@ export class Converter {
         if ( notation instanceof RegExp )
             notation = [ notation ]
         if ( !( notation instanceof Array ) )
-            notation = notationStringToArray( notation )
+            notation = Converter.notationStringToArray( notation )
         notation.forEach( piece => {
             if ( piece instanceof RegExp ) language.tokenizer.addType( piece )
         } )
@@ -201,13 +134,13 @@ export class Converter {
             const concept = this.concepts.get( head )
             const recur = json.filter( piece => piece instanceof Array )
                 .map( piece => this.jsonToPutdown( piece ) )
-            if ( isAtomicType( concept.parentType ) ) return json[0]
+            if ( Converter.isAtomicType( concept.parentType ) ) return json[0]
             if ( !concept.hasOwnProperty( 'body' ) )
                 return `(${concept.putdown} ${recur.join( ' ' )})`
             const body = recur[concept.body]
             recur.splice( concept.body, 1 )
             return `(${concept.putdown} (${recur.join( ' ' )} , ${body}))`
-        } else if ( isSyntacticType( head ) ) {
+        } else if ( Converter.isSyntacticType( head ) ) {
             // Handle subtype case--just a wrapper around one thing
             return this.jsonToPutdown( json[0] )
         } else {
@@ -261,14 +194,16 @@ export class Converter {
             throw new Error(
                 `Not a valid semantic JSON expression: ${JSON.stringify(json)}` )
         const head = json.shift()
-        if ( isSyntacticType( head ) ) {
+        if ( Converter.isSyntacticType( head ) ) {
             if ( json.length != 1 )
                 throw new Error( 'Invalid semantic JSON structure: '
                     + JSON.stringify( [ head, ...json ] ) )
             // console.log( `\tpopping: ${head}...` )
             let result = this.jsonRepresentation( json[0], langName )
-            return isSyntacticType( json[0] ) && !isSupertype( head, json[0] ) ?
-                `${language.leftGrouper} ${result} ${language.rightGrouper}` : result
+            return Converter.isSyntacticType( json[0] )
+                && !Converter.isSupertype( head, json[0] ) ?
+                `${language.leftGrouper} ${result} ${language.rightGrouper}` :
+                result
         }
         if ( !this.isConcept( head ) )
             throw new Error( 'Not a syntactic type nor a concept: ' + head )
@@ -288,12 +223,12 @@ export class Converter {
                     } else {
                         result.push( json[j] )
                     }
-                } else if ( isSyntacticType( rules[i][j] ) ) {
+                } else if ( Converter.isSyntacticType( rules[i][j] ) ) {
                     if ( !( json[j] instanceof Array ) ) {
                         break
                     } else if ( rules[i][j] == json[j][0] ) {
                         result.push( this.jsonRepresentation( json[j], langName ) )
-                    } else if ( isSupertype( rules[i][j], json[j][0] ) ) {
+                    } else if ( Converter.isSupertype( rules[i][j], json[j][0] ) ) {
                         result.push( this.jsonRepresentation( json[j], langName ) )
                     } else {
                         result.push( this.jsonRepresentation( [
@@ -348,23 +283,23 @@ export class Converter {
             throw new Error( `Empty arrays not allowed in semantic JSON` )
         if ( json.length == 4 && json[0].startsWith( 'groupedatomic' ) )
             return this.compact( json[2] )
-        if ( isSyntacticType( json[0] ) ) {
+        if ( Converter.isSyntacticType( json[0] ) ) {
             if ( json.length != 2 )
                 throw new Error( `Invalid semantic JSON structure: ${JSON.stringify(json)}` )
             const inner = json[1]
             if ( !( inner instanceof Array ) ) return json[1]
-            if ( isSyntacticType( inner[0] ) ) {
+            if ( Converter.isSyntacticType( inner[0] ) ) {
                 if ( inner.length != 2 )
                     throw new Error(
                         `Invalid semantic JSON structure: ${JSON.stringify(inner)}` )
-                if ( !isSupertype( json[0], inner[0] ) )
+                if ( !Converter.isSupertype( json[0], inner[0] ) )
                     throw new Error(
                         `Invalid semantic JSON, ${json[0]} not a supertype of ${inner[0]}` )
                 return this.compact( inner )
             } else if ( this.isConcept( inner[0] ) ) {
                 const concept = this.concepts.get( inner[0] )
                 if ( concept.parentType != json[0]
-                  && !isSupertype( json[0], concept.parentType ) )
+                  && !Converter.isSupertype( json[0], concept.parentType ) )
                     throw new Error(
                         `Invalid semantic JSON, concept ${inner[0]} not a(n) ${json[0]}` )
                 return this.compact( inner )
@@ -373,4 +308,80 @@ export class Converter {
         return json.map( piece => this.compact( piece ) )
     }
 
+    // chains of syntactic type inclusions in mathematical writing
+    static syntacticTypeHierarchies = [
+        [ 'expression', 'numberexpr', 'sum', 'product', 'factor', 'atomicnumber' ],
+        [ 'expression', 'sentence', 'conditional', 'disjunct', 'conjunct', 'atomicprop' ],
+        // [ 'conjunct', 'equation', 'inequality' ],
+        // [ 'set', 'union', 'intersection', 'atomicset' ]
+    ]
+
+    static isSyntacticType = name =>
+        Converter.syntacticTypeHierarchies.some( hierarchy =>
+            hierarchy.includes( name ) )
+
+    static isAtomicType = name => name.startsWith( 'atomic' )
+
+    static supertypeGraph = { }
+
+    static computeSupertypeGraph = () => {
+        if ( Object.keys( Converter.supertypeGraph ).length > 0 ) return
+        Converter.syntacticTypeHierarchies.forEach( chain =>
+            chain.forEach( type => Converter.supertypeGraph[type] = [ ] ) )
+            Converter.syntacticTypeHierarchies.forEach( chain => {
+            for ( let i = 0 ; i < chain.length - 1 ; i++ )
+            Converter.supertypeGraph[chain[i]].push( chain[i+1] )
+        } )
+        let closureAchieved
+        do {
+            closureAchieved = true
+            Object.keys( Converter.supertypeGraph ).forEach( a => {
+                Converter.supertypeGraph[a].forEach( b => {
+                    Converter.supertypeGraph[b].forEach( c => {
+                        if ( !Converter.supertypeGraph[a].includes( c ) ) {
+                            Converter.supertypeGraph[a].push( c )
+                            closureAchieved = false
+                        }
+                    } )
+                } )
+            } )
+        } while ( !closureAchieved )
+    }
+
+    static isSupertype = ( a, b ) => Converter.supertypeGraph[a].includes( b )
+
+    static notationStringToArray = str => {
+        const result = [ ]
+        let match
+        let lastWasType
+        const all = Converter.syntacticTypeHierarchies
+        while ( str.length > 0 ) {
+            if ( match = /^\s+/.exec( str ) ) {
+                str = str.substring( match[0].length )
+                continue
+            }
+            let justSawType = false
+            for ( let i = 0 ; !justSawType && i < all.length ; i++ )
+                for ( let j = 0 ; !justSawType && j < all[i].length ; j++ )
+                    if ( str.startsWith( all[i][j] ) ) {
+                        result.push( all[i][j] )
+                        str = str.substring( all[i][j].length )
+                        justSawType = true
+                    }
+            if ( justSawType ) {
+                lastWasType = true
+                continue
+            }
+            if ( result.length == 0 || lastWasType )
+                result.push( str[0] )
+            else
+                result[result.length-1] += str[0]
+            lastWasType = false
+            str = str.substring( 1 )
+        }
+        return result.map( piece =>
+            Converter.isSyntacticType( piece ) ? piece :
+                new RegExp( escapeRegExp( piece ) ) )
+    }
+    
 }    
