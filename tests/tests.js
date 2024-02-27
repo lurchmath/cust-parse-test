@@ -13,57 +13,54 @@ describe( 'Converter instance', () => {
 
 describe( 'Parsing latex', () => {
 
-    let converter
+    const converter = new Converter()
     const debug = ( on = true ) => converter._debug = on
 
-    beforeEach( () => {
-        converter = new Converter()
+    converter.addLanguage( 'latex', '{', '}' )
 
-        converter.addLanguage( 'latex', '{', '}' )
+    converter.addConcept( 'numbervariable', { parentType: 'atomicnumber' } )
+    converter.addConcept( 'number',         { parentType: 'atomicnumber' } )
+    converter.addConcept( 'infinity',       { parentType: 'atomicnumber' } )
+    
+    converter.addConcept( 'exponentiation', { parentType: 'factor',  putdown : '^' } )
+    converter.addConcept( 'percentage',     { parentType: 'factor',  putdown : '%' } )
+    converter.addConcept( 'division',       { parentType: 'product', putdown : '/' } )
+    converter.addConcept( 'multiplication', { parentType: 'product', putdown : '*' } )
+    converter.addConcept( 'numbernegation', { parentType: 'product', putdown : '-' } )
+    
+    converter.addConcept( 'logicvariable',  { parentType: 'atomicprop' } )
+    converter.addConcept( 'logicconstant',  { parentType: 'atomicprop' } )
+    
+    converter.addConcept( 'logicnegation',  { parentType: 'conjunct', putdown : 'not' } )
+    converter.addConcept( 'conjunction',    { parentType: 'conjunct', putdown : 'and' } )
+    converter.addConcept( 'disjunction',    { parentType: 'disjunct', putdown : 'or' } )
+    converter.addConcept( 'implication',    { parentType: 'conditional', putdown : 'implies' } )
+    converter.addConcept( 'iff',            { parentType: 'conditional', putdown : 'iff' } )
+    
+    converter.addNotation( 'latex', 'numbervariable', /[a-zA-Z]/ )
+    converter.addNotation( 'latex', 'number',         /\.[0-9]+|[0-9]+\.?[0-9]*/ )
+    converter.addNotation( 'latex', 'infinity',       '\\infty' )
 
-        converter.addConcept( 'numbervariable', { parentType: 'atomicnumber' } )
-        converter.addConcept( 'number',         { parentType: 'atomicnumber' } )
-        converter.addConcept( 'infinity',       { parentType: 'atomicnumber' } )
-        
-        converter.addConcept( 'exponentiation', { parentType: 'factor',  putdown : '^' } )
-        converter.addConcept( 'percentage',     { parentType: 'factor',  putdown : '%' } )
-        converter.addConcept( 'division',       { parentType: 'product', putdown : '/' } )
-        converter.addConcept( 'multiplication', { parentType: 'product', putdown : '*' } )
-        converter.addConcept( 'numbernegation', { parentType: 'product', putdown : '-' } )
-        
-        converter.addConcept( 'logicvariable',  { parentType: 'atomicprop' } )
-        converter.addConcept( 'logicconstant',  { parentType: 'atomicprop' } )
-        
-        converter.addConcept( 'logicnegation',  { parentType: 'conjunct', putdown : 'not' } )
-        converter.addConcept( 'conjunction',    { parentType: 'conjunct', putdown : 'and' } )
-        converter.addConcept( 'disjunction',    { parentType: 'disjunct', putdown : 'or' } )
-        converter.addConcept( 'implication',    { parentType: 'conditional', putdown : 'implies' } )
-        converter.addConcept( 'iff',            { parentType: 'conditional', putdown : 'iff' } )
-        
-        converter.addNotation( 'latex', 'numbervariable', /[a-zA-Z]/ )
-        converter.addNotation( 'latex', 'number',         /\.[0-9]+|[0-9]+\.?[0-9]*/ )
-        converter.addNotation( 'latex', 'infinity',       '\\infty' )
+    converter.addNotation( 'latex', 'exponentiation', 'atomicnumber^atomicnumber' )
+    converter.addNotation( 'latex', 'percentage',     'atomicnumber\\%' )
+    converter.addNotation( 'latex', 'division',       'product\\div product' )
+    converter.addNotation( 'latex', 'multiplication', 'product\\times product' )
+    converter.addNotation( 'latex', 'multiplication', 'product\\cdot product' )
+    converter.addNotation( 'latex', 'numbernegation', '-product' )
 
-        converter.addNotation( 'latex', 'exponentiation', 'atomicnumber^atomicnumber' )
-        converter.addNotation( 'latex', 'percentage',     'atomicnumber\\%' )
-        converter.addNotation( 'latex', 'division',       'product\\div product' )
-        converter.addNotation( 'latex', 'multiplication', 'product\\times product' )
-        converter.addNotation( 'latex', 'multiplication', 'product\\cdot product' )
-        converter.addNotation( 'latex', 'numbernegation', '-product' )
+    converter.addNotation( 'latex', 'logicvariable',  /[a-zA-Z]/ )
+    converter.addNotation( 'latex', 'logicconstant',  '\\top' )
+    converter.addNotation( 'latex', 'logicconstant',  '\\bot' )
+    converter.addNotation( 'latex', 'logicconstant',  '\\rightarrow \\leftarrow' )
 
-        converter.addNotation( 'latex', 'logicvariable',  /[a-zA-Z]/ )
-        converter.addNotation( 'latex', 'logicconstant',  '\\top' )
-        converter.addNotation( 'latex', 'logicconstant',  '\\bot' )
-
-        converter.addNotation( 'latex', 'logicnegation',  '\\neg conjunct' )
-        converter.addNotation( 'latex', 'logicnegation',  '\\lnot conjunct' )
-        converter.addNotation( 'latex', 'conjunction',    'conjunct\\wedge conjunct' )
-        converter.addNotation( 'latex', 'conjunction',    'conjunct\\land conjunct' )
-        converter.addNotation( 'latex', 'disjunction',    'disjunct\\vee disjunct' )
-        converter.addNotation( 'latex', 'disjunction',    'disjunct\\lor disjunct' )
-        converter.addNotation( 'latex', 'implication',    'conditional\\Rightarrow conditional' )
-        converter.addNotation( 'latex', 'iff',            'conditional\\Leftrightarrow conditional' )
-    } )
+    converter.addNotation( 'latex', 'logicnegation',  '\\neg conjunct' )
+    converter.addNotation( 'latex', 'logicnegation',  '\\lnot conjunct' )
+    converter.addNotation( 'latex', 'conjunction',    'conjunct\\wedge conjunct' )
+    converter.addNotation( 'latex', 'conjunction',    'conjunct\\land conjunct' )
+    converter.addNotation( 'latex', 'disjunction',    'disjunct\\vee disjunct' )
+    converter.addNotation( 'latex', 'disjunction',    'disjunct\\lor disjunct' )
+    converter.addNotation( 'latex', 'implication',    'conditional\\Rightarrow conditional' )
+    converter.addNotation( 'latex', 'iff',            'conditional\\Leftrightarrow conditional' )
 
     it( 'correctly implements compact() for type hierarchies', () => {
         expect( converter.compact(
@@ -361,6 +358,10 @@ describe( 'Parsing latex', () => {
             '\\bot',
             [ 'logicconstant', '\\bot' ]
         )
+        checkLatexJson(
+            '\\rightarrow\\leftarrow',
+            [ 'logicconstant', '\\rightarrow\\leftarrow' ]
+        )
         // Not checking variables here, because their meaning is ambiguous; we
         // will check below to ensure that they can be part of logic expressions.
     } )
@@ -392,6 +393,119 @@ describe( 'Parsing latex', () => {
                 ],
                 '\\wedge',
                 [ 'logicvariable', 'c' ]
+            ]
+        )
+    } )
+
+    it( 'can parse propositional logic disjuncts to JSON', () => {
+        checkLatexJson(
+            '\\top\\vee \\neg A',
+            [ 'disjunction',
+                [ 'logicconstant', '\\top' ],
+                '\\vee',
+                [ 'logicnegation', '\\neg', [ 'logicvariable', 'A' ] ]
+            ]
+        )
+        checkLatexJson(
+            'P\\wedge Q\\vee Q\\wedge P',
+            [ 'disjunction',
+                [ 'conjunction', [ 'logicvariable', 'P' ], '\\wedge', [ 'logicvariable', 'Q' ] ],
+                '\\vee',
+                [ 'conjunction', [ 'logicvariable', 'Q' ], '\\wedge', [ 'logicvariable', 'P' ] ]
+            ]
+        )
+    } )
+
+    it( 'can parse propositional logic conditionals to JSON', () => {
+        checkLatexJson(
+            'A\\Rightarrow Q\\wedge\\neg P',
+            [ 'implication',
+                [ 'logicvariable', 'A' ],
+                '\\Rightarrow',
+                [ 'conjunction',
+                    [ 'logicvariable', 'Q' ],
+                    '\\wedge',
+                    [ 'logicnegation', '\\neg', [ 'logicvariable', 'P' ] ]
+                ]
+            ]
+        )
+        checkLatexJson(
+            'P\\vee Q\\Rightarrow Q\\wedge P\\Rightarrow T',
+            [ 'implication',
+                [ 'implication',
+                    [ 'disjunction',
+                        [ 'logicvariable', 'P' ], '\\vee', [ 'logicvariable', 'Q' ] ],
+                    '\\Rightarrow',
+                    [ 'conjunction',
+                        [ 'logicvariable', 'Q' ],
+                        '\\wedge',
+                        [ 'logicvariable', 'P' ]
+                    ]
+                ],
+                '\\Rightarrow', 
+                [ 'logicvariable', 'T' ]
+            ]
+        )
+    } )
+
+    it( 'can parse propositional logic biconditionals to JSON', () => {
+        checkLatexJson(
+            'A\\Leftrightarrow Q\\wedge\\neg P',
+            [ 'iff',
+                [ 'logicvariable', 'A' ],
+                '\\Leftrightarrow',
+                [ 'conjunction',
+                    [ 'logicvariable', 'Q' ],
+                    '\\wedge',
+                    [ 'logicnegation', '\\neg', [ 'logicvariable', 'P' ] ]
+                ]
+            ]
+        )
+        checkLatexJson(
+            'P\\vee Q\\Leftrightarrow Q\\wedge P\\Rightarrow T',
+            [ 'implication',
+                [ 'iff',
+                    [ 'disjunction',
+                        [ 'logicvariable', 'P' ], '\\vee', [ 'logicvariable', 'Q' ] ],
+                    '\\Leftrightarrow',
+                    [ 'conjunction',
+                        [ 'logicvariable', 'Q' ],
+                        '\\wedge',
+                        [ 'logicvariable', 'P' ]
+                    ]
+                ],
+                '\\Rightarrow', 
+                [ 'logicvariable', 'T' ]
+            ]
+        )
+    } )
+
+    it( 'can parse propositional expressions with groupers to JSON', () => {
+        checkLatexJson(
+            'P\\lor {Q\\Leftrightarrow Q}\\land P',
+            [ 'disjunction',
+                [ 'logicvariable', 'P' ],
+                '\\lor',
+                [ 'conjunction',
+                    [ 'iff',
+                        [ 'logicvariable', 'Q' ],
+                        '\\Leftrightarrow',
+                        [ 'logicvariable', 'Q' ]
+                    ],
+                    '\\land',
+                    [ 'logicvariable', 'P' ]
+                ]
+            ]
+        )
+        checkLatexJson(
+            '\\lnot{\\top\\Leftrightarrow\\bot}',
+            [ 'logicnegation',
+                '\\lnot',
+                [ 'iff',
+                    [ 'logicconstant', '\\top' ],
+                    '\\Leftrightarrow',
+                    [ 'logicconstant', '\\bot' ]
+                ]
             ]
         )
     } )

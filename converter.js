@@ -1,10 +1,8 @@
 
 // To dos:
-//  - start a real git repo
 //  - move the global stuff into the class
 //  - expand set of tests for many new mathematical expressions in many languages,
 //    including expressions that bind variables
-//     - and, or not, implies, iff, contradiction
 //     - universal, existential, and existential unique quantifiers
 //     - naked binding?
 //     - sum, difference (as sum of negation), associative lists of these
