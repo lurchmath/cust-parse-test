@@ -1,0 +1,19 @@
+{
+  "name": "cust-parse-test",
+  "version": "0.0.1",
+  "description": "Testing some parsing tools for use in Lurch",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nathan Carter (ncarter@bentley.edu)",
+  "license": "MIT",
+  "dependencies": {
+    "earley-parser": "^1.3.1"
+  },
+  "devDependencies": {
+    "chai": "^5.1.0",
+    "mocha": "^10.3.0"
+  }
+}
