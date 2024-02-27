@@ -108,7 +108,7 @@ export class Converter {
         if ( notation instanceof RegExp )
             notation = [ notation ]
         if ( !( notation instanceof Array ) )
-            notation = Converter.notationStringToArray( notation )
+            notation = Converter.notationStringToArray( language.grammar, notation )
         notation.forEach( piece => {
             if ( piece instanceof RegExp ) language.tokenizer.addType( piece )
         } )
@@ -350,37 +350,37 @@ export class Converter {
 
     static isSupertype = ( a, b ) => Converter.supertypeGraph[a].includes( b )
 
-    static notationStringToArray = str => {
+    static notationStringToArray = ( grammar, str ) => {
+        const typeNames = Object.keys( grammar.rules )
         const result = [ ]
         let match
-        let lastWasType
-        const all = Converter.syntacticTypeHierarchies
+        let mayNotContinueString
         while ( str.length > 0 ) {
             if ( match = /^\s+/.exec( str ) ) {
                 str = str.substring( match[0].length )
+                mayNotContinueString = true
                 continue
             }
             let justSawType = false
-            for ( let i = 0 ; !justSawType && i < all.length ; i++ )
-                for ( let j = 0 ; !justSawType && j < all[i].length ; j++ )
-                    if ( str.startsWith( all[i][j] ) ) {
-                        result.push( all[i][j] )
-                        str = str.substring( all[i][j].length )
-                        justSawType = true
-                    }
+            for ( let i = 0 ; !justSawType && i < typeNames.length ; i++ )
+                if ( str.startsWith( typeNames[i] ) ) {
+                    result.push( typeNames[i] )
+                    str = str.substring( typeNames[i].length )
+                    justSawType = true
+                }
             if ( justSawType ) {
-                lastWasType = true
+                mayNotContinueString = true
                 continue
             }
-            if ( result.length == 0 || lastWasType )
+            if ( result.length == 0 || mayNotContinueString )
                 result.push( str[0] )
             else
                 result[result.length-1] += str[0]
-            lastWasType = false
+            mayNotContinueString = false
             str = str.substring( 1 )
         }
         return result.map( piece =>
-            Converter.isSyntacticType( piece ) ? piece :
+            typeNames.includes( piece ) ? piece :
                 new RegExp( escapeRegExp( piece ) ) )
     }
     

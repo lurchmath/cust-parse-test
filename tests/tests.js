@@ -36,6 +36,10 @@ describe( 'Parsing latex', () => {
     converter.addConcept( 'disjunction',    { parentType: 'disjunct', putdown : 'or' } )
     converter.addConcept( 'implication',    { parentType: 'conditional', putdown : 'implies' } )
     converter.addConcept( 'iff',            { parentType: 'conditional', putdown : 'iff' } )
+
+    converter.addConcept( 'universal',      { parentType: 'sentence', 'putdown' : 'forall', body : 2 } )
+    converter.addConcept( 'existential',    { parentType: 'sentence', 'putdown' : 'exists', body : 2 } )
+    converter.addConcept( 'existsunique',   { parentType: 'sentence', 'putdown' : 'existsunique', body : 2 } )
     
     converter.addNotation( 'latex', 'numbervariable', /[a-zA-Z]/ )
     converter.addNotation( 'latex', 'number',         /\.[0-9]+|[0-9]+\.?[0-9]*/ )
@@ -61,6 +65,10 @@ describe( 'Parsing latex', () => {
     converter.addNotation( 'latex', 'disjunction',    'disjunct\\lor disjunct' )
     converter.addNotation( 'latex', 'implication',    'conditional\\Rightarrow conditional' )
     converter.addNotation( 'latex', 'iff',            'conditional\\Leftrightarrow conditional' )
+
+    converter.addNotation( 'latex', 'universal',      '\\forall numbervariable, sentence' )
+    converter.addNotation( 'latex', 'existential',    '\\exists numbervariable, sentence' )
+    converter.addNotation( 'latex', 'existsunique',   '\\exists ! numbervariable, sentence' )
 
     it( 'correctly implements compact() for type hierarchies', () => {
         expect( converter.compact(
@@ -360,7 +368,7 @@ describe( 'Parsing latex', () => {
         )
         checkLatexJson(
             '\\rightarrow\\leftarrow',
-            [ 'logicconstant', '\\rightarrow\\leftarrow' ]
+            [ 'logicconstant', '\\rightarrow', '\\leftarrow' ]
         )
         // Not checking variables here, because their meaning is ambiguous; we
         // will check below to ensure that they can be part of logic expressions.
@@ -506,6 +514,38 @@ describe( 'Parsing latex', () => {
                     '\\Leftrightarrow',
                     [ 'logicconstant', '\\bot' ]
                 ]
+            ]
+        )
+    } )
+
+    it( 'can parse simple predicate logic expressions to JSON', () => {
+        checkLatexJson(
+            '\\forall x, P',
+            [ 'universal',
+                '\\forall',
+                [ 'numbervariable', 'x' ],
+                ',',
+                [ 'logicvariable', 'P' ]
+            ]
+        )
+        checkLatexJson(
+            '\\exists t,\\neg Q',
+            [ 'existential',
+                '\\exists',
+                [ 'numbervariable', 't' ],
+                ',',
+                [ 'logicnegation', '\\neg', [ 'logicvariable', 'Q' ] ]
+            ]
+        )
+        checkLatexJson(
+            '\\exists! k,m\\Rightarrow n',
+            [ 'existsunique',
+                '\\exists',
+                '!',
+                [ 'numbervariable', 'k' ],
+                ',',
+                [ 'implication',
+                    [ 'logicvariable', 'm' ], '\\Rightarrow', [ 'logicvariable', 'n' ] ]
             ]
         )
     } )
