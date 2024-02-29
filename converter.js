@@ -3,8 +3,6 @@
 //  - add tests for the static functions in the class
 //  - expand set of tests for many new mathematical expressions in many languages,
 //    including expressions that bind variables
-//     - universal, existential, and existential unique quantifiers
-//     - naked binding?
 //     - sum, difference (as sum of negation), associative lists of these
 //     - product, quotient (as product of reciprocal), fraction, associative lists
 //     - exponents, factorial
@@ -18,6 +16,7 @@
 //     - assumptions and declarations (but no need for Declare--we can do that
 //       in each doc just by listing concept.putdown for each concept)
 //     - EFAs
+//     - naked binding?
 //  - expand all languages to support many new mathematical features, tests for each
 //    (note that set theory notation will need analogs to sum, product, ...)
 //  - expand tests to include more than one language, and converting between them
@@ -130,15 +129,16 @@ export class Converter {
         const head = json.shift()
         if ( this.isConcept( head ) ) {
             // Handle case with potentially complex interior
-            // TODO: handle boundVars
             const concept = this.concepts.get( head )
             const recur = json.filter( piece => piece instanceof Array )
                 .map( piece => this.jsonToPutdown( piece ) )
-            if ( Converter.isAtomicType( concept.parentType ) ) return json[0]
+            if ( Converter.isAtomicType( concept.parentType ) )
+                return json.join( '' )
             if ( !concept.hasOwnProperty( 'body' ) )
                 return `(${concept.putdown} ${recur.join( ' ' )})`
-            const body = recur[concept.body]
-            recur.splice( concept.body, 1 )
+            const bodyIndex = concept.body - 1 // already popped head, so -1
+            const body = recur[bodyIndex]
+            recur.splice( bodyIndex, 1 )
             return `(${concept.putdown} (${recur.join( ' ' )} , ${body}))`
         } else if ( Converter.isSyntacticType( head ) ) {
             // Handle subtype case--just a wrapper around one thing
