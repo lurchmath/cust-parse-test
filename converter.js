@@ -362,11 +362,13 @@ export class Converter {
                 continue
             }
             let justSawType = false
-            for ( let i = 0 ; !justSawType && i < typeNames.length ; i++ )
-                if ( str.startsWith( typeNames[i] ) ) {
+            for ( let i = 0 ; !justSawType && i < typeNames.length ; i++ ) {
+                const startsWithThis = new RegExp( `^${typeNames[i]}\\b` )
+                if ( startsWithThis.test( str ) ) {
                     result.push( typeNames[i] )
                     str = str.substring( typeNames[i].length )
                     justSawType = true
+                }
                 }
             if ( justSawType ) {
                 mayNotContinueString = true
