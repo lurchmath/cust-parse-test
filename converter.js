@@ -210,16 +210,17 @@ export class Converter {
             } else if ( putdown[0] == ',' ) {
                 putdown = putdown.substring( 1 )
             } else if ( match = /^[^\s()]+/.exec( putdown ) ) {
-                const conceptNames = this.concepts.keys()
+                const conceptNames = Array.from( this.concepts.keys() )
                 let found = false
                 for ( let i = 0 ; i < conceptNames.length ; i++ ) {
-                    if ( conceptNames[i].putdown == match[0] ) {
+                    const concept = this.concepts.get( conceptNames[i] )
+                    if ( concept.putdown == match[0] ) {
                         focus().push( [ conceptNames[i], match[0] ] )
                         found = true
                         break
                     }
-                    if ( ( conceptNames[i].putdown instanceof RegExp )
-                        && conceptNames[i].putdown.test( match[0] ) ) {
+                    if ( ( concept.putdown instanceof RegExp )
+                      && concept.putdown.test( match[0] ) ) {
                         focus().push( [ conceptNames[i], match[0] ] )
                         found = true
                         break
@@ -230,7 +231,7 @@ export class Converter {
                 putdown = putdown.substring( match[0].length )
             }
         }
-        return stack[0]
+        return focus()[0]
     }
 
     jsonRepresentation ( json, langName ) {
