@@ -295,15 +295,15 @@ describe( 'Parsing latex', () => {
     it( 'can parse propositional logic atomics to JSON', () => {
         checkLatexJson(
             '\\top',
-            [ 'logicconstant', '\\top' ]
+            [ 'logicaltrue', '\\top' ]
         )
         checkLatexJson(
             '\\bot',
-            [ 'logicconstant', '\\bot' ]
+            [ 'logicalfalse', '\\bot' ]
         )
         checkLatexJson(
             '\\rightarrow\\leftarrow',
-            [ 'logicconstant', '\\rightarrow', '\\leftarrow' ]
+            [ 'contradiction', '\\rightarrow', '\\leftarrow' ]
         )
         // Not checking variables here, because their meaning is ambiguous; we
         // will check below to ensure that they can be part of logic expressions.
@@ -313,9 +313,9 @@ describe( 'Parsing latex', () => {
         checkLatexJson(
             '\\top\\wedge\\bot',
             [ 'conjunction',
-                [ 'logicconstant', '\\top' ],
+                [ 'logicaltrue', '\\top' ],
                 '\\wedge',
-                [ 'logicconstant', '\\bot' ]
+                [ 'logicalfalse', '\\bot' ]
             ]
         )
         checkLatexJson(
@@ -323,7 +323,7 @@ describe( 'Parsing latex', () => {
             [ 'conjunction',
                 [ 'logicnegation', '\\neg', [ 'logicvariable', 'P' ] ],
                 '\\wedge',
-                [ 'logicnegation', '\\neg', [ 'logicconstant', '\\top' ] ]
+                [ 'logicnegation', '\\neg', [ 'logicaltrue', '\\top' ] ]
             ]
         )
         checkLatexJson(
@@ -344,7 +344,7 @@ describe( 'Parsing latex', () => {
         checkLatexJson(
             '\\top\\vee \\neg A',
             [ 'disjunction',
-                [ 'logicconstant', '\\top' ],
+                [ 'logicaltrue', '\\top' ],
                 '\\vee',
                 [ 'logicnegation', '\\neg', [ 'logicvariable', 'A' ] ]
             ]
@@ -445,9 +445,9 @@ describe( 'Parsing latex', () => {
             [ 'logicnegation',
                 '\\lnot',
                 [ 'iff',
-                    [ 'logicconstant', '\\top' ],
+                    [ 'logicaltrue', '\\top' ],
                     '\\Leftrightarrow',
-                    [ 'logicconstant', '\\bot' ]
+                    [ 'logicalfalse', '\\bot' ]
                 ]
             ]
         )

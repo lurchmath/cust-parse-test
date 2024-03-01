@@ -3,10 +3,8 @@ import { Converter } from './converter.js'
 
 export const converter = new Converter()
 
-converter.addLanguage( 'latex', '{', '}' )
-
-converter.addConcept( 'numbervariable', { parentType: 'atomicnumber' } )
-converter.addConcept( 'number',         { parentType: 'atomicnumber' } )
+converter.addConcept( 'numbervariable', { parentType: 'atomicnumber', putdown : Converter.regularExpressions.oneLetterVariable } )
+converter.addConcept( 'number',         { parentType: 'atomicnumber', putdown : Converter.regularExpressions.number } )
 converter.addConcept( 'infinity',       { parentType: 'atomicnumber' } )
 
 converter.addConcept( 'exponentiation', { parentType: 'factor',  putdown : '^' } )
@@ -15,8 +13,10 @@ converter.addConcept( 'division',       { parentType: 'product', putdown : '/' }
 converter.addConcept( 'multiplication', { parentType: 'product', putdown : '*' } )
 converter.addConcept( 'numbernegation', { parentType: 'product', putdown : '-' } )
 
-converter.addConcept( 'logicvariable',  { parentType: 'atomicprop' } )
-converter.addConcept( 'logicconstant',  { parentType: 'atomicprop' } )
+converter.addConcept( 'logicvariable',  { parentType: 'atomicprop', putdown : Converter.regularExpressions.oneLetterVariable } )
+converter.addConcept( 'logicaltrue',    { parentType: 'atomicprop' } )
+converter.addConcept( 'logicalfalse',   { parentType: 'atomicprop' } )
+converter.addConcept( 'contradiction',  { parentType: 'atomicprop' } )
 
 converter.addConcept( 'logicnegation',  { parentType: 'conjunct', putdown : 'not' } )
 converter.addConcept( 'conjunction',    { parentType: 'conjunct', putdown : 'and' } )
@@ -28,8 +28,8 @@ converter.addConcept( 'universal',      { parentType: 'sentence', 'putdown' : 'f
 converter.addConcept( 'existential',    { parentType: 'sentence', 'putdown' : 'exists', body : 2 } )
 converter.addConcept( 'existsunique',   { parentType: 'sentence', 'putdown' : 'existsunique', body : 2 } )
 
-converter.addNotation( 'latex', 'numbervariable', /[a-zA-Z]/ )
-converter.addNotation( 'latex', 'number',         /\.[0-9]+|[0-9]+\.?[0-9]*/ )
+converter.addLanguage( 'latex', '{', '}' )
+
 converter.addNotation( 'latex', 'infinity',       '\\infty' )
 
 converter.addNotation( 'latex', 'exponentiation', 'atomicnumber^atomicnumber' )
@@ -39,10 +39,9 @@ converter.addNotation( 'latex', 'multiplication', 'product\\times product' )
 converter.addNotation( 'latex', 'multiplication', 'product\\cdot product' )
 converter.addNotation( 'latex', 'numbernegation', '-product' )
 
-converter.addNotation( 'latex', 'logicvariable',  /[a-zA-Z]/ )
-converter.addNotation( 'latex', 'logicconstant',  '\\top' )
-converter.addNotation( 'latex', 'logicconstant',  '\\bot' )
-converter.addNotation( 'latex', 'logicconstant',  '\\rightarrow \\leftarrow' )
+converter.addNotation( 'latex', 'logicaltrue',    '\\top' )
+converter.addNotation( 'latex', 'logicalfalse',   '\\bot' )
+converter.addNotation( 'latex', 'contradiction',  '\\rightarrow \\leftarrow' )
 
 converter.addNotation( 'latex', 'logicnegation',  '\\neg conjunct' )
 converter.addNotation( 'latex', 'logicnegation',  '\\lnot conjunct' )

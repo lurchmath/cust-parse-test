@@ -102,7 +102,7 @@ describe( 'Creating putdown from JSON', () => {
     it( 'can convert LaTeX infinity from JSON to putdown', () => {
         checkJsonPutdown(
             [ 'infinity', '\\infty' ],
-            '\\infty'
+            'infinity'
         )
     } )
 
@@ -118,7 +118,7 @@ describe( 'Creating putdown from JSON', () => {
         )
         checkJsonPutdown(
             [ 'exponentiation', [ 'number', '1' ], '^', [ 'infinity', '\\infty' ] ],
-            '(^ 1 \\infty)'
+            '(^ 1 infinity)'
         )
     } )
 
@@ -146,7 +146,7 @@ describe( 'Creating putdown from JSON', () => {
         )
         checkJsonPutdown(
             [ 'division', [ 'number', '0' ], '\\div', [ 'infinity', '\\infty' ] ],
-            '(/ 0 \\infty)'
+            '(/ 0 infinity)'
         )
         // division of factors
         checkJsonPutdown(
@@ -190,7 +190,7 @@ describe( 'Creating putdown from JSON', () => {
         )
         checkJsonPutdown(
             [ 'multiplication', [ 'number', '0' ], '\\times', [ 'infinity', '\\infty' ] ],
-            '(* 0 \\infty)'
+            '(* 0 infinity)'
         )
         // multiplication of factors
         checkJsonPutdown(
@@ -276,16 +276,16 @@ describe( 'Creating putdown from JSON', () => {
 
     it( 'can convert propositional logic atomics to putdown', () => {
         checkJsonPutdown(
-            [ 'logicconstant', '\\top' ],
-            '\\top'
+            [ 'logicaltrue', '\\top' ],
+            'logicaltrue'
         )
         checkJsonPutdown(
-            [ 'logicconstant', '\\bot' ],
-            '\\bot'
+            [ 'logicalfalse', '\\bot' ],
+            'logicalfalse'
         )
         checkJsonPutdown(
-            [ 'logicconstant', '\\rightarrow', '\\leftarrow' ],
-            '\\rightarrow\\leftarrow'
+            [ 'contradiction', '\\rightarrow', '\\leftarrow' ],
+            'contradiction'
         )
         checkJsonPutdown(
             [ 'logicvariable', 'P' ],
@@ -304,19 +304,19 @@ describe( 'Creating putdown from JSON', () => {
     it( 'can convert propositional logic conjuncts to putdown', () => {
         checkJsonPutdown(
             [ 'conjunction',
-                [ 'logicconstant', '\\top' ],
+                [ 'logicaltrue', '\\top' ],
                 '\\wedge',
-                [ 'logicconstant', '\\bot' ]
+                [ 'logicalfalse', '\\bot' ]
             ],
-            '(and \\top \\bot)'
+            '(and logicaltrue logicalfalse)'
         )
         checkJsonPutdown(
             [ 'conjunction',
                 [ 'logicnegation', '\\neg', [ 'logicvariable', 'P' ] ],
                 '\\wedge',
-                [ 'logicnegation', '\\neg', [ 'logicconstant', '\\top' ] ]
+                [ 'logicnegation', '\\neg', [ 'logicaltrue', '\\top' ] ]
             ],
-            '(and (not P) (not \\top))'
+            '(and (not P) (not logicaltrue))'
         )
         checkJsonPutdown(
             [ 'conjunction',
@@ -335,11 +335,11 @@ describe( 'Creating putdown from JSON', () => {
     it( 'can convert propositional logic disjuncts to putdown', () => {
         checkJsonPutdown(
             [ 'disjunction',
-                [ 'logicconstant', '\\top' ],
+                [ 'logicaltrue', '\\top' ],
                 '\\vee',
                 [ 'logicnegation', '\\neg', [ 'logicvariable', 'A' ] ]
             ],
-            '(or \\top (not A))'
+            '(or logicaltrue (not A))'
         )
         checkJsonPutdown(
             [ 'disjunction',
@@ -436,12 +436,12 @@ describe( 'Creating putdown from JSON', () => {
             [ 'logicnegation',
                 '\\lnot',
                 [ 'iff',
-                    [ 'logicconstant', '\\top' ],
+                    [ 'logicaltrue', '\\top' ],
                     '\\Leftrightarrow',
-                    [ 'logicconstant', '\\bot' ]
+                    [ 'logicalfalse', '\\bot' ]
                 ]
             ],
-            '(not (iff \\top \\bot))'
+            '(not (iff logicaltrue logicalfalse))'
         )
     } )
 

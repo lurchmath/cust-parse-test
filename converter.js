@@ -1,5 +1,12 @@
 
 // To dos:
+//  - Fix design problem preventing legitimate conversion from putdown:
+//     - When converting JSON to a non-putdown language, if an atomic concept is
+//       being converted, its contents may not look like the notation used in
+//       the language in question, so they will need to be replaced with the
+//       way to write the same concept in the target language.  Look it up in
+//       the notation data specified at language definition time, unless we do
+//       not currently store that, in which case fix that problem first.
 //  - add tests for the static functions in the class
 //  - expand set of tests for many new mathematical expressions in many languages,
 //    including expressions that bind variables
@@ -41,12 +48,23 @@ export class Converter {
     }
 
     addLanguage ( name, leftGrouper = '(', rightGrouper = ')' ) {
+        // Create both things the language needs--a tokenizer and a grammar--and
+        // store them in this converter's languages map.
         const tokenizer = new Tokenizer()
         tokenizer.addType( /\s/, () => null )
         const grammar = new Grammar()
         grammar.START = Converter.syntacticTypeHierarchies[0][0]
         this.languages.set( name,
             { tokenizer, grammar, leftGrouper, rightGrouper } )
+        // If the concept is atomic and has a putdown form, use that as the
+        // default notation in the new language; this can be overridden by any
+        // later call to addNotation().
+        Array.from( this.concepts.keys() ).forEach( conceptName => {
+            const concept = this.concepts.get( conceptName )
+            if ( Converter.isAtomicType( concept.parentType ) )
+                this.addNotation( name, conceptName, concept.putdown )
+        } )
+        // Add subtyping rules and grouping rules to the grammar.
         Converter.syntacticTypeHierarchies.forEach( hierarchy => {
             for ( let i = 0 ; i < hierarchy.length - 1 ; i++ )
                 grammar.addRule( hierarchy[i], hierarchy[i+1] )
@@ -72,9 +90,17 @@ export class Converter {
     // fields that can be in the data object:
     //  - parentType : string, name of syntactic type in which this concept fits
     //    (required)
-    //  - putdown : string, name of putdown operator to use when converting to
-    //    that language (required unless parentType is atomic, but if omitted,
-    //    the concept name will be used as the putdown operator)
+    //  - putdown : string or regexp, behaving as follows:
+    //     - For a nonatomic concept, this must be a string, and is the name of
+    //       the operator that will be used when representing the concept in the
+    //       putdown language (if omitted, defaults to concept name)
+    //     - For an atomic concept, if this is a string, it will be the symbol
+    //       that will to represent the concept in the putdown language (if
+    //       omitted, defaults to concept name)
+    //     - For an atomic concept, it can be a regexp instead, and anything
+    //       matching that regexp can count as the representation of itself in
+    //       the putdown langauge, so that entire infinite categories of things
+    //       (e.g., integers, words) can be made into atomic concepts.
     //  - body : integer index of the child that is the body in a quantified
     //    expression (meaning all other children are bound variables); if omitted,
     //    then the concept is not one that binds any variables
@@ -84,8 +110,7 @@ export class Converter {
             throw new Error( `Cannot add concept ${name} with no parentType` )
         if ( !Converter.isSyntacticType( data.parentType ) )
             throw new Error( `Not a valid syntactic type: ${data.parentType}` )
-        if ( !Converter.isAtomicType( data.parentType )
-          && !data.hasOwnProperty( 'putdown' ) )
+        if ( !data.hasOwnProperty( 'putdown' ) )
             data.putdown = name
         this.concepts.set( name, data )
     }
@@ -103,6 +128,11 @@ export class Converter {
         if ( !this.isConcept( conceptName ) )
             throw new Error( `Not a valid concept: ${conceptName}` )
         const concept = this.concepts.get( conceptName )
+        // if this is an atomic concept, delete any previous notation it had
+        // (since that was probably the putdown default installed at language
+        // creation time, which the user is now overriding)
+        if ( Converter.isAtomicType( concept.parentType ) )
+            delete language.grammar.rules[conceptName]
         // convert notation to array if needed and extract its tokens
         if ( notation instanceof RegExp )
             notation = [ notation ]
@@ -124,8 +154,8 @@ export class Converter {
     // traversals to create what you want.
     jsonToPutdown ( json ) {
         if ( !( json instanceof Array ) )
-        throw new Error(
-            `Not a valid semantic JSON expression: ${JSON.stringify(json)}` )
+            throw new Error(
+                `Not a valid semantic JSON expression: ${JSON.stringify(json)}` )
         const head = json.shift()
         if ( this.isConcept( head ) ) {
             // Handle case with potentially complex interior
@@ -133,7 +163,7 @@ export class Converter {
             const recur = json.filter( piece => piece instanceof Array )
                 .map( piece => this.jsonToPutdown( piece ) )
             if ( Converter.isAtomicType( concept.parentType ) )
-                return json.join( '' )
+                return concept.putdown instanceof RegExp ? json[0] : concept.putdown
             if ( !concept.hasOwnProperty( 'body' ) )
                 return `(${concept.putdown} ${recur.join( ' ' )})`
             const bodyIndex = concept.body - 1 // already popped head, so -1
@@ -180,7 +210,23 @@ export class Converter {
             } else if ( putdown[0] == ',' ) {
                 putdown = putdown.substring( 1 )
             } else if ( match = /^[^\s()]+/.exec( putdown ) ) {
-                focus().push( match[0] )
+                const conceptNames = this.concepts.keys()
+                let found = false
+                for ( let i = 0 ; i < conceptNames.length ; i++ ) {
+                    if ( conceptNames[i].putdown == match[0] ) {
+                        focus().push( [ conceptNames[i], match[0] ] )
+                        found = true
+                        break
+                    }
+                    if ( ( conceptNames[i].putdown instanceof RegExp )
+                        && conceptNames[i].putdown.test( match[0] ) ) {
+                        focus().push( [ conceptNames[i], match[0] ] )
+                        found = true
+                        break
+                    }
+                }
+                if ( !found )
+                    throw new Error( `Did not match any concept: ${match[0]}` )
                 putdown = putdown.substring( match[0].length )
             }
         }
@@ -369,7 +415,7 @@ export class Converter {
                     str = str.substring( typeNames[i].length )
                     justSawType = true
                 }
-                }
+            }
             if ( justSawType ) {
                 mayNotContinueString = true
                 continue
@@ -384,6 +430,12 @@ export class Converter {
         return result.map( piece =>
             typeNames.includes( piece ) ? piece :
                 new RegExp( escapeRegExp( piece ) ) )
+    }
+
+    static regularExpressions = {
+        oneLetterVariable : /[a-zA-Z]/, // can be upgraded later with Greek, etc.
+        integer : /\d+/,
+        number : /\.[0-9]+|[0-9]+\.?[0-9]*/
     }
     
 }    
