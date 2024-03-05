@@ -1,10 +1,5 @@
 
 // To dos:
-//  - Does the new parser for putdown also solve `jsonToPutdown()` if we just
-//    use `jsonRepresntation()`?  Note that you would need to augment
-//    `jsonRepresentation()` so that it does the right thing if there are no
-//    groupers defined.
-//
 //  - Add tests for the static functions in the class
 //  - expand set of tests for many new mathematical expressions in many languages,
 //    including expressions that bind variables
@@ -189,37 +184,11 @@ export class Converter {
         newRule.variables = variables
     }
 
-    // Note:  This never produces putdown with attributes, which is obviously
-    // limiting (e.g., it can never produce givens) but this is just a
-    // simplification to view putdown in a trivial, LISP-like way.  You can just
-    // use a constant and create (GIVEN x) and then post-process using LC tree
-    // traversals to create what you want.
-    jsonToPutdown ( json ) {
-        if ( !( json instanceof Array ) )
-            throw new Error(
-                `Not a valid semantic JSON expression: ${JSON.stringify(json)}` )
-        const head = json.shift()
-        if ( this.isConcept( head ) ) {
-            // Handle case for a concept, by using the putdown code for the
-            // concept as a template into which to substitute recursive results
-            const concept = this.concepts.get( head )
-            if ( concept.putdown instanceof RegExp )
-                return json[0]
-            const recur = json.filter( piece => piece instanceof Array )
-                .map( piece => this.jsonToPutdown( piece ) )
-            let result = concept.putdown
-            concept.typeSequence.forEach( type =>
-                result = result.replace( type, recur.shift() ) )
-            return result
-        } else if ( Converter.isSyntacticType( head ) ) {
-            // Handle subtype case--just a wrapper around one thing
-            return this.jsonToPutdown( json[0] )
-        } else {
-            throw new Error(
-                `Not a valid semantic JSON expression: ${JSON.stringify(json)}` )
-        }
-    }
-
+    // Note:  When using this with langName == 'putdown', it never produces
+    // putdown with attributes, which is obviously limiting (e.g., it can never
+    // produce givens) but this is just a simplification to view putdown in a
+    // trivial, LISP-like way.  You can just use a constant and create (GIVEN x)
+    // and then post-process using LC tree traversals to create what you want.
     jsonRepresentation ( json, langName ) {
         // find the language in question
         const language = this.languages.get( langName )
@@ -243,15 +212,24 @@ export class Converter {
         // since it's not a syntactic type, it better be a concept
         if ( !this.isConcept( head ) )
             throw new Error( 'Not a syntactic type nor a concept: ' + head )
+        // if it's an atomic concept with one argument, defined by a regular
+        // expression, just return the argument, because this is a base case
+        const concept = this.concepts.get( head )
+        if ( concept.putdown instanceof RegExp ) {
+            if ( json.length != 1 )
+                throw new Error( 'Invalid semantic JSON structure: '
+                    + JSON.stringify( [ head, ...json ] ) )
+            return json[0]
+        }
         // recursively compute the representation of the arguments, wrapping
         // them in groupers if necessary
-        const types = this.concepts.get( head ).typeSequence
-        if ( types.length != json.length )
+        if ( concept.typeSequence.length != json.length )
             throw new Error( 'Invalid semantic JSON structure: '
                 + JSON.stringify( [ head, ...json ] ) )
         const recur = json.map( ( piece, index ) => {
             const result = this.jsonRepresentation( piece, langName )
-            if ( Converter.isSupertypeOrEqual( types[index], piece[0] ) )
+            if ( !( language.leftGrouper && language.rightGrouper )
+              || Converter.isSupertypeOrEqual( concept.typeSequence[index], piece[0] ) )
                 return result
             else
                 return `${language.leftGrouper} ${result} ${language.rightGrouper}`
@@ -262,7 +240,7 @@ export class Converter {
         let notation = rhs.notation
         const template = [ ]
         const splitter = new RegExp(
-            rhs.variables.map( escapeRegExp ).join( '|' ), 'g' )
+            rhs.variables.map( escapeRegExp ).join( '|' ) )
         while ( notation.length > 0 ) {
             const match = splitter.exec( notation )
             if ( match ) {
@@ -278,13 +256,17 @@ export class Converter {
         return template.map( piece => {
             const variableIndex = rhs.variables.indexOf( piece )
             return variableIndex > -1 ? recur[variableIndex] : piece
-        } ).map( piece => piece.trim() ).join( ' ' )
+        } ).map(
+            piece => piece.trim()
+        ).filter(
+            piece => piece.length > 0
+        ).join( ' ' )
     }
 
     convert ( sourceLang, destLang, data ) {
         if ( sourceLang == destLang ) return data
         if ( sourceLang == 'json' ) {
-                return this.jsonRepresentation( data, destLang )
+            return this.jsonRepresentation( data, destLang )
         } else if ( this.isLanguage( sourceLang ) ) {
             const language = this.languages.get( sourceLang )
             if ( destLang == 'json' ) {

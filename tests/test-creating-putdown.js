@@ -2,12 +2,16 @@
 import { expect } from 'chai'
 import { converter } from '../example-converter.js'
 
-xdescribe( 'Creating putdown from JSON', () => {
+describe( 'Creating putdown from JSON', () => {
 
     const whitespace = '                                            '
     const lpad = str => whitespace.substr( 0, whitespace.length - str.length ) + str
+    const simplifyPutdown = putdown =>
+        putdown.replace( /\(\s+/g, '(' ).replace( /\s+\)/g, ')' ).replaceAll( '  ', ' ' )
     const checkJsonPutdown = ( json, putdown ) => {
-        expect( converter.convert( 'json', 'putdown', json ) ).to.equal( putdown )
+        expect(
+            simplifyPutdown( converter.convert( 'json', 'putdown', json ) )
+        ).to.equal( putdown )
         // console.log( `${lpad( putdown )}  <--  ${JSON.stringify( json )}` )
     }
 
@@ -27,11 +31,11 @@ xdescribe( 'Creating putdown from JSON', () => {
         )
         // negative integers are parsed as the negation of positive integers
         checkJsonPutdown(
-            [ 'numbernegation', '-', [ 'number', '453789' ] ],
+            [ 'numbernegation', [ 'number', '453789' ] ],
             '(- 453789)'
         )
         checkJsonPutdown(
-            [ 'numbernegation', '-',
+            [ 'numbernegation',
                 [ 'number', '99999999999999999999999999999999999999999' ] ],
             '(- 99999999999999999999999999999999999999999)'
         )
@@ -54,15 +58,15 @@ xdescribe( 'Creating putdown from JSON', () => {
         )
         // negative decimals are the negation of positive decimals
         checkJsonPutdown(
-            [ 'numbernegation', '-', [ 'number', '29835.6875940' ] ],
+            [ 'numbernegation', [ 'number', '29835.6875940' ] ],
             '(- 29835.6875940)'
         )
         checkJsonPutdown(
-            [ 'numbernegation', '-', [ 'number', '653280458689.' ] ],
+            [ 'numbernegation', [ 'number', '653280458689.' ] ],
             '(- 653280458689.)'
         )
         checkJsonPutdown(
-            [ 'numbernegation', '-', [ 'number', '.000006327589' ] ],
+            [ 'numbernegation', [ 'number', '.000006327589' ] ],
             '(- .000006327589)'
         )
     } )
@@ -98,34 +102,34 @@ xdescribe( 'Creating putdown from JSON', () => {
 
     it( 'can convert LaTeX infinity from JSON to putdown', () => {
         checkJsonPutdown(
-            [ 'infinity', '\\infty' ],
+            [ 'infinity' ],
             'infinity'
         )
     } )
 
     it( 'can convert exponentiation of atomics to putdown', () => {
         checkJsonPutdown(
-            [ 'exponentiation', [ 'number', '1' ], '^', [ 'number', '2' ] ],
+            [ 'exponentiation', [ 'number', '1' ], [ 'number', '2' ] ],
             '(^ 1 2)'
         )
         checkJsonPutdown(
             [ 'exponentiation',
-                [ 'numbervariable', 'e' ], '^', [ 'numbervariable', 'x' ] ],
+                [ 'numbervariable', 'e' ], [ 'numbervariable', 'x' ] ],
             '(^ e x)'
         )
         checkJsonPutdown(
-            [ 'exponentiation', [ 'number', '1' ], '^', [ 'infinity', '\\infty' ] ],
+            [ 'exponentiation', [ 'number', '1' ], [ 'infinity' ] ],
             '(^ 1 infinity)'
         )
     } )
 
     it( 'can convert atomic percentages to putdown', () => {
         checkJsonPutdown(
-            [ 'percentage', [ 'number', '10' ], '\\%' ],
+            [ 'percentage', [ 'number', '10' ] ],
             '(% 10)'
         )
         checkJsonPutdown(
-            [ 'percentage', [ 'numbervariable', 't' ], '\\%' ],
+            [ 'percentage', [ 'numbervariable', 't' ] ],
             '(% t)'
         )
     } )
@@ -133,24 +137,23 @@ xdescribe( 'Creating putdown from JSON', () => {
     it( 'can convert division of atomics or factors to putdown', () => {
         // division of atomics
         checkJsonPutdown(
-            [ 'division', [ 'number', '1' ], '\\div', [ 'number', '2' ] ],
+            [ 'division', [ 'number', '1' ], [ 'number', '2' ] ],
             '(/ 1 2)'
         )
         checkJsonPutdown(
             [ 'division',
-                [ 'numbervariable', 'x' ], '\\div', [ 'numbervariable', 'y' ] ],
+                [ 'numbervariable', 'x' ], [ 'numbervariable', 'y' ] ],
             '(/ x y)'
         )
         checkJsonPutdown(
-            [ 'division', [ 'number', '0' ], '\\div', [ 'infinity', '\\infty' ] ],
+            [ 'division', [ 'number', '0' ], [ 'infinity' ] ],
             '(/ 0 infinity)'
         )
         // division of factors
         checkJsonPutdown(
             [ 'division',
                 [ 'exponentiation',
-                    [ 'numbervariable', 'x' ], '^', [ 'number', '2' ] ],
-                '\\div',
+                    [ 'numbervariable', 'x' ], [ 'number', '2' ] ],
                 [ 'number', '3' ]
             ],
             '(/ (^ x 2) 3)'
@@ -158,17 +161,15 @@ xdescribe( 'Creating putdown from JSON', () => {
         checkJsonPutdown(
             [ 'division',
                 [ 'number', '1' ],
-                '\\div',
                 [ 'exponentiation',
-                    [ 'numbervariable', 'e' ], '^', [ 'numbervariable', 'x' ] ]
+                    [ 'numbervariable', 'e' ], [ 'numbervariable', 'x' ] ]
             ],
             '(/ 1 (^ e x))'
         )
         checkJsonPutdown(
             [ 'division',
-                [ 'percentage', [ 'number', '10' ], '\\%' ],
-                '\\div',
-                [ 'exponentiation', [ 'number', '2' ], '^', [ 'number', '100' ] ]
+                [ 'percentage', [ 'number', '10' ] ],
+                [ 'exponentiation', [ 'number', '2' ], [ 'number', '100' ] ]
             ],
             '(/ (% 10) (^ 2 100))'
         )
@@ -177,23 +178,22 @@ xdescribe( 'Creating putdown from JSON', () => {
     it( 'can convert multiplication of atomics or factors to putdown', () => {
         // multiplication of atomics
         checkJsonPutdown(
-            [ 'multiplication', [ 'number', '1' ], '\\times', [ 'number', '2' ] ],
+            [ 'multiplication', [ 'number', '1' ], [ 'number', '2' ] ],
             '(* 1 2)'
         )
         checkJsonPutdown(
             [ 'multiplication',
-                [ 'numbervariable', 'x' ], '\\cdot', [ 'numbervariable', 'y' ] ],
+                [ 'numbervariable', 'x' ], [ 'numbervariable', 'y' ] ],
             '(* x y)'
         )
         checkJsonPutdown(
-            [ 'multiplication', [ 'number', '0' ], '\\times', [ 'infinity', '\\infty' ] ],
+            [ 'multiplication', [ 'number', '0' ], [ 'infinity' ] ],
             '(* 0 infinity)'
         )
         // multiplication of factors
         checkJsonPutdown(
             [ 'multiplication',
-                [ 'exponentiation', [ 'numbervariable', 'x' ], '^', [ 'number', '2' ] ],
-                '\\cdot',
+                [ 'exponentiation', [ 'numbervariable', 'x' ], [ 'number', '2' ] ],
                 [ 'number', '3' ]
             ],
             '(* (^ x 2) 3)'
@@ -201,17 +201,15 @@ xdescribe( 'Creating putdown from JSON', () => {
         checkJsonPutdown(
             [ 'multiplication',
                 [ 'number', '1' ],
-                '\\times',
                 [ 'exponentiation',
-                [ 'numbervariable', 'e' ], '^', [ 'numbervariable', 'x' ] ]
+                [ 'numbervariable', 'e' ], [ 'numbervariable', 'x' ] ]
             ],
             '(* 1 (^ e x))'
         )
         checkJsonPutdown(
             [ 'multiplication',
-                [ 'percentage', [ 'number', '10' ], '\\%' ],
-                '\\cdot',
-                [ 'exponentiation', [ 'number', '2' ], '^', [ 'number', '100' ] ]
+                [ 'percentage', [ 'number', '10' ] ],
+                [ 'exponentiation', [ 'number', '2' ], [ 'number', '100' ] ]
             ],
             '(* (% 10) (^ 2 100))'
         )
@@ -220,8 +218,7 @@ xdescribe( 'Creating putdown from JSON', () => {
     it( 'can convert negations of atomics or factors to putdown', () => {
         checkJsonPutdown(
             [ 'multiplication',
-                [ 'numbernegation', '-', [ 'number', '1' ] ],
-                '\\times',
+                [ 'numbernegation', [ 'number', '1' ] ],
                 [ 'number', '2' ]
             ],
             '(* (- 1) 2)'
@@ -229,43 +226,40 @@ xdescribe( 'Creating putdown from JSON', () => {
         checkJsonPutdown(
             [ 'multiplication',
                 [ 'numbervariable', 'x' ],
-                '\\cdot',
-                [ 'numbernegation', '-', [ 'numbervariable', 'y' ] ]
+                [ 'numbernegation', [ 'numbervariable', 'y' ] ]
             ],
             '(* x (- y))'
         )
         checkJsonPutdown(
             [ 'multiplication',
-                [ 'numbernegation', '-',
+                [ 'numbernegation',
                 [ 'exponentiation',
-                    [ 'numbervariable', 'x' ], '^', [ 'number', '2' ] ] ],
-                '\\cdot',
-                [ 'numbernegation', '-', [ 'number', '3' ] ]
+                    [ 'numbervariable', 'x' ], [ 'number', '2' ] ] ],
+                [ 'numbernegation', [ 'number', '3' ] ]
             ],
             '(* (- (^ x 2)) (- 3))'
         )
         checkJsonPutdown(
-            [ 'numbernegation', '-', [ 'numbernegation', '-', [ 'numbernegation', '-',
-                [ 'numbernegation', '-', [ 'number', '1000' ] ] ] ] ],
+            [ 'numbernegation', [ 'numbernegation', [ 'numbernegation',
+                [ 'numbernegation', [ 'number', '1000' ] ] ] ] ],
             '(- (- (- (- 1000))))'
         )
     } )
 
     it( 'can convert number expressions with groupers to putdown', () => {
         checkJsonPutdown(
-            [ 'numbernegation', '-',
+            [ 'numbernegation',
                 [ 'multiplication',
-                    [ 'number', '1' ], '\\times', [ 'number', '2' ] ] ],
+                    [ 'number', '1' ], [ 'number', '2' ] ] ],
             '(- (* 1 2))'
         )
         checkJsonPutdown(
             [ 'exponentiation',
-                [ 'numbernegation', '-',
+                [ 'numbernegation',
                     [ 'numbervariable', 'x' ] ],
-                '^',
                 [ 'multiplication',
-                    [ 'number', '2' ], '\\cdot',
-                        [ 'numbernegation', '-', [ 'number', '3' ] ] ]
+                    [ 'number', '2' ],
+                        [ 'numbernegation', [ 'number', '3' ] ] ]
             ],
             '(^ (- x) (* 2 (- 3)))'
         )
@@ -273,15 +267,15 @@ xdescribe( 'Creating putdown from JSON', () => {
 
     it( 'can convert propositional logic atomics to putdown', () => {
         checkJsonPutdown(
-            [ 'logicaltrue', '\\top' ],
-            'logicaltrue'
+            [ 'logicaltrue' ],
+            'true'
         )
         checkJsonPutdown(
-            [ 'logicalfalse', '\\bot' ],
-            'logicalfalse'
+            [ 'logicalfalse' ],
+            'false'
         )
         checkJsonPutdown(
-            [ 'contradiction', '\\rightarrow', '\\leftarrow' ],
+            [ 'contradiction' ],
             'contradiction'
         )
         checkJsonPutdown(
@@ -301,28 +295,24 @@ xdescribe( 'Creating putdown from JSON', () => {
     it( 'can convert propositional logic conjuncts to putdown', () => {
         checkJsonPutdown(
             [ 'conjunction',
-                [ 'logicaltrue', '\\top' ],
-                '\\wedge',
-                [ 'logicalfalse', '\\bot' ]
+                [ 'logicaltrue' ],
+                [ 'logicalfalse' ]
             ],
-            '(and logicaltrue logicalfalse)'
+            '(and true false)'
         )
         checkJsonPutdown(
             [ 'conjunction',
-                [ 'logicnegation', '\\neg', [ 'logicvariable', 'P' ] ],
-                '\\wedge',
-                [ 'logicnegation', '\\neg', [ 'logicaltrue', '\\top' ] ]
+                [ 'logicnegation', [ 'logicvariable', 'P' ] ],
+                [ 'logicnegation', [ 'logicaltrue' ] ]
             ],
-            '(and (not P) (not logicaltrue))'
+            '(and (not P) (not true))'
         )
         checkJsonPutdown(
             [ 'conjunction',
                 [ 'conjunction',
                     [ 'logicvariable', 'a' ],
-                    '\\wedge',
                     [ 'logicvariable', 'b' ]
                 ],
-                '\\wedge',
                 [ 'logicvariable', 'c' ]
             ],
             '(and (and a b) c)'
@@ -332,17 +322,15 @@ xdescribe( 'Creating putdown from JSON', () => {
     it( 'can convert propositional logic disjuncts to putdown', () => {
         checkJsonPutdown(
             [ 'disjunction',
-                [ 'logicaltrue', '\\top' ],
-                '\\vee',
-                [ 'logicnegation', '\\neg', [ 'logicvariable', 'A' ] ]
+                [ 'logicaltrue' ],
+                [ 'logicnegation', [ 'logicvariable', 'A' ] ]
             ],
-            '(or logicaltrue (not A))'
+            '(or true (not A))'
         )
         checkJsonPutdown(
             [ 'disjunction',
-                [ 'conjunction', [ 'logicvariable', 'P' ], '\\wedge', [ 'logicvariable', 'Q' ] ],
-                '\\vee',
-                [ 'conjunction', [ 'logicvariable', 'Q' ], '\\wedge', [ 'logicvariable', 'P' ] ]
+                [ 'conjunction', [ 'logicvariable', 'P' ], [ 'logicvariable', 'Q' ] ],
+                [ 'conjunction', [ 'logicvariable', 'Q' ], [ 'logicvariable', 'P' ] ]
             ],
             '(or (and P Q) (and Q P))'
         )
@@ -352,11 +340,9 @@ xdescribe( 'Creating putdown from JSON', () => {
         checkJsonPutdown(
             [ 'implication',
                 [ 'logicvariable', 'A' ],
-                '\\Rightarrow',
                 [ 'conjunction',
                     [ 'logicvariable', 'Q' ],
-                    '\\wedge',
-                    [ 'logicnegation', '\\neg', [ 'logicvariable', 'P' ] ]
+                    [ 'logicnegation', [ 'logicvariable', 'P' ] ]
                 ]
             ],
             '(implies A (and Q (not P)))'
@@ -365,15 +351,12 @@ xdescribe( 'Creating putdown from JSON', () => {
             [ 'implication',
                 [ 'implication',
                     [ 'disjunction',
-                        [ 'logicvariable', 'P' ], '\\vee', [ 'logicvariable', 'Q' ] ],
-                    '\\Rightarrow',
+                        [ 'logicvariable', 'P' ], [ 'logicvariable', 'Q' ] ],
                     [ 'conjunction',
                         [ 'logicvariable', 'Q' ],
-                        '\\wedge',
                         [ 'logicvariable', 'P' ]
                     ]
                 ],
-                '\\Rightarrow', 
                 [ 'logicvariable', 'T' ]
             ],
             '(implies (implies (or P Q) (and Q P)) T)'
@@ -384,11 +367,9 @@ xdescribe( 'Creating putdown from JSON', () => {
         checkJsonPutdown(
             [ 'iff',
                 [ 'logicvariable', 'A' ],
-                '\\Leftrightarrow',
                 [ 'conjunction',
                     [ 'logicvariable', 'Q' ],
-                    '\\wedge',
-                    [ 'logicnegation', '\\neg', [ 'logicvariable', 'P' ] ]
+                    [ 'logicnegation', [ 'logicvariable', 'P' ] ]
                 ]
             ],
             '(iff A (and Q (not P)))'
@@ -397,15 +378,12 @@ xdescribe( 'Creating putdown from JSON', () => {
             [ 'implication',
                 [ 'iff',
                     [ 'disjunction',
-                        [ 'logicvariable', 'P' ], '\\vee', [ 'logicvariable', 'Q' ] ],
-                    '\\Leftrightarrow',
+                        [ 'logicvariable', 'P' ], [ 'logicvariable', 'Q' ] ],
                     [ 'conjunction',
                         [ 'logicvariable', 'Q' ],
-                        '\\wedge',
                         [ 'logicvariable', 'P' ]
                     ]
                 ],
-                '\\Rightarrow', 
                 [ 'logicvariable', 'T' ]
             ],
             '(implies (iff (or P Q) (and Q P)) T)'
@@ -416,14 +394,11 @@ xdescribe( 'Creating putdown from JSON', () => {
         checkJsonPutdown(
             [ 'disjunction',
                 [ 'logicvariable', 'P' ],
-                '\\lor',
                 [ 'conjunction',
                     [ 'iff',
                         [ 'logicvariable', 'Q' ],
-                        '\\Leftrightarrow',
                         [ 'logicvariable', 'Q' ]
                     ],
-                    '\\land',
                     [ 'logicvariable', 'P' ]
                 ]
             ],
@@ -431,44 +406,35 @@ xdescribe( 'Creating putdown from JSON', () => {
         )
         checkJsonPutdown(
             [ 'logicnegation',
-                '\\lnot',
                 [ 'iff',
-                    [ 'logicaltrue', '\\top' ],
-                    '\\Leftrightarrow',
-                    [ 'logicalfalse', '\\bot' ]
+                    [ 'logicaltrue' ],
+                    [ 'logicalfalse' ]
                 ]
             ],
-            '(not (iff logicaltrue logicalfalse))'
+            '(not (iff true false))'
         )
     } )
 
     it( 'can convert simple predicate logic expressions to putdown', () => {
         checkJsonPutdown(
             [ 'universal',
-                '\\forall',
                 [ 'numbervariable', 'x' ],
-                ',',
                 [ 'logicvariable', 'P' ]
             ],
             '(forall (x , P))'
         )
         checkJsonPutdown(
             [ 'existential',
-                '\\exists',
                 [ 'numbervariable', 't' ],
-                ',',
-                [ 'logicnegation', '\\neg', [ 'logicvariable', 'Q' ] ]
+                [ 'logicnegation', [ 'logicvariable', 'Q' ] ]
             ],
             '(exists (t , (not Q)))'
         )
         checkJsonPutdown(
             [ 'existsunique',
-                '\\exists',
-                '!',
                 [ 'numbervariable', 'k' ],
-                ',',
                 [ 'implication',
-                    [ 'logicvariable', 'm' ], '\\Rightarrow', [ 'logicvariable', 'n' ] ]
+                    [ 'logicvariable', 'm' ], [ 'logicvariable', 'n' ] ]
             ],
             '(existsunique (k , (implies m n)))'
         )
