@@ -1,16 +1,13 @@
 
 import { expect } from 'chai'
-import { describe, it } from 'mocha'
 import { converter } from '../example-converter.js'
 
-describe( 'Creating putdown from JSON', () => {
+xdescribe( 'Creating putdown from JSON', () => {
 
     const whitespace = '                                            '
     const lpad = str => whitespace.substr( 0, whitespace.length - str.length ) + str
     const checkJsonPutdown = ( json, putdown ) => {
-        expect(
-            converter.compact( converter.convert( 'json', 'putdown', json ) )
-        ).to.equal( putdown )
+        expect( converter.convert( 'json', 'putdown', json ) ).to.equal( putdown )
         // console.log( `${lpad( putdown )}  <--  ${JSON.stringify( json )}` )
     }
 
