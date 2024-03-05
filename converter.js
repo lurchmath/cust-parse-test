@@ -284,17 +284,7 @@ export class Converter {
     convert ( sourceLang, destLang, data ) {
         if ( sourceLang == destLang ) return data
         if ( sourceLang == 'json' ) {
-            // if ( destLang == 'putdown' ) {
-            //     return this.jsonToPutdown( data )
-            // } else if ( this.isLanguage( destLang ) ) {
                 return this.jsonRepresentation( data, destLang )
-            // }
-        // } else if ( sourceLang == 'putdown' ) {
-        //     if ( destLang == 'json' ) {
-        //         return this.putdownToJson( data )
-        //     } else if ( this.isLanguage( destLang ) ) {
-        //         return this.convert( 'json', destLang, this.putdownToJson( data ) )
-        //     }
         } else if ( this.isLanguage( sourceLang ) ) {
             const language = this.languages.get( sourceLang )
             if ( destLang == 'json' ) {
@@ -304,8 +294,6 @@ export class Converter {
                     showDebuggingOutput : this._debug
                 } )[0]
                 return result ? this.buildArgsList( result, language ) : undefined
-            // } else if ( destLang = 'putdown' ) {
-            //     return this.jsonToPutdown( this.convert( sourceLang, 'json', data ) )
             } else if ( this.isLanguage( destLang ) ) {
                 return this.jsonRepresentation(
                     this.convert( sourceLang, 'json', data ), destLang )
