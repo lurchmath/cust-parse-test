@@ -234,20 +234,18 @@ describe( 'Parsing latex', () => {
     it( 'can parse negations of atomics or factors to JSON', () => {
         checkLatexJson(
             '-1\\times2',
-            [ 'multiplication',
-                [ 'numbernegation', [ 'number', '1' ] ],
-                [ 'number', '2' ]
-            ]
+            [ 'numbernegation',
+                [ 'multiplication', [ 'number', '1' ], [ 'number', '2' ] ] ]
         )
         checkLatexJson(
-            'x\\cdot-y',
+            'x\\cdot{-y}',
             [ 'multiplication',
                 [ 'numbervariable', 'x' ],
                 [ 'numbernegation', [ 'numbervariable', 'y' ] ]
             ]
         )
         checkLatexJson(
-            '-x^2\\cdot-3',
+            '{-x^2}\\cdot{-3}',
             [ 'multiplication',
                 [ 'numbernegation',
                     [ 'exponentiation',
@@ -269,7 +267,7 @@ describe( 'Parsing latex', () => {
                 [ 'multiplication', [ 'number', '1' ], [ 'number', '2' ] ] ]
         )
         checkLatexJson(
-            '{-x}^{2\\cdot-3}',
+            '{-x}^{2\\cdot{-3}}',
             [ 'exponentiation',
                 [ 'numbernegation',
                     [ 'numbervariable', 'x' ] ],

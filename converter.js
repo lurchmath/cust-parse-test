@@ -1,5 +1,7 @@
 
 // To dos:
+//  - Remove spaces around groupers and remove >1 conecutive space as part of
+//    the conversion process, so test files don't have to do it after the fact
 //  - Add tests for the static functions in the class
 //  - expand set of tests for many new mathematical expressions in many languages,
 //    including expressions that bind variables
@@ -23,6 +25,8 @@
 //  - add support for features like associativity (in all conversion directions)
 
 import { Grammar, Tokenizer } from 'earley-parser'
+
+const defaultVarNames = 'ABC'
 
 const escapeRegExp = ( str ) =>
     str.replace( /[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&' )
@@ -114,7 +118,7 @@ export class Converter {
             if ( putdown instanceof RegExp ) {
                 this.addNotation( 'putdown', name, putdown )
             } else if ( typeof( putdown ) == 'string' ) {
-                const variables = Array.from( 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' )
+                const variables = Array.from( defaultVarNames )
                 let putdownForParsing = putdown.replace( /([()])/g, ' $1 ' ).trim()
                 data.typeSequence.forEach( ( type, index ) =>
                     putdownForParsing = putdownForParsing.replace(
@@ -132,7 +136,7 @@ export class Converter {
 
     addNotation ( languageName, conceptName, notation, variables ) {
         const originalNotation = notation
-        if ( !variables ) variables = Array.from( 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' )
+        if ( !variables ) variables = Array.from( defaultVarNames )
         // ensure language is valid
         if ( !this.isLanguage( languageName ) )
             throw new Error( `Not a valid language: ${languageName}` )
@@ -196,16 +200,17 @@ export class Converter {
             throw new Error(
                 `Not a valid semantic JSON expression: ${JSON.stringify(json)}` )
         // if it's just a syntactic type wrapper, ensure it's around exactly 1 item
-        const head = json.shift()
+        const head = json[0]
+        const args = json.slice( 1 )
         if ( Converter.isSyntacticType( head ) ) {
-            if ( json.length != 1 )
+            if ( args.length != 1 )
                 throw new Error( 'Invalid semantic JSON structure: '
-                    + JSON.stringify( [ head, ...json ] ) )
+                    + JSON.stringify( [ head, ...args ] ) )
             // return the interior, possibly with groupers if the type
             // hierarchy requires it (the inner is not a subtype of the outer)
-            const result = this.jsonRepresentation( json[0], langName )
-            return Converter.isSyntacticType( json[0] )
-                && !Converter.isSupertypeOrEqual( head, json[0] ) ?
+            const result = this.jsonRepresentation( args[0], langName )
+            return Converter.isSyntacticType( args[0] )
+                && !Converter.isSupertypeOrEqual( head, args[0] ) ?
                 `${language.leftGrouper} ${result} ${language.rightGrouper}` :
                 result
         }
@@ -216,23 +221,30 @@ export class Converter {
         // expression, just return the argument, because this is a base case
         const concept = this.concepts.get( head )
         if ( concept.putdown instanceof RegExp ) {
-            if ( json.length != 1 )
+            if ( args.length != 1 )
                 throw new Error( 'Invalid semantic JSON structure: '
-                    + JSON.stringify( [ head, ...json ] ) )
-            return json[0]
+                    + JSON.stringify( [ head, ...args ] ) )
+            return args[0]
         }
         // recursively compute the representation of the arguments, wrapping
         // them in groupers if necessary
-        if ( concept.typeSequence.length != json.length )
+        if ( concept.typeSequence.length != args.length )
             throw new Error( 'Invalid semantic JSON structure: '
-                + JSON.stringify( [ head, ...json ] ) )
-        const recur = json.map( ( piece, index ) => {
+                + JSON.stringify( [ head, ...args ] ) )
+        const recur = args.map( ( piece, index ) => {
             const result = this.jsonRepresentation( piece, langName )
-            if ( !( language.leftGrouper && language.rightGrouper )
-              || Converter.isSupertypeOrEqual( concept.typeSequence[index], piece[0] ) )
-                return result
-            else
+            const outerType = concept.typeSequence[index]
+            let innerType = piece[0]
+            if ( this.isConcept( innerType ) )
+                innerType = this.concepts.get( innerType ).parentType
+            const correctNesting = outerType == piece[0]
+                                || outerType == innerType
+                                || Converter.isSupertype( outerType, innerType )
+            if ( language.leftGrouper && language.rightGrouper && !correctNesting ) {
                 return `${language.leftGrouper} ${result} ${language.rightGrouper}`
+            } else {
+                return result
+            }
         } )
         // get the default way to write that concept in this language
         // and split it into an array to make template substitution easier
@@ -368,7 +380,7 @@ export class Converter {
         } while ( !closureAchieved )
     }
 
-    static isSupertype = ( a, b ) => Converter.supertypeGraph[a].includes( b )
+    static isSupertype = ( a, b ) => Converter.supertypeGraph[a]?.includes( b )
     static isSupertypeOrEqual = ( a, b ) => a == b || Converter.isSupertype( a, b )
 
     static notationStringToArray = ( str, variables ) => {

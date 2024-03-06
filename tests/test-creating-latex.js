@@ -2,312 +2,302 @@
 import { expect } from 'chai'
 import { converter } from '../example-converter.js'
 
-describe( 'Creating putdown from JSON', () => {
+describe( 'Creating latex from JSON', () => {
 
     const whitespace = '                                            '
     const lpad = str => whitespace.substr( 0, whitespace.length - str.length ) + str
-    const simplifyPutdown = putdown =>
-        putdown.replace( /\(\s+/g, '(' ).replace( /\s+\)/g, ')' ).replaceAll( '  ', ' ' )
-    const checkJsonPutdown = ( json, putdown ) => {
+    const checkJsonLatex = ( json, latex ) => {
         expect(
-            simplifyPutdown( converter.convert( 'json', 'putdown', json ) )
-        ).to.equal( putdown )
-        // console.log( `${lpad( putdown )}  <--  ${JSON.stringify( json )}` )
+            converter.convert( 'json', 'latex', json )
+        ).to.eql( latex )
+        // console.log( `${lpad( latex )}  -->  ${JSON.stringify( json )}` )
+    }
+    const checkJsonLatexFail = ( json ) => {
+        expect(
+            converter.convert( 'json', 'latex', json )
+        ).to.be.undefined
     }
 
-    it( 'can convert JSON numbers to putdown', () => {
+    it( 'can convert JSON numbers to LaTeX', () => {
         // non-negative integers
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'number', '0' ],
             '0'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'number', '453789' ],
             '453789'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'number', '99999999999999999999999999999999999999999' ],
             '99999999999999999999999999999999999999999'
         )
         // negative integers are parsed as the negation of positive integers
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'numbernegation', [ 'number', '453789' ] ],
-            '(- 453789)'
+            '- 453789'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'numbernegation',
                 [ 'number', '99999999999999999999999999999999999999999' ] ],
-            '(- 99999999999999999999999999999999999999999)'
+            '- 99999999999999999999999999999999999999999'
         )
         // non-negative decimals
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'number', '0.0' ],
             '0.0'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'number', '29835.6875940' ],
             '29835.6875940'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'number', '653280458689.' ],
             '653280458689.'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'number', '.000006327589' ],
             '.000006327589'
         )
         // negative decimals are the negation of positive decimals
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'numbernegation', [ 'number', '29835.6875940' ] ],
-            '(- 29835.6875940)'
+            '- 29835.6875940'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'numbernegation', [ 'number', '653280458689.' ] ],
-            '(- 653280458689.)'
+            '- 653280458689.'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'numbernegation', [ 'number', '.000006327589' ] ],
-            '(- .000006327589)'
+            '- .000006327589'
         )
     } )
 
-    it( 'can convert any size variable name from JSON to putdown', () => {
+    it( 'can convert any size variable name from JSON to LaTeX', () => {
         // one-letter names work
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'numbervariable', 'x' ],
             'x'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'numbervariable', 'E' ],
             'E'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'numbervariable', 'q' ],
             'q'
         )
         // multi-letter names work, too
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'numbervariable', 'foo' ],
             'foo'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'numbervariable', 'bar' ],
             'bar'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'numbervariable', 'to' ],
             'to'
         )
     } )
 
-    it( 'can convert infinity from JSON to putdown', () => {
-        checkJsonPutdown(
+    it( 'can convert infinity from JSON to LaTeX', () => {
+        checkJsonLatex(
             [ 'infinity' ],
-            'infinity'
+            '\\infty'
         )
     } )
 
-    it( 'can convert exponentiation of atomics to putdown', () => {
-        checkJsonPutdown(
+    it( 'can convert exponentiation of atomics from JSON to LaTeX', () => {
+        checkJsonLatex(
             [ 'exponentiation', [ 'number', '1' ], [ 'number', '2' ] ],
-            '(^ 1 2)'
+            '1 ^ 2'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'exponentiation',
                 [ 'numbervariable', 'e' ], [ 'numbervariable', 'x' ] ],
-            '(^ e x)'
+            'e ^ x'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'exponentiation', [ 'number', '1' ], [ 'infinity' ] ],
-            '(^ 1 infinity)'
+            '1 ^ \\infty'
         )
     } )
 
-    it( 'can convert atomic percentages to putdown', () => {
-        checkJsonPutdown(
+    it( 'can convert atomic percentages from JSON to LaTeX', () => {
+        checkJsonLatex(
             [ 'percentage', [ 'number', '10' ] ],
-            '(% 10)'
+            '10 \\%'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'percentage', [ 'numbervariable', 't' ] ],
-            '(% t)'
+            't \\%'
         )
     } )
 
-    it( 'can convert division of atomics or factors to putdown', () => {
+    it( 'can convert division of atomics or factors from JSON to LaTeX', () => {
         // division of atomics
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'division', [ 'number', '1' ], [ 'number', '2' ] ],
-            '(/ 1 2)'
+            '1 \\div 2'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'division',
                 [ 'numbervariable', 'x' ], [ 'numbervariable', 'y' ] ],
-            '(/ x y)'
+            'x \\div y'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'division', [ 'number', '0' ], [ 'infinity' ] ],
-            '(/ 0 infinity)'
+            '0 \\div \\infty'
         )
         // division of factors
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'division',
-                [ 'exponentiation',
-                    [ 'numbervariable', 'x' ], [ 'number', '2' ] ],
+                [ 'exponentiation', [ 'numbervariable', 'x' ], [ 'number', '2' ] ],
                 [ 'number', '3' ]
             ],
-            '(/ (^ x 2) 3)'
+            'x ^ 2 \\div 3'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'division',
                 [ 'number', '1' ],
                 [ 'exponentiation',
                     [ 'numbervariable', 'e' ], [ 'numbervariable', 'x' ] ]
             ],
-            '(/ 1 (^ e x))'
+            '1 \\div e ^ x'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'division',
                 [ 'percentage', [ 'number', '10' ] ],
                 [ 'exponentiation', [ 'number', '2' ], [ 'number', '100' ] ]
             ],
-            '(/ (% 10) (^ 2 100))'
+            '10 \\% \\div 2 ^ 100'
         )
     } )
 
-    it( 'can convert multiplication of atomics or factors to putdown', () => {
+    it( 'can convert multiplication of atomics or factors from JSON to LaTeX', () => {
         // multiplication of atomics
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'multiplication', [ 'number', '1' ], [ 'number', '2' ] ],
-            '(* 1 2)'
+            '1 \\times 2'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'multiplication',
                 [ 'numbervariable', 'x' ], [ 'numbervariable', 'y' ] ],
-            '(* x y)'
+            'x \\times y'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'multiplication', [ 'number', '0' ], [ 'infinity' ] ],
-            '(* 0 infinity)'
+            '0 \\times \\infty'
         )
         // multiplication of factors
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'multiplication',
                 [ 'exponentiation', [ 'numbervariable', 'x' ], [ 'number', '2' ] ],
                 [ 'number', '3' ]
             ],
-            '(* (^ x 2) 3)'
+            'x ^ 2 \\times 3'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'multiplication',
                 [ 'number', '1' ],
                 [ 'exponentiation',
-                [ 'numbervariable', 'e' ], [ 'numbervariable', 'x' ] ]
+                    [ 'numbervariable', 'e' ], [ 'numbervariable', 'x' ] ]
             ],
-            '(* 1 (^ e x))'
+            '1 \\times e ^ x'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'multiplication',
                 [ 'percentage', [ 'number', '10' ] ],
                 [ 'exponentiation', [ 'number', '2' ], [ 'number', '100' ] ]
             ],
-            '(* (% 10) (^ 2 100))'
+            '10 \\% \\times 2 ^ 100'
         )
     } )
 
-    it( 'can convert negations of atomics or factors to putdown', () => {
-        checkJsonPutdown(
+    it( 'can convert negations of atomics or factors from JSON to LaTeX', () => {
+        checkJsonLatex(
             [ 'multiplication',
                 [ 'numbernegation', [ 'number', '1' ] ],
                 [ 'number', '2' ]
             ],
-            '(* (- 1) 2)'
+            '{ - 1 } \\times 2'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'multiplication',
                 [ 'numbervariable', 'x' ],
                 [ 'numbernegation', [ 'numbervariable', 'y' ] ]
             ],
-            '(* x (- y))'
+            'x \\times { - y }'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'multiplication',
                 [ 'numbernegation',
-                [ 'exponentiation',
-                    [ 'numbervariable', 'x' ], [ 'number', '2' ] ] ],
+                    [ 'exponentiation',
+                        [ 'numbervariable', 'x' ], [ 'number', '2' ] ] ],
                 [ 'numbernegation', [ 'number', '3' ] ]
             ],
-            '(* (- (^ x 2)) (- 3))'
+            '{ - x ^ 2 } \\times { - 3 }'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'numbernegation', [ 'numbernegation', [ 'numbernegation',
                 [ 'numbernegation', [ 'number', '1000' ] ] ] ] ],
-            '(- (- (- (- 1000))))'
+            '- - - - 1000'
         )
     } )
 
-    it( 'can convert number expressions with groupers to putdown', () => {
-        checkJsonPutdown(
+    it( 'can convert number expressions with groupers from JSON to LaTeX', () => {
+        checkJsonLatex(
             [ 'numbernegation',
-                [ 'multiplication',
-                    [ 'number', '1' ], [ 'number', '2' ] ] ],
-            '(- (* 1 2))'
+                [ 'multiplication', [ 'number', '1' ], [ 'number', '2' ] ] ],
+            '- 1 \\times 2'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'exponentiation',
                 [ 'numbernegation',
                     [ 'numbervariable', 'x' ] ],
                 [ 'multiplication',
-                    [ 'number', '2' ],
-                        [ 'numbernegation', [ 'number', '3' ] ] ]
+                    [ 'number', '2' ], [ 'numbernegation', [ 'number', '3' ] ] ]
             ],
-            '(^ (- x) (* 2 (- 3)))'
+            '{ - x } ^ { 2 \\times { - 3 } }'
         )
     } )
 
-    it( 'can convert propositional logic atomics to putdown', () => {
-        checkJsonPutdown(
+    it( 'can convert propositional logic atomics from JSON to LaTeX', () => {
+        checkJsonLatex(
             [ 'logicaltrue' ],
-            'true'
+            '\\top'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'logicalfalse' ],
-            'false'
+            '\\bot'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'contradiction' ],
-            'contradiction'
+            '\\rightarrow \\leftarrow'
         )
-        checkJsonPutdown(
-            [ 'logicvariable', 'P' ],
-            'P'
-        )
-        checkJsonPutdown(
-            [ 'logicvariable', 'a' ],
-            'a'
-        )
-        checkJsonPutdown(
-            [ 'logicvariable', 'somethingLarge' ],
-            'somethingLarge'
-        )
+        // Not checking variables here, because their meaning is ambiguous; we
+        // will check below to ensure that they can be part of logic expressions.
     } )
 
-    it( 'can convert propositional logic conjuncts to putdown', () => {
-        checkJsonPutdown(
+    it( 'can convert propositional logic conjuncts from JSON to LaTeX', () => {
+        checkJsonLatex(
             [ 'conjunction',
                 [ 'logicaltrue' ],
                 [ 'logicalfalse' ]
             ],
-            '(and true false)'
+            '\\top \\wedge \\bot'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'conjunction',
                 [ 'logicnegation', [ 'logicvariable', 'P' ] ],
                 [ 'logicnegation', [ 'logicaltrue' ] ]
             ],
-            '(and (not P) (not true))'
+            '\\neg P \\wedge \\neg \\top'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'conjunction',
                 [ 'conjunction',
                     [ 'logicvariable', 'a' ],
@@ -315,29 +305,29 @@ describe( 'Creating putdown from JSON', () => {
                 ],
                 [ 'logicvariable', 'c' ]
             ],
-            '(and (and a b) c)'
+            'a \\wedge b \\wedge c'
         )
     } )
 
-    it( 'can convert propositional logic disjuncts to putdown', () => {
-        checkJsonPutdown(
+    it( 'can convert propositional logic disjuncts from JSON to LaTeX', () => {
+        checkJsonLatex(
             [ 'disjunction',
                 [ 'logicaltrue' ],
                 [ 'logicnegation', [ 'logicvariable', 'A' ] ]
             ],
-            '(or true (not A))'
+            '\\top \\vee \\neg A'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'disjunction',
                 [ 'conjunction', [ 'logicvariable', 'P' ], [ 'logicvariable', 'Q' ] ],
                 [ 'conjunction', [ 'logicvariable', 'Q' ], [ 'logicvariable', 'P' ] ]
             ],
-            '(or (and P Q) (and Q P))'
+            'P \\wedge Q \\vee Q \\wedge P'
         )
     } )
 
-    it( 'can convert propositional logic conditionals to putdown', () => {
-        checkJsonPutdown(
+    it( 'can convert propositional logic conditionals from JSON to LaTeX', () => {
+        checkJsonLatex(
             [ 'implication',
                 [ 'logicvariable', 'A' ],
                 [ 'conjunction',
@@ -345,9 +335,9 @@ describe( 'Creating putdown from JSON', () => {
                     [ 'logicnegation', [ 'logicvariable', 'P' ] ]
                 ]
             ],
-            '(implies A (and Q (not P)))'
+            'A \\Rightarrow Q \\wedge \\neg P'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'implication',
                 [ 'implication',
                     [ 'disjunction',
@@ -359,12 +349,12 @@ describe( 'Creating putdown from JSON', () => {
                 ],
                 [ 'logicvariable', 'T' ]
             ],
-            '(implies (implies (or P Q) (and Q P)) T)'
+            'P \\vee Q \\Rightarrow Q \\wedge P \\Rightarrow T'
         )
     } )
 
-    it( 'can convert propositional logic biconditionals to putdown', () => {
-        checkJsonPutdown(
+    it( 'can convert propositional logic biconditionals from JSON to LaTeX', () => {
+        checkJsonLatex(
             [ 'iff',
                 [ 'logicvariable', 'A' ],
                 [ 'conjunction',
@@ -372,9 +362,9 @@ describe( 'Creating putdown from JSON', () => {
                     [ 'logicnegation', [ 'logicvariable', 'P' ] ]
                 ]
             ],
-            '(iff A (and Q (not P)))'
+            'A \\Leftrightarrow Q \\wedge \\neg P'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'implication',
                 [ 'iff',
                     [ 'disjunction',
@@ -386,12 +376,12 @@ describe( 'Creating putdown from JSON', () => {
                 ],
                 [ 'logicvariable', 'T' ]
             ],
-            '(implies (iff (or P Q) (and Q P)) T)'
+            'P \\vee Q \\Leftrightarrow Q \\wedge P \\Rightarrow T'
         )
     } )
 
-    it( 'can convert propositional expressions with groupers to putdown', () => {
-        checkJsonPutdown(
+    it( 'can convert propositional expressions with groupers from JSON to LaTeX', () => {
+        checkJsonLatex(
             [ 'disjunction',
                 [ 'logicvariable', 'P' ],
                 [ 'conjunction',
@@ -402,41 +392,41 @@ describe( 'Creating putdown from JSON', () => {
                     [ 'logicvariable', 'P' ]
                 ]
             ],
-            '(or P (and (iff Q Q) P))'
+            'P \\vee { Q \\Leftrightarrow Q } \\wedge P'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'logicnegation',
                 [ 'iff',
                     [ 'logicaltrue' ],
                     [ 'logicalfalse' ]
                 ]
             ],
-            '(not (iff true false))'
+            '\\neg { \\top \\Leftrightarrow \\bot }'
         )
     } )
 
-    it( 'can convert simple predicate logic expressions to putdown', () => {
-        checkJsonPutdown(
+    it( 'can convert simple predicate logic expressions from JSON to LaTeX', () => {
+        checkJsonLatex(
             [ 'universal',
                 [ 'numbervariable', 'x' ],
                 [ 'logicvariable', 'P' ]
             ],
-            '(forall (x , P))'
+            '\\forall x , P'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'existential',
                 [ 'numbervariable', 't' ],
                 [ 'logicnegation', [ 'logicvariable', 'Q' ] ]
             ],
-            '(exists (t , (not Q)))'
+            '\\exists t , \\neg Q'
         )
-        checkJsonPutdown(
+        checkJsonLatex(
             [ 'existsunique',
                 [ 'numbervariable', 'k' ],
                 [ 'implication',
                     [ 'logicvariable', 'm' ], [ 'logicvariable', 'n' ] ]
             ],
-            '(existsunique (k , (implies m n)))'
+            '\\exists ! k , m \\Rightarrow n'
         )
     } )
 

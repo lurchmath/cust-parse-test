@@ -9,9 +9,9 @@ converter.addConcept( 'infinity',       'atomicnumber' )
 
 converter.addConcept( 'exponentiation', 'factor',       '(^ atomicnumber atomicnumber)' )
 converter.addConcept( 'percentage',     'factor',       '(% atomicnumber)' )
-converter.addConcept( 'numbernegation', 'product',      '(- product)' )
 converter.addConcept( 'division',       'product',      '(/ product product)' )
 converter.addConcept( 'multiplication', 'product',      '(* product product)' )
+converter.addConcept( 'numbernegation', 'sum',          '(- sum)' )
 
 converter.addConcept( 'logicvariable',  'atomicprop',   Converter.regularExpressions.oneLetterVariable )
 converter.addConcept( 'logicaltrue',    'atomicprop',   'true' )
