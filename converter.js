@@ -1,7 +1,5 @@
 
 // To dos:
-//  - Add tests for converting from one language to another, ignoring the
-//    intermediate JSON
 //  - expand set of tests for many new mathematical expressions in many languages,
 //    including expressions that bind variables
 //     - sum, difference (as sum of negation), associative lists of these
@@ -190,11 +188,15 @@ export class Converter {
         newRule.variables = variables
     }
 
-    // Note:  When using this with langName == 'putdown', it never produces
+    // Note 1:  When using this with langName == 'putdown', it never produces
     // putdown with attributes, which is obviously limiting (e.g., it can never
     // produce givens) but this is just a simplification to view putdown in a
     // trivial, LISP-like way.  You can just use a constant and create (GIVEN x)
     // and then post-process using LC tree traversals to create what you want.
+    // Note 2:  This expects the input to be in compact form, as produced by the
+    // compact() member of this class.  May not function correctly if the input
+    // is not in compact form.  Hence, when this function is called by convert(),
+    // it applies compact() before calling this function.
     jsonRepresentation ( json, langName ) {
         // find the language in question
         const language = this.languages.get( langName )
@@ -293,8 +295,8 @@ export class Converter {
                 } )[0]
                 return result ? this.buildArgsList( result, language ) : undefined
             } else if ( this.isLanguage( destLang ) ) {
-                return this.jsonRepresentation(
-                    this.convert( sourceLang, 'json', data ), destLang )
+                const json = this.compact( this.convert( sourceLang, 'json', data ) )
+                return json ? this.jsonRepresentation( json, destLang ) : undefined
             }
         }
     }
@@ -451,9 +453,6 @@ export class Converter {
         } )
     }
 
-    // This is not used by this class.
-    // It is here to make testing easier; it is a function that takes gigantic
-    // JSON structures representing syntax and makes the much simpler.
     compact ( json ) {
         if ( !( json instanceof Array ) ) return json
         if ( json.length == 0 )
