@@ -11,7 +11,7 @@ converter.addConcept( 'exponentiation', 'factor',       '(^ atomicnumber atomicn
 converter.addConcept( 'percentage',     'factor',       '(% atomicnumber)' )
 converter.addConcept( 'division',       'product',      '(/ product product)' )
 converter.addConcept( 'multiplication', 'product',      '(* product product)' )
-converter.addConcept( 'numbernegation', 'sum',          '(- sum)' )
+converter.addConcept( 'numbernegation', 'product',      '(- product)' )
 
 converter.addConcept( 'logicvariable',  'atomicprop',   Converter.regularExpressions.oneLetterVariable )
 converter.addConcept( 'logicaltrue',    'atomicprop',   'true' )

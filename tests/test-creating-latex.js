@@ -223,14 +223,14 @@ describe( 'Creating latex from JSON', () => {
                 [ 'numbernegation', [ 'number', '1' ] ],
                 [ 'number', '2' ]
             ],
-            '{ - 1 } \\times 2'
+            '- 1 \\times 2'
         )
         checkJsonLatex(
             [ 'multiplication',
                 [ 'numbervariable', 'x' ],
                 [ 'numbernegation', [ 'numbervariable', 'y' ] ]
             ],
-            'x \\times { - y }'
+            'x \\times - y'
         )
         checkJsonLatex(
             [ 'multiplication',
@@ -239,7 +239,7 @@ describe( 'Creating latex from JSON', () => {
                         [ 'numbervariable', 'x' ], [ 'number', '2' ] ] ],
                 [ 'numbernegation', [ 'number', '3' ] ]
             ],
-            '{ - x ^ 2 } \\times { - 3 }'
+            '- x ^ 2 \\times - 3'
         )
         checkJsonLatex(
             [ 'numbernegation', [ 'numbernegation', [ 'numbernegation',
@@ -261,7 +261,7 @@ describe( 'Creating latex from JSON', () => {
                 [ 'multiplication',
                     [ 'number', '2' ], [ 'numbernegation', [ 'number', '3' ] ] ]
             ],
-            '{ - x } ^ { 2 \\times { - 3 } }'
+            '{ - x } ^ { 2 \\times - 3 }'
         )
     } )
 

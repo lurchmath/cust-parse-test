@@ -234,8 +234,9 @@ describe( 'Parsing latex', () => {
     it( 'can parse negations of atomics or factors to JSON', () => {
         checkLatexJson(
             '-1\\times2',
-            [ 'numbernegation',
-                [ 'multiplication', [ 'number', '1' ], [ 'number', '2' ] ] ]
+            [ 'multiplication',
+                [ 'numbernegation', [ 'number', '1' ] ],
+                [ 'number', '2' ] ]
         )
         checkLatexJson(
             'x\\cdot{-y}',

@@ -3,6 +3,8 @@
 //  - Remove spaces around groupers and remove >1 conecutive space as part of
 //    the conversion process, so test files don't have to do it after the fact
 //  - Add tests for the static functions in the class
+//  - Add tests for converting from one language to another, ignoring the
+//    intermediate JSON
 //  - expand set of tests for many new mathematical expressions in many languages,
 //    including expressions that bind variables
 //     - sum, difference (as sum of negation), associative lists of these
@@ -21,8 +23,10 @@
 //     - naked binding?
 //  - expand all languages to support many new mathematical features, tests for each
 //    (note that set theory notation will need analogs to sum, product, ...)
-//  - expand tests to include more than one language, and converting between them
+//  - define new language of Lurch notation and verify all (or almost all) of its
+//    features can be supported
 //  - add support for features like associativity (in all conversion directions)
+//  - test whether all MathLive output can be parsed by this LaTeX parser
 
 import { Grammar, Tokenizer } from 'earley-parser'
 
