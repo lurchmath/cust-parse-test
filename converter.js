@@ -1,6 +1,5 @@
 
 // To dos:
-//  - Add tests for the static functions in the class
 //  - Add tests for converting from one language to another, ignoring the
 //    intermediate JSON
 //  - expand set of tests for many new mathematical expressions in many languages,
