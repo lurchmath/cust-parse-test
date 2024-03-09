@@ -10,13 +10,12 @@ describe( 'Converting LaTeX to putdown', () => {
         expect(
             converter.convert( 'latex', 'putdown', latex )
         ).to.equal( putdown )
-        // console.log( `${lpad( putdown )}  <--  ${JSON.stringify( json )}` )
+        // console.log( `${lpad( latex )}  -->  ${putdown}` )
     }
     const checkLatexPutdownFail = ( latex ) => {
         expect(
             converter.convert( 'latex', 'putdown', latex )
         ).to.be.undefined
-        // console.log( `${lpad( putdown )}  <--  ${JSON.stringify( json )}` )
     }
 
     it( 'correctly converts many kinds of numbers but not malformed ones', () => {
