@@ -6,11 +6,9 @@ describe( 'Creating putdown from JSON', () => {
 
     const whitespace = '                                            '
     const lpad = str => whitespace.substr( 0, whitespace.length - str.length ) + str
-    const simplifyPutdown = putdown =>
-        putdown.replace( /\(\s+/g, '(' ).replace( /\s+\)/g, ')' ).replaceAll( '  ', ' ' )
     const checkJsonPutdown = ( json, putdown ) => {
         expect(
-            simplifyPutdown( converter.convert( 'json', 'putdown', json ) )
+            converter.convert( 'json', 'putdown', json )
         ).to.equal( putdown )
         // console.log( `${lpad( putdown )}  <--  ${JSON.stringify( json )}` )
     }

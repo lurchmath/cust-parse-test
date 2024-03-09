@@ -261,7 +261,7 @@ describe( 'Creating latex from JSON', () => {
                 [ 'multiplication',
                     [ 'number', '2' ], [ 'numbernegation', [ 'number', '3' ] ] ]
             ],
-            '{ - x } ^ { 2 \\times - 3 }'
+            '{- x} ^ {2 \\times - 3}'
         )
     } )
 
@@ -392,7 +392,7 @@ describe( 'Creating latex from JSON', () => {
                     [ 'logicvariable', 'P' ]
                 ]
             ],
-            'P \\vee { Q \\Leftrightarrow Q } \\wedge P'
+            'P \\vee {Q \\Leftrightarrow Q} \\wedge P'
         )
         checkJsonLatex(
             [ 'logicnegation',
@@ -401,7 +401,7 @@ describe( 'Creating latex from JSON', () => {
                     [ 'logicalfalse' ]
                 ]
             ],
-            '\\neg { \\top \\Leftrightarrow \\bot }'
+            '\\neg {\\top \\Leftrightarrow \\bot}'
         )
     } )
 

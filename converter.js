@@ -1,7 +1,5 @@
 
 // To dos:
-//  - Remove spaces around groupers and remove >1 conecutive space as part of
-//    the conversion process, so test files don't have to do it after the fact
 //  - Add tests for the static functions in the class
 //  - Add tests for converting from one language to another, ignoring the
 //    intermediate JSON
@@ -55,10 +53,11 @@ export class Converter {
             if ( Converter.isAtomicType( last ) )
                 this.addConcept( `grouped${last}`, last, hierarchy[1] )
         } )
-        this.addLanguage( 'putdown', null, null )
+        this.addLanguage( 'putdown', null, null, x =>
+            x.replaceAll( '( ', '(' ).replaceAll( ' )', ')' ) )
     }
 
-    addLanguage ( name, leftGrouper = '(', rightGrouper = ')' ) {
+    addLanguage ( name, leftGrouper = '(', rightGrouper = ')', linter = x => x ) {
         // Create both things the language needs--a tokenizer and a grammar--and
         // store them in this converter's languages map.
         const tokenizer = new Tokenizer()
@@ -66,7 +65,7 @@ export class Converter {
         const grammar = new Grammar()
         grammar.START = Converter.syntacticTypeHierarchies[0][0]
         this.languages.set( name,
-            { tokenizer, grammar, leftGrouper, rightGrouper } )
+            { tokenizer, grammar, leftGrouper, rightGrouper, linter } )
         // If the concept is atomic and has a putdown form, use that as the
         // default notation in the new language; this can be overridden by any
         // later call to addNotation().
@@ -215,7 +214,7 @@ export class Converter {
             const result = this.jsonRepresentation( args[0], langName )
             return Converter.isSyntacticType( args[0] )
                 && !Converter.isSupertypeOrEqual( head, args[0] ) ?
-                `${language.leftGrouper} ${result} ${language.rightGrouper}` :
+                `${language.leftGrouper}${result}${language.rightGrouper}` :
                 result
         }
         // since it's not a syntactic type, it better be a concept
@@ -245,7 +244,7 @@ export class Converter {
                                 || outerType == innerType
                                 || Converter.isSupertype( outerType, innerType )
             if ( language.leftGrouper && language.rightGrouper && !correctNesting ) {
-                return `${language.leftGrouper} ${result} ${language.rightGrouper}`
+                return `${language.leftGrouper}${result}${language.rightGrouper}`
             } else {
                 return result
             }
@@ -269,14 +268,16 @@ export class Converter {
             }
         }
         // fill the recursively computed results into the template
-        return template.map( piece => {
-            const variableIndex = rhs.variables.indexOf( piece )
-            return variableIndex > -1 ? recur[variableIndex] : piece
-        } ).map(
-            piece => piece.trim()
-        ).filter(
-            piece => piece.length > 0
-        ).join( ' ' )
+        return language.linter(
+            template.map( piece => {
+                const variableIndex = rhs.variables.indexOf( piece )
+                return variableIndex > -1 ? recur[variableIndex] : piece
+            } ).map(
+                piece => piece.trim()
+            ).filter(
+                piece => piece.length > 0
+            ).join( ' ' ).replace( /\s+/g, ' ' )
+        )
     }
 
     convert ( sourceLang, destLang, data ) {
