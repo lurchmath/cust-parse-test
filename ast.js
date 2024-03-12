@@ -29,6 +29,43 @@ export class AST extends Array {
         return this.map( x => x instanceof AST ? x.toJSON() : x )
     }
 
+    // convert a parsed result into the minimal AST that is actually needed.
+    // for instance, if we parsed ['multiplication','x','*','y'], we will not
+    // include the '*' operator when converting to an AST, since the head is
+    // sufficient to identify the concept.
+    static fromJSON ( converter, language, json ) {
+        // console.log( `fromJSON( ${JSON.stringify(json)} )` )
+        if ( !( json instanceof Array ) ) return json
+        const head = json.shift()
+        const concept = converter.concepts.get( head )
+        if ( !concept )
+            return new AST( converter, language,
+                ...[ head, ...json ].map( piece =>
+                    AST.fromJSON( converter, language, piece ) ) )
+        const rhss = language.grammar.rules[head]
+        for ( let i = 0 ; i < rhss.length ; i++ ) {
+            if ( rhss[i].length != json.length ) continue
+            const matches = rhss[i].every( ( piece, index ) => {
+                const isNotation = piece instanceof RegExp
+                const isText = !( json[index] instanceof Array )
+                return isNotation == isText
+                    && ( !isNotation || piece.test( json[index] ) )
+            } )
+            if ( !matches ) continue
+            if ( rhss[i].notation instanceof RegExp )
+                return [ head, AST.fromJSON( converter, language, json[0] ) ]
+            json = json.filter( ( _, index ) =>
+                !( rhss[i][index] instanceof RegExp ) )
+            const result = new AST( this, language, head,
+                ...json.map( ( _, index ) => AST.fromJSON( converter, language,
+                    json[rhss[i].putdownToNotation[index]] ) ) )
+            if ( rhss[i].notationName )
+                result.notationName = rhss[i].notationName
+            return result
+        }
+        throw new Error( `No notational match for ${JSON.stringify( json )}` )
+    }
+
     compact () {
         // console.log( 'compactifying:' + ast )
         if ( this.length == 0 )

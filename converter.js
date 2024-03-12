@@ -7,7 +7,6 @@
 //    even through the conversion to JSON (now ASTs)
 //  - Move into AST class, taking a full language object as arg:
 //     - representation(lang) to writeIn(lang)
-//     - toAST() as fromJSON()
 //    then create test suite for AST class, including all these functions.
 //  - add support for more than one grouper pair per language; support both
 //    `{}` and `()` in LaTeX
@@ -306,49 +305,12 @@ export class Converter {
                 const result = language.grammar.parse( tokens, {
                     showDebuggingOutput : this._debug
                 } )[0]
-                return result ? this.toAST( result, language ) : undefined
+                return result ? AST.fromJSON( this, language, result ) : undefined
             } else if ( this.isLanguage( destLang ) ) {
                 const ast = this.convert( sourceLang, 'ast', data )?.compact()
                 return ast ? this.representation( ast, destLang ) : undefined
             }
         }
-    }
-
-    // convert a parsed result into the minimal AST that is actually needed.
-    // for instance, if we parsed ['multiplication','x','*','y'], we will not
-    // include the '*' operator when converting to an AST, since the head is
-    // sufficient to identify the concept.
-    toAST ( parsed, language ) {
-        // console.log( `toAST( ${JSON.stringify(parsed)} )` )
-        if ( !( parsed instanceof Array ) ) return parsed
-        const head = parsed.shift()
-        const concept = this.concepts.get( head )
-        if ( !concept )
-            return new AST( this, language,
-                ...[ head, ...parsed ].map( piece => this.toAST( piece, language ) ) )
-        const rhss = language.grammar.rules[head]
-        for ( let i = 0 ; i < rhss.length ; i++ ) {
-            if ( rhss[i].length != parsed.length ) continue
-            const matches = rhss[i].every( ( piece, index ) => {
-                const isNotation = piece instanceof RegExp
-                const isText = !( parsed[index] instanceof Array )
-                return isNotation == isText
-                    && ( !isNotation || piece.test( parsed[index] ) )
-            } )
-            if ( !matches ) continue
-            if ( rhss[i].notation instanceof RegExp )
-                return [ head, this.toAST( parsed[0] ) ]
-            parsed = parsed.filter( ( _, index ) =>
-                !( rhss[i][index] instanceof RegExp ) )
-            const result = new AST( this, language, head,
-                ...parsed.map( ( _, index ) => this.toAST(
-                    parsed[rhss[i].putdownToNotation[index]], language ) )
-            )
-            if ( rhss[i].notationName )
-                result.notationName = rhss[i].notationName
-            return result
-        }
-        throw new Error( `No notational match for ${JSON.stringify( parsed )}` )
     }
 
     // chains of syntactic type inclusions in mathematical writing
