@@ -1,5 +1,17 @@
 
-import { Converter } from './converter.js'
+import { Converter, escapeRegExp } from './converter.js'
+
+// To dos:
+// - add function for this.converter.isConcept(this.head()), a common idiom, and
+//   replace all instances of the idiom with calls to the function.  same also
+//   for this.converter.concepts.get( this.head() ).
+//  - In writeIn(), rather than just choosing notation 0 as the
+//    canonical form, choose the one named in the AST, if any, or fall back on
+//    the one at index 0 if not.
+//  - Test to be sure that this can be used to preserve notational specifics
+//    even through the conversion to JSON (now ASTs)
+//  - Create test suite for AST class, including all the functions you moved
+//    into it from the Converter class.
 
 export class AST extends Array {
 
@@ -90,6 +102,93 @@ export class AST extends Array {
         }
         return new AST( this.converter, this.language,
             ...this.map( x => x instanceof AST ? x.compact() : x ) )
+    }
+
+    // Note 1:  When using this with langName == 'putdown', it never produces
+    // putdown with attributes, which is obviously limiting (e.g., it can never
+    // produce givens) but this is just a simplification to view putdown in a
+    // trivial, LISP-like way.  You can just use a constant and create (GIVEN x)
+    // and then post-process using LC tree traversals to create what you want.
+    // Note 2:  This expects this object to be in compact form, as produced by the
+    // compact() member of this class.  May not function correctly if this object
+    // is not in compact form.  Hence, when this function is called by
+    // Converter.convert(),/ it applies compact() before calling this function.
+    writeIn ( langName ) {
+        // find the language in question
+        const language = this.converter.languages.get( langName )
+        if ( !language )
+            throw new Error( `Not a valid language: ${langName}` )
+        // if it's just a syntactic type wrapper, ensure it's around exactly 1 item
+        if ( Converter.isSyntacticType( this.head() ) ) {
+            if ( this.numArgs() != 1 )
+                throw new Error( `Invalid AST: ${this}` )
+            // return the interior, possibly with groupers if the type
+            // hierarchy requires it (the inner is not a subtype of the outer)
+            const result = this.arg( 0 ).writeIn( langName )
+            return Converter.isSyntacticType( this.arg( 0 ) )
+                && !Converter.isSupertypeOrEqual( this.head(), this.arg( 0 ) ) ?
+                `${language.leftGrouper}${result}${language.rightGrouper}` :
+                result
+        }
+        // since it's not a syntactic type, it better be a concept
+        if ( !this.converter.isConcept( this.head() ) )
+            throw new Error( 'Not a syntactic type nor a concept: ' + ast.head() )
+        // if it's an atomic concept with one argument, defined by a regular
+        // expression, just return the argument, because this is a base case
+        const concept = this.converter.concepts.get( this.head() )
+        if ( concept.putdown instanceof RegExp ) {
+            if ( this.numArgs() != 1 )
+                throw new Error( `Invalid AST: ${this}` )
+            return this.arg( 0 )
+        }
+        // recursively compute the representation of the arguments, wrapping
+        // them in groupers if necessary
+        if ( concept.typeSequence.length != this.numArgs() )
+            throw new Error( `Invalid AST: ${this}` )
+        const recur = this.args().map( ( piece, index ) => {
+            const result = piece.writeIn( langName )
+            const outerType = concept.typeSequence[index]
+            let innerType = piece[0]
+            if ( this.converter.isConcept( innerType ) )
+                innerType = this.converter.concepts.get( innerType ).parentType
+            const correctNesting = outerType == piece[0]
+                                || outerType == innerType
+                                || Converter.isSupertype( outerType, innerType )
+            if ( language.leftGrouper && language.rightGrouper && !correctNesting ) {
+                return `${language.leftGrouper}${result}${language.rightGrouper}`
+            } else {
+                return result
+            }
+        } )
+        // get the default way to write that concept in this language
+        // and split it into an array to make template substitution easier
+        const rhs = language.grammar.rules[this.head()][0]
+        let notation = rhs.notation
+        const template = [ ]
+        const splitter = new RegExp(
+            rhs.variables.map( escapeRegExp ).join( '|' ) )
+        while ( notation.length > 0 ) {
+            const match = splitter.exec( notation )
+            if ( match ) {
+                template.push( notation.substring( 0, match.index ) )
+                template.push( match[0] )
+                notation = notation.substring( match.index + match[0].length )
+            } else {
+                template.push( notation )
+                notation = ''
+            }
+        }
+        // fill the recursively computed results into the template
+        return language.linter(
+            template.map( piece => {
+                const variableIndex = rhs.variables.indexOf( piece )
+                return variableIndex > -1 ? recur[variableIndex] : piece
+            } ).map(
+                piece => piece.trim()
+            ).filter(
+                piece => piece.length > 0
+            ).join( ' ' ).replace( /\s+/g, ' ' )
+        )
     }
 
 }

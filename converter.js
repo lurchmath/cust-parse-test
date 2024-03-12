@@ -1,13 +1,5 @@
 
 // To dos:
-//  - In representation(), rather than just choosing notation 0 as the
-//    canonical form, choose the one named in the AST, if any, or fall back on
-//    the one at index 0 if not.
-//  - Test to be sure that this can be used to preserve notational specifics
-//    even through the conversion to JSON (now ASTs)
-//  - Move into AST class, taking a full language object as arg:
-//     - representation(lang) to writeIn(lang)
-//    then create test suite for AST class, including all these functions.
 //  - add support for more than one grouper pair per language; support both
 //    `{}` and `()` in LaTeX
 //  - expand set of tests for many new mathematical expressions in many languages,
@@ -38,7 +30,7 @@ import { AST } from './ast.js'
 
 const defaultVarNames = 'ABC'
 
-const escapeRegExp = ( str ) =>
+export const escapeRegExp = ( str ) =>
     str.replace( /[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&' )
 
 const putdownLeaves = putdown => {
@@ -204,99 +196,10 @@ export class Converter {
         newRule.notationName = options.name
     }
 
-    // Note 1:  When using this with langName == 'putdown', it never produces
-    // putdown with attributes, which is obviously limiting (e.g., it can never
-    // produce givens) but this is just a simplification to view putdown in a
-    // trivial, LISP-like way.  You can just use a constant and create (GIVEN x)
-    // and then post-process using LC tree traversals to create what you want.
-    // Note 2:  This expects the input to be in compact form, as produced by the
-    // compact() member of this class.  May not function correctly if the input
-    // is not in compact form.  Hence, when this function is called by convert(),
-    // it applies compact() before calling this function.
-    representation ( ast, langName ) {
-        // find the language in question
-        const language = this.languages.get( langName )
-        if ( !language )
-            throw new Error( `Not a valid language: ${langName}` )
-        if ( !( ast instanceof AST ) )
-            throw new Error( `Not an AST: ${ast}` )
-        // if it's just a syntactic type wrapper, ensure it's around exactly 1 item
-        if ( Converter.isSyntacticType( ast.head() ) ) {
-            if ( ast.numArgs() != 1 )
-                throw new Error( `Invalid AST: ${ast}` )
-            // return the interior, possibly with groupers if the type
-            // hierarchy requires it (the inner is not a subtype of the outer)
-            const result = this.representation( ast.arg( 0 ), langName )
-            return Converter.isSyntacticType( ast.arg( 0 ) )
-                && !Converter.isSupertypeOrEqual( ast.head(), ast.arg( 0 ) ) ?
-                `${language.leftGrouper}${result}${language.rightGrouper}` :
-                result
-        }
-        // since it's not a syntactic type, it better be a concept
-        if ( !this.isConcept( ast.head() ) )
-            throw new Error( 'Not a syntactic type nor a concept: ' + ast.head() )
-        // if it's an atomic concept with one argument, defined by a regular
-        // expression, just return the argument, because this is a base case
-        const concept = this.concepts.get( ast.head() )
-        if ( concept.putdown instanceof RegExp ) {
-            if ( ast.numArgs() != 1 )
-                throw new Error( `Invalid AST: ${ast}` )
-            return ast.arg( 0 )
-        }
-        // recursively compute the representation of the arguments, wrapping
-        // them in groupers if necessary
-        if ( concept.typeSequence.length != ast.numArgs() )
-            throw new Error( `Invalid AST: ${ast}` )
-        const recur = ast.args().map( ( piece, index ) => {
-            const result = this.representation( piece, langName )
-            const outerType = concept.typeSequence[index]
-            let innerType = piece[0]
-            if ( this.isConcept( innerType ) )
-                innerType = this.concepts.get( innerType ).parentType
-            const correctNesting = outerType == piece[0]
-                                || outerType == innerType
-                                || Converter.isSupertype( outerType, innerType )
-            if ( language.leftGrouper && language.rightGrouper && !correctNesting ) {
-                return `${language.leftGrouper}${result}${language.rightGrouper}`
-            } else {
-                return result
-            }
-        } )
-        // get the default way to write that concept in this language
-        // and split it into an array to make template substitution easier
-        const rhs = language.grammar.rules[ast.head()][0]
-        let notation = rhs.notation
-        const template = [ ]
-        const splitter = new RegExp(
-            rhs.variables.map( escapeRegExp ).join( '|' ) )
-        while ( notation.length > 0 ) {
-            const match = splitter.exec( notation )
-            if ( match ) {
-                template.push( notation.substring( 0, match.index ) )
-                template.push( match[0] )
-                notation = notation.substring( match.index + match[0].length )
-            } else {
-                template.push( notation )
-                notation = ''
-            }
-        }
-        // fill the recursively computed results into the template
-        return language.linter(
-            template.map( piece => {
-                const variableIndex = rhs.variables.indexOf( piece )
-                return variableIndex > -1 ? recur[variableIndex] : piece
-            } ).map(
-                piece => piece.trim()
-            ).filter(
-                piece => piece.length > 0
-            ).join( ' ' ).replace( /\s+/g, ' ' )
-        )
-    }
-
     convert ( sourceLang, destLang, data ) {
         if ( sourceLang == destLang ) return data
         if ( sourceLang == 'ast' ) {
-            return this.representation( data, destLang )
+            return data.writeIn( destLang )
         } else if ( this.isLanguage( sourceLang ) ) {
             const language = this.languages.get( sourceLang )
             if ( destLang == 'ast' ) {
@@ -307,8 +210,8 @@ export class Converter {
                 } )[0]
                 return result ? AST.fromJSON( this, language, result ) : undefined
             } else if ( this.isLanguage( destLang ) ) {
-                const ast = this.convert( sourceLang, 'ast', data )?.compact()
-                return ast ? this.representation( ast, destLang ) : undefined
+                return this.convert( sourceLang, 'ast', data )?.compact()
+                    ?.writeIn( destLang )
             }
         }
     }
