@@ -2,9 +2,6 @@
 import { Converter, escapeRegExp } from './converter.js'
 
 // To dos:
-// - add function for this.converter.isConcept(this.head()), a common idiom, and
-//   replace all instances of the idiom with calls to the function.  same also
-//   for this.converter.concepts.get( this.head() ).
 //  - In writeIn(), rather than just choosing notation 0 as the
 //    canonical form, choose the one named in the AST, if any, or fall back on
 //    the one at index 0 if not.
@@ -31,6 +28,10 @@ export class AST extends Array {
     numArgs () { return this.length - 1 }
 
     arg ( index ) { return this[index+1] }
+
+    isConcept () { return this.converter.isConcept( this.head() ) }
+
+    concept () { return this.converter.concepts.get( this.head() ) }
 
     toString () {
         const recur = x => x instanceof AST ? x.toString() : x
@@ -96,7 +97,7 @@ export class AST extends Array {
                     throw new Error(
                         `Invalid AST, ${this.head()} not a supertype of ${inner.head()}` )
                 return inner.compact()
-            } else if ( this.converter.isConcept( inner.head() ) ) {
+            } else if ( inner.isConcept() ) {
                 return inner.compact()
             }
         }
@@ -131,11 +132,11 @@ export class AST extends Array {
                 result
         }
         // since it's not a syntactic type, it better be a concept
-        if ( !this.converter.isConcept( this.head() ) )
+        if ( !this.isConcept() )
             throw new Error( 'Not a syntactic type nor a concept: ' + ast.head() )
         // if it's an atomic concept with one argument, defined by a regular
         // expression, just return the argument, because this is a base case
-        const concept = this.converter.concepts.get( this.head() )
+        const concept = this.concept()
         if ( concept.putdown instanceof RegExp ) {
             if ( this.numArgs() != 1 )
                 throw new Error( `Invalid AST: ${this}` )
@@ -149,8 +150,8 @@ export class AST extends Array {
             const result = piece.writeIn( langName )
             const outerType = concept.typeSequence[index]
             let innerType = piece[0]
-            if ( this.converter.isConcept( innerType ) )
-                innerType = this.converter.concepts.get( innerType ).parentType
+            if ( piece.isConcept() )
+                innerType = piece.concept().parentType
             const correctNesting = outerType == piece[0]
                                 || outerType == innerType
                                 || Converter.isSupertype( outerType, innerType )
