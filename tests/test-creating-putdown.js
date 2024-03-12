@@ -1,6 +1,7 @@
 
 import { expect } from 'chai'
 import { converter } from '../example-converter.js'
+import { AST } from '../ast.js'
 
 describe( 'Creating putdown from JSON', () => {
 
@@ -8,7 +9,8 @@ describe( 'Creating putdown from JSON', () => {
     const lpad = str => whitespace.substr( 0, whitespace.length - str.length ) + str
     const checkJsonPutdown = ( json, putdown ) => {
         expect(
-            converter.convert( 'json', 'putdown', json )
+            converter.convert( 'ast', 'putdown',
+                new AST( converter, converter.languages.get( 'putdown' ), ...json ) )
         ).to.equal( putdown )
         // console.log( `${lpad( putdown )}  <--  ${JSON.stringify( json )}` )
     }

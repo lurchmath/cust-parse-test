@@ -1,6 +1,7 @@
 
 import { expect } from 'chai'
 import { converter } from '../example-converter.js'
+import { AST } from '../ast.js'
 
 describe( 'Creating latex from JSON', () => {
 
@@ -8,13 +9,14 @@ describe( 'Creating latex from JSON', () => {
     const lpad = str => whitespace.substr( 0, whitespace.length - str.length ) + str
     const checkJsonLatex = ( json, latex ) => {
         expect(
-            converter.convert( 'json', 'latex', json )
+            converter.convert( 'ast', 'latex',
+                new AST( converter, converter.languages.get( 'latex' ), ...json ) )
         ).to.eql( latex )
         // console.log( `${lpad( latex )}  -->  ${JSON.stringify( json )}` )
     }
     const checkJsonLatexFail = ( json ) => {
         expect(
-            converter.convert( 'json', 'latex', json )
+            converter.convert( 'ast', 'latex', json )
         ).to.be.undefined
     }
 

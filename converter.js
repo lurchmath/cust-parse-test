@@ -1,5 +1,16 @@
 
 // To dos:
+//  - In representation(), rather than just choosing notation 0 as the
+//    canonical form, choose the one named in the AST, if any, or fall back on
+//    the one at index 0 if not.
+//  - Test to be sure that this can be used to preserve notational specifics
+//    even through the conversion to JSON (now ASTs)
+//  - Move into AST class, taking a full language object as arg:
+//     - representation(lang) to writeIn(lang)
+//     - toAST() as fromJSON()
+//    then create test suite for AST class, including all these functions.
+//  - add support for more than one grouper pair per language; support both
+//    `{}` and `()` in LaTeX
 //  - expand set of tests for many new mathematical expressions in many languages,
 //    including expressions that bind variables
 //     - sum, difference (as sum of negation), associative lists of these
@@ -24,6 +35,7 @@
 //  - test whether all MathLive output can be parsed by this LaTeX parser
 
 import { Grammar, Tokenizer } from 'earley-parser'
+import { AST } from './ast.js'
 
 const defaultVarNames = 'ABC'
 
@@ -62,7 +74,7 @@ export class Converter {
         const grammar = new Grammar()
         grammar.START = Converter.syntacticTypeHierarchies[0][0]
         this.languages.set( name,
-            { tokenizer, grammar, leftGrouper, rightGrouper, linter } )
+            { name, tokenizer, grammar, leftGrouper, rightGrouper, linter } )
         // If the concept is atomic and has a putdown form, use that as the
         // default notation in the new language; this can be overridden by any
         // later call to addNotation().
@@ -134,9 +146,11 @@ export class Converter {
         return this.concepts.has( name )
     }
 
-    addNotation ( languageName, conceptName, notation, variables ) {
+    addNotation ( languageName, conceptName, notation, options = { } ) {
         const originalNotation = notation
-        if ( !variables ) variables = Array.from( defaultVarNames )
+        Object.assign( options, {
+            variables : Array.from( defaultVarNames )
+        } )
         // ensure language is valid
         if ( !this.isLanguage( languageName ) )
             throw new Error( `Not a valid language: ${languageName}` )
@@ -155,9 +169,11 @@ export class Converter {
             notation = [ notation ]
         const notationToPutdown = [ ]
         if ( !( notation instanceof Array ) ) {
-            notation = Converter.notationStringToArray( notation, variables ).map(
+            notation = Converter.notationStringToArray(
+                notation, options.variables
+            ).map(
                 piece => {
-                    const variableIndex = variables.indexOf( piece )
+                    const variableIndex = options.variables.indexOf( piece )
                     if ( variableIndex > -1 ) {
                         notationToPutdown.push( variableIndex )
                         return concept.typeSequence[variableIndex]
@@ -185,7 +201,8 @@ export class Converter {
         newRule.notationToPutdown = notationToPutdown
         newRule.putdownToNotation = putdownToNotation
         newRule.notation = originalNotation
-        newRule.variables = variables
+        newRule.variables = options.variables
+        newRule.notationName = options.name
     }
 
     // Note 1:  When using this with langName == 'putdown', it never produces
@@ -197,46 +214,42 @@ export class Converter {
     // compact() member of this class.  May not function correctly if the input
     // is not in compact form.  Hence, when this function is called by convert(),
     // it applies compact() before calling this function.
-    jsonRepresentation ( json, langName ) {
+    representation ( ast, langName ) {
         // find the language in question
         const language = this.languages.get( langName )
-        if ( !( json instanceof Array ) )
-            throw new Error(
-                `Not a valid semantic JSON expression: ${JSON.stringify(json)}` )
+        if ( !language )
+            throw new Error( `Not a valid language: ${langName}` )
+        if ( !( ast instanceof AST ) )
+            throw new Error( `Not an AST: ${ast}` )
         // if it's just a syntactic type wrapper, ensure it's around exactly 1 item
-        const head = json[0]
-        const args = json.slice( 1 )
-        if ( Converter.isSyntacticType( head ) ) {
-            if ( args.length != 1 )
-                throw new Error( 'Invalid semantic JSON structure: '
-                    + JSON.stringify( [ head, ...args ] ) )
+        if ( Converter.isSyntacticType( ast.head() ) ) {
+            if ( ast.numArgs() != 1 )
+                throw new Error( `Invalid AST: ${ast}` )
             // return the interior, possibly with groupers if the type
             // hierarchy requires it (the inner is not a subtype of the outer)
-            const result = this.jsonRepresentation( args[0], langName )
-            return Converter.isSyntacticType( args[0] )
-                && !Converter.isSupertypeOrEqual( head, args[0] ) ?
+            const result = this.representation( ast.arg( 0 ), langName )
+            return Converter.isSyntacticType( ast.arg( 0 ) )
+                && !Converter.isSupertypeOrEqual( ast.head(), ast.arg( 0 ) ) ?
                 `${language.leftGrouper}${result}${language.rightGrouper}` :
                 result
         }
         // since it's not a syntactic type, it better be a concept
-        if ( !this.isConcept( head ) )
-            throw new Error( 'Not a syntactic type nor a concept: ' + head )
+        if ( !this.isConcept( ast.head() ) )
+            throw new Error( 'Not a syntactic type nor a concept: ' + ast.head() )
         // if it's an atomic concept with one argument, defined by a regular
         // expression, just return the argument, because this is a base case
-        const concept = this.concepts.get( head )
+        const concept = this.concepts.get( ast.head() )
         if ( concept.putdown instanceof RegExp ) {
-            if ( args.length != 1 )
-                throw new Error( 'Invalid semantic JSON structure: '
-                    + JSON.stringify( [ head, ...args ] ) )
-            return args[0]
+            if ( ast.numArgs() != 1 )
+                throw new Error( `Invalid AST: ${ast}` )
+            return ast.arg( 0 )
         }
         // recursively compute the representation of the arguments, wrapping
         // them in groupers if necessary
-        if ( concept.typeSequence.length != args.length )
-            throw new Error( 'Invalid semantic JSON structure: '
-                + JSON.stringify( [ head, ...args ] ) )
-        const recur = args.map( ( piece, index ) => {
-            const result = this.jsonRepresentation( piece, langName )
+        if ( concept.typeSequence.length != ast.numArgs() )
+            throw new Error( `Invalid AST: ${ast}` )
+        const recur = ast.args().map( ( piece, index ) => {
+            const result = this.representation( piece, langName )
             const outerType = concept.typeSequence[index]
             let innerType = piece[0]
             if ( this.isConcept( innerType ) )
@@ -252,7 +265,7 @@ export class Converter {
         } )
         // get the default way to write that concept in this language
         // and split it into an array to make template substitution easier
-        const rhs = language.grammar.rules[head][0]
+        const rhs = language.grammar.rules[ast.head()][0]
         let notation = rhs.notation
         const template = [ ]
         const splitter = new RegExp(
@@ -283,57 +296,59 @@ export class Converter {
 
     convert ( sourceLang, destLang, data ) {
         if ( sourceLang == destLang ) return data
-        if ( sourceLang == 'json' ) {
-            return this.jsonRepresentation( data, destLang )
+        if ( sourceLang == 'ast' ) {
+            return this.representation( data, destLang )
         } else if ( this.isLanguage( sourceLang ) ) {
             const language = this.languages.get( sourceLang )
-            if ( destLang == 'json' ) {
+            if ( destLang == 'ast' ) {
                 const tokens = language.tokenizer.tokenize( data )
                 if ( !tokens ) return undefined
                 const result = language.grammar.parse( tokens, {
                     showDebuggingOutput : this._debug
                 } )[0]
-                return result ? this.buildArgsList( result, language ) : undefined
+                return result ? this.toAST( result, language ) : undefined
             } else if ( this.isLanguage( destLang ) ) {
-                const json = this.compact( this.convert( sourceLang, 'json', data ) )
-                return json ? this.jsonRepresentation( json, destLang ) : undefined
+                const ast = this.convert( sourceLang, 'ast', data )?.compact()
+                return ast ? this.representation( ast, destLang ) : undefined
             }
         }
     }
 
-    buildArgsList ( json, language ) {
-        // console.log( 'buildArgsList', json )
-        if ( !( json instanceof Array ) ) return json
-        const head = json.shift()
+    // convert a parsed result into the minimal AST that is actually needed.
+    // for instance, if we parsed ['multiplication','x','*','y'], we will not
+    // include the '*' operator when converting to an AST, since the head is
+    // sufficient to identify the concept.
+    toAST ( parsed, language ) {
+        // console.log( `toAST( ${JSON.stringify(parsed)} )` )
+        if ( !( parsed instanceof Array ) ) return parsed
+        const head = parsed.shift()
         const concept = this.concepts.get( head )
-        if ( !concept ) {
-            json.unshift( head )
-            return json.map( piece => this.buildArgsList( piece, language ) )
-        }
+        if ( !concept )
+            return new AST( this, language,
+                ...[ head, ...parsed ].map( piece => this.toAST( piece, language ) ) )
         const rhss = language.grammar.rules[head]
         for ( let i = 0 ; i < rhss.length ; i++ ) {
-            if ( rhss[i].length != json.length ) continue
+            if ( rhss[i].length != parsed.length ) continue
             const matches = rhss[i].every( ( piece, index ) => {
                 const isNotation = piece instanceof RegExp
-                const isText = !( json[index] instanceof Array )
+                const isText = !( parsed[index] instanceof Array )
                 return isNotation == isText
-                    && ( !isNotation || piece.test( json[index] ) )
+                    && ( !isNotation || piece.test( parsed[index] ) )
             } )
             if ( !matches ) continue
             if ( rhss[i].notation instanceof RegExp )
-                return [ head, this.buildArgsList( json[0] ) ]
-            json = json.filter(
-                ( _, index ) => !( rhss[i][index] instanceof RegExp ) )
-            // console.log( json, rhss[i], json )
-            const result = [
-                head,
-                ...json.map( ( _, index ) => this.buildArgsList(
-                    json[rhss[i].putdownToNotation[index]], language ) )
-            ]
-            // console.log( '\t\t-->', result )
+                return [ head, this.toAST( parsed[0] ) ]
+            parsed = parsed.filter( ( _, index ) =>
+                !( rhss[i][index] instanceof RegExp ) )
+            const result = new AST( this, language, head,
+                ...parsed.map( ( _, index ) => this.toAST(
+                    parsed[rhss[i].putdownToNotation[index]], language ) )
+            )
+            if ( rhss[i].notationName )
+                result.notationName = rhss[i].notationName
             return result
         }
-        throw new Error( `No notational match for ${JSON.stringify( json )}` )
+        throw new Error( `No notational match for ${JSON.stringify( parsed )}` )
     }
 
     // chains of syntactic type inclusions in mathematical writing
@@ -453,30 +468,4 @@ export class Converter {
         } )
     }
 
-    compact ( json ) {
-        if ( !( json instanceof Array ) ) return json
-        if ( json.length == 0 )
-            throw new Error( `Empty arrays not allowed in semantic JSON` )
-        if ( json.length == 2 && json[0].startsWith( 'groupedatomic' ) )
-            return this.compact( json[1] )
-        if ( Converter.isSyntacticType( json[0] ) ) {
-            if ( json.length != 2 )
-                throw new Error( `Invalid semantic JSON structure: ${JSON.stringify(json)}` )
-            const inner = json[1]
-            if ( !( inner instanceof Array ) ) return json[1]
-            if ( Converter.isSyntacticType( inner[0] ) ) {
-                if ( inner.length != 2 )
-                    throw new Error(
-                        `Invalid semantic JSON structure: ${JSON.stringify(inner)}` )
-                if ( !Converter.isSupertype( json[0], inner[0] ) )
-                    throw new Error(
-                        `Invalid semantic JSON, ${json[0]} not a supertype of ${inner[0]}` )
-                return this.compact( inner )
-            } else if ( this.isConcept( inner[0] ) ) {
-                return this.compact( inner )
-            }
-        }
-        return json.map( piece => this.compact( piece ) )
-    }
-    
 }    

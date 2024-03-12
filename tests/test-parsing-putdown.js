@@ -2,25 +2,19 @@
 import { expect } from 'chai'
 import { converter } from '../example-converter.js'
 
-// Object.keys( converter.languages.get( 'putdown' ).grammar.rules ).forEach( key => {
-//     const rhss = converter.languages.get( 'putdown' ).grammar.rules[key]
-//     console.log( key, rhss.map( rhs => rhs.slice() ) )
-// } )
-// console.log( converter.languages.get( 'putdown' ).tokenizer )
-
 describe( 'Creating JSON from putdown', () => {
 
     const whitespace = '                                            '
     const lpad = str => whitespace.substr( 0, whitespace.length - str.length ) + str
     const checkPutdownJson = ( putdown, json ) => {
         expect(
-            converter.compact( converter.convert( 'putdown', 'json', putdown ) )
+            converter.convert( 'putdown', 'ast', putdown ).compact().toJSON()
         ).to.eql( json )
         // console.log( `${lpad( putdown )}  -->  ${JSON.stringify( json )}` )
     }
     const checkPutdownJsonFail = ( latex ) => {
         expect(
-            converter.compact( converter.convert( 'putdown', 'json', latex ) )
+            converter.convert( 'putdown', 'json', latex )
         ).to.be.undefined
     }
 
