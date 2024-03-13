@@ -25,19 +25,7 @@
 
 import { Grammar, Tokenizer } from 'earley-parser'
 import { AST } from './ast.js'
-
-const defaultVarNames = 'ABC'
-
-export const escapeRegExp = ( str ) =>
-    str.replace( /[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&' )
-
-const putdownLeaves = putdown => {
-    if ( putdown.length == 0 ) return [ ]
-    const match = /^[^()\s,]+/.exec( putdown )
-    return match ?
-        [ match[0], ...putdownLeaves( putdown.substring( match[0].length ) ) ] :
-        putdownLeaves( putdown.substring( 1 ) )
-}
+import { notationStringToArray, putdownLeaves } from './utilities.js'
 
 export class Converter {
 
@@ -124,7 +112,7 @@ export class Converter {
             if ( putdown instanceof RegExp ) {
                 this.addNotation( 'putdown', name, putdown )
             } else if ( typeof( putdown ) == 'string' ) {
-                const variables = Array.from( defaultVarNames )
+                const variables = Array.from( Converter.defaultVarNames )
                 let putdownForParsing = putdown.replace( /([()])/g, ' $1 ' ).trim()
                 data.typeSequence.forEach( ( type, index ) =>
                     putdownForParsing = putdownForParsing.replace(
@@ -143,7 +131,7 @@ export class Converter {
     addNotation ( languageName, conceptName, notation, options = { } ) {
         const originalNotation = notation
         Object.assign( options, {
-            variables : Array.from( defaultVarNames )
+            variables : Array.from( Converter.defaultVarNames )
         } )
         // ensure language is valid
         if ( !this.isLanguage( languageName ) )
@@ -167,9 +155,7 @@ export class Converter {
             notation = [ notation ]
         const notationToPutdown = [ ]
         if ( !( notation instanceof Array ) ) {
-            notation = Converter.notationStringToArray(
-                notation, options.variables
-            ).map(
+            notation = notationStringToArray( notation, options.variables ).map(
                 piece => {
                     const variableIndex = options.variables.indexOf( piece )
                     if ( variableIndex > -1 ) {
@@ -276,46 +262,13 @@ export class Converter {
     static isSupertype = ( a, b ) => Converter.supertypeGraph[a]?.includes( b )
     static isSupertypeOrEqual = ( a, b ) => a == b || Converter.isSupertype( a, b )
 
-    static notationStringToArray = ( str, variables ) => {
-        const result = [ ]
-        let match
-        let mayNotContinueString
-        while ( str.length > 0 ) {
-            if ( match = /^\s+/.exec( str ) ) {
-                str = str.substring( match[0].length )
-                mayNotContinueString = true
-                continue
-            }
-            let justSawType = false
-            for ( let i = 0 ; !justSawType && i < variables.length ; i++ ) {
-                const startsWithThis = new RegExp( `^${variables[i]}\\b` )
-                if ( startsWithThis.test( str ) ) {
-                    result.push( variables[i] )
-                    str = str.substring( variables[i].length )
-                    justSawType = true
-                }
-            }
-            if ( justSawType ) {
-                mayNotContinueString = true
-                continue
-            }
-            if ( result.length == 0 || mayNotContinueString )
-                result.push( str[0] )
-            else
-                result[result.length-1] += str[0]
-            mayNotContinueString = false
-            str = str.substring( 1 )
-        }
-        return result.map( piece =>
-            variables.includes( piece ) ? piece :
-                new RegExp( escapeRegExp( piece ) ) )
-    }
-
     static regularExpressions = {
         oneLetterVariable : /[a-zA-Z]/, // can be upgraded later with Greek, etc.
         integer : /\d+/,
         number : /\.[0-9]+|[0-9]+\.?[0-9]*/
     }
+
+    static defaultVarNames = 'ABC'
 
     hasTokenType ( language, regexp ) {
         if ( !this.isLanguage( language ) )

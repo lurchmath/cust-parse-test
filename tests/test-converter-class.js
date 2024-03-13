@@ -141,19 +141,4 @@ describe( 'Converter instance', () => {
         expect( Converter.lowestSubtype( 'atomicprop' ) ).to.equal( 'atomicprop' )
     } )
 
-    it( 'should correctly convert notation strings to arrays', () => {
-        expect( Converter.notationStringToArray( 'A^B', ['A','B','C'] ) )
-            .to.eql( [ 'A', /\^/, 'B' ] )
-        expect( Converter.notationStringToArray( '(A+B)', ['A','B','C'] ) )
-            .to.eql( [ /\(/, 'A', /\+/, 'B', /\)/ ] )
-        expect( Converter.notationStringToArray( 'A ^ B', ['A','B','C'] ) )
-            .to.eql( [ 'A', /\^/, 'B' ] )
-        expect( Converter.notationStringToArray( ' A  ^  B ', ['A','B','C'] ) )
-            .to.eql( [ 'A', /\^/, 'B' ] )
-        expect( Converter.notationStringToArray( 'A^B', ['x','y','z'] ) )
-            .to.eql( [ /A\^B/ ] )
-        expect( Converter.notationStringToArray( 'x^y', ['x','y','z'] ) )
-            .to.eql( [ 'x', /\^/, 'y' ] )
-    } )
-
 } )

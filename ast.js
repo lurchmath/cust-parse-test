@@ -1,5 +1,6 @@
 
-import { Converter, escapeRegExp } from './converter.js'
+import { Converter } from './converter.js'
+import { escapeRegExp } from './utilities.js'
 
 // To dos:
 //  - In writeIn(), rather than just choosing notation 0 as the
