@@ -1,5 +1,7 @@
 
 // To dos:
+//  - document every function
+//  - test everything in the utilities module
 //  - expand set of tests for many new mathematical expressions in many languages,
 //    including expressions that bind variables
 //     - sum, difference (as sum of negation), associative lists of these
@@ -25,18 +27,18 @@
 
 import { Grammar, Tokenizer } from 'earley-parser'
 import { AST } from './ast.js'
+import SyntacticTypes from './syntactic-types.js'
 import { notationStringToArray, putdownLeaves } from './utilities.js'
 
 export class Converter {
 
     constructor () {
-        Converter.computeSupertypeGraph()
         this.languages = new Map()
         this.concepts = new Map()
-        Converter.syntacticTypeHierarchies.forEach( hierarchy => {
+        SyntacticTypes.hierarchies.forEach( hierarchy => {
             if ( hierarchy[0] != 'expression' ) return
             const last = hierarchy[hierarchy.length-1]
-            if ( Converter.isAtomicType( last ) )
+            if ( SyntacticTypes.isAtomic( last ) )
                 this.addConcept( `grouped${last}`, last, hierarchy[1] )
         } )
         this.addLanguage( 'putdown', null, x =>
@@ -50,7 +52,7 @@ export class Converter {
         const tokenizer = new Tokenizer()
         tokenizer.addType( /\s/, () => null )
         const grammar = new Grammar()
-        grammar.START = Converter.syntacticTypeHierarchies[0][0]
+        grammar.START = SyntacticTypes.hierarchies[0][0]
         this.languages.set( name,
             { name, tokenizer, grammar, groupers, linter } )
         // If the concept is atomic and has a putdown form, use that as the
@@ -58,16 +60,16 @@ export class Converter {
         // later call to addNotation().
         Array.from( this.concepts.keys() ).forEach( conceptName => {
             const concept = this.concepts.get( conceptName )
-            if ( Converter.isAtomicType( concept.parentType ) )
+            if ( SyntacticTypes.isAtomic( concept.parentType ) )
                 this.addNotation( name, conceptName, concept.putdown )
         } )
         // Add subtyping rules and grouping rules to the grammar.
-        Converter.syntacticTypeHierarchies.forEach( hierarchy => {
+        SyntacticTypes.hierarchies.forEach( hierarchy => {
             for ( let i = 0 ; i < hierarchy.length - 1 ; i++ )
                 grammar.addRule( hierarchy[i], hierarchy[i+1] )
             if ( groupers.length > 0 && hierarchy[0] == 'expression' ) {
                 const last = hierarchy[hierarchy.length-1]
-                if ( Converter.isAtomicType( last ) ) {
+                if ( SyntacticTypes.isAtomic( last ) ) {
                     for ( let i = 0 ; i < groupers.length - 1 ; i += 2 ) {
                         const left = groupers[i]
                         const right = groupers[i+1]
@@ -106,7 +108,7 @@ export class Converter {
         const data = { parentType, putdown }
         data.typeSequence = putdown instanceof RegExp ? [ ] :
             putdownLeaves( putdown ).filter( leaf =>
-                Converter.isSyntacticType( leaf ) || this.isConcept( leaf ) )
+                SyntacticTypes.includes( leaf ) || this.isConcept( leaf ) )
         this.concepts.set( name, data )
         if ( this.isLanguage( 'putdown' ) ) {
             if ( putdown instanceof RegExp ) {
@@ -147,7 +149,7 @@ export class Converter {
         // but this does not apply to groupers; there can be more than one
         // set of groupers in a language, and thus more than one way to form an
         // atomic concept using groupers
-        if ( Converter.isAtomicType( concept.parentType )
+        if ( SyntacticTypes.isAtomic( concept.parentType )
           && !conceptName.startsWith( 'grouped' ) )
             delete language.grammar.rules[conceptName]
         // convert notation to array if needed and extract its tokens
@@ -177,7 +179,7 @@ export class Converter {
         // it is necessary to do this only after using it to make tokens, above)
         let parentType = concept.parentType
         if ( languageName == 'putdown' )
-            parentType = Converter.lowestSubtype( parentType )
+            parentType = SyntacticTypes.lowestSubtype( parentType )
         language.grammar.addRule( parentType, conceptName )
         language.grammar.addRule( conceptName, notation )
         const rhss = language.grammar.rules[conceptName]
@@ -208,59 +210,6 @@ export class Converter {
             }
         }
     }
-
-    // chains of syntactic type inclusions in mathematical writing
-    static syntacticTypeHierarchies = [
-        [ 'expression', 'numberexpr', 'sum', 'product', 'factor', 'atomicnumber' ],
-        [ 'expression', 'sentence', 'conditional', 'disjunct', 'conjunct', 'atomicprop' ],
-        // [ 'conjunct', 'equation', 'inequality' ],
-        // [ 'set', 'union', 'intersection', 'atomicset' ]
-    ]
-
-    static syntacticTypes = Array.from( new Set(
-        Converter.syntacticTypeHierarchies.flat() ) )
-
-    static isSyntacticType = name =>
-        Converter.syntacticTypeHierarchies.some( hierarchy =>
-            hierarchy.includes( name ) )
-
-    static isAtomicType = name => name.startsWith( 'atomic' )
-
-    static lowestSubtype = name => {
-        const hierarchies = Converter.syntacticTypeHierarchies.filter(
-            hierarchy => hierarchy.includes( name ) )
-        if ( hierarchies.length != 1 ) return name
-        return hierarchies[0][hierarchies[0].length-1]
-    }
-
-    static supertypeGraph = { }
-
-    static computeSupertypeGraph = () => {
-        if ( Object.keys( Converter.supertypeGraph ).length > 0 ) return
-        Converter.syntacticTypeHierarchies.forEach( chain =>
-            chain.forEach( type => Converter.supertypeGraph[type] = [ ] ) )
-            Converter.syntacticTypeHierarchies.forEach( chain => {
-            for ( let i = 0 ; i < chain.length - 1 ; i++ )
-            Converter.supertypeGraph[chain[i]].push( chain[i+1] )
-        } )
-        let closureAchieved
-        do {
-            closureAchieved = true
-            Object.keys( Converter.supertypeGraph ).forEach( a => {
-                Converter.supertypeGraph[a].forEach( b => {
-                    Converter.supertypeGraph[b].forEach( c => {
-                        if ( !Converter.supertypeGraph[a].includes( c ) ) {
-                            Converter.supertypeGraph[a].push( c )
-                            closureAchieved = false
-                        }
-                    } )
-                } )
-            } )
-        } while ( !closureAchieved )
-    }
-
-    static isSupertype = ( a, b ) => Converter.supertypeGraph[a]?.includes( b )
-    static isSupertypeOrEqual = ( a, b ) => a == b || Converter.isSupertype( a, b )
 
     static regularExpressions = {
         oneLetterVariable : /[a-zA-Z]/, // can be upgraded later with Greek, etc.

@@ -1,5 +1,6 @@
 
 import { Converter } from './converter.js'
+import SyntacticTypes from './syntactic-types.js'
 import { escapeRegExp } from './utilities.js'
 
 // To dos:
@@ -86,15 +87,15 @@ export class AST extends Array {
             throw new Error( `Empty ASTs not allowed` )
         if ( this.head().startsWith( 'groupedatomic' ) && this.numArgs() == 1 )
             return this.arg( 0 ).compact()
-        if ( Converter.isSyntacticType( this.head() ) ) {
+        if ( SyntacticTypes.includes( this.head() ) ) {
             if ( this.numArgs() != 1 )
                 throw new Error( `Invalid AST: ${this}` )
             const inner = this.arg( 0 )
             if ( !( inner instanceof AST ) ) return inner
-            if ( Converter.isSyntacticType( inner.head() ) ) {
+            if ( SyntacticTypes.includes( inner.head() ) ) {
                 if ( inner.numArgs() != 1 )
                     throw new Error( `Invalid AST: ${inner}` )
-                if ( !Converter.isSupertype( this.head(), inner.head() ) )
+                if ( !SyntacticTypes.isSupertype( this.head(), inner.head() ) )
                     throw new Error(
                         `Invalid AST, ${this.head()} not a supertype of ${inner.head()}` )
                 return inner.compact()
@@ -121,14 +122,14 @@ export class AST extends Array {
         if ( !language )
             throw new Error( `Not a valid language: ${langName}` )
         // if it's just a syntactic type wrapper, ensure it's around exactly 1 item
-        if ( Converter.isSyntacticType( this.head() ) ) {
+        if ( SyntacticTypes.includes( this.head() ) ) {
             if ( this.numArgs() != 1 )
                 throw new Error( `Invalid AST: ${this}` )
             // return the interior, possibly with groupers if the type
             // hierarchy requires it (the inner is not a subtype of the outer)
             const result = this.arg( 0 ).writeIn( langName )
-            if ( !Converter.isSyntacticType( this.arg( 0 ) )
-              || Converter.isSupertypeOrEqual( this.head(), this.arg( 0 ) ) )
+            if ( !SyntacticTypes.includes( this.arg( 0 ) )
+              || SyntacticTypes.isSupertypeOrEqual( this.head(), this.arg( 0 ) ) )
                 return result
             if ( language.groupers.length == 0 )
                 throw new Error( 'Cannot fix precedence in language without groupers' )
@@ -159,7 +160,7 @@ export class AST extends Array {
                 innerType = piece.concept().parentType
             const correctNesting = outerType == piece[0]
                                 || outerType == innerType
-                                || Converter.isSupertype( outerType, innerType )
+                                || SyntacticTypes.isSupertype( outerType, innerType )
             if ( language.groupers.length > 0 && !correctNesting ) {
                 const left = language.groupers[0]
                 const right = language.groupers[1]
