@@ -28,7 +28,7 @@ converter.addConcept( 'universal',      'sentence',     '(forall (numbervariable
 converter.addConcept( 'existential',    'sentence',     '(exists (numbervariable , sentence))' )
 converter.addConcept( 'existsunique',   'sentence',     '(existsunique (numbervariable , sentence))' )
 
-converter.addLanguage( 'latex', '{', '}' )
+converter.addLanguage( 'latex', [ '{', '}', '(', ')' ] )
 
 converter.addNotation( 'latex', 'infinity',       '\\infty' )
 

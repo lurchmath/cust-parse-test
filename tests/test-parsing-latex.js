@@ -255,6 +255,15 @@ describe( 'Parsing latex', () => {
             ]
         )
         checkLatexJson(
+            '(-x^2)\\cdot(-3)',
+            [ 'multiplication',
+                [ 'numbernegation',
+                    [ 'exponentiation',
+                        [ 'numbervariable', 'x' ], [ 'number', '2' ] ] ],
+                [ 'numbernegation', [ 'number', '3' ] ]
+            ]
+        )
+        checkLatexJson(
             '----1000',
             [ 'numbernegation', [ 'numbernegation', [ 'numbernegation',
                 [ 'numbernegation', [ 'number', '1000' ] ] ] ] ]
@@ -268,7 +277,30 @@ describe( 'Parsing latex', () => {
                 [ 'multiplication', [ 'number', '1' ], [ 'number', '2' ] ] ]
         )
         checkLatexJson(
+            '-(1\\times2)',
+            [ 'numbernegation',
+                [ 'multiplication', [ 'number', '1' ], [ 'number', '2' ] ] ]
+        )
+        checkLatexJson(
             '{-x}^{2\\cdot{-3}}',
+            [ 'exponentiation',
+                [ 'numbernegation',
+                    [ 'numbervariable', 'x' ] ],
+                [ 'multiplication',
+                    [ 'number', '2' ], [ 'numbernegation', [ 'number', '3' ] ] ]
+            ]
+        )
+        checkLatexJson(
+            '(-x)^(2\\cdot(-3))',
+            [ 'exponentiation',
+                [ 'numbernegation',
+                    [ 'numbervariable', 'x' ] ],
+                [ 'multiplication',
+                    [ 'number', '2' ], [ 'numbernegation', [ 'number', '3' ] ] ]
+            ]
+        )
+        checkLatexJson(
+            '(-x)^{2\\cdot(-3)}',
             [ 'exponentiation',
                 [ 'numbernegation',
                     [ 'numbervariable', 'x' ] ],
@@ -409,6 +441,15 @@ describe( 'Parsing latex', () => {
         )
         checkLatexJson(
             '\\lnot{\\top\\Leftrightarrow\\bot}',
+            [ 'logicnegation',
+                [ 'iff',
+                    [ 'logicaltrue' ],
+                    [ 'logicalfalse' ]
+                ]
+            ]
+        )
+        checkLatexJson(
+            '\\lnot(\\top\\Leftrightarrow\\bot)',
             [ 'logicnegation',
                 [ 'iff',
                     [ 'logicaltrue' ],

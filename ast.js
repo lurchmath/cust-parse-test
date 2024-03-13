@@ -126,10 +126,14 @@ export class AST extends Array {
             // return the interior, possibly with groupers if the type
             // hierarchy requires it (the inner is not a subtype of the outer)
             const result = this.arg( 0 ).writeIn( langName )
-            return Converter.isSyntacticType( this.arg( 0 ) )
-                && !Converter.isSupertypeOrEqual( this.head(), this.arg( 0 ) ) ?
-                `${language.leftGrouper}${result}${language.rightGrouper}` :
-                result
+            if ( !Converter.isSyntacticType( this.arg( 0 ) )
+              || Converter.isSupertypeOrEqual( this.head(), this.arg( 0 ) ) )
+                return result
+            if ( language.groupers.length == 0 )
+                throw new Error( 'Cannot fix precedence in language without groupers' )
+            const left = language.groupers[0]
+            const right = language.groupers[1]
+            return left + result + right
         }
         // since it's not a syntactic type, it better be a concept
         if ( !this.isConcept() )
@@ -155,8 +159,10 @@ export class AST extends Array {
             const correctNesting = outerType == piece[0]
                                 || outerType == innerType
                                 || Converter.isSupertype( outerType, innerType )
-            if ( language.leftGrouper && language.rightGrouper && !correctNesting ) {
-                return `${language.leftGrouper}${result}${language.rightGrouper}`
+            if ( language.groupers.length > 0 && !correctNesting ) {
+                const left = language.groupers[0]
+                const right = language.groupers[1]
+                return left + result + right
             } else {
                 return result
             }

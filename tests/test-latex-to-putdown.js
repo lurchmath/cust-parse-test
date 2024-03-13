@@ -78,13 +78,18 @@ describe( 'Converting LaTeX to putdown', () => {
     it( 'correctly converts negations of atomics or factors', () => {
         checkLatexPutdown( '-1\\times2', '(* (- 1) 2)' )
         checkLatexPutdown( 'x\\cdot{-y}', '(* x (- y))' )
+        checkLatexPutdown( 'x\\cdot(-y)', '(* x (- y))' )
         checkLatexPutdown( '{-x^2}\\cdot{-3}', '(* (- (^ x 2)) (- 3))' )
+        checkLatexPutdown( '(-x^2)\\cdot(-3)', '(* (- (^ x 2)) (- 3))' )
         checkLatexPutdown( '----1000', '(- (- (- (- 1000))))' )
     } )
 
     it( 'correctly converts number expressions with groupers', () => {
         checkLatexPutdown( '-{1\\times2}', '(- (* 1 2))' )
+        checkLatexPutdown( '-(1\\times2)', '(- (* 1 2))' )
         checkLatexPutdown( '{-x}^{2\\cdot{-3}}', '(^ (- x) (* 2 (- 3)))' )
+        checkLatexPutdown( '(-x)^(2\\cdot(-3))', '(^ (- x) (* 2 (- 3)))' )
+        checkLatexPutdown( '(-x)^{2\\cdot(-3)}', '(^ (- x) (* 2 (- 3)))' )
     } )
 
     it( 'correctly converts propositional logic atomics', () => {
@@ -134,6 +139,10 @@ describe( 'Converting LaTeX to putdown', () => {
         )
         checkLatexPutdown(
             '\\lnot{\\top\\Leftrightarrow\\bot}',
+            '(not (iff true false))'
+        )
+        checkLatexPutdown(
+            '\\lnot(\\top\\Leftrightarrow\\bot)',
             '(not (iff true false))'
         )
     } )

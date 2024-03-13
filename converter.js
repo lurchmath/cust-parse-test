@@ -1,7 +1,5 @@
 
 // To dos:
-//  - add support for more than one grouper pair per language; support both
-//    `{}` and `()` in LaTeX
 //  - expand set of tests for many new mathematical expressions in many languages,
 //    including expressions that bind variables
 //     - sum, difference (as sum of negation), associative lists of these
@@ -53,11 +51,12 @@ export class Converter {
             if ( Converter.isAtomicType( last ) )
                 this.addConcept( `grouped${last}`, last, hierarchy[1] )
         } )
-        this.addLanguage( 'putdown', null, null, x =>
+        this.addLanguage( 'putdown', null, x =>
             x.replaceAll( '( ', '(' ).replaceAll( ' )', ')' ) )
     }
 
-    addLanguage ( name, leftGrouper = '(', rightGrouper = ')', linter = x => x ) {
+    addLanguage ( name, groupers = [ '(', ')' ], linter = x => x ) {
+        if ( !groupers ) groupers = [ ] // support passing null
         // Create both things the language needs--a tokenizer and a grammar--and
         // store them in this converter's languages map.
         const tokenizer = new Tokenizer()
@@ -65,7 +64,7 @@ export class Converter {
         const grammar = new Grammar()
         grammar.START = Converter.syntacticTypeHierarchies[0][0]
         this.languages.set( name,
-            { name, tokenizer, grammar, leftGrouper, rightGrouper, linter } )
+            { name, tokenizer, grammar, groupers, linter } )
         // If the concept is atomic and has a putdown form, use that as the
         // default notation in the new language; this can be overridden by any
         // later call to addNotation().
@@ -78,11 +77,15 @@ export class Converter {
         Converter.syntacticTypeHierarchies.forEach( hierarchy => {
             for ( let i = 0 ; i < hierarchy.length - 1 ; i++ )
                 grammar.addRule( hierarchy[i], hierarchy[i+1] )
-            if ( leftGrouper && rightGrouper && hierarchy[0] == 'expression' ) {
+            if ( groupers.length > 0 && hierarchy[0] == 'expression' ) {
                 const last = hierarchy[hierarchy.length-1]
                 if ( Converter.isAtomicType( last ) ) {
-                    this.addNotation( name, `grouped${last}`,
-                        `${leftGrouper} A ${rightGrouper}` )
+                    for ( let i = 0 ; i < groupers.length - 1 ; i += 2 ) {
+                        const left = groupers[i]
+                        const right = groupers[i+1]
+                        this.addNotation( name, `grouped${last}`,
+                            `${left} A ${right}` )
+                    }
                 }
             }
         } )
@@ -153,7 +156,11 @@ export class Converter {
         // if this is an atomic concept, delete any previous notation it had
         // (since that was probably the putdown default installed at language
         // creation time, which the user is now overriding)
-        if ( Converter.isAtomicType( concept.parentType ) )
+        // but this does not apply to groupers; there can be more than one
+        // set of groupers in a language, and thus more than one way to form an
+        // atomic concept using groupers
+        if ( Converter.isAtomicType( concept.parentType )
+          && !conceptName.startsWith( 'grouped' ) )
             delete language.grammar.rules[conceptName]
         // convert notation to array if needed and extract its tokens
         if ( notation instanceof RegExp )
