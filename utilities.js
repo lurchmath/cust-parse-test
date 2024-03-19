@@ -4,7 +4,7 @@ export const escapeRegExp = ( str ) =>
 
 export const putdownLeaves = putdown => {
     if ( putdown.length == 0 ) return [ ]
-    const match = /^[^()\s,]+/.exec( putdown )
+    const match = /^[^:{}()\[\]\s,]+/.exec( putdown )
     return match ?
         [ match[0], ...putdownLeaves( putdown.substring( match[0].length ) ) ] :
         putdownLeaves( putdown.substring( 1 ) )

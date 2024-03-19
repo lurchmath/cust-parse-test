@@ -1,9 +1,12 @@
 
 // To dos:
 //  - document every function
-//  - test everything in the utilities module
 //  - expand set of tests for many new mathematical expressions in many languages,
 //    including expressions that bind variables
+// (note that all of the Math299 language features are documented on the following
+// page, so that you can try to replicate that feature set, and so that you can
+// update your Lurch docs in the lurchmath.github.io repo as well.)
+// https://proveitmath.org/lurch/lde/src/experimental/parsers/lurch-parser-docs.html
 //     - sum, difference (as sum of negation), associative lists of these
 //     - product, quotient (as product of reciprocal), fraction, associative lists
 //     - exponents, factorial

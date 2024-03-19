@@ -17,6 +17,8 @@ describe( 'Converter instance', () => {
         expect(
             Converter.regularExpressions.number
         ).to.be.instanceOf( RegExp )
+        // defaultVarNames is a string
+        expect( typeof Converter.defaultVarNames ).to.equal( 'string' )
     } )
 
 } )
