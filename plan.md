@@ -1,6 +1,5 @@
 
 General to dos:
- - document every function
  - expand set of tests for many new mathematical expressions in many languages,
    including expressions that bind variables
 (note that all of the Math299 language features are documented on the following
@@ -28,6 +27,8 @@ https://proveitmath.org/lurch/lde/src/experimental/parsers/lurch-parser-docs.htm
    features can be supported
  - add support for features like associativity (in all conversion directions)
  - test whether all MathLive output can be parsed by this LaTeX parser
+ - Eventually make a nice diagram of the syntactic types hierarchy and add it to
+   the documentation for the syntactic-types module.
 
 To dos for ASTs:
  - In writeIn(), rather than just choosing notation 0 as the

@@ -4,7 +4,7 @@ import { Converter } from './converter.js'
 export const converter = new Converter()
 
 converter.addConcept( 'numbervariable', 'atomicnumber', Converter.regularExpressions.oneLetterVariable )
-converter.addConcept( 'number',         'atomicnumber', Converter.regularExpressions.number )
+converter.addConcept( 'number',         'atomicnumber', Converter.regularExpressions.nonnegativeNumber )
 converter.addConcept( 'infinity',       'atomicnumber' )
 
 converter.addConcept( 'exponentiation', 'factor',       '(^ atomicnumber atomicnumber)' )
