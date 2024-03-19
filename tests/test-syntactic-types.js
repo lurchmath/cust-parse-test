@@ -16,37 +16,14 @@ describe( 'Syntactic types hierarchy', () => {
         expect( SyntacticTypes.types ).to.be.instanceOf( Array )
         expect( SyntacticTypes.types.every( name =>
             typeof( name ) == 'string' ) ).to.be.true
-        // supertypeGraph is an object
-        // (Don't test whether it has members or not, because it won't be
-        // populated until the first call it isSupertype().)
-        expect( SyntacticTypes.supertypeGraph ).to.be.instanceOf( Object )
     } )
 
     it( 'should be able to compute the full supertype graph', () => {
         // Ensure the supertype graph has been computed by making any query
         // to it.
         SyntacticTypes.isSupertype( 'a', 'b' )
-        // Spot-check to be sure that the graph has keys it ought to have
-        expect( SyntacticTypes.supertypeGraph['atomicnumber'] ).to.be.ok
-        expect( SyntacticTypes.supertypeGraph['disjunct'] ).to.be.ok
-        expect( SyntacticTypes.supertypeGraph['product'] ).to.be.ok
-        expect( SyntacticTypes.supertypeGraph['sentence'] ).to.be.ok
-        // Spot-check to be sure that the graph includes some of the supertype
-        // relationships that it ought to include, and no others
-        expect( SyntacticTypes.supertypeGraph['atomicnumber'].length ).to.equal( 0 )
-        expect( SyntacticTypes.supertypeGraph['disjunct'].includes( 'conjunct' ) )
-            .to.equal( true )
-        expect( SyntacticTypes.supertypeGraph['disjunct'].includes( 'atomicprop' ) )
-            .to.equal( true )
-        expect( SyntacticTypes.supertypeGraph['expression'].includes( 'sum' ) )
-            .to.equal( true )
-        expect( SyntacticTypes.supertypeGraph['sum'].includes( 'expression' ) )
-            .to.equal( false )
-        expect( SyntacticTypes.supertypeGraph['numberexpr'].includes( 'conjunct' ) )
-            .to.equal( false )
-        expect( SyntacticTypes.supertypeGraph['sentence'].includes( 'conjunct' ) )
-            .to.equal( true )
-        // Repeat the same tests using the isSupertype function
+        // Spot-check to be sure that the supertype graph contains pairs that
+        // it ought to contain, and not contain those it ought not to contain
         expect( SyntacticTypes.isSupertype( 'atomicnumber', 'sum' ) )
             .to.equal( false )
         expect( SyntacticTypes.isSupertype( 'disjunct', 'conjunct' ) )
@@ -99,14 +76,14 @@ describe( 'Syntactic types hierarchy', () => {
 
     it( 'should be able to answer questions about syntactic types', () => {
         // Spot check to be sure it knows about several syntactic types
-        expect( SyntacticTypes.includes( 'sum' ) ).to.equal( true )
-        expect( SyntacticTypes.includes( 'product' ) ).to.equal( true )
-        expect( SyntacticTypes.includes( 'numberexpr' ) ).to.equal( true )
-        expect( SyntacticTypes.includes( 'atomicprop' ) ).to.equal( true )
+        expect( SyntacticTypes.types.includes( 'sum' ) ).to.equal( true )
+        expect( SyntacticTypes.types.includes( 'product' ) ).to.equal( true )
+        expect( SyntacticTypes.types.includes( 'numberexpr' ) ).to.equal( true )
+        expect( SyntacticTypes.types.includes( 'atomicprop' ) ).to.equal( true )
         // Spot check to be sure it knows that not everything is a syntactic type
-        expect( SyntacticTypes.includes( 'lego' ) ).to.equal( false )
-        expect( SyntacticTypes.includes( 'pencil' ) ).to.equal( false )
-        expect( SyntacticTypes.includes( 'coffee' ) ).to.equal( false )
+        expect( SyntacticTypes.types.includes( 'lego' ) ).to.equal( false )
+        expect( SyntacticTypes.types.includes( 'pencil' ) ).to.equal( false )
+        expect( SyntacticTypes.types.includes( 'coffee' ) ).to.equal( false )
         // Check to be sure that all atomic types are classified as such
         expect( SyntacticTypes.isAtomic( 'atomicnumber' ) ).to.equal( true )
         expect( SyntacticTypes.isAtomic( 'atomicprop' ) ).to.equal( true )

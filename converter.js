@@ -111,7 +111,7 @@ export class Converter {
         const data = { parentType, putdown }
         data.typeSequence = putdown instanceof RegExp ? [ ] :
             putdownLeaves( putdown ).filter( leaf =>
-                SyntacticTypes.includes( leaf ) || this.isConcept( leaf ) )
+                SyntacticTypes.types.includes( leaf ) || this.isConcept( leaf ) )
         this.concepts.set( name, data )
         if ( this.isLanguage( 'putdown' ) ) {
             if ( putdown instanceof RegExp ) {

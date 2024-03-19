@@ -87,12 +87,12 @@ export class AST extends Array {
             throw new Error( `Empty ASTs not allowed` )
         if ( this.head().startsWith( 'groupedatomic' ) && this.numArgs() == 1 )
             return this.arg( 0 ).compact()
-        if ( SyntacticTypes.includes( this.head() ) ) {
+        if ( SyntacticTypes.types.includes( this.head() ) ) {
             if ( this.numArgs() != 1 )
                 throw new Error( `Invalid AST: ${this}` )
             const inner = this.arg( 0 )
             if ( !( inner instanceof AST ) ) return inner
-            if ( SyntacticTypes.includes( inner.head() ) ) {
+            if ( SyntacticTypes.types.includes( inner.head() ) ) {
                 if ( inner.numArgs() != 1 )
                     throw new Error( `Invalid AST: ${inner}` )
                 if ( !SyntacticTypes.isSupertype( this.head(), inner.head() ) )
@@ -122,13 +122,13 @@ export class AST extends Array {
         if ( !language )
             throw new Error( `Not a valid language: ${langName}` )
         // if it's just a syntactic type wrapper, ensure it's around exactly 1 item
-        if ( SyntacticTypes.includes( this.head() ) ) {
+        if ( SyntacticTypes.types.includes( this.head() ) ) {
             if ( this.numArgs() != 1 )
                 throw new Error( `Invalid AST: ${this}` )
             // return the interior, possibly with groupers if the type
             // hierarchy requires it (the inner is not a subtype of the outer)
             const result = this.arg( 0 ).writeIn( langName )
-            if ( !SyntacticTypes.includes( this.arg( 0 ) )
+            if ( !SyntacticTypes.types.includes( this.arg( 0 ) )
               || SyntacticTypes.isSupertypeOrEqual( this.head(), this.arg( 0 ) ) )
                 return result
             if ( language.groupers.length == 0 )
