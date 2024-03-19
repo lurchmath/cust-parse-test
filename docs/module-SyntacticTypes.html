@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Customizable Parsing Test Repository: SyntacticTypes</title>
+    
+      <link type="text/css" rel="stylesheet" href="styles/vendor/prism-default.css">
+    
+    <link type="text/css" rel="stylesheet" href="styles/styles.css">
+    
+    
+    <style>
+      :root {
+      
+      
+        --nav-width: 335px;
+      
+      }
+    </style>
+    
+</head>
+<body>
+
+<header class="layout-header">
+  
+  <h1>
+    <a href="./index.html">
+      Customizable Parsing Test Repository
+    </a>
+  </h1>
+  <nav class="layout-nav">
+    <ul><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class" title="class">C</span><span class="nav-item-name is-class"><a href="AST.html">AST</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#.fromJSON">fromJSON</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#arg">arg</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#args">args</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#compact">compact</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#concept">concept</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#head">head</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#isConcept">isConcept</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#numArgs">numArgs</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#toJSON">toJSON</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#toString">toString</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#writeIn">writeIn</a></span></li><li class="nav-heading"><span class="nav-item-type type-class" title="class">C</span><span class="nav-item-name is-class"><a href="Converter.html">Converter</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="Converter.html#regularExpressions">regularExpressions</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#addConcept">addConcept</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#addLanguage">addLanguage</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#addNotation">addNotation</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#concepts">concepts</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#convert">convert</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#isConcept">isConcept</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#isLanguage">isLanguage</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#languages">languages</a></span></li></ul><ul><li class="nav-heading">Modules</li><li class="nav-heading"><span class="nav-item-type type-module" title="module">M</span><span class="nav-item-name is-module"><a href="module-SyntacticTypes.html">SyntacticTypes</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.isAtomic">isAtomic</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.isSupertype">isSupertype</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.isSupertypeOrEqual">isSupertypeOrEqual</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.lowestSubtype">lowestSubtype</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.types">types</a></span></li></ul><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="global.html#escapeRegExp">escapeRegExp</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="global.html#notationStringToArray">notationStringToArray</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="global.html#putdownLeaves">putdownLeaves</a></span></li>
+  </nav>
+</header>
+
+
+<main class="layout-main ">
+  <div class="container">
+    <p class="page-kind">Module</p>
+    <h1 class="page-title">SyntacticTypes</h1>
+    
+
+
+
+
+<section>
+
+
+<header class="not-class">
+
+
+    
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+
+
+
+    
+        
+            <div class="description"><p>This constant stores a collection of hierarchies of syntactic types used in
+mathematical writing.  We distinguish &quot;syntactic types&quot; from &quot;semantic types&quot;
+in the following way.</p>
+<p>Mathematics notation tends to use certain precedences regardless of the
+meaning of the symbols.  For example, the LaTeX expression <code>x+y\cdot z</code> will
+be read by a reader as a sum of x and the product of y and z, regardless of
+whether those operations are standard addition and multiplication of numbers
+or some other operations, such as string concatenation and repetition, or
+matrices, or ordinary addition of a number with a dot product of vectors, or
+anything else.</p>
+<p>Therefore this repository factors out of the definition of any one parser the
+general notions of precedence that are used across mathematical notation, so
+that each parser does not need to redefine such precedences (as inclusions of
+types in one another) for itself.  This makes the definition of each parser
+easier for the author, less error-prone, and more predicatable for the end
+user of that parser.</p>
+<p>In the example above, sums and products are syntactic types, because we can
+speak of their relative precedence regardless of what &quot;sum&quot; or &quot;product&quot;
+means in any particular situation.  A product can always be one of the
+summands in a sum, but sums cannot be any of the factors in a product, unless
+the writer of the expression puts some grouping symbol (such as parentheses)
+around them to change the default precedence.  This has nothing to do with
+what adding or multiplying means, so we call them syntactic types.</p>
+<p>A user of this repository can define notations by adding semantic types as
+subtypes of the syntactic types.  For example, the language author might say
+that <code>number_multiplication</code> is a subtype of <code>product</code> and is written using
+such-and-such notation.  Then <code>number_multiplication</code> will be a semantic
+type, while <code>product</code> always remains a syntactic type.  The language author
+does not need to specify the precedence of semantic types, because the
+semantic types are situated within syntactic types, from which they get their
+behavior.</p>
+<p>This particular variable stores chains of parent-child relationships.  That
+is, if it contains <code>[[A_1,...,A_n],[B_1,...,B_n],...]</code> then <code>A_1</code> is a parent
+type of <code>A_2</code>, which is a parent type of <code>A_3</code>, and so on.  Similarly, <code>B_1</code>
+is a parent type of <code>B_2</code>, which is a parent type of <code>B_3</code>, and so on, but
+there is no assumed relationship between any <code>A_i</code> and <code>B_j</code> unless the same
+type appears in both chains.</p>
+<p>The topmost type in the hierarchy is <code>expression</code>, and there should be no
+types above it.  The lowest types in the hierarchy must all begin with the
+word <code>atomic</code>, as in <code>atomic_proposition</code> or <code>atomicint</code> or <code>atomicnumber</code>.</p></div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h4 class="method-heading">See</h4>
+        <ul>
+            
+                <li><a href="module-SyntacticTypes.html#.types">module:SyntacticTypes.types</a></li>
+            
+                <li><a href="module-SyntacticTypes.html#.isAtomic">module:SyntacticTypes.isAtomic</a></li>
+            
+        </ul>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h4 class="method-heading">Source</h4>
+    <ul>
+        <li class="method-source">
+            <a href="syntactic-types.js.html">syntactic-types.js</a><a href="syntactic-types.js.html#source.2">, line 2</a>
+        </li>
+    </ul>
+
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+     
+
+    
+
+    
+
+
+    
+        <h3 class="subtitle">Members</h3>
+
+        
+            
+
+<article class="member">
+    <div class="method-type">
+        <span class="method-type-signature is-static">static</span><span class="method-type-signature is-constant">constant</span>
+    </div>
+<h4 class="member-name" id=".isAtomic">isAtomic<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>This function embodies the convention mentioned in the documentation for the
+module:SyntacticTypes.hierarchies variable, which is that atomic
+types must begin with the word <code>atomic</code>.  This function just checks to see if
+that prefix is present.</p>
+</div>
+
+
+
+
+
+
+
+<div class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h4 class="method-heading">See</h4>
+        <ul>
+            
+                <li>module:SyntacticTypes.hierarchies</li>
+            
+        </ul>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    <h4>Source</h4>
+    <ul>
+        <li class="method-source">
+            <a href="syntactic-types.js.html">syntactic-types.js</a><a href="syntactic-types.js.html#source.88">, line 88</a>
+        </li>
+    </ul>
+
+
+</article>
+        
+            
+
+<article class="member">
+    <div class="method-type">
+        <span class="method-type-signature is-static">static</span><span class="method-type-signature is-constant">constant</span>
+    </div>
+<h4 class="member-name" id=".isSupertype">isSupertype<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>Is the syntactic type <code>a</code> a proper supertype of the syntactic type <code>b</code>?  This
+function uses the data in the module:SyntacticTypes.hierarchies
+variable to answer that question.  Note that this function is not reflexive,
+but the <a href="module-SyntacticTypes.html#.isSupertypeOrEqual">module:SyntacticTypes.isSupertypeOrEqual</a> version is.</p>
+</div>
+
+
+
+
+
+
+
+<div class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h4 class="method-heading">See</h4>
+        <ul>
+            
+                <li><a href="module-SyntacticTypes.html#.isSupertypeOrEqual">module:SyntacticTypes.isSupertypeOrEqual</a></li>
+            
+        </ul>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    <h4>Source</h4>
+    <ul>
+        <li class="method-source">
+            <a href="syntactic-types.js.html">syntactic-types.js</a><a href="syntactic-types.js.html#source.154">, line 154</a>
+        </li>
+    </ul>
+
+
+</article>
+        
+            
+
+<article class="member">
+    <div class="method-type">
+        <span class="method-type-signature is-static">static</span><span class="method-type-signature is-constant">constant</span>
+    </div>
+<h4 class="member-name" id=".isSupertypeOrEqual">isSupertypeOrEqual<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>Is the syntactic type <code>a</code> a supertype of the syntactic type <code>b</code>, whicn
+includes the possibility that <code>a</code> and <code>b</code> may be equal?  This function is the
+same as the <a href="module-SyntacticTypes.html#.isSupertype">module:SyntacticTypes.isSupertype</a> function, except that
+it includes the possibility that <code>a</code> and <code>b</code> may be equal.  That is, this
+function is reflexive.</p>
+</div>
+
+
+
+
+
+
+
+<div class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    <h4>Source</h4>
+    <ul>
+        <li class="method-source">
+            <a href="syntactic-types.js.html">syntactic-types.js</a><a href="syntactic-types.js.html#source.171">, line 171</a>
+        </li>
+    </ul>
+
+
+</article>
+        
+            
+
+<article class="member">
+    <div class="method-type">
+        <span class="method-type-signature is-static">static</span><span class="method-type-signature is-constant">constant</span>
+    </div>
+<h4 class="member-name" id=".lowestSubtype">lowestSubtype<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>A syntactic type has a lowest subtype if that syntactic type appears in
+exactly one of the chains in the module:SyntacticTypes.hierarchies
+variable.  If there is such a chain, this function returns the name of the
+lowest subtype in that chain (which is often atomic).  If not, this function
+returns its input, so that the result is always a valid type name.</p>
+</div>
+
+
+
+
+
+
+
+<div class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    <h4>Source</h4>
+    <ul>
+        <li class="method-source">
+            <a href="syntactic-types.js.html">syntactic-types.js</a><a href="syntactic-types.js.html#source.100">, line 100</a>
+        </li>
+    </ul>
+
+
+</article>
+        
+            
+
+<article class="member">
+    <div class="method-type">
+        <span class="method-type-signature is-static">static</span><span class="method-type-signature is-constant">constant</span>
+    </div>
+<h4 class="member-name" id=".types">types<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>A single JavaScript array containing all types mentioned in the syntactic
+types hierarchies defined in the module:SyntacticTypes.hierarchies
+variable.  Unlike the hierarchies variable, this array is flat, containing
+only strings, and containing each type exactly once.  Its order does not
+matter; the order matters in the module:SyntacticTypes.hierarchies
+variable, but not here.</p>
+<p>One common use of this variable is to check whether a given identifier is the
+name of a syntactic type, by checking <code>.includes()</code> with respect to this
+array.</p>
+</div>
+
+
+
+
+
+
+
+<div class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h4 class="method-heading">See</h4>
+        <ul>
+            
+                <li>module:SyntacticTypes.hierarchies</li>
+            
+        </ul>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    <h4>Source</h4>
+    <ul>
+        <li class="method-source">
+            <a href="syntactic-types.js.html">syntactic-types.js</a><a href="syntactic-types.js.html#source.75">, line 75</a>
+        </li>
+    </ul>
+
+
+</article>
+        
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+  </div>
+</main>
+
+<footer class="layout-footer">
+  <div class="container">
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a>
+  </div>
+</footer>
+
+
+
+<script src="scripts/prism.dev.js"></script>
+</body>
+</html>

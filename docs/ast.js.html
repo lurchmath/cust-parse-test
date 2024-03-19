@@ -1,4 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Customizable Parsing Test Repository: ast.js</title>
+    
+      <link type="text/css" rel="stylesheet" href="styles/vendor/prism-default.css">
+    
+    <link type="text/css" rel="stylesheet" href="styles/styles.css">
+    
+    
+    <style>
+      :root {
+      
+      
+        --nav-width: 335px;
+      
+      }
+    </style>
+    
+</head>
+<body>
 
+<header class="layout-header">
+  
+  <h1>
+    <a href="./index.html">
+      Customizable Parsing Test Repository
+    </a>
+  </h1>
+  <nav class="layout-nav">
+    <ul><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class" title="class">C</span><span class="nav-item-name is-class"><a href="AST.html">AST</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#.fromJSON">fromJSON</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#arg">arg</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#args">args</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#compact">compact</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#concept">concept</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#head">head</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#isConcept">isConcept</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#numArgs">numArgs</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#toJSON">toJSON</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#toString">toString</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#writeIn">writeIn</a></span></li><li class="nav-heading"><span class="nav-item-type type-class" title="class">C</span><span class="nav-item-name is-class"><a href="Converter.html">Converter</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="Converter.html#regularExpressions">regularExpressions</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#addConcept">addConcept</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#addLanguage">addLanguage</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#addNotation">addNotation</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#concepts">concepts</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#convert">convert</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#isConcept">isConcept</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#isLanguage">isLanguage</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#languages">languages</a></span></li></ul><ul><li class="nav-heading">Modules</li><li class="nav-heading"><span class="nav-item-type type-module" title="module">M</span><span class="nav-item-name is-module"><a href="module-SyntacticTypes.html">SyntacticTypes</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.isAtomic">isAtomic</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.isSupertype">isSupertype</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.isSupertypeOrEqual">isSupertypeOrEqual</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.lowestSubtype">lowestSubtype</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.types">types</a></span></li></ul><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="global.html#escapeRegExp">escapeRegExp</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="global.html#notationStringToArray">notationStringToArray</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="global.html#putdownLeaves">putdownLeaves</a></span></li>
+  </nav>
+</header>
+
+
+<main class="layout-main  layout-content--source">
+  <div class="container">
+    <p class="page-kind">source</p>
+    <h1 class="page-title">ast.js</h1>
+    
+
+
+
+    
+
+<section>
+    <article>
+        <pre id="source" class="source-page line-numbers"><code class="language-js">
 import SyntacticTypes from './syntactic-types.js'
 import { escapeRegExp } from './utilities.js'
 
@@ -191,13 +239,13 @@ export class AST extends Array {
                 ...[ head, ...json ].map( piece =>
                     AST.fromJSON( converter, language, piece ) ) )
         const rhss = language.grammar.rules[head]
-        for ( let i = 0 ; i < rhss.length ; i++ ) {
+        for ( let i = 0 ; i &lt; rhss.length ; i++ ) {
             if ( rhss[i].length != json.length ) continue
             const matches = rhss[i].every( ( piece, index ) => {
                 const isNotation = piece instanceof RegExp
                 const isText = !( json[index] instanceof Array )
                 return isNotation == isText
-                    && ( !isNotation || piece.test( json[index] ) )
+                    &amp;&amp; ( !isNotation || piece.test( json[index] ) )
             } )
             if ( !matches ) continue
             if ( rhss[i].notation instanceof RegExp )
@@ -235,7 +283,7 @@ export class AST extends Array {
         // console.log( 'compactifying:' + ast )
         if ( this.length == 0 )
             throw new Error( `Empty ASTs not allowed` )
-        if ( this.head().startsWith( 'groupedatomic' ) && this.numArgs() == 1 )
+        if ( this.head().startsWith( 'groupedatomic' ) &amp;&amp; this.numArgs() == 1 )
             return this.arg( 0 ).compact()
         if ( SyntacticTypes.types.includes( this.head() ) ) {
             if ( this.numArgs() != 1 )
@@ -326,7 +374,7 @@ export class AST extends Array {
             const correctNesting = outerType == piece[0]
                                 || outerType == innerType
                                 || SyntacticTypes.isSupertype( outerType, innerType )
-            if ( language.groupers.length > 0 && !correctNesting ) {
+            if ( language.groupers.length > 0 &amp;&amp; !correctNesting ) {
                 const left = language.groupers[0]
                 const right = language.groupers[1]
                 return left + result + right
@@ -367,3 +415,24 @@ export class AST extends Array {
     }
 
 }
+</code></pre>
+    </article>
+</section>
+
+
+
+
+  </div>
+</main>
+
+<footer class="layout-footer">
+  <div class="container">
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a>
+  </div>
+</footer>
+
+
+
+<script src="scripts/prism.dev.js"></script>
+</body>
+</html>

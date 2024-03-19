@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Customizable Parsing Test Repository: utilities.js</title>
+    
+      <link type="text/css" rel="stylesheet" href="styles/vendor/prism-default.css">
+    
+    <link type="text/css" rel="stylesheet" href="styles/styles.css">
+    
+    
+    <style>
+      :root {
+      
+      
+        --nav-width: 335px;
+      
+      }
+    </style>
+    
+</head>
+<body>
+
+<header class="layout-header">
+  
+  <h1>
+    <a href="./index.html">
+      Customizable Parsing Test Repository
+    </a>
+  </h1>
+  <nav class="layout-nav">
+    <ul><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class" title="class">C</span><span class="nav-item-name is-class"><a href="AST.html">AST</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#.fromJSON">fromJSON</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#arg">arg</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#args">args</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#compact">compact</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#concept">concept</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#head">head</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#isConcept">isConcept</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#numArgs">numArgs</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#toJSON">toJSON</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#toString">toString</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#writeIn">writeIn</a></span></li><li class="nav-heading"><span class="nav-item-type type-class" title="class">C</span><span class="nav-item-name is-class"><a href="Converter.html">Converter</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="Converter.html#regularExpressions">regularExpressions</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#addConcept">addConcept</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#addLanguage">addLanguage</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#addNotation">addNotation</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#concepts">concepts</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#convert">convert</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#isConcept">isConcept</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#isLanguage">isLanguage</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#languages">languages</a></span></li></ul><ul><li class="nav-heading">Modules</li><li class="nav-heading"><span class="nav-item-type type-module" title="module">M</span><span class="nav-item-name is-module"><a href="module-SyntacticTypes.html">SyntacticTypes</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.isAtomic">isAtomic</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.isSupertype">isSupertype</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.isSupertypeOrEqual">isSupertypeOrEqual</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.lowestSubtype">lowestSubtype</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.types">types</a></span></li></ul><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="global.html#escapeRegExp">escapeRegExp</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="global.html#notationStringToArray">notationStringToArray</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="global.html#putdownLeaves">putdownLeaves</a></span></li>
+  </nav>
+</header>
+
+
+<main class="layout-main  layout-content--source">
+  <div class="container">
+    <p class="page-kind">source</p>
+    <h1 class="page-title">utilities.js</h1>
+    
+
+
+
+    
+
+<section>
+    <article>
+        <pre id="source" class="source-page line-numbers"><code class="language-js">
+/**
+ * Escape all characters in the given string so that it can be used as a regular
+ * expression that will match only the literal string given.  For example, if
+ * the input is `"[x]"`, this function will escape it to `"\[x\]"`, so that if a
+ * regular expression is constructed from the result, it will match only the
+ * original string `"[x]"`, rather than the string `"x"`.
+ * 
+ * @param {String} str - the string to escape
+ * @returns {String} the escaped version of `str`
+ */
+export const escapeRegExp = ( str ) =>
+    str.replace( /[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&amp;' )
+
+/**
+ * A putdown expression represents a syntax tree in a straightforward way.  The
+ * leaves of that tree are the symbols appearing in it, because they have no
+ * children.  This function extracts the list of leaves (as an array, not a set,
+ * so they are ordered and may repeat) from the given putdown expression.
+ * 
+ * It does so via a trivial string processing operation that does not involve
+ * parsing the putdown code into a string.  Consequently, this function can
+ * accept partial putdown code that is not a fully syntactically correct
+ * expression (such as `(+ 1 2` for example) and will still return the leaves
+ * (in that case, the array `["+", "1", "2"]`]).
+ * 
+ * @param {String} putdown - the putdown code whose leaves should be extracted
+ * @returns {String[]} the leaves appearing in the given putdown code
+ */
+export const putdownLeaves = putdown => {
+    if ( putdown.length == 0 ) return [ ]
+    const match = /^[^:{}()\[\]\s,]+/.exec( putdown )
+    return match ?
+        [ match[0], ...putdownLeaves( putdown.substring( match[0].length ) ) ] :
+        putdownLeaves( putdown.substring( 1 ) )
+}
+
+/**
+ * The Earley parsing library used in this repository expects grammar rules to
+ * be defined by an array containing a mixture of strings and regular
+ * expressions.  A string is used to represent a non-terminal symbol, and a
+ * regular expression is used to represent a terminal symbol.  But it is
+ * typically more convenient to write a rule as a single string.  For example, a
+ * standard summation of two variables is more convenient to write as `"x+y"`
+ * instead of as `["x",/\+/,"y"]`.  This function converts strings in the
+ * simpler form to arrays of strings and regular expressions in the more
+ * complex form.  It treats any identifier mentioned in the `variables` array as
+ * a nonterminal, and represents it as a string, and any other sequence of
+ * non-space characters as a terminal, and represents it as a regular
+ * expression.
+ * 
+ * @param {String} str - the notation to convert into an array
+ * @param {String[]} variables - the names of the variables used in the notation
+ * @returns {Array} the notation in the more complex form documented
+ */
+export const notationStringToArray = ( str, variables ) => {
+    const result = [ ]
+    let match
+    let mayNotContinueString
+    while ( str.length > 0 ) {
+        if ( match = /^\s+/.exec( str ) ) {
+            str = str.substring( match[0].length )
+            mayNotContinueString = true
+            continue
+        }
+        let justSawType = false
+        for ( let i = 0 ; !justSawType &amp;&amp; i &lt; variables.length ; i++ ) {
+            const startsWithThis = new RegExp( `^${variables[i]}\\b` )
+            if ( startsWithThis.test( str ) ) {
+                result.push( variables[i] )
+                str = str.substring( variables[i].length )
+                justSawType = true
+            }
+        }
+        if ( justSawType ) {
+            mayNotContinueString = true
+            continue
+        }
+        if ( result.length == 0 || mayNotContinueString )
+            result.push( str[0] )
+        else
+            result[result.length-1] += str[0]
+        mayNotContinueString = false
+        str = str.substring( 1 )
+    }
+    return result.map( piece =>
+        variables.includes( piece ) ? piece :
+            new RegExp( escapeRegExp( piece ) ) )
+}
+</code></pre>
+    </article>
+</section>
+
+
+
+
+  </div>
+</main>
+
+<footer class="layout-footer">
+  <div class="container">
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a>
+  </div>
+</footer>
+
+
+
+<script src="scripts/prism.dev.js"></script>
+</body>
+</html>

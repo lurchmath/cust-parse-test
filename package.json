@@ -5,7 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "node ./node_modules/mocha/bin/mocha.js tests/"
+    "test": "node ./node_modules/mocha/bin/mocha.js tests/",
+	"docs": "rm -rf docs && jsdoc *.js -d docs -R doc-main.md -c jsdoc-conf.json --verbose"
   },
   "author": "Nathan Carter (ncarter@bentley.edu)",
   "license": "MIT",
@@ -14,6 +15,7 @@
   },
   "devDependencies": {
     "chai": "^5.1.0",
-    "mocha": "^10.3.0"
+    "mocha": "^10.3.0",
+    "tidy-jsdoc": "^1.4.1"
   }
 }

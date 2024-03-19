@@ -1,0 +1,1922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Customizable Parsing Test Repository: AST</title>
+    
+      <link type="text/css" rel="stylesheet" href="styles/vendor/prism-default.css">
+    
+    <link type="text/css" rel="stylesheet" href="styles/styles.css">
+    
+    
+    <style>
+      :root {
+      
+      
+        --nav-width: 335px;
+      
+      }
+    </style>
+    
+</head>
+<body>
+
+<header class="layout-header">
+  
+  <h1>
+    <a href="./index.html">
+      Customizable Parsing Test Repository
+    </a>
+  </h1>
+  <nav class="layout-nav">
+    <ul><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class" title="class">C</span><span class="nav-item-name is-class"><a href="AST.html">AST</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#.fromJSON">fromJSON</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#arg">arg</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#args">args</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#compact">compact</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#concept">concept</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#head">head</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#isConcept">isConcept</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#numArgs">numArgs</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#toJSON">toJSON</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#toString">toString</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#writeIn">writeIn</a></span></li><li class="nav-heading"><span class="nav-item-type type-class" title="class">C</span><span class="nav-item-name is-class"><a href="Converter.html">Converter</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="Converter.html#regularExpressions">regularExpressions</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#addConcept">addConcept</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#addLanguage">addLanguage</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#addNotation">addNotation</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#concepts">concepts</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#convert">convert</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#isConcept">isConcept</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#isLanguage">isLanguage</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#languages">languages</a></span></li></ul><ul><li class="nav-heading">Modules</li><li class="nav-heading"><span class="nav-item-type type-module" title="module">M</span><span class="nav-item-name is-module"><a href="module-SyntacticTypes.html">SyntacticTypes</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.isAtomic">isAtomic</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.isSupertype">isSupertype</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.isSupertypeOrEqual">isSupertypeOrEqual</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.lowestSubtype">lowestSubtype</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.types">types</a></span></li></ul><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="global.html#escapeRegExp">escapeRegExp</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="global.html#notationStringToArray">notationStringToArray</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="global.html#putdownLeaves">putdownLeaves</a></span></li>
+  </nav>
+</header>
+
+
+<main class="layout-main ">
+  <div class="container">
+    <p class="page-kind">Class</p>
+    <h1 class="page-title">AST</h1>
+    
+
+
+
+
+<section>
+
+
+<header class="class">
+
+
+    
+        
+        <!-- <h2>AST</h2> -->
+
+        
+
+        
+
+        
+            
+            <div class="class-description"><p>An abstract syntax tree (AST) is a data structure typically created by
+parsing text using a grammar.  We create this class for that purpose.  It is
+quite lightweight, subclassing <code>Array</code> and storing the operator and operands
+in the elements of the array as <code>[operator,...operands]</code>.  The only other
+attributes the AST has are the <a href="Converter.html">Converter</a> instance that created it
+(through parsing) and the language from which it was parsed (i.e., the
+grammar).</p>
+<p>Any AST object then has methods that make it easier to work with than a
+simple JavaScript array, for workflows that involve parsing, representing,
+and classifying.</p></div>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+
+
+
+    
+        
+
+
+
+
+
+    
+
+
+    
+    <h3 class="subtitle">Constructor</h3>
+    
+
+    <div class="method-type">
+    
+    </div>
+
+    <h4 class="method-name" id="AST">new AST<span class="signature">(converter, language, &hellip;components)</span><span class="return-type-signature"></span>
+    </h4>
+
+
+
+
+
+<div class="method-description">
+    
+    <p>Construct a new AST.  The first two parameters are described below.  The
+final parameter must be a nonempty list of components, each of which is
+one of the following:</p>
+<ul>
+<li>a string (meaning a leaf of the AST, treated as a symbol/identifier)</li>
+<li>an AST, so that ASTs can be recursive, since they are trees</li>
+<li>an array of any of these, which will be converted into an AST</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+    <h4 class="method-heading">Parameters</h4>
+    
+
+<ul class="method-params">
+    
+
+        <li>
+            
+                <span class="param-name">converter</span>
+            
+
+            
+                
+
+
+    <span class="param-type">
+        <code><a href="Converter.html">Converter</a></code>
+    </span>
+    
+
+            
+
+            
+                <span class="param-attributes">
+                
+
+                
+
+                
+                </span>
+            
+
+            
+
+            <div class="param-description"><p>the converter that created this AST</p></div>
+            
+        </li>
+
+    
+
+        <li>
+            
+                <span class="param-name">language</span>
+            
+
+            
+                
+
+
+    <span class="param-type">
+        <code>Object</code>
+    </span>
+    
+
+            
+
+            
+                <span class="param-attributes">
+                
+
+                
+
+                
+                </span>
+            
+
+            
+
+            <div class="param-description"><p>the language from which it was parsed (which
+must be one of the values in <code>converter.languages</code>)</p></div>
+            
+        </li>
+
+    
+
+        <li>
+            
+                <span class="param-name">components</span>
+            
+
+            
+                
+
+
+    <span class="param-type">
+        <code>any</code>
+    </span>
+    
+
+            
+
+            
+                <span class="param-attributes">
+                
+
+                
+
+                
+                    &lt;repeatable&gt;<br>
+                
+                </span>
+            
+
+            
+
+            <div class="param-description"><p>the operator and operands of this AST, in
+that order (operator first, operands in the order appropriate for the
+operator)</p></div>
+            
+        </li>
+
+    
+</ul>
+
+
+
+
+
+<div class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h4 class="method-heading">Source</h4>
+    <ul>
+        <li class="method-source">
+            <a href="ast.js.html">ast.js</a><a href="ast.js.html#source.18">, line 18</a>
+        </li>
+    </ul>
+
+
+
+    
+    </div>
+
+    
+
+    
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="AST.html">AST</a></dt>
+            <dd></dd>
+        </dl>
+    
+
+     
+
+    
+
+    
+
+
+    
+
+    
+        <h3 class="subtitle">Methods</h3>
+
+        
+            
+
+
+    <article class="method">
+
+
+
+
+    
+
+
+    
+
+    <div class="method-type">
+    <span class="method-type-signature is-static">static</span>
+    </div>
+
+    <h4 class="method-name" id=".fromJSON">fromJSON<span class="signature">(converter, language, json)</span><span class="return-type-signature"> &rarr; {<a href="AST.html">AST</a>}</span>
+    </h4>
+
+
+
+
+
+<div class="method-description">
+    
+    <p>The <a href="Converter.html">Converter</a> class can parse text into hierarchies of JavaScript
+arrays.  Those arrays sometimes contain unnecessary information about the
+details of the parsing.  For instance, if <code>x*y</code> were the notation for
+multiplication, then the <a href="Converter.html">Converter</a> class would produce an array
+with contents something like <code>['multiplication','x','*','y']</code>.  This
+function not only converts such an array into an AST instance, but also
+removes the unnecessary <code>'*'</code> entry, since the meaning is clear from the
+first element of the array anyway.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h4 class="method-heading">Parameters</h4>
+    
+
+<ul class="method-params">
+    
+
+        <li>
+            
+                <span class="param-name">converter</span>
+            
+
+            
+                
+
+
+    <span class="param-type">
+        <code><a href="Converter.html">Converter</a></code>
+    </span>
+    
+
+            
+
+            
+
+            
+
+            <div class="param-description"><p>the converter that created the JSON in the
+<code>json</code> parameter</p></div>
+            
+        </li>
+
+    
+
+        <li>
+            
+                <span class="param-name">language</span>
+            
+
+            
+                
+
+
+    <span class="param-type">
+        <code>Object</code>
+    </span>
+    
+
+            
+
+            
+
+            
+
+            <div class="param-description"><p>the language from which it was parsed (which
+must be one of the values in <code>converter.languages</code>)</p></div>
+            
+        </li>
+
+    
+
+        <li>
+            
+                <span class="param-name">json</span>
+            
+
+            
+                
+
+
+    <span class="param-type">
+        <code>Array</code>
+    </span>
+    
+
+            
+
+            
+
+            
+
+            <div class="param-description"><p>a hierarchy of JavaScript Arrays (with strings as
+leaves) representing an AST</p></div>
+            
+        </li>
+
+    
+</ul>
+
+
+
+
+
+<div class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</div>
+
+
+
+    <h4 class="method-heading">Returns</h4>
+    <ul>
+    
+        <li class="method-returns">
+            
+                <code>AST</code>
+            
+            
+                <p>the AST represented by the JSON</p>
+            
+        </li>
+    
+    </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h4 class="method-heading">Source</h4>
+    <ul>
+        <li class="method-source">
+            <a href="ast.js.html">ast.js</a><a href="ast.js.html#source.184">, line 184</a>
+        </li>
+    </ul>
+
+
+
+    </article>
+
+        
+            
+
+
+    <article class="method">
+
+
+
+
+    
+
+
+    
+
+    <div class="method-type">
+    
+    </div>
+
+    <h4 class="method-name" id="arg">arg<span class="signature">(index)</span><span class="return-type-signature"> &rarr; {<a href="AST.html">AST</a>|String}</span>
+    </h4>
+
+
+
+
+
+<div class="method-description">
+    
+    <p>An AST is an array with additional functionality.  The first element of
+the array is the operator of the AST and the remaining elements are its
+operands.  This function returns the operand at the given index, where 0
+is the first index, and refers to the first operand (the one that follows
+immediately after the operator).  In fact, <code>ast[1] == ast.arg(0)</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h4 class="method-heading">Parameters</h4>
+    
+
+<ul class="method-params">
+    
+
+        <li>
+            
+                <span class="param-name">index</span>
+            
+
+            
+                
+
+
+    <span class="param-type">
+        <code>number</code>
+    </span>
+    
+
+            
+
+            
+
+            
+
+            <div class="param-description"><p>the index of the operand to return</p></div>
+            
+        </li>
+
+    
+</ul>
+
+
+
+
+
+<div class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h4 class="method-heading">See</h4>
+        <ul>
+            
+                <li><a href="AST.html#args">AST#args</a></li>
+            
+        </ul>
+    
+
+    
+</div>
+
+
+
+    <h4 class="method-heading">Returns</h4>
+    <ul>
+    
+        <li class="method-returns">
+            
+                <code>AST</code>
+            
+                <code>String</code>
+            
+            
+                <p>the operand at the given index</p>
+            
+        </li>
+    
+    </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h4 class="method-heading">Source</h4>
+    <ul>
+        <li class="method-source">
+            <a href="ast.js.html">ast.js</a><a href="ast.js.html#source.89">, line 89</a>
+        </li>
+    </ul>
+
+
+
+    </article>
+
+        
+            
+
+
+    <article class="method">
+
+
+
+
+    
+
+
+    
+
+    <div class="method-type">
+    
+    </div>
+
+    <h4 class="method-name" id="args">args<span class="signature">()</span><span class="return-type-signature"> &rarr; {String|<a href="AST.html">AST</a>}</span>
+    </h4>
+
+
+
+
+
+<div class="method-description">
+    
+    <p>An AST is an array with additional functionality.  The first element of
+the array is the operator of the AST and the remaining elements are its
+operands.  This function returns the list of operands, as a JavaScript
+array (not an AST).  The elements of that array will each be either a
+string or an AST.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h4 class="method-heading">See</h4>
+        <ul>
+            
+                <li><a href="AST.html#head">AST#head</a></li>
+            
+        </ul>
+    
+
+    
+</div>
+
+
+
+    <h4 class="method-heading">Returns</h4>
+    <ul>
+    
+        <li class="method-returns">
+            
+                <code>String</code>
+            
+                <code>AST</code>
+            
+            
+                <p>the operands of this AST</p>
+            
+        </li>
+    
+    </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h4 class="method-heading">Source</h4>
+    <ul>
+        <li class="method-source">
+            <a href="ast.js.html">ast.js</a><a href="ast.js.html#source.66">, line 66</a>
+        </li>
+    </ul>
+
+
+
+    </article>
+
+        
+            
+
+
+    <article class="method">
+
+
+
+
+    
+
+
+    
+
+    <div class="method-type">
+    
+    </div>
+
+    <h4 class="method-name" id="compact">compact<span class="signature">()</span><span class="return-type-signature"> &rarr; {<a href="AST.html">AST</a>}</span>
+    </h4>
+
+
+
+
+
+<div class="method-description">
+    
+    <p>An AST created through <a href="AST.html#.fromJSON">AST.fromJSON</a> will typically not be in
+compact form.  Specifically, it will have a nested hierarchy of both
+syntactic and semantic types.  For example, the expression <code>x+y</code> might
+not be represented as the simple <code>[ 'addition', 'x', 'y' ]</code> array, but as
+the unnecessarily complex array
+<code>[ 'expression', [ 'numberexpr', [ 'sum', [ 'addition', 'x', 'y' ] ] ] ]</code>.
+The more complex form showcases exactly how <code>x+y</code> counts as an
+expression, by virtue of being a sum, which is a type of number
+expression, which is a type of expression.  That long chain of syntactic
+types is typically not desirable, but rather just the semantic
+information is of interest.  Compact form removes all wrappers that serve
+only to label an AST with its syntactic type, leaving only a hierarchy
+of semantic information in the AST.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</div>
+
+
+
+    <h4 class="method-heading">Returns</h4>
+    <ul>
+    
+        <li class="method-returns">
+            
+                <code>AST</code>
+            
+            
+                <p>a copy of this AST that is in compact form</p>
+            
+        </li>
+    
+    </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h4 class="method-heading">Source</h4>
+    <ul>
+        <li class="method-source">
+            <a href="ast.js.html">ast.js</a><a href="ast.js.html#source.234">, line 234</a>
+        </li>
+    </ul>
+
+
+
+    </article>
+
+        
+            
+
+
+    <article class="method">
+
+
+
+
+    
+
+
+    
+
+    <div class="method-type">
+    
+    </div>
+
+    <h4 class="method-name" id="concept">concept<span class="signature">()</span><span class="return-type-signature"> &rarr; {Object}</span>
+    </h4>
+
+
+
+
+
+<div class="method-description">
+    
+    <p>The <a href="module-SyntacticTypes.html">SyntacticTypes module</a> defines a set of
+syntactic types common to mathematical notation.  Each <a href="Converter.html">Converter</a>
+instance can define a set of semantic types to add to the set of
+syntactic types.  Those semantic types are called <em>concepts.</em>  You can
+check whether this AST's operator is a concept using the
+<a href="AST.html#isConcept">AST#isConcept</a> function, and if it returns true, call this
+function to get the data about the concept.</p>
+<p>The result will be an object with the following properties:</p>
+<ul>
+<li><code>parentType</code>, the name of the parent syntactic type</li>
+<li><code>putdown</code>, the putdown representation of the concept (for example, it
+might be <code>(+ A B)</code> for the concept <code>addition</code>)</li>
+<li><code>typeSequence</code>, an array of the syntactic types of each of the
+arguments (for example, it might be <code>[&quot;summand&quot;,&quot;summand&quot;]</code> for the
+concept <code>addition</code>)</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</div>
+
+
+
+    <h4 class="method-heading">Returns</h4>
+    <ul>
+    
+        <li class="method-returns">
+            
+                <code>Object</code>
+            
+            
+                <p>the data about the concept represented in this AST</p>
+            
+        </li>
+    
+    </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h4 class="method-heading">Source</h4>
+    <ul>
+        <li class="method-source">
+            <a href="ast.js.html">ast.js</a><a href="ast.js.html#source.134">, line 134</a>
+        </li>
+    </ul>
+
+
+
+    </article>
+
+        
+            
+
+
+    <article class="method">
+
+
+
+
+    
+
+
+    
+
+    <div class="method-type">
+    
+    </div>
+
+    <h4 class="method-name" id="head">head<span class="signature">()</span><span class="return-type-signature"> &rarr; {<a href="AST.html">AST</a>|String}</span>
+    </h4>
+
+
+
+
+
+<div class="method-description">
+    
+    <p>An AST is an array with additional functionality.  The first element of
+the array is the operator of the AST, often called its head.  This
+function returns that entry.  (It does not shift the head off the array,
+but only returns it, leaving the AST unaltered.)</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h4 class="method-heading">See</h4>
+        <ul>
+            
+                <li><a href="AST.html#args">AST#args</a></li>
+            
+        </ul>
+    
+
+    
+</div>
+
+
+
+    <h4 class="method-heading">Returns</h4>
+    <ul>
+    
+        <li class="method-returns">
+            
+                <code>AST</code>
+            
+                <code>String</code>
+            
+            
+                <p>the operator of this AST, which is its first entry</p>
+            
+        </li>
+    
+    </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h4 class="method-heading">Source</h4>
+    <ul>
+        <li class="method-source">
+            <a href="ast.js.html">ast.js</a><a href="ast.js.html#source.54">, line 54</a>
+        </li>
+    </ul>
+
+
+
+    </article>
+
+        
+            
+
+
+    <article class="method">
+
+
+
+
+    
+
+
+    
+
+    <div class="method-type">
+    
+    </div>
+
+    <h4 class="method-name" id="isConcept">isConcept<span class="signature">()</span><span class="return-type-signature"> &rarr; {boolean}</span>
+    </h4>
+
+
+
+
+
+<div class="method-description">
+    
+    <p>The <a href="module-SyntacticTypes.html">SyntacticTypes module</a> defines a set of
+syntactic types common to mathematical notation.  Each <a href="Converter.html">Converter</a>
+instance can define a set of semantic types to add to the set of
+syntactic types.  Those semantic types are called <em>concepts.</em>  This
+function asks whether the head/operator of this AST is a concept.</p>
+<p>For example, if this AST's operator were the word <code>&quot;expression&quot;</code>, that
+would indicate that this AST represents an instance of the syntactic type
+<code>&quot;expression&quot;</code>, and this AST would not be a concept, and this function
+would return false.  But if this AST had been created by a
+<a href="Converter.html">Converter</a> that defined the concept <code>&quot;factorial&quot;</code> to be a specific
+type of expression, and this AST began with the operator <code>&quot;factorial&quot;</code>,
+then this function would return true, because this AST is not an instance
+of a syntactic type (expression), but an instance of a semantic type
+(factorial).</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h4 class="method-heading">See</h4>
+        <ul>
+            
+                <li><a href="Converter.html#isConcept">Converter#isConcept</a></li>
+            
+                <li><a href="AST.html#concept">AST#concept</a></li>
+            
+        </ul>
+    
+
+    
+</div>
+
+
+
+    <h4 class="method-heading">Returns</h4>
+    <ul>
+    
+        <li class="method-returns">
+            
+                <code>boolean</code>
+            
+            
+                <p><code>true</code> if this AST is a concept</p>
+            
+        </li>
+    
+    </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h4 class="method-heading">Source</h4>
+    <ul>
+        <li class="method-source">
+            <a href="ast.js.html">ast.js</a><a href="ast.js.html#source.112">, line 112</a>
+        </li>
+    </ul>
+
+
+
+    </article>
+
+        
+            
+
+
+    <article class="method">
+
+
+
+
+    
+
+
+    
+
+    <div class="method-type">
+    
+    </div>
+
+    <h4 class="method-name" id="numArgs">numArgs<span class="signature">()</span><span class="return-type-signature"> &rarr; {number}</span>
+    </h4>
+
+
+
+
+
+<div class="method-description">
+    
+    <p>An AST is an array with additional functionality.  The first element of
+the array is the operator of the AST and the remaining elements are its
+operands.  This function returns the number of operands.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h4 class="method-heading">See</h4>
+        <ul>
+            
+                <li><a href="AST.html#args">AST#args</a></li>
+            
+        </ul>
+    
+
+    
+</div>
+
+
+
+    <h4 class="method-heading">Returns</h4>
+    <ul>
+    
+        <li class="method-returns">
+            
+                <code>number</code>
+            
+            
+                <p>the number of operands</p>
+            
+        </li>
+    
+    </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h4 class="method-heading">Source</h4>
+    <ul>
+        <li class="method-source">
+            <a href="ast.js.html">ast.js</a><a href="ast.js.html#source.76">, line 76</a>
+        </li>
+    </ul>
+
+
+
+    </article>
+
+        
+            
+
+
+    <article class="method">
+
+
+
+
+    
+
+
+    
+
+    <div class="method-type">
+    
+    </div>
+
+    <h4 class="method-name" id="toJSON">toJSON<span class="signature">()</span><span class="return-type-signature"> &rarr; {Object|String}</span>
+    </h4>
+
+
+
+
+
+<div class="method-description">
+    
+    <p>Converts this AST into a nested hierarchy of JavaScript arrays, which is
+essentially the exact same data structure, but without any of the data or
+features provided by the AST class beyond what the built-in Array class
+provides.  For example, the AST whose <a href="AST.html#toString">string representation</a> is <code>AST(addition,x,AST(multiplication,y,z))</code> would become
+the JavaScript array
+<code>[ 'addition', 'x', [ 'multiplication', 'y', 'z' ] ]</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h4 class="method-heading">See</h4>
+        <ul>
+            
+                <li><a href="AST.html#.fromJSON">AST.fromJSON</a></li>
+            
+                <li><a href="AST.html#toString">AST#toString</a></li>
+            
+        </ul>
+    
+
+    
+</div>
+
+
+
+    <h4 class="method-heading">Returns</h4>
+    <ul>
+    
+        <li class="method-returns">
+            
+                <code>Object</code>
+            
+                <code>String</code>
+            
+            
+                <p>a JSON representation of this AST</p>
+            
+        </li>
+    
+    </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h4 class="method-heading">Source</h4>
+    <ul>
+        <li class="method-source">
+            <a href="ast.js.html">ast.js</a><a href="ast.js.html#source.162">, line 162</a>
+        </li>
+    </ul>
+
+
+
+    </article>
+
+        
+            
+
+
+    <article class="method">
+
+
+
+
+    
+
+
+    
+
+    <div class="method-type">
+    
+    </div>
+
+    <h4 class="method-name" id="toString">toString<span class="signature">()</span><span class="return-type-signature"> &rarr; {String}</span>
+    </h4>
+
+
+
+
+
+<div class="method-description">
+    
+    <p>A simple string representation of this AST, useful for debugging.  For
+example, if this AST represented the addition of x and the product of y
+and z, the representation might be
+<code>AST(addition,x,AST(multiplication,y,z))</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</div>
+
+
+
+    <h4 class="method-heading">Returns</h4>
+    <ul>
+    
+        <li class="method-returns">
+            
+                <code>String</code>
+            
+            
+                <p>a simple string representation of this AST</p>
+            
+        </li>
+    
+    </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h4 class="method-heading">Source</h4>
+    <ul>
+        <li class="method-source">
+            <a href="ast.js.html">ast.js</a><a href="ast.js.html#source.144">, line 144</a>
+        </li>
+    </ul>
+
+
+
+    </article>
+
+        
+            
+
+
+    <article class="method">
+
+
+
+
+    
+
+
+    
+
+    <div class="method-type">
+    
+    </div>
+
+    <h4 class="method-name" id="writeIn">writeIn<span class="signature">(langName)</span><span class="return-type-signature"> &rarr; {String}</span>
+    </h4>
+
+
+
+
+
+<div class="method-description">
+    
+    <p>Represent this AST in the named language.  For example, if the AST were
+one whose <a href="AST.html#toString">string representation</a> were
+<code>AST(addition,x,y)</code>, then we might call <code>.writeIn('latex')</code> on that
+AST and expect to get <code>x+y</code>, or we might call <code>.writeIn('putdown')</code> and
+expect to get <code>(+ x y)</code>.  The name of the language passed to <code>writeIn()</code>
+must be one of the names known by the <a href="Converter.html">Converter</a> instance given to
+this AST (or its top-level ancestor) at its construction time.</p>
+<p>This function requires the AST on which it is called to be in compact
+form, as produced by the <a href="AST.html#compact">AST#compact</a> member function.  The
+behavior of this function is undefined if this requirement is not met.</p>
+<p>Note that this function never produces putdown with attributes.  So, for
+example, it can never produce a &quot;given&quot; expression, because the &quot;given&quot;
+flag is an attribute.  A simple workaround for this is to use wrappers,
+such as <code>(_GIVEN x)</code> to mark <code>x</code> as a given, and then use post-processing
+of the LC tree to convert such markers into attributes.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h4 class="method-heading">Parameters</h4>
+    
+
+<ul class="method-params">
+    
+
+        <li>
+            
+                <span class="param-name">langName</span>
+            
+
+            
+                
+
+
+    <span class="param-type">
+        <code>String</code>
+    </span>
+    
+
+            
+
+            
+
+            
+
+            <div class="param-description"><p>the name of the language in which to write the
+expression stored in this AST</p></div>
+            
+        </li>
+
+    
+</ul>
+
+
+
+
+
+<div class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</div>
+
+
+
+    <h4 class="method-heading">Returns</h4>
+    <ul>
+    
+        <li class="method-returns">
+            
+                <code>String</code>
+            
+            
+                <p>the representation, in the specified language, of this
+AST</p>
+            
+        </li>
+    
+    </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h4 class="method-heading">Source</h4>
+    <ul>
+        <li class="method-source">
+            <a href="ast.js.html">ast.js</a><a href="ast.js.html#source.284">, line 284</a>
+        </li>
+    </ul>
+
+
+
+    </article>
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+  </div>
+</main>
+
+<footer class="layout-footer">
+  <div class="container">
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a>
+  </div>
+</footer>
+
+
+
+<script src="scripts/prism.dev.js"></script>
+</body>
+</html>

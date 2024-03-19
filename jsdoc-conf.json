@@ -1,0 +1,21 @@
+{
+    "plugins": ["plugins/markdown"],
+    "opts": {
+        "template": "./node_modules/tidy-jsdoc",
+        "prism-theme": "prism-default"
+    },
+    "metadata": {
+        "title": "Customizable Parsing Test Repository"
+    },
+    "templates": {
+        "default": {
+            "includeDate": false
+        }
+    },
+    "styles": {
+        "nav-width": "335px"
+    },
+    "source": {
+        "includePattern": ".+\\.js(doc|x)?$|.+\\.mjs$"
+    }
+}
