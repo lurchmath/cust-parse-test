@@ -56,11 +56,3 @@ converter.addNotation( 'latex', 'iff',            'A\\Leftrightarrow B' )
 converter.addNotation( 'latex', 'universal',      '\\forall A, B' )
 converter.addNotation( 'latex', 'existential',    '\\exists A, B' )
 converter.addNotation( 'latex', 'existsunique',   '\\exists ! A, B' )
-
-// For later:
-// ----------
-// infinity  : '\u221e', // ∞
-// longMinus : '\u2212', // −
-// divide    : '\u00f7', // ÷
-// times     : '\u00d7', // ×
-// cdot      : '\u00b7', // ·

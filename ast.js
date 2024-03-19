@@ -2,15 +2,6 @@
 import SyntacticTypes from './syntactic-types.js'
 import { escapeRegExp } from './utilities.js'
 
-// To dos:
-//  - In writeIn(), rather than just choosing notation 0 as the
-//    canonical form, choose the one named in the AST, if any, or fall back on
-//    the one at index 0 if not.
-//  - Test to be sure that this can be used to preserve notational specifics
-//    even through the conversion to JSON (now ASTs)
-//  - Create test suite for AST class, including all the functions you moved
-//    into it from the Converter class.
-
 export class AST extends Array {
 
     constructor ( converter, language, ...components ) {
