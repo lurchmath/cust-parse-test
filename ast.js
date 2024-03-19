@@ -1,5 +1,4 @@
 
-import { Converter } from './converter.js'
 import SyntacticTypes from './syntactic-types.js'
 import { escapeRegExp } from './utilities.js'
 
