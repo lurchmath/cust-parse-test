@@ -25,7 +25,7 @@ export class AST extends Array {
 
     head () { return this[0] }
 
-    args () { return this.slice( 1 ) }
+    args () { return Array.from( this ).slice( 1 ) }
 
     numArgs () { return this.length - 1 }
 
@@ -179,7 +179,8 @@ export class AST extends Array {
         while ( notation.length > 0 ) {
             const match = splitter.exec( notation )
             if ( match ) {
-                template.push( notation.substring( 0, match.index ) )
+                if ( match.index > 0 )
+                    template.push( notation.substring( 0, match.index ) )
                 template.push( match[0] )
                 notation = notation.substring( match.index + match[0].length )
             } else {

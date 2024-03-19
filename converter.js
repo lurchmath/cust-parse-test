@@ -122,7 +122,7 @@ export class Converter {
                 data.typeSequence.forEach( ( type, index ) =>
                     putdownForParsing = putdownForParsing.replace(
                         new RegExp( `\\b${type}\\b` ), variables[index] ) )
-                this.addNotation( 'putdown', name, putdownForParsing, variables )
+                this.addNotation( 'putdown', name, putdownForParsing, { variables } )
             } else {
                 throw new Error( 'Invalid putdown content: ' + putdown )
             }
