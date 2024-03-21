@@ -174,6 +174,7 @@ export class Converter {
      *   the input
      * @param {String} text - the input to be converter
      * @returns {String} the converted output
+     * @see {@link Language#convertTo convertTo}
      */
     convert ( sourceLang, destLang, data ) {
         if ( sourceLang == destLang ) return data
@@ -183,7 +184,7 @@ export class Converter {
         const destination = this.language( destLang )
         if ( !destination )
             throw new Error( 'Unknown language: ' + destLang )
-        return source.parse( data )?.toLanguage( destination )
+        return source.convertTo( data, destination )
     }
 
 }    

@@ -3,19 +3,18 @@ import { expect } from 'chai'
 import { converter } from '../example-converter.js'
 
 describe( 'Converting putdown to LaTeX', () => {
-
+    
     const whitespace = '                                            '
     const lpad = str => whitespace.substr( 0, whitespace.length - str.length ) + str
-    const checkPutdownLatex = ( putdown, latex ) => {
-        expect(
-            converter.convert( 'putdown', 'latex', putdown )
-        ).to.equal( latex )
+
+    const putdown = converter.languages.get( 'putdown' )
+    const latex = converter.languages.get( 'latex' )
+    const checkPutdownLatex = ( putdownText, latexText ) => {
+        expect( putdown.convertTo( putdownText, latex ) ).to.equal( latexText )
         // console.log( `${lpad( putdown )}  -->  ${latex}` )
     }
-    const checkPutdownLatexFail = ( latex ) => {
-        expect(
-            converter.convert( 'latex', 'putdown', latex )
-        ).to.be.undefined
+    const checkPutdownLatexFail = ( putdownText ) => {
+        expect( putdown.convertTo( putdownText, latex ) ).to.be.undefined
     }
 
     it( 'correctly converts many kinds of numbers but not malformed ones', () => {

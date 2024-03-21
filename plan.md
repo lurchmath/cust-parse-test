@@ -1,9 +1,4 @@
 
-To dos for Language class:
- - Give the Language class a `convertTo(langObj,text)` method.  Put all the
-   remaining work from `Converter.convert()` in this method, so that
-   `Converter.convert()` can just call it.
-
 To dos for ASTs:
  - Create test suite for AST class, including all the functions you moved
    into it from the Converter class:

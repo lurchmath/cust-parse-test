@@ -192,7 +192,7 @@ export class Language {
      * @param {boolean} compact - whether to compact the output before returning
      *   it
      * @returns {AST} - the parsed AST, or undefined if parsing failed
-     * @see {@link AST#compact}
+     * @see {@link AST#compact compact}
      */
     parse ( text, compact = true ) {
         const tokens = this.tokenizer.tokenize( text )
@@ -203,6 +203,24 @@ export class Language {
         if ( !json ) return undefined
         const result = AST.fromJSON( this, json )
         return compact ? result.compact() : result
+    }
+
+    /**
+     * Convert text in this language to text in another language.  If the text
+     * cannot be parsed in this language, then undefined is returned instead.
+     * Note that this object and `language` must have the same {@link Converter}
+     * instance associated with them, or this function will throw an error.
+     * 
+     * @param {String} text - the text in this language to be converter to the
+     *   other language
+     * @param {Language} language - the destination language
+     * @returns {String} the converted text, if the conversion was possible, and
+     *   undefined otherwise
+     */
+    convertTo ( text, language ) {
+        if ( this.converter != language.converter )
+            throw new Error( 'The two languages do not share a Converter' )
+        return this.parse( text, true )?.toLanguage( language )
     }
 
     /**
