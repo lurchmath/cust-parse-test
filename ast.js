@@ -136,14 +136,14 @@ export class AST extends Array {
     /**
      * A simple string representation of this AST, useful for debugging.  For
      * example, if this AST represented the addition of x and the product of y
-     * and z, the representation might be
-     * `AST(addition,x,AST(multiplication,y,z))`.
+     * and z, the representation might be `addition(x,multiplication(y,z))`.
      * 
      * @returns {String} a simple string representation of this AST
      */
     toString () {
         const recur = x => x instanceof AST ? x.toString() : x
-        return `AST(${this.map( recur ).join( ',' )})`
+        const notation = this.notationName ? `[${this.notationName}]` : ''
+        return `${recur(this[0])}${notation}(${this.slice( 1 ).map( recur ).join( ',' )})`
     }
 
     /**
@@ -151,7 +151,7 @@ export class AST extends Array {
      * essentially the exact same data structure, but without any of the data or
      * features provided by the AST class beyond what the built-in Array class
      * provides.  For example, the AST whose {@link AST#toString string
-     * representation} is `AST(addition,x,AST(multiplication,y,z))` would become
+     * representation} is `addition(x,multiplication(y,z))` would become
      * the JavaScript array
      * `[ 'addition', 'x', [ 'multiplication', 'y', 'z' ] ]`.
      * 
@@ -263,7 +263,7 @@ export class AST extends Array {
     /**
      * Represent this AST in the named language.  For example, if the AST were
      * one whose {@link AST#toString string representation} were
-     * `AST(addition,x,y)`, then we might call `.writeIn('latex')` on that
+     * `addition(x,y)`, then we might call `.writeIn('latex')` on that
      * AST and expect to get `x+y`, or we might call `.writeIn('putdown')` and
      * expect to get `(+ x y)`.  The name of the language passed to `writeIn()`
      * must be one of the names known by the {@link Converter} instance given to
