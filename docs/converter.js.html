@@ -139,7 +139,11 @@ export class Converter {
      *    For example, if you want your language to include integers, you might
      *    call this function, passing the word "integer" as the concept name,
      *    "atomicnumber" as the parent type, and a regular expression like
-     *    `/-?[0-9]+/` as the putdown notation.
+     *    `/-?[0-9]+/` as the putdown notation.  This not only makes that
+     *    regular expression the putdown notation, but it also makes it the
+     *    default notation for all future languages added to this converter.
+     *    Clients can override that default with later calls to
+     *    {@link Language#addNotation addNotation}.
      *  * If it is a string, it should be appropriate putdown code for an
      *    application or binding, and its leaves may include any syntactic or
      *    semantic type name, to restrict parsing appropriately.  For example,
@@ -147,6 +151,10 @@ export class Converter {
      *    call this function, passing the word "intsum" as the concept name,
      *    "sum" as the parent type, and the putdown notation
      *    `"(+ integer integer)"`.
+     *  * If you omit the third argument, the concept name is used as the
+     *    default putdown notation.  This is useful in some cases, such as
+     *    `addConcept('infinity','number')`, which will make the default putdown
+     *    notation just the word "infinity".
      * 
      * Note that this function does not allow you to specify how the concept is
      * written in any language other than putdown.  To do so, you must make
