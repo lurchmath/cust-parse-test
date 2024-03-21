@@ -185,24 +185,20 @@ export class Language {
     /**
      * Treat the given text as an expression in this language and attempt to
      * parse it.  Return an abstract syntax tree ({@link AST}) on success, or
-     * `undefined` on failure.  If `compact` is `true`, the AST will be
-     * compacted (see {@link AST#compact}) before it is returned.
+     * `undefined` on failure.
      * 
      * @param {String} text - the input text to parse
-     * @param {boolean} compact - whether to compact the output before returning
-     *   it
      * @returns {AST} - the parsed AST, or undefined if parsing failed
      * @see {@link AST#compact compact}
      */
-    parse ( text, compact = true ) {
+    parse ( text ) {
         const tokens = this.tokenizer.tokenize( text )
         if ( !tokens ) return undefined
         const json = this.grammar.parse( tokens, {
             showDebuggingOutput : this._debug
         } )[0]
         if ( !json ) return undefined
-        const result = AST.fromJSON( this, json )
-        return compact ? result.compact() : result
+        return AST.fromJSON( this, json ).compact()
     }
 
     /**
@@ -220,7 +216,7 @@ export class Language {
     convertTo ( text, language ) {
         if ( this.converter != language.converter )
             throw new Error( 'The two languages do not share a Converter' )
-        return this.parse( text, true )?.toLanguage( language )
+        return this.parse( text )?.toLanguage( language )
     }
 
     /**
