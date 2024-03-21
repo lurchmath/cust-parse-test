@@ -14,7 +14,7 @@ describe( 'Creating JSON from putdown', () => {
     }
     const checkPutdownJsonFail = ( latex ) => {
         expect(
-            converter.convert( 'putdown', 'json', latex )
+            converter.convert( 'putdown', 'ast', latex )
         ).to.be.undefined
     }
 

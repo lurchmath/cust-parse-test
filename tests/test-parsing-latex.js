@@ -37,7 +37,7 @@ describe( 'Parsing latex', () => {
     }
     const checkLatexJsonFail = ( latex ) => {
         expect(
-            converter.convert( 'latex', 'json', latex )
+            converter.convert( 'latex', 'ast', latex )
         ).to.be.undefined
     }
 
