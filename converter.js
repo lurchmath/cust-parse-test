@@ -194,7 +194,7 @@ export class Converter {
                 const result = language.grammar.parse( tokens, {
                     showDebuggingOutput : this._debug
                 } )[0]
-                return result ? AST.fromJSON( this, language, result ) : undefined
+                return result ? AST.fromJSON( language, result ) : undefined
             } else if ( this.isLanguage( destLang ) ) {
                 return this.convert( sourceLang, 'ast', data )?.compact()
                     ?.writeIn( destLang )

@@ -10,7 +10,7 @@ describe( 'Creating latex from JSON', () => {
     const checkJsonLatex = ( json, latex ) => {
         expect(
             converter.convert( 'ast', 'latex',
-                new AST( converter, converter.languages.get( 'latex' ), ...json ) )
+                new AST( converter.languages.get( 'latex' ), ...json ) )
         ).to.eql( latex )
         // console.log( `${lpad( latex )}  -->  ${JSON.stringify( json )}` )
     }

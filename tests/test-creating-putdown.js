@@ -10,7 +10,7 @@ describe( 'Creating putdown from JSON', () => {
     const checkJsonPutdown = ( json, putdown ) => {
         expect(
             converter.convert( 'ast', 'putdown',
-                new AST( converter, converter.languages.get( 'putdown' ), ...json ) )
+                new AST( converter.languages.get( 'putdown' ), ...json ) )
         ).to.equal( putdown )
         // console.log( `${lpad( putdown )}  <--  ${JSON.stringify( json )}` )
     }

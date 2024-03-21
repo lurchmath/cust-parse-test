@@ -1,6 +1,5 @@
 
 To dos for Language class:
- - Construct ASTs with a language parameter, but not a converter parameter.
  - Update `AST.writeIn(langName)` to `AST.toLanguage(langObj)`.
  - Give the Language class a `parse()` method.
  - Have that `parse()` method incorporate all the cleanup work done by the

@@ -26,20 +26,17 @@ export class AST extends Array {
      *  * an AST, so that ASTs can be recursive, since they are trees
      *  * an array of any of these, which will be converted into an AST
      * 
-     * @param {Converter} converter - the converter that created this AST
-     * @param {Object} language - the language from which it was parsed (which
-     *   must be one of the values in `converter.languages`)
+     * @param {Language} language - the language from which this AST was parsed
      * @param  {...any} components - the operator and operands of this AST, in
      *   that order (operator first, operands in the order appropriate for the
      *   operator)
      */
-    constructor ( converter, language, ...components ) {
+    constructor ( language, ...components ) {
         super()
-        this.converter = converter
         this.language = language
         components.forEach( component =>
             this.push( ( component instanceof Array ) && !( component instanceof AST ) ?
-                new AST( converter, language, ...component ) : component ) )
+                new AST( language, ...component ) : component ) )
     }
 
     /**
@@ -109,7 +106,7 @@ export class AST extends Array {
      * @see {@link Converter#isConcept}
      * @see {@link AST#concept}
      */
-    isConcept () { return this.converter.isConcept( this.head() ) }
+    isConcept () { return this.language.converter.isConcept( this.head() ) }
 
     /**
      * The {@link module:SyntacticTypes SyntacticTypes module} defines a set of
@@ -131,7 +128,7 @@ export class AST extends Array {
      * 
      * @returns {Object} the data about the concept represented in this AST
      */
-    concept () { return this.converter.concept( this.head() ) }
+    concept () { return this.language.converter.concept( this.head() ) }
 
     /**
      * A simple string representation of this AST, useful for debugging.  For
@@ -173,23 +170,19 @@ export class AST extends Array {
      * removes the unnecessary `'*'` entry, since the meaning is clear from the
      * first element of the array anyway.
      * 
-     * @param {Converter} converter - the converter that created the JSON in the
-     *   `json` parameter
-     * @param {Object} language - the language from which it was parsed (which
-     *   must be one of the values in `converter.languages`)
+     * @param {Language} language - the language from which the JSON was parsed
      * @param {Array} json - a hierarchy of JavaScript Arrays (with strings as
      *   leaves) representing an AST
      * @returns {AST} the AST represented by the JSON
      */
-    static fromJSON ( converter, language, json ) {
+    static fromJSON ( language, json ) {
         // console.log( `fromJSON( ${JSON.stringify(json)} )` )
         if ( !( json instanceof Array ) ) return json
         const head = json.shift()
-        const concept = converter.concepts.get( head )
+        const concept = language.converter.concepts.get( head )
         if ( !concept )
-            return new AST( converter, language,
-                ...[ head, ...json ].map( piece =>
-                    AST.fromJSON( converter, language, piece ) ) )
+            return new AST( language, ...[ head, ...json ].map(
+                piece => AST.fromJSON( language, piece ) ) )
         const rhss = language.grammar.rules[head]
         for ( let i = 0 ; i < rhss.length ; i++ ) {
             if ( rhss[i].length != json.length ) continue
@@ -201,11 +194,11 @@ export class AST extends Array {
             } )
             if ( !matches ) continue
             if ( rhss[i].notation instanceof RegExp )
-                return [ head, AST.fromJSON( converter, language, json[0] ) ]
+                return [ head, AST.fromJSON( language, json[0] ) ]
             json = json.filter( ( _, index ) =>
                 !( rhss[i][index] instanceof RegExp ) )
-            const result = new AST( converter, language, head,
-                ...json.map( ( _, index ) => AST.fromJSON( converter, language,
+            const result = new AST( language, head,
+                ...json.map( ( _, index ) => AST.fromJSON( language,
                     json[rhss[i].putdownToNotation[index]] ) ) )
             if ( rhss[i].notationName )
                 result.notationName = rhss[i].notationName
@@ -253,8 +246,8 @@ export class AST extends Array {
                 return inner.compact()
             }
         }
-        const result = new AST( this.converter, this.language,
-            ...this.map( x => x instanceof AST ? x.compact() : x ) )
+        const result = new AST( this.language, ...this.map(
+            x => x instanceof AST ? x.compact() : x ) )
         if ( this.notationName )
             result.notationName = this.notationName
         return result
@@ -280,7 +273,7 @@ export class AST extends Array {
      */
     writeIn ( langName ) {
         // find the language in question
-        const language = this.converter.languages.get( langName )
+        const language = this.language.converter.language( langName )
         if ( !language )
             throw new Error( `Not a valid language: ${langName}` )
         // if it's just a syntactic type wrapper, ensure it's around exactly 1 item
