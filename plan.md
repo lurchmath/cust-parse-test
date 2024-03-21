@@ -1,19 +1,4 @@
 
-To dos for ASTs:
- - Create test suite for AST class, including all the functions you moved
-   into it from the Converter class:
-    - `constructor(language,...components)`
-    - `head()`
-    - `args()`
-    - `numArgs()`
-    - `arg(i)`
-    - `isConcept()`
-    - `concept()`
-    - `toString()`
-    - `toJSON()`
-    - `fromJSON(language,json)`
-    - `toLanguage(language)`
-
 General to dos:
  - Document the fact that addConcept(x,y,regexp) makes that regexp the default
    for all languages.  But you can override it with addNotation().
@@ -22,6 +7,7 @@ General to dos:
    "AxB" if you mean "A x B".
  - expand set of tests for many new mathematical expressions in many languages,
    including expressions that bind variables
+ - Document the fact that addConcept(x,y) == addConcept(x,y,x).
 (note that all of the Math299 language features are documented on the following
 page, so that you can try to replicate that feature set, and so that you can
 update your Lurch docs in the lurchmath.github.io repo as well.)

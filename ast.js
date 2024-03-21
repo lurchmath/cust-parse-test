@@ -34,6 +34,8 @@ export class AST extends Array {
     constructor ( language, ...components ) {
         super()
         this.language = language
+        if ( components.length == 0 )
+            throw new Error( 'Every AST must have at least one component' )
         components.forEach( component =>
             this.push( ( component instanceof Array ) && !( component instanceof AST ) ?
                 new AST( language, ...component ) : component ) )
@@ -140,7 +142,7 @@ export class AST extends Array {
     toString () {
         const recur = x => x instanceof AST ? x.toString() : x
         const notation = this.notationName ? `[${this.notationName}]` : ''
-        return `${recur(this[0])}${notation}(${this.slice( 1 ).map( recur ).join( ',' )})`
+        return `${recur(this[0])}${notation}(${this.args().map( recur ).join( ',' )})`
     }
 
     /**
@@ -224,7 +226,7 @@ export class AST extends Array {
     // Compact form removes all wrappers that serve only to label an AST with
     // its syntactic type, leaving only a hierarchy of semantic information.
     compact () {
-        // console.log( 'compactifying:', this )
+        // console.log( 'compactifying: ' + this )
         if ( this.length == 0 )
             throw new Error( `Empty ASTs not allowed` )
         if ( this.head().startsWith( 'groupedatomic' ) && this.numArgs() == 1 )
@@ -245,8 +247,8 @@ export class AST extends Array {
                 return inner.compact()
             }
         }
-        const result = new AST( this.language, ...this.map(
-            x => x instanceof AST ? x.compact() : x ) )
+        const recur = Array.from( this ).map( x => x instanceof AST ? x.compact() : x )
+        const result = new AST( this.language, ...recur )
         if ( this.notationName )
             result.notationName = this.notationName
         return result
