@@ -131,7 +131,7 @@ export class AST extends Array {
      * 
      * @returns {Object} the data about the concept represented in this AST
      */
-    concept () { return this.converter.concepts.get( this.head() ) }
+    concept () { return this.converter.concept( this.head() ) }
 
     /**
      * A simple string representation of this AST, useful for debugging.  For

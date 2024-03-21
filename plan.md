@@ -1,11 +1,36 @@
 
+To dos for Language class:
+ - Construct ASTs with a language parameter, but not a converter parameter.
+ - Update `AST.writeIn(langName)` to `AST.toLanguage(langObj)`.
+ - Give the Language class a `parse()` method.
+ - Have that `parse()` method incorporate all the cleanup work done by the
+   current `AST.fromJSON()` method, so that `parse()` returns a clean AST.  Thus
+   `Converter.convert()` should no longer contain references to tokenizers and
+   grammars, but all that work should be in the `parse()` method, and
+   `Converter.convert()` can just call it.
+ - Give the Language class a `convertTo(langObj,text)` method.  Put all the
+   remaining work from `Converter.convert()` in this method, so that
+   `Converter.convert()` can just call it.
+
 To dos for ASTs:
  - Create test suite for AST class, including all the functions you moved
-   into it from the Converter class.
+   into it from the Converter class:
+    - `constructor(converter,language,...components)`
+    - `head()`
+    - `args()`
+    - `numArgs()`
+    - `arg(i)`
+    - `isConcept()`
+    - `concept()`
+    - `toString()`
+    - `toJSON()`
+    - `fromJSON(converter,language,json)`
+    - `compact()`
+    - `writeIn(langName)`
 
 General to dos:
  - Document the fact that addConcept(x,y,regexp) makes that regexp the default
-   for all languages.
+   for all languages.  But you can override it with addNotation().
  - Fix mistake in documentation: notationStringToArray() does not actually lift
    variable names out of the insides of words.  So put spaces in things like
    "AxB" if you mean "A x B".

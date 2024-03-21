@@ -1,10 +1,11 @@
 
 import { Converter } from './converter.js'
+import { Language } from './language.js'
 
 export const converter = new Converter()
 
-converter.addConcept( 'numbervariable', 'atomicnumber', Converter.regularExpressions.oneLetterVariable )
-converter.addConcept( 'number',         'atomicnumber', Converter.regularExpressions.nonnegativeNumber )
+converter.addConcept( 'numbervariable', 'atomicnumber', Language.regularExpressions.oneLetterVariable )
+converter.addConcept( 'number',         'atomicnumber', Language.regularExpressions.nonnegativeNumber )
 converter.addConcept( 'infinity',       'atomicnumber' )
 
 converter.addConcept( 'exponentiation', 'factor',       '(^ atomicnumber atomicnumber)' )
@@ -13,7 +14,7 @@ converter.addConcept( 'division',       'product',      '(/ product product)' )
 converter.addConcept( 'multiplication', 'product',      '(* product product)' )
 converter.addConcept( 'numbernegation', 'product',      '(- product)' )
 
-converter.addConcept( 'logicvariable',  'atomicprop',   Converter.regularExpressions.oneLetterVariable )
+converter.addConcept( 'logicvariable',  'atomicprop',   Language.regularExpressions.oneLetterVariable )
 converter.addConcept( 'logicaltrue',    'atomicprop',   'true' )
 converter.addConcept( 'logicalfalse',   'atomicprop',   'false' )
 converter.addConcept( 'contradiction',  'atomicprop',   'contradiction' )
@@ -28,31 +29,31 @@ converter.addConcept( 'universal',      'sentence',     '(forall (numbervariable
 converter.addConcept( 'existential',    'sentence',     '(exists (numbervariable , sentence))' )
 converter.addConcept( 'existsunique',   'sentence',     '(existsunique (numbervariable , sentence))' )
 
-converter.addLanguage( 'latex', [ '{', '}', '(', ')' ] )
+const latex = new Language( 'latex', converter, [ '{', '}', '(', ')' ] )
 
-converter.addNotation( 'latex', 'infinity',       '\\infty' )
+latex.addNotation( 'infinity',       '\\infty' )
 
-converter.addNotation( 'latex', 'exponentiation', 'A^B' )
-converter.addNotation( 'latex', 'percentage',     'A\\%' )
-converter.addNotation( 'latex', 'division',       'A\\div B' )
-converter.addNotation( 'latex', 'multiplication', 'A\\times B' )
-converter.addNotation( 'latex', 'multiplication', 'A\\cdot B' )
-converter.addNotation( 'latex', 'numbernegation', '-A' )
+latex.addNotation( 'exponentiation', 'A^B' )
+latex.addNotation( 'percentage',     'A\\%' )
+latex.addNotation( 'division',       'A\\div B' )
+latex.addNotation( 'multiplication', 'A\\times B' )
+latex.addNotation( 'multiplication', 'A\\cdot B' )
+latex.addNotation( 'numbernegation', '-A' )
 
-converter.addNotation( 'latex', 'logicaltrue',    '\\top' )
-converter.addNotation( 'latex', 'logicalfalse',   '\\bot' )
-converter.addNotation( 'latex', 'contradiction',  '\\rightarrow \\leftarrow' )
+latex.addNotation( 'logicaltrue',    '\\top' )
+latex.addNotation( 'logicalfalse',   '\\bot' )
+latex.addNotation( 'contradiction',  '\\rightarrow \\leftarrow' )
 
-converter.addNotation( 'latex', 'logicnegation',  '\\neg A' )
-converter.addNotation( 'latex', 'logicnegation',  '\\lnot A' )
-converter.addNotation( 'latex', 'conjunction',    'A\\wedge B' )
-converter.addNotation( 'latex', 'conjunction',    'A\\land B' )
-converter.addNotation( 'latex', 'disjunction',    'A\\vee B' )
-converter.addNotation( 'latex', 'disjunction',    'A\\lor B' )
-converter.addNotation( 'latex', 'implication',    'A\\Rightarrow B' )
-converter.addNotation( 'latex', 'implication',    'B\\Leftarrow A' )
-converter.addNotation( 'latex', 'iff',            'A\\Leftrightarrow B' )
+latex.addNotation( 'logicnegation',  '\\neg A' )
+latex.addNotation( 'logicnegation',  '\\lnot A' )
+latex.addNotation( 'conjunction',    'A\\wedge B' )
+latex.addNotation( 'conjunction',    'A\\land B' )
+latex.addNotation( 'disjunction',    'A\\vee B' )
+latex.addNotation( 'disjunction',    'A\\lor B' )
+latex.addNotation( 'implication',    'A\\Rightarrow B' )
+latex.addNotation( 'implication',    'B\\Leftarrow A' )
+latex.addNotation( 'iff',            'A\\Leftrightarrow B' )
 
-converter.addNotation( 'latex', 'universal',      '\\forall A, B' )
-converter.addNotation( 'latex', 'existential',    '\\exists A, B' )
-converter.addNotation( 'latex', 'existsunique',   '\\exists ! A, B' )
+latex.addNotation( 'universal',      '\\forall A, B' )
+latex.addNotation( 'existential',    '\\exists A, B' )
+latex.addNotation( 'existsunique',   '\\exists ! A, B' )

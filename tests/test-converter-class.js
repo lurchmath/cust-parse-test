@@ -1,24 +1,12 @@
 
 import { expect } from 'chai'
 import { Converter } from '../converter.js'
+import { Language } from '../language.js'
 
 describe( 'Converter instance', () => {
 
-    it( 'should be defined and have several necessary static members', () => {
+    it( 'should be defined', () => {
         expect( Converter ).to.be.ok
-        // regularExpressions has three members, each a regexp
-        expect( Converter.regularExpressions ).to.be.instanceOf( Object )
-        expect(
-            Converter.regularExpressions.oneLetterVariable
-        ).to.be.instanceOf( RegExp )
-        expect(
-            Converter.regularExpressions.integer
-        ).to.be.instanceOf( RegExp )
-        expect(
-            Converter.regularExpressions.number
-        ).to.be.instanceOf( RegExp )
-        // defaultVarNames is a string
-        expect( typeof Converter.defaultVarNames ).to.equal( 'string' )
     } )
 
     it( 'should support the option of naming notations', () => {
@@ -35,21 +23,17 @@ describe( 'Converter instance', () => {
         //  - prefix-lang: + 2 3, * 2 3, x 2 3
         const converter = new Converter()
         converter.addConcept( 'int', 'atomicnumber',
-            Converter.regularExpressions.integer )
+            Language.regularExpressions.integer )
         converter.addConcept( 'add', 'sum', '(+ sum sum)' )
         converter.addConcept( 'mul', 'product', '(* product product)' )
-        converter.addLanguage( 'infix-lang' )
-        converter.addNotation( 'infix-lang', 'add', 'A+B' )
-        converter.addNotation( 'infix-lang', 'mul', 'A*B',
-            { name : 'asterisk multiplication' } )
-        converter.addNotation( 'infix-lang', 'mul', 'A x B',
-            { name : 'x multiplication' } )
-        converter.addLanguage( 'prefix-lang' )
-        converter.addNotation( 'prefix-lang', 'add', '+ A B' )
-        converter.addNotation( 'prefix-lang', 'mul', '* A B',
-            { name : 'asterisk multiplication' } )
-        converter.addNotation( 'prefix-lang', 'mul', 'x A B',
-            { name : 'x multiplication' } )
+        const infix = new Language( 'infix-lang', converter )
+        infix.addNotation( 'add', 'A+B' )
+        infix.addNotation( 'mul', 'A*B', { name : 'asterisk multiplication' } )
+        infix.addNotation( 'mul', 'A x B', { name : 'x multiplication' } )
+        const prefix = new Language( 'prefix-lang', converter )
+        prefix.addNotation( 'add', '+ A B' )
+        prefix.addNotation( 'mul', '* A B', { name : 'asterisk multiplication' } )
+        prefix.addNotation( 'mul', 'x A B', { name : 'x multiplication' } )
         
         // Be sure we can convert atomic expressions in both directions
         expect( converter.convert( 'infix-lang', 'prefix-lang', '2' ) )
@@ -105,17 +89,17 @@ describe( 'Converter instance', () => {
         // notation names, so that all multiplications should become *-type.
         const converter = new Converter()
         converter.addConcept( 'int', 'atomicnumber',
-            Converter.regularExpressions.integer )
+            Language.regularExpressions.integer )
         converter.addConcept( 'add', 'sum', '(+ sum sum)' )
         converter.addConcept( 'mul', 'product', '(* product product)' )
-        converter.addLanguage( 'infix-lang' )
-        converter.addNotation( 'infix-lang', 'add', 'A+B' )
-        converter.addNotation( 'infix-lang', 'mul', 'A*B' )
-        converter.addNotation( 'infix-lang', 'mul', 'A x B' )
-        converter.addLanguage( 'prefix-lang' )
-        converter.addNotation( 'prefix-lang', 'add', '+ A B' )
-        converter.addNotation( 'prefix-lang', 'mul', '* A B' )
-        converter.addNotation( 'prefix-lang', 'mul', 'x A B' )
+        const infix = new Language( 'infix-lang', converter )
+        infix.addNotation( 'add', 'A+B' )
+        infix.addNotation( 'mul', 'A*B' )
+        infix.addNotation( 'mul', 'A x B' )
+        const prefix = new Language( 'prefix-lang', converter )
+        prefix.addNotation( 'add', '+ A B' )
+        prefix.addNotation( 'mul', '* A B' )
+        prefix.addNotation( 'mul', 'x A B' )
         
         // Results for atomic expressions are same as in previous test
         expect( converter.convert( 'infix-lang', 'prefix-lang', '2' ) )
