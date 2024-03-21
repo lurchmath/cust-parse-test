@@ -38,7 +38,7 @@ export class AST extends Array {
         this.converter = converter
         this.language = language
         components.forEach( component =>
-            this.push( component instanceof Array ?
+            this.push( ( component instanceof Array ) && !( component instanceof AST ) ?
                 new AST( converter, language, ...component ) : component ) )
     }
 
@@ -204,7 +204,7 @@ export class AST extends Array {
                 return [ head, AST.fromJSON( converter, language, json[0] ) ]
             json = json.filter( ( _, index ) =>
                 !( rhss[i][index] instanceof RegExp ) )
-            const result = new AST( this, language, head,
+            const result = new AST( converter, language, head,
                 ...json.map( ( _, index ) => AST.fromJSON( converter, language,
                     json[rhss[i].putdownToNotation[index]] ) ) )
             if ( rhss[i].notationName )
@@ -232,7 +232,7 @@ export class AST extends Array {
      * @returns {AST} a copy of this AST that is in compact form
      */
     compact () {
-        // console.log( 'compactifying:' + ast )
+        // console.log( 'compactifying:', this )
         if ( this.length == 0 )
             throw new Error( `Empty ASTs not allowed` )
         if ( this.head().startsWith( 'groupedatomic' ) && this.numArgs() == 1 )
@@ -253,8 +253,11 @@ export class AST extends Array {
                 return inner.compact()
             }
         }
-        return new AST( this.converter, this.language,
+        const result = new AST( this.converter, this.language,
             ...this.map( x => x instanceof AST ? x.compact() : x ) )
+        if ( this.notationName )
+            result.notationName = this.notationName
+        return result
     }
 
     /**
@@ -269,12 +272,6 @@ export class AST extends Array {
      * This function requires the AST on which it is called to be in compact
      * form, as produced by the {@link AST#compact} member function.  The
      * behavior of this function is undefined if this requirement is not met.
-     * 
-     * Note that this function never produces putdown with attributes.  So, for
-     * example, it can never produce a "given" expression, because the "given"
-     * flag is an attribute.  A simple workaround for this is to use wrappers,
-     * such as `(_GIVEN x)` to mark `x` as a given, and then use post-processing
-     * of the LC tree to convert such markers into attributes.
      * 
      * @param {String} langName - the name of the language in which to write the
      *   expression stored in this AST
@@ -336,7 +333,9 @@ export class AST extends Array {
         } )
         // get the default way to write that concept in this language
         // and split it into an array to make template substitution easier
-        const rhs = language.grammar.rules[this.head()][0]
+        const rhss = language.grammar.rules[this.head()]
+        const rhs = rhss.find( r => r.notationName === this.notationName )
+                 || rhss[0]
         let notation = rhs.notation
         const template = [ ]
         const splitter = new RegExp(

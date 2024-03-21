@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "node ./node_modules/mocha/bin/mocha.js tests/",
-	"docs": "rm -rf docs && jsdoc *.js -d docs -R doc-main.md -c jsdoc-conf.json --verbose"
+    "docs": "rm -rf docs && jsdoc *.js -d docs -R doc-main.md -c jsdoc-conf.json --verbose"
   },
   "author": "Nathan Carter (ncarter@bentley.edu)",
   "license": "MIT",

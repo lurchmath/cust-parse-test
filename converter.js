@@ -239,18 +239,28 @@ export class Converter {
      * addition, `-A` for negation, or just `\\bot` for the logical constant
      * "false" in LaTeX.)
      * 
-     * If you need to use one of the letters `A`, `B`, or `C` in the notation
-     * itself, or if you need to use more than three parameters in your
-     * notation (continuing on to `D`, `E`, etc.) then you can use the options
-     * object to specify the variables in your notation.  For example, you
-     * could use notation `x+y` and then use the options object to specify
-     * `{ variables : [ 'x', 'y' ] }`.  Note that *every* occurrence of a
-     * variable counts as the variable, *even inside a word* or even if used
-     * multiple times.  So choose variable names that do not show up anywhere in
-     * your new notation.
+     * The options object supports the following fields.
      * 
-     * There are no other options at this time besides `options.variables`, but
-     * the options object is available for future expansion.
+     *  * If you need to use one of the letters `A`, `B`, or `C` in the notation
+     *    itself, or if you need to use more than three parameters in your
+     *    notation (continuing on to `D`, `E`, etc.) then you can use the
+     *    options object to specify the variables in your notation.  For
+     *    example, you could use notation `x+y` and then use the options object
+     *    to specify `{ variables : [ 'x', 'y' ] }`.  Note that *every*
+     *    occurrence of a variable counts as the variable, *even inside a word*
+     *    or even if used multiple times.  So choose variable names that do not
+     *    show up anywhere in your new notation.
+     *  * If you want to assign this notation a name, that name will be stored
+     *    in the AST whenever this notation is parsed.  If you assign the same
+     *    name to a notation for the same concept *in a different language,*
+     *    then when translating among languages, the converter will attempt to
+     *    map this notation to the notation of the same name in another
+     *    language.  Without giving names to notations, the converter just uses
+     *    the default way to represent a concept in each language, preserving
+     *    meaning only, not any details of the way that meaning was written.
+     * 
+     * There are no other options at this time besides those documented above,
+     * but the options object is available for future expansion.
      * 
      * @param {String} languageName - the name of the language in which this new
      *   notation is expressed
@@ -359,7 +369,11 @@ export class Converter {
             } else if ( this.isLanguage( destLang ) ) {
                 return this.convert( sourceLang, 'ast', data )?.compact()
                     ?.writeIn( destLang )
+            } else {
+                throw new Error( 'Unknown language: ' + destLang )
             }
+        } else {
+            throw new Error( 'Unknown language: ' + sourceLang )
         }
     }
 

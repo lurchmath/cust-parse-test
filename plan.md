@@ -1,5 +1,14 @@
 
+To dos for ASTs:
+ - Create test suite for AST class, including all the functions you moved
+   into it from the Converter class.
+
 General to dos:
+ - Document the fact that addConcept(x,y,regexp) makes that regexp the default
+   for all languages.
+ - Fix mistake in documentation: notationStringToArray() does not actually lift
+   variable names out of the insides of words.  So put spaces in things like
+   "AxB" if you mean "A x B".
  - expand set of tests for many new mathematical expressions in many languages,
    including expressions that bind variables
 (note that all of the Math299 language features are documented on the following
@@ -29,15 +38,6 @@ https://proveitmath.org/lurch/lde/src/experimental/parsers/lurch-parser-docs.htm
  - test whether all MathLive output can be parsed by this LaTeX parser
  - Eventually make a nice diagram of the syntactic types hierarchy and add it to
    the documentation for the syntactic-types module.
-
-To dos for ASTs:
- - In writeIn(), rather than just choosing notation 0 as the
-   canonical form, choose the one named in the AST, if any, or fall back on
-   the one at index 0 if not.
- - Test to be sure that this can be used to preserve notational specifics
-   even through the conversion to JSON (now ASTs)
- - Create test suite for AST class, including all the functions you moved
-   into it from the Converter class.
 
 Information we may need later:
  - infinity  = '\u221e' = ∞
