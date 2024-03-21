@@ -3,16 +3,17 @@ import { expect } from 'chai'
 import { converter } from '../example-converter.js'
 import { AST } from '../ast.js'
 
+const putdown = converter.languages.get( 'putdown' )
+
 describe( 'Creating putdown from JSON', () => {
 
     const whitespace = '                                            '
     const lpad = str => whitespace.substr( 0, whitespace.length - str.length ) + str
-    const checkJsonPutdown = ( json, putdown ) => {
+    const checkJsonPutdown = ( json, putdownText ) => {
         expect(
-            converter.convert( 'ast', 'putdown',
-                new AST( converter.languages.get( 'putdown' ), ...json ) )
-        ).to.equal( putdown )
-        // console.log( `${lpad( putdown )}  <--  ${JSON.stringify( json )}` )
+            new AST( putdown, ...json ).toLanguage( putdown )
+        ).to.equal( putdownText )
+        // console.log( `${lpad( putdownText )}  <--  ${JSON.stringify( json )}` )
     }
 
     it( 'can convert JSON numbers to putdown', () => {

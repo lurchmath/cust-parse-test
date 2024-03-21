@@ -2,20 +2,18 @@
 import { expect } from 'chai'
 import { converter } from '../example-converter.js'
 
+const putdown = converter.languages.get( 'putdown' )
+
 describe( 'Creating JSON from putdown', () => {
 
     const whitespace = '                                            '
     const lpad = str => whitespace.substr( 0, whitespace.length - str.length ) + str
-    const checkPutdownJson = ( putdown, json ) => {
-        expect(
-            converter.convert( 'putdown', 'ast', putdown ).compact().toJSON()
-        ).to.eql( json )
+    const checkPutdownJson = ( putdownText, json ) => {
+        expect( putdown.parse( putdownText ).toJSON() ).to.eql( json )
         // console.log( `${lpad( putdown )}  -->  ${JSON.stringify( json )}` )
     }
-    const checkPutdownJsonFail = ( latex ) => {
-        expect(
-            converter.convert( 'putdown', 'ast', latex )
-        ).to.be.undefined
+    const checkPutdownJsonFail = ( putdownText ) => {
+        expect( putdown.parse( putdownText ) ).to.be.undefined
     }
 
     it( 'can convert putdown numbers to JSON', () => {

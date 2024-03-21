@@ -160,53 +160,30 @@ export class Converter {
     }
 
     /**
-     * Use this converter to convert any language it knows (or data represented
-     * in an {@link AST abstract syntax tree}) into any of the other languages
-     * it knows (or an abstract syntax tree).  Example usages:
-     * 
-     *  * `converter.convert( 'putdown', 'ast', input )` parses the given input
-     *    as putdown notation and returns an abstract syntax tree
-     *  * `converter.convert( 'putdown', 'latex', input )` parses the given
-     *    input as putdown notation and returns LaTeX (assuming that you have
-     *    defined a LaTeX language in this converter; you can use any language
-     *    you have defined in place of LaTeX)
-     *  * `converter.convert( 'ast', 'asciimath', input )` treat the given input
-     *    as an {@link AST} instance and express it in Python notation (assuming
-     *    that you have defined AsciiMath as a language in this converter; as in
-     *    the previous bullet, it is just an example)
+     * Use this converter to convert text in any language it knows into text in
+     * any of the other languages it knows.  For example,
+     * `converter.convert( 'putdown', 'latex', input )` parses the given input
+     * as putdown notation and returns LaTeX (assuming that you have defined a
+     * LaTeX language in this converter; you can use any language you have
+     * defined in place of LaTeX).  Similarly, you can convert into putdown from
+     * LaTeX, or between two non-putdown languages.
      * 
      * @param {String} sourceLang - the name of the language in which the input
      *   is expressed
      * @param {String} destLang - the name of the language into which to convert
      *   the input
-     * @param {String|AST} data - the input to be converter
-     * @returns {String|AST} the converted output
+     * @param {String} text - the input to be converter
+     * @returns {String} the converted output
      */
     convert ( sourceLang, destLang, data ) {
         if ( sourceLang == destLang ) return data
         const source = this.language( sourceLang )
-        const destination = this.language( destLang )
-        if ( sourceLang == 'ast' ) {
-            if ( !destination )
-                throw new Error( 'Unknown language: ' + destLang )
-            return data.toLanguage( destination )
-        } else if ( source ) {
-            if ( destLang == 'ast' ) {
-                const tokens = source.tokenizer.tokenize( data )
-                if ( !tokens ) return undefined
-                const result = source.grammar.parse( tokens, {
-                    showDebuggingOutput : this._debug
-                } )[0]
-                return result ? AST.fromJSON( source, result ) : undefined
-            } else if ( destination ) {
-                return this.convert( sourceLang, 'ast', data )?.compact()
-                    ?.toLanguage( destination )
-            } else {
-                throw new Error( 'Unknown language: ' + destLang )
-            }
-        } else {
+        if ( !source )
             throw new Error( 'Unknown language: ' + sourceLang )
-        }
+        const destination = this.language( destLang )
+        if ( !destination )
+            throw new Error( 'Unknown language: ' + destLang )
+        return source.parse( data )?.toLanguage( destination )
     }
 
 }    

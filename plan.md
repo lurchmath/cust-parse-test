@@ -1,15 +1,8 @@
 
 To dos for Language class:
- - Give the Language class a `parse()` method.
- - Have that `parse()` method incorporate all the cleanup work done by the
-   current `AST.fromJSON()` method, so that `parse()` returns a clean AST.  Thus
-   `Converter.convert()` should no longer contain references to tokenizers and
-   grammars, but all that work should be in the `parse()` method, and
-   `Converter.convert()` can just call it.
  - Give the Language class a `convertTo(langObj,text)` method.  Put all the
    remaining work from `Converter.convert()` in this method, so that
    `Converter.convert()` can just call it.
- - Can we simplify away the need to call `AST.compact()`?
 
 To dos for ASTs:
  - Create test suite for AST class, including all the functions you moved
@@ -24,8 +17,34 @@ To dos for ASTs:
     - `toString()`
     - `toJSON()`
     - `fromJSON(converter,language,json)`
-    - `compact()`
+    - `compact()` (See code below.)
     - `writeIn(langName)`
+
+```js
+    // Code for compactness testing:
+    it( 'correctly implements compact() for type hierarchies', () => {
+        expect( converter.compact(
+            [ 'atomicnumber', [ 'numbervariable', 'x' ] ]
+        ) ).to.eql(
+            [ 'numbervariable', 'x' ]
+        )
+        expect( converter.compact(
+            [ 'expression', [ 'number', '2' ] ]
+        ) ).to.eql(
+            [ 'number', '2' ]
+        )
+        expect( converter.compact(
+            [ 'sum', [ 'product', [ 'factor', [ 'atomicnumber', [ 'number', '2' ] ] ] ] ]
+        ) ).to.eql(
+            [ 'number', '2' ]
+        )
+        expect( () => converter.compact(
+            [ 'atomicnumber', [ 'sum', '2' ] ]
+        ) ).to.throw(
+            /^Invalid semantic JSON/
+        )
+    } )
+```
 
 General to dos:
  - Document the fact that addConcept(x,y,regexp) makes that regexp the default

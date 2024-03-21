@@ -1,5 +1,6 @@
 
 import { Grammar, Tokenizer } from 'earley-parser'
+import { AST } from './ast.js'
 import SyntacticTypes from './syntactic-types.js'
 import { notationStringToArray } from './utilities.js'
 
@@ -179,6 +180,29 @@ export class Language {
         newRule.notation = originalNotation
         newRule.variables = options.variables
         newRule.notationName = options.name
+    }
+
+    /**
+     * Treat the given text as an expression in this language and attempt to
+     * parse it.  Return an abstract syntax tree ({@link AST}) on success, or
+     * `undefined` on failure.  If `compact` is `true`, the AST will be
+     * compacted (see {@link AST#compact}) before it is returned.
+     * 
+     * @param {String} text - the input text to parse
+     * @param {boolean} compact - whether to compact the output before returning
+     *   it
+     * @returns {AST} - the parsed AST, or undefined if parsing failed
+     * @see {@link AST#compact}
+     */
+    parse ( text, compact = true ) {
+        const tokens = this.tokenizer.tokenize( text )
+        if ( !tokens ) return undefined
+        const json = this.grammar.parse( tokens, {
+            showDebuggingOutput : this._debug
+        } )[0]
+        if ( !json ) return undefined
+        const result = AST.fromJSON( this, json )
+        return compact ? result.compact() : result
     }
 
     /**

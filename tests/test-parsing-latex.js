@@ -2,43 +2,18 @@
 import { expect } from 'chai'
 import { converter } from '../example-converter.js'
 
-describe( 'Parsing latex', () => {
+const latex = converter.languages.get( 'latex' )
 
-    // it( 'correctly implements compact() for type hierarchies', () => {
-    //     expect( converter.compact(
-    //         [ 'atomicnumber', [ 'numbervariable', 'x' ] ]
-    //     ) ).to.eql(
-    //         [ 'numbervariable', 'x' ]
-    //     )
-    //     expect( converter.compact(
-    //         [ 'expression', [ 'number', '2' ] ]
-    //     ) ).to.eql(
-    //         [ 'number', '2' ]
-    //     )
-    //     expect( converter.compact(
-    //         [ 'sum', [ 'product', [ 'factor', [ 'atomicnumber', [ 'number', '2' ] ] ] ] ]
-    //     ) ).to.eql(
-    //         [ 'number', '2' ]
-    //     )
-    //     expect( () => converter.compact(
-    //         [ 'atomicnumber', [ 'sum', '2' ] ]
-    //     ) ).to.throw(
-    //         /^Invalid semantic JSON/
-    //     )
-    // } )
+describe( 'Parsing latex', () => {
 
     const whitespace = '                                            '
     const lpad = str => whitespace.substr( 0, whitespace.length - str.length ) + str
-    const checkLatexJson = ( latex, json ) => {
-        expect(
-            converter.convert( 'latex', 'ast', latex ).compact().toJSON()
-        ).to.eql( json )
-        // console.log( `${lpad( latex )}  -->  ${JSON.stringify( json )}` )
+    const checkLatexJson = ( latexText, json ) => {
+        expect( latex.parse( latexText ).toJSON() ).to.eql( json )
+        // console.log( `${lpad( latexText )}  -->  ${JSON.stringify( json )}` )
     }
-    const checkLatexJsonFail = ( latex ) => {
-        expect(
-            converter.convert( 'latex', 'ast', latex )
-        ).to.be.undefined
+    const checkLatexJsonFail = ( latexText ) => {
+        expect( latex.parse( latexText ) ).to.be.undefined
     }
 
     it( 'can parse many kinds of numbers to JSON', () => {

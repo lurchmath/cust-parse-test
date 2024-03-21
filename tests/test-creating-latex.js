@@ -3,21 +3,17 @@ import { expect } from 'chai'
 import { converter } from '../example-converter.js'
 import { AST } from '../ast.js'
 
+const latex = converter.languages.get( 'latex' )
+
 describe( 'Creating latex from JSON', () => {
 
     const whitespace = '                                            '
     const lpad = str => whitespace.substr( 0, whitespace.length - str.length ) + str
-    const checkJsonLatex = ( json, latex ) => {
+    const checkJsonLatex = ( json, latexText ) => {
         expect(
-            converter.convert( 'ast', 'latex',
-                new AST( converter.languages.get( 'latex' ), ...json ) )
-        ).to.eql( latex )
-        // console.log( `${lpad( latex )}  -->  ${JSON.stringify( json )}` )
-    }
-    const checkJsonLatexFail = ( json ) => {
-        expect(
-            converter.convert( 'ast', 'latex', json )
-        ).to.be.undefined
+            new AST( latex, ...json ).toLanguage( latex )
+        ).to.eql( latexText )
+        // console.log( `${lpad( latexText )}  -->  ${JSON.stringify( json )}` )
     }
 
     it( 'can convert JSON numbers to LaTeX', () => {
