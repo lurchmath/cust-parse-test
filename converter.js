@@ -184,20 +184,23 @@ export class Converter {
      */
     convert ( sourceLang, destLang, data ) {
         if ( sourceLang == destLang ) return data
+        const source = this.language( sourceLang )
+        const destination = this.language( destLang )
         if ( sourceLang == 'ast' ) {
-            return data.writeIn( destLang )
-        } else if ( this.isLanguage( sourceLang ) ) {
-            const language = this.languages.get( sourceLang )
+            if ( !destination )
+                throw new Error( 'Unknown language: ' + destLang )
+            return data.toLanguage( destination )
+        } else if ( source ) {
             if ( destLang == 'ast' ) {
-                const tokens = language.tokenizer.tokenize( data )
+                const tokens = source.tokenizer.tokenize( data )
                 if ( !tokens ) return undefined
-                const result = language.grammar.parse( tokens, {
+                const result = source.grammar.parse( tokens, {
                     showDebuggingOutput : this._debug
                 } )[0]
-                return result ? AST.fromJSON( language, result ) : undefined
-            } else if ( this.isLanguage( destLang ) ) {
+                return result ? AST.fromJSON( source, result ) : undefined
+            } else if ( destination ) {
                 return this.convert( sourceLang, 'ast', data )?.compact()
-                    ?.writeIn( destLang )
+                    ?.toLanguage( destination )
             } else {
                 throw new Error( 'Unknown language: ' + destLang )
             }

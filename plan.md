@@ -1,6 +1,5 @@
 
 To dos for Language class:
- - Update `AST.writeIn(langName)` to `AST.toLanguage(langObj)`.
  - Give the Language class a `parse()` method.
  - Have that `parse()` method incorporate all the cleanup work done by the
    current `AST.fromJSON()` method, so that `parse()` returns a clean AST.  Thus
@@ -10,6 +9,7 @@ To dos for Language class:
  - Give the Language class a `convertTo(langObj,text)` method.  Put all the
    remaining work from `Converter.convert()` in this method, so that
    `Converter.convert()` can just call it.
+ - Can we simplify away the need to call `AST.compact()`?
 
 To dos for ASTs:
  - Create test suite for AST class, including all the functions you moved

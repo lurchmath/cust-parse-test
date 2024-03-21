@@ -254,35 +254,34 @@ export class AST extends Array {
     }
 
     /**
-     * Represent this AST in the named language.  For example, if the AST were
+     * Represent this AST in the given language.  For example, if the AST were
      * one whose {@link AST#toString string representation} were
-     * `addition(x,y)`, then we might call `.writeIn('latex')` on that
-     * AST and expect to get `x+y`, or we might call `.writeIn('putdown')` and
-     * expect to get `(+ x y)`.  The name of the language passed to `writeIn()`
-     * must be one of the names known by the {@link Converter} instance given to
-     * this AST (or its top-level ancestor) at its construction time.
+     * `addition(x,y)`, then we might call `.toLanguage(latex)` on that
+     * AST and expect to get `x+y`, or we might call `.toLanguage(putdown)` and
+     * expect to get `(+ x y)`.  The parameter passed to `toLanguage()` must be
+     * one of the languages installed in the {@link Converter} instance
+     * associated with this AST's language.
      * 
      * This function requires the AST on which it is called to be in compact
      * form, as produced by the {@link AST#compact} member function.  The
      * behavior of this function is undefined if this requirement is not met.
      * 
-     * @param {String} langName - the name of the language in which to write the
+     * @param {Language} language - the language in which to write the
      *   expression stored in this AST
      * @returns {String} the representation, in the specified language, of this
      *   AST
      */
-    writeIn ( langName ) {
-        // find the language in question
-        const language = this.language.converter.language( langName )
-        if ( !language )
-            throw new Error( `Not a valid language: ${langName}` )
+    toLanguage ( language ) {
+        if ( language.converter != this.language.converter )
+            throw new Error(
+                `Not part of same Converter: ${language.name}, ${this.language.name}` )
         // if it's just a syntactic type wrapper, ensure it's around exactly 1 item
         if ( SyntacticTypes.types.includes( this.head() ) ) {
             if ( this.numArgs() != 1 )
                 throw new Error( `Invalid AST: ${this}` )
             // return the interior, possibly with groupers if the type
             // hierarchy requires it (the inner is not a subtype of the outer)
-            const result = this.arg( 0 ).writeIn( langName )
+            const result = this.arg( 0 ).toLanguage( language )
             if ( !SyntacticTypes.types.includes( this.arg( 0 ) )
               || SyntacticTypes.isSupertypeOrEqual( this.head(), this.arg( 0 ) ) )
                 return result
@@ -308,7 +307,7 @@ export class AST extends Array {
         if ( concept.typeSequence.length != this.numArgs() )
             throw new Error( `Invalid AST: ${this}` )
         const recur = this.args().map( ( piece, index ) => {
-            const result = piece.writeIn( langName )
+            const result = piece.toLanguage( language )
             const outerType = concept.typeSequence[index]
             let innerType = piece[0]
             if ( piece.isConcept() )
