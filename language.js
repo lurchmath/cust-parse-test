@@ -198,7 +198,7 @@ export class Language {
             showDebuggingOutput : this._debug
         } )[0]
         if ( !json ) return undefined
-        return AST.fromJSON( this, json ).compact()
+        return AST.fromJSON( this, json )
     }
 
     /**

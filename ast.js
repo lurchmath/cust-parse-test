@@ -173,16 +173,20 @@ export class AST extends Array {
      * @param {Language} language - the language from which the JSON was parsed
      * @param {Array} json - a hierarchy of JavaScript Arrays (with strings as
      *   leaves) representing an AST
+     * @param {boolean?} top - `true` if this is the top-level call, for internal
+     *   use only; clients should omit this parameter
      * @returns {AST} the AST represented by the JSON
      */
-    static fromJSON ( language, json ) {
+    static fromJSON ( language, json, top = true ) {
         // console.log( `fromJSON( ${JSON.stringify(json)} )` )
         if ( !( json instanceof Array ) ) return json
         const head = json.shift()
         const concept = language.converter.concepts.get( head )
-        if ( !concept )
-            return new AST( language, ...[ head, ...json ].map(
-                piece => AST.fromJSON( language, piece ) ) )
+        if ( !concept ) {
+            const result = new AST( language, ...[ head, ...json ].map(
+                piece => AST.fromJSON( language, piece, false ) ) )
+            return top ? result.compact() : result
+        }
         const rhss = language.grammar.rules[head]
         for ( let i = 0 ; i < rhss.length ; i++ ) {
             if ( rhss[i].length != json.length ) continue
@@ -193,37 +197,32 @@ export class AST extends Array {
                     && ( !isNotation || piece.test( json[index] ) )
             } )
             if ( !matches ) continue
-            if ( rhss[i].notation instanceof RegExp )
-                return [ head, AST.fromJSON( language, json[0] ) ]
+            if ( rhss[i].notation instanceof RegExp ) {
+                const result = new AST( language, head,
+                    AST.fromJSON( language, json[0], false ) )
+                return top ? result.compact() : result
+            }
             json = json.filter( ( _, index ) =>
                 !( rhss[i][index] instanceof RegExp ) )
             const result = new AST( language, head,
                 ...json.map( ( _, index ) => AST.fromJSON( language,
-                    json[rhss[i].putdownToNotation[index]] ) ) )
+                    json[rhss[i].putdownToNotation[index]], false ) ) )
             if ( rhss[i].notationName )
                 result.notationName = rhss[i].notationName
-            return result
+            return top ? result.compcat() : result
         }
         throw new Error( `No notational match for ${JSON.stringify( json )}` )
     }
 
-    /**
-     * An AST created through {@link AST.fromJSON} will typically not be in
-     * compact form.  Specifically, it will have a nested hierarchy of both
-     * syntactic and semantic types.  For example, the expression `x+y` might
-     * not be represented as the simple `[ 'addition', 'x', 'y' ]` array, but as
-     * the unnecessarily complex array
-     * `[ 'expression', [ 'numberexpr', [ 'sum', [ 'addition', 'x', 'y' ] ] ] ]`.
-     * The more complex form showcases exactly how `x+y` counts as an
-     * expression, by virtue of being a sum, which is a type of number
-     * expression, which is a type of expression.  That long chain of syntactic
-     * types is typically not desirable, but rather just the semantic
-     * information is of interest.  Compact form removes all wrappers that serve
-     * only to label an AST with its syntactic type, leaving only a hierarchy
-     * of semantic information in the AST.
-     * 
-     * @returns {AST} a copy of this AST that is in compact form
-     */
+    // Internal use only
+    // An AST created through parsing will typically not be in compact form.
+    // Specifically, it will have a nested hierarchy of both syntactic and
+    // semantic types.  For example, the expression `x+y` might not be
+    // represented as the simple `[ 'addition', 'x', 'y' ]` array, but as the
+    // unnecessarily complex array
+    // `[ 'expression', [ 'numberexpr', [ 'sum', [ 'addition', 'x', 'y' ] ] ] ]`.
+    // Compact form removes all wrappers that serve only to label an AST with
+    // its syntactic type, leaving only a hierarchy of semantic information.
     compact () {
         // console.log( 'compactifying:', this )
         if ( this.length == 0 )

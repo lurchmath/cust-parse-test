@@ -2,7 +2,7 @@
 To dos for ASTs:
  - Create test suite for AST class, including all the functions you moved
    into it from the Converter class:
-    - `constructor(converter,language,...components)`
+    - `constructor(language,...components)`
     - `head()`
     - `args()`
     - `numArgs()`
@@ -11,35 +11,8 @@ To dos for ASTs:
     - `concept()`
     - `toString()`
     - `toJSON()`
-    - `fromJSON(converter,language,json)`
-    - `compact()` (See code below.)
-    - `writeIn(langName)`
-
-```js
-    // Code for compactness testing:
-    it( 'correctly implements compact() for type hierarchies', () => {
-        expect( converter.compact(
-            [ 'atomicnumber', [ 'numbervariable', 'x' ] ]
-        ) ).to.eql(
-            [ 'numbervariable', 'x' ]
-        )
-        expect( converter.compact(
-            [ 'expression', [ 'number', '2' ] ]
-        ) ).to.eql(
-            [ 'number', '2' ]
-        )
-        expect( converter.compact(
-            [ 'sum', [ 'product', [ 'factor', [ 'atomicnumber', [ 'number', '2' ] ] ] ] ]
-        ) ).to.eql(
-            [ 'number', '2' ]
-        )
-        expect( () => converter.compact(
-            [ 'atomicnumber', [ 'sum', '2' ] ]
-        ) ).to.throw(
-            /^Invalid semantic JSON/
-        )
-    } )
-```
+    - `fromJSON(language,json)`
+    - `toLanguage(language)`
 
 General to dos:
  - Document the fact that addConcept(x,y,regexp) makes that regexp the default
