@@ -1,7 +1,8 @@
 
 General to dos:
  - expand set of tests for many new mathematical expressions in many languages,
-   including expressions that bind variables
+   including expressions that bind variables.  Use the grammar here as an
+   inspiration: https://github.com/lurchmath/earley-parser/blob/master/earley-tests.js#L225
 (note that all of the Math299 language features are documented on the following
 page, so that you can try to replicate that feature set, and so that you can
 update your Lurch docs in the lurchmath.github.io repo as well.)
