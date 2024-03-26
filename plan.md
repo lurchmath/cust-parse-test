@@ -1,12 +1,36 @@
 
+How to expand the example converter to handle new concepts/notation:
+ 1. Add a new `addConcept()` call to the `example-converter.js` file, with the
+    appropriate putdown notation included.
+ 2. Add an `it()` call to `test-parsing-putdown.js` to ensure that the new
+    concept can be parsed from putdown notation.
+     - Possibly also add a test to an `it()` whose purpose is to test nesting of
+       expressions in one another, using the new type you just introduced.
+ 3. Add an `it()` call to `test-creating-putdown.js` to ensure that the new
+    concept can be rendered to putdown notation.  (You can probably copy and
+    paste the test you created in item 2., but rename the function call and swap
+    the two arguments' order.)
+     - Possibly also add a test to an `it()` whose purpose is to test nesting of
+       expressions in one another, using the new type you just introduced.
+ 4. Add a new `addNotation()` call to the `example-converter.js` file, with one
+    or more LaTeX notations for the new concept.
+ 5. Add an `it()` call to `test-parsing-latex.js` to ensure that the new
+    concept can be parsed from latex notation.
+     - Possibly also add a test to an `it()` whose purpose is to test precedence
+       of your new operator (if indeed it is one) compared to pre-existing ones.
+ 6. Add an `it()` call to `test-creating-latex.js` to ensure that the new
+    concept can be rendered to latex notation.
+     - Possibly also add a test to an `it()` whose purpose is to test that
+       rendering puts groupers where needed to respect relative precedence.
+ 7. Add an `it()` call to `test-putdown-to-latex.js` to compose two of the tests
+    run above.
+ 8. Add an `it()` call to `test-latex-to-putdown.js` to compose two of the tests
+    run above.
+
 General to dos:
  - expand set of tests for many new mathematical expressions in many languages,
    including expressions that bind variables.  Use the grammar here as an
    inspiration: https://github.com/lurchmath/earley-parser/blob/master/earley-tests.js#L225
-(note that all of the Math299 language features are documented on the following
-page, so that you can try to replicate that feature set, and so that you can
-update your Lurch docs in the lurchmath.github.io repo as well.)
-https://proveitmath.org/lurch/lde/src/experimental/parsers/lurch-parser-docs.html
     - sum, difference (as sum of negation)
     - product, quotient (as product of reciprocal), fraction
     - exponents, factorial
@@ -220,4 +244,189 @@ Standard \cup, \cap, \subset, \subseteq
 X^{\prime}, X^{\doubleprime}
 All upper- and lower-case Greek letters, with variants
 {\displaylines x\\ y} is like a fraction with no bar
+```
+
+Latest version of the things that Lurch notation parses (as of Mar 26, 2024),
+so that you can try to build a Lurch notation parser eventually:
+
+(note that all of the Lurch notation features are documented on the following
+page, which will also let you update your Lurch docs in the lurchmath.github.io repo.)
+https://proveitmath.org/lurch/lde/src/experimental/parsers/lurch-parser-docs.html
+
+Logic
+
+```
+P and Q
+P∧Q
+P or Q
+P∨Q
+not P
+¬P
+P implies Q
+P⇒Q
+P iff Q
+P⇔Q
+contradiction
+→←
+```
+
+Quantifiers and bindings
+
+```
+forall x.x leq x+1
+for all x.x leq x+1
+∀x.x leq x+1
+exists x.x=2 cdot x
+∃x.x=2⋅x
+exists unique x.x=2*x
+∃!x.x=2⋅x
+x.x+2
+x↦x+2
+```
+
+Algebraic expressions
+
+```
+(x)
+x+y
+2+x+y
+-x
+1-x
+x*y
+x cdot y
+x⋅y
+2*x*y
+2 cdot x cdot y
+2⋅x⋅y
+2*3*x
+2 cdot 3 cdot x
+2⋅3⋅x
+1/x
+2*1/x*y
+(2*1)/(x*y)
+x^2
+x factorial
+x!
+(n+1) choose (k-1)
+sum k=0 to n of k^2
+sum k from 0 to n of k^2
+sum k to n of k^2
+sum of k^2 as k goes from 0 to n
+sum k^2 as k goes from 0 to n
+sum k^2 as k from 0 to n
+sum k^2 for k from 0 to n
+sum k^2 for k to n
+sum of k^2 as k to n
+sum of k^2 for k to n
+sum( k^2 , k , 0 , n )
+sum(k^2,k,0,n)
+sum(k^2,k,n)
+Fib_(n+2)
+```
+
+Set Theory
+
+```
+x in A
+x∈A
+x notin A
+x∉A
+{a,b,c}
+set(a,b,c)
+{ p:p is prime}
+set(p:p is prime)
+A subset B
+A subseteq B
+A⊆B
+A cup B
+A union B
+A∪B
+A cap B
+A intersect B
+A∩B
+A setminus B
+A∖B
+A'
+A complement
+A°
+powerset(A)
+𝒫(A)
+f:A to B
+f:A→B
+f(x)
+f_(x)
+f_(0)(x)_(n+1)
+g circ f
+g comp f
+g∘f
+A times B
+A cross B
+A×B
+pair(x,y)
+tuple(x,y)
+⟨x,y⟩
+triple(x,y,z)
+tuple(x,y,z)
+⟨x,y,z⟩
+tuple(w,x,y,z)
+⟨w,x,y,z⟩
+```
+
+Relations
+
+```
+x lt 0
+x &lt; 0
+x leq 0
+x ≤ 0
+x neq 0
+x ne 0
+x≠0
+m | n
+m divides n
+a cong b mod m
+a cong mod m to b
+x~y
+x~y~z
+x=y
+x=y=z
+X loves Y
+X is Y
+X is an Y
+X is a Y
+X are Y
+P is a partition of A
+'~' is an equivalence relation
+[a]
+[a,~]
+'~' is a strict partial order
+'~' is a partial order
+'~' is a total order
+```
+
+Assumptions and Declarations (case insensitive, phrase is echoed)
+
+```
+Assume P
+Given P
+Suppose P
+If P
+:P
+Let x
+Let x in A
+Let x be such that x in RR
+Let x such that x in RR
+f(c)=0 for some c
+f(c)=0 for some c in A
+Declare is, 0, +, cos
+```
+
+Miscellaneous
+
+```
+x^-
+x⁻
+@P(k)
+λP(k)
+undefined
 ```
