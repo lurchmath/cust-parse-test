@@ -50,6 +50,8 @@ describe( 'Converting LaTeX to putdown', () => {
     it( 'correctly converts atomic percentages', () => {
         checkLatexPutdown( '10\\%', '(% 10)' )
         checkLatexPutdown( 't\\%', '(% t)' )
+        checkLatexPutdown( '10!', '(! 10)' )
+        checkLatexPutdown( 't!', '(! t)' )
     } )
 
     it( 'correctly converts division of atomics or factors', () => {
@@ -92,6 +94,8 @@ describe( 'Converting LaTeX to putdown', () => {
     it( 'correctly converts number expressions with groupers', () => {
         checkLatexPutdown( '-{1\\times2}', '(- (* 1 2))' )
         checkLatexPutdown( '-(1\\times2)', '(- (* 1 2))' )
+        checkLatexPutdown( '{x^2}!', '(! (^ x 2))' )
+        checkLatexPutdown( '3!\\cdot4!', '(* (! 3) (! 4))' )
         checkLatexPutdown( '{-x}^{2\\cdot{-3}}', '(^ (- x) (* 2 (- 3)))' )
         checkLatexPutdown( '(-x)^(2\\cdot(-3))', '(^ (- x) (* 2 (- 3)))' )
         checkLatexPutdown( '(-x)^{2\\cdot(-3)}', '(^ (- x) (* 2 (- 3)))' )

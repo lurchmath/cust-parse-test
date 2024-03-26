@@ -47,9 +47,11 @@ describe( 'Converting putdown to LaTeX', () => {
         checkPutdownLatex( '(^ 1 infinity)', '1 ^ \\infty' )
     } )
 
-    it( 'correctly converts atomic percentages', () => {
+    it( 'correctly converts atomic percentages and factorials', () => {
         checkPutdownLatex( '(% 10)', '10 \\%' )
         checkPutdownLatex( '(% t)', 't \\%' )
+        checkPutdownLatex( '(! 10)', '10 !' )
+        checkPutdownLatex( '(! t)', 't !' )
     } )
 
     it( 'correctly converts division of atomics or factors', () => {
@@ -89,6 +91,7 @@ describe( 'Converting putdown to LaTeX', () => {
     
     it( 'correctly converts number expressions with groupers', () => {
         checkPutdownLatex( '(- (* 1 2))', '- 1 \\times 2' )
+        checkPutdownLatex( '(! (^ x 2))', '{x ^ 2} !' )
         checkPutdownLatex( '(^ (- x) (* 2 (- 3)))', '{- x} ^ {2 \\times - 3}' )
         checkPutdownLatex( '(^ (- 3) (+ 1 2))', '{- 3} ^ {1 + 2}' )
     } )

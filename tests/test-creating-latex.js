@@ -124,7 +124,7 @@ describe( 'Creating latex from JSON', () => {
         )
     } )
 
-    it( 'can convert atomic percentages from JSON to LaTeX', () => {
+    it( 'can convert atomic percentages and factorials from JSON to LaTeX', () => {
         checkJsonLatex(
             [ 'percentage', [ 'number', '10' ] ],
             '10 \\%'
@@ -132,6 +132,14 @@ describe( 'Creating latex from JSON', () => {
         checkJsonLatex(
             [ 'percentage', [ 'numbervariable', 't' ] ],
             't \\%'
+        )
+        checkJsonLatex(
+            [ 'factorial', [ 'number', '10' ] ],
+            '10 !'
+        )
+        checkJsonLatex(
+            [ 'factorial', [ 'numbervariable', 't' ] ],
+            't !'
         )
     } )
 
@@ -277,6 +285,11 @@ describe( 'Creating latex from JSON', () => {
             [ 'numbernegation',
                 [ 'multiplication', [ 'number', '1' ], [ 'number', '2' ] ] ],
             '- 1 \\times 2'
+        )
+        checkJsonLatex(
+            [ 'factorial',
+                [ 'addition', [ 'number', '1' ], [ 'number', '2' ] ] ],
+            '{1 + 2} !'
         )
         checkJsonLatex(
             [ 'exponentiation',

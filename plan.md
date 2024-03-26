@@ -33,8 +33,6 @@ General to dos:
  - expand set of tests for many new mathematical expressions in many languages,
    including expressions that bind variables.  Use the grammar here as an
    inspiration: https://github.com/lurchmath/earley-parser/blob/master/earley-tests.js#L225
-    - product, quotient (as product of reciprocal), fraction
-    - exponents, factorial
     - set membership and its negation
     - subseteq, union, intersection, complement
     - cartesian product of sets, ordered pair of elements

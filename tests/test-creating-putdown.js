@@ -124,7 +124,7 @@ describe( 'Creating putdown from JSON', () => {
         )
     } )
 
-    it( 'can convert atomic percentages to putdown', () => {
+    it( 'can convert atomic percentages and factorials to putdown', () => {
         checkJsonPutdown(
             [ 'percentage', [ 'number', '10' ] ],
             '(% 10)'
@@ -132,6 +132,14 @@ describe( 'Creating putdown from JSON', () => {
         checkJsonPutdown(
             [ 'percentage', [ 'numbervariable', 't' ] ],
             '(% t)'
+        )
+        checkJsonPutdown(
+            [ 'factorial', [ 'number', '100' ] ],
+            '(! 100)'
+        )
+        checkJsonPutdown(
+            [ 'factorial', [ 'numbervariable', 'J' ] ],
+            '(! J)'
         )
     } )
 
@@ -279,6 +287,11 @@ describe( 'Creating putdown from JSON', () => {
                 [ 'multiplication',
                     [ 'number', '1' ], [ 'number', '2' ] ] ],
             '(- (* 1 2))'
+        )
+        checkJsonPutdown(
+            [ 'factorial',
+                [ 'exponentiation', [ 'numbervariable', 'x' ], [ 'number', '2' ] ] ],
+            '(! (^ x 2))'
         )
         checkJsonPutdown(
             [ 'exponentiation',

@@ -10,6 +10,7 @@ converter.addConcept( 'infinity',       'atomicnumber' )
 
 converter.addConcept( 'exponentiation', 'factor',       '(^ atomicnumber atomicnumber)' )
 converter.addConcept( 'percentage',     'factor',       '(% atomicnumber)' )
+converter.addConcept( 'factorial',      'factor',       '(! atomicnumber)' )
 converter.addConcept( 'division',       'product',      '(/ product product)' )
 converter.addConcept( 'multiplication', 'product',      '(* product product)' )
 converter.addConcept( 'numbernegation', 'product',      '(- product)' )
@@ -38,6 +39,8 @@ latex.addNotation( 'infinity',       '\\infty' )
 
 latex.addNotation( 'exponentiation', 'A^B' )
 latex.addNotation( 'percentage',     'A\\%' )
+latex.addNotation( 'factorial',      'A!' )
+
 latex.addNotation( 'division',       'A\\div B' )
 latex.addNotation( 'multiplication', 'A\\times B' )
 latex.addNotation( 'multiplication', 'A\\cdot B' )

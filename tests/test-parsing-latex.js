@@ -115,7 +115,7 @@ describe( 'Parsing latex', () => {
         )
     } )
 
-    it( 'can parse atomic percentages to JSON', () => {
+    it( 'can parse atomic percentages and factorials to JSON', () => {
         checkLatexJson(
             '10\\%',
             [ 'percentage', [ 'number', '10' ] ]
@@ -123,6 +123,14 @@ describe( 'Parsing latex', () => {
         checkLatexJson(
             't\\%',
             [ 'percentage', [ 'numbervariable', 't' ] ]
+        )
+        checkLatexJson(
+            '77!',
+            [ 'factorial', [ 'number', '77' ] ]
+        )
+        checkLatexJson(
+            'y!',
+            [ 'factorial', [ 'numbervariable', 'y' ] ]
         )
     } )
 
@@ -281,6 +289,12 @@ describe( 'Parsing latex', () => {
             '-(1\\times2)',
             [ 'numbernegation',
                 [ 'multiplication', [ 'number', '1' ], [ 'number', '2' ] ] ]
+        )
+        checkLatexJson(
+            '(N-1)!',
+            [ 'factorial',
+                [ 'subtraction',
+                    [ 'numbervariable', 'N' ], [ 'number', '1' ] ] ]
         )
         checkLatexJson(
             '{-x}^{2\\cdot{-3}}',
