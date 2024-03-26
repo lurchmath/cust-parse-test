@@ -246,6 +246,32 @@ describe( 'Creating latex from JSON', () => {
         )
     } )
 
+    it( 'can convert additions and subtractions from JSON to LaTeX', () => {
+        checkJsonLatex(
+            [ 'addition',
+                [ 'numbervariable', 'x' ],
+                [ 'numbervariable', 'y' ]
+            ],
+            'x + y'
+        )
+        checkJsonLatex(
+            [ 'subtraction',
+                [ 'number', '1' ],
+                [ 'numbernegation', [ 'number', '3' ] ]
+            ],
+            '1 - - 3'
+        )
+        checkJsonLatex(
+            [ 'subtraction',
+                [ 'addition',
+                    [ 'exponentiation',
+                        [ 'numbervariable', 'A' ], [ 'numbervariable', 'B' ] ],
+                    [ 'numbervariable', 'C' ] ],
+                [ 'numbervariable', 'D' ] ],
+            'A ^ B + C - D'
+        )
+    } )
+
     it( 'can convert number expressions with groupers from JSON to LaTeX', () => {
         checkJsonLatex(
             [ 'numbernegation',
@@ -260,6 +286,30 @@ describe( 'Creating latex from JSON', () => {
                     [ 'number', '2' ], [ 'numbernegation', [ 'number', '3' ] ] ]
             ],
             '{- x} ^ {2 \\times - 3}'
+        )
+        // Note: The following test doesn't come out the way you would expect,
+        // but it's because the hierarchy of concepts in the parser encodes the
+        // idea that (x+y)-z is the same as x+(y-z), which is actually true.
+        checkJsonLatex(
+            [ 'addition',
+                [ 'exponentiation',
+                    [ 'numbervariable', 'A' ], [ 'numbervariable', 'B' ] ],
+                [ 'subtraction',
+                    [ 'numbervariable', 'C' ], [ 'numbervariable', 'D' ] ]
+            ],
+            'A ^ B + C - D'
+        )
+        // Note: The following test shows that rendering LaTeX standardizes some
+        // operators and groupers, notably cdot -> times and () -> {} here.
+        checkJsonLatex(
+            [ 'multiplication',
+                [ 'exponentiation',
+                    [ 'numbervariable', 'k' ],
+                    [ 'subtraction',
+                        [ 'number', '1' ], [ 'numbervariable', 'y' ] ] ],
+                [ 'addition',
+                    [ 'number', '2' ], [ 'numbervariable', 'k' ] ] ],
+            'k ^ {1 - y} \\times {2 + k}'
         )
     } )
 

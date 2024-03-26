@@ -245,6 +245,32 @@ describe( 'Parsing latex', () => {
         )
     } )
 
+    it( 'can convert additions and subtractions to JSON', () => {
+        checkLatexJson(
+            'x+y',
+            [ 'addition',
+                [ 'numbervariable', 'x' ],
+                [ 'numbervariable', 'y' ]
+            ]
+        )
+        checkLatexJson(
+            '1--3',
+            [ 'subtraction',
+                [ 'number', '1' ],
+                [ 'numbernegation', [ 'number', '3' ] ]
+            ]
+        )
+        checkLatexJson(
+            'A^B+C-D',
+            [ 'subtraction',
+                [ 'addition',
+                    [ 'exponentiation',
+                        [ 'numbervariable', 'A' ], [ 'numbervariable', 'B' ] ],
+                    [ 'numbervariable', 'C' ] ],
+                [ 'numbervariable', 'D' ] ]
+        )
+    } )
+
     it( 'can parse number expressions with groupers to JSON', () => {
         checkLatexJson(
             '-{1\\times2}',
@@ -282,6 +308,25 @@ describe( 'Parsing latex', () => {
                 [ 'multiplication',
                     [ 'number', '2' ], [ 'numbernegation', [ 'number', '3' ] ] ]
             ]
+        )
+        checkLatexJson(
+            'A^B+(C-D)',
+            [ 'addition',
+                [ 'exponentiation',
+                    [ 'numbervariable', 'A' ], [ 'numbervariable', 'B' ] ],
+                [ 'subtraction',
+                    [ 'numbervariable', 'C' ], [ 'numbervariable', 'D' ] ]
+            ]
+        )
+        checkLatexJson(
+            'k^{1-y}\\cdot(2+k)',
+            [ 'multiplication',
+                [ 'exponentiation',
+                    [ 'numbervariable', 'k' ],
+                    [ 'subtraction',
+                        [ 'number', '1' ], [ 'numbervariable', 'y' ] ] ],
+                [ 'addition',
+                    [ 'number', '2' ], [ 'numbervariable', 'k' ] ] ]
         )
     } )
 

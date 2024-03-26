@@ -14,6 +14,9 @@ converter.addConcept( 'division',       'product',      '(/ product product)' )
 converter.addConcept( 'multiplication', 'product',      '(* product product)' )
 converter.addConcept( 'numbernegation', 'product',      '(- product)' )
 
+converter.addConcept( 'addition',       'sum',          '(+ sum sum)' )
+converter.addConcept( 'subtraction',    'sum',          '(- sum sum)' )
+
 converter.addConcept( 'logicvariable',  'atomicprop',   Language.regularExpressions.oneLetterVariable )
 converter.addConcept( 'logicaltrue',    'atomicprop',   'true' )
 converter.addConcept( 'logicalfalse',   'atomicprop',   'false' )
@@ -39,6 +42,9 @@ latex.addNotation( 'division',       'A\\div B' )
 latex.addNotation( 'multiplication', 'A\\times B' )
 latex.addNotation( 'multiplication', 'A\\cdot B' )
 latex.addNotation( 'numbernegation', '-A' )
+
+latex.addNotation( 'addition',       'A+B' )
+latex.addNotation( 'subtraction',    'A-B' )
 
 latex.addNotation( 'logicaltrue',    '\\top' )
 latex.addNotation( 'logicalfalse',   '\\bot' )

@@ -19,7 +19,9 @@ How to expand the example converter to handle new concepts/notation:
      - Possibly also add a test to an `it()` whose purpose is to test precedence
        of your new operator (if indeed it is one) compared to pre-existing ones.
  6. Add an `it()` call to `test-creating-latex.js` to ensure that the new
-    concept can be rendered to latex notation.
+    concept can be rendered to latex notation.  (You can probably copy and
+    paste the test you created in item 5., but rename the function call and swap
+    the two arguments' order.)
      - Possibly also add a test to an `it()` whose purpose is to test that
        rendering puts groupers where needed to respect relative precedence.
  7. Add an `it()` call to `test-putdown-to-latex.js` to compose two of the tests
@@ -31,7 +33,6 @@ General to dos:
  - expand set of tests for many new mathematical expressions in many languages,
    including expressions that bind variables.  Use the grammar here as an
    inspiration: https://github.com/lurchmath/earley-parser/blob/master/earley-tests.js#L225
-    - sum, difference (as sum of negation)
     - product, quotient (as product of reciprocal), fraction
     - exponents, factorial
     - set membership and its negation

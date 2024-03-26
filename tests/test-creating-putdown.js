@@ -247,6 +247,32 @@ describe( 'Creating putdown from JSON', () => {
         )
     } )
 
+    it( 'can convert additions and subtractions to putdown', () => {
+        checkJsonPutdown(
+            [ 'addition',
+                [ 'numbervariable', 'x' ],
+                [ 'numbervariable', 'y' ]
+            ],
+            '(+ x y)'
+        )
+        checkJsonPutdown(
+            [ 'subtraction',
+                [ 'number', '1' ],
+                [ 'numbernegation', [ 'number', '3' ] ]
+            ],
+            '(- 1 (- 3))'
+        )
+        checkJsonPutdown(
+            [ 'addition',
+                [ 'exponentiation',
+                    [ 'numbervariable', 'A' ], [ 'numbervariable', 'B' ] ],
+                [ 'subtraction',
+                    [ 'numbervariable', 'C' ], [ 'numbervariable', 'D' ] ]
+            ],
+            '(+ (^ A B) (- C D))'
+        )
+    } )
+
     it( 'can convert number expressions with groupers to putdown', () => {
         checkJsonPutdown(
             [ 'numbernegation',
@@ -263,6 +289,12 @@ describe( 'Creating putdown from JSON', () => {
                         [ 'numbernegation', [ 'number', '3' ] ] ]
             ],
             '(^ (- x) (* 2 (- 3)))'
+        )
+        checkJsonPutdown(
+            [ 'exponentiation',
+                [ 'numbernegation', [ 'number', '3' ] ],
+                [ 'addition', [ 'number', '1' ], [ 'number', '2' ] ] ],
+            '(^ (- 3) (+ 1 2))'
         )
     } )
 

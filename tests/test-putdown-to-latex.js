@@ -81,9 +81,16 @@ describe( 'Converting putdown to LaTeX', () => {
         checkPutdownLatex( '(- (- (- (- 1000))))', '- - - - 1000' )
     } )
 
+    it( 'correctly converts additions and subtractions', () => {
+        checkPutdownLatex( '(+ x y)', 'x + y' )
+        checkPutdownLatex( '(- 1 (- 3))', '1 - - 3' )
+        checkPutdownLatex( '(+ (^ A B) (- C D))', 'A ^ B + C - D' )
+    } )
+    
     it( 'correctly converts number expressions with groupers', () => {
         checkPutdownLatex( '(- (* 1 2))', '- 1 \\times 2' )
         checkPutdownLatex( '(^ (- x) (* 2 (- 3)))', '{- x} ^ {2 \\times - 3}' )
+        checkPutdownLatex( '(^ (- 3) (+ 1 2))', '{- 3} ^ {1 + 2}' )
     } )
 
     it( 'correctly converts propositional logic atomics', () => {
