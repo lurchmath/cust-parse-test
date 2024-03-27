@@ -58,19 +58,22 @@ export class Language {
         this.tokenizer.addType( /\s/, () => null )
         this.grammar = new Grammar()
         this.grammar.START = SyntacticTypes.hierarchies[0][0]
-        // If the concept is atomic and has a putdown form, use that as the
-        // default notation in the new language; this can be overridden by any
-        // later call to addNotation().
+        // For each concept in the converter, if it is atomic and has a putdown
+        // form, use that as the default notation in the new language; this can
+        // be overridden by any later call to addNotation().
         Array.from( converter.concepts.keys() ).forEach( conceptName => {
             const concept = converter.concepts.get( conceptName )
             if ( SyntacticTypes.isAtomic( concept.parentType ) )
                 this.addNotation( conceptName, concept.putdown )
         } )
         // Add subtyping rules and grouping rules to the grammar.
+        // Also, for each atomic type, give it zero rules, to avoid Earley
+        // throwing an error about the type not existing, if the client doesn't
+        // choose to include that atomic type in their language.
         SyntacticTypes.hierarchies.forEach( hierarchy => {
             for ( let i = 0 ; i < hierarchy.length - 1 ; i++ )
                 this.grammar.addRule( hierarchy[i], hierarchy[i+1] )
-            if ( groupers.length > 0 && hierarchy[0] == 'expression' ) {
+            if ( groupers.length > 0 && hierarchy[0] == this.grammar.START ) {
                 const last = hierarchy[hierarchy.length-1]
                 if ( SyntacticTypes.isAtomic( last ) ) {
                     for ( let i = 0 ; i < groupers.length - 1 ; i += 2 ) {
@@ -80,6 +83,9 @@ export class Language {
                     }
                 }
             }
+            const lowest = hierarchy[hierarchy.length-1]
+            if ( !this.grammar.rules.hasOwnProperty( lowest ) )
+                this.grammar.rules[lowest] = [ ]
         } )
         // register ourselves with our converter
         converter.languages.set( name, this )
@@ -194,11 +200,14 @@ export class Language {
     parse ( text ) {
         const tokens = this.tokenizer.tokenize( text )
         if ( !tokens ) return undefined
-        const json = this.grammar.parse( tokens, {
+        const all = this.grammar.parse( tokens, {
             showDebuggingOutput : this._debug
-        } )[0]
-        if ( !json ) return undefined
-        return AST.fromJSON( this, json )
+        } )
+        if ( all.length > 0 ) {
+            all.sort( ( a, b ) =>
+                JSON.stringify( a ).localeCompare( JSON.stringify( b ) ) )
+            return AST.fromJSON( this, all[0] )
+        }
     }
 
     /**

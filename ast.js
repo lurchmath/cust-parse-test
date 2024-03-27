@@ -222,7 +222,7 @@ export class AST extends Array {
     // semantic types.  For example, the expression `x+y` might not be
     // represented as the simple `[ 'addition', 'x', 'y' ]` array, but as the
     // unnecessarily complex array
-    // `[ 'expression', [ 'numberexpr', [ 'sum', [ 'addition', 'x', 'y' ] ] ] ]`.
+    // `[ 'expr', [ 'numberexpr', [ 'sumexpr', [ 'addition', 'x', 'y' ] ] ] ]`.
     // Compact form removes all wrappers that serve only to label an AST with
     // its syntactic type, leaving only a hierarchy of semantic information.
     compact () {
@@ -325,11 +325,15 @@ export class AST extends Array {
             }
         } )
         // get the default way to write that concept in this language
-        // and split it into an array to make template substitution easier
         const rhss = language.grammar.rules[this.head()]
         const rhs = rhss.find( r => r.notationName === this.notationName )
                  || rhss[0]
         let notation = rhs.notation
+        // if this is a canonical form notation, indicated by a prefix "->",
+        // then drop that prefix before using the notation as a template
+        const prefix = /^\s*\-\>(?:\s|\()/.exec( notation )
+        if ( prefix ) notation = notation.substring( prefix[0].length )
+        // now split that into an array to make template substitution easier
         const template = [ ]
         const splitter = new RegExp(
             rhs.variables.map( escapeRegExp ).join( '|' ) )

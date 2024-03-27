@@ -491,4 +491,81 @@ describe( 'Creating latex from JSON', () => {
         )
     } )
 
+    it( 'can convert simple set memberships and subsets to LaTeX', () => {
+        checkJsonLatex(
+            [ 'numberisin', [ 'numbervariable', 'b' ], [ 'setvariable', 'B' ] ],
+            'b \\in B'
+        )
+        checkJsonLatex(
+            [ 'numberisin', [ 'numbervariable', 'X' ],
+                [ 'union', [ 'setvariable', 'a' ], [ 'setvariable', 'b' ] ] ],
+            'X \\in a \\cup b'
+        )
+        checkJsonLatex(
+            [ 'setisin',
+                [ 'union', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
+                [ 'union', [ 'setvariable', 'X' ], [ 'setvariable', 'Y' ] ] ],
+            'A \\cup B \\in X \\cup Y'
+        )
+        checkJsonLatex(
+            [ 'subset',
+                [ 'setvariable', 'A' ],
+                [ 'complement', [ 'setvariable', 'B' ] ] ],
+            'A \\subset \\bar B'
+        )
+        checkJsonLatex(
+            [ 'subseteq',
+                [ 'intersection', [ 'setvariable', 'u' ], [ 'setvariable', 'v' ] ],
+                [ 'union', [ 'setvariable', 'u' ], [ 'setvariable', 'v' ] ] ],
+            'u \\cap v \\subseteq u \\cup v'
+        )
+    } )
+
+    it( 'can represent "notin" notation if JSON explicitly requests it', () => {
+        checkJsonLatex(
+            [ 'logicnegation',
+                [ 'numberisin', [ 'numbervariable', 'a' ], [ 'setvariable', 'A' ] ] ],
+            '\\neg a \\in A'
+        )
+        checkJsonLatex(
+            [ 'logicnegation',
+                [ 'numberisin',
+                    [ 'subtraction', [ 'number', '3' ], [ 'number', '5' ] ],
+                    [ 'intersection', [ 'setvariable', 'K' ], [ 'setvariable', 'P' ] ]
+                ]
+            ],
+            '\\neg 3 - 5 \\in K \\cap P'
+        )
+    } )
+
+    it( 'can convert to LaTeX sentences built from set operators', () => {
+        checkJsonLatex(
+            [ 'disjunction',
+                [ 'logicvariable', 'P' ],
+                [ 'numberisin',
+                    [ 'numbervariable', 'b' ], [ 'setvariable', 'B' ] ] ],
+            'P \\vee b \\in B'
+        )
+        checkJsonLatex(
+            [ 'propisin',
+                [ 'disjunction',
+                    [ 'logicvariable', 'P' ], [ 'logicvariable', 'b' ] ],
+                [ 'setvariable', 'B' ] ],
+            '{P \\vee b} \\in B'
+        )
+        checkJsonLatex(
+            [ 'universal',
+                [ 'numbervariable', 'x' ],
+                [ 'numberisin',
+                    [ 'numbervariable', 'x' ], [ 'setvariable', 'X' ] ] ],
+            '\\forall x , x \\in X'
+        )
+        checkJsonLatex(
+            [ 'conjunction',
+                [ 'subseteq', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
+                [ 'subseteq', [ 'setvariable', 'B' ], [ 'setvariable', 'A' ] ] ],
+            'A \\subseteq B \\wedge B \\subseteq A'
+        )
+    } )
+
 } )

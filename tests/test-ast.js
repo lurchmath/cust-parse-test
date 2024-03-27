@@ -92,7 +92,7 @@ describe( 'Abstract Syntax Tree class (AST)', () => {
     it( 'should be able to look up concepts in its converter', () => {
         // add some concepts to the converter
         converter.addConcept( 'test1', 'sum', '(## A B)' )
-        converter.addConcept( 'test3', 'expression', '(@@ A B)' )
+        converter.addConcept( 'test3', 'expr', '(@@ A B)' )
         // make an AST whose head is one of those concepts and test
         let ast = new AST( dummy, 'test1', 'foo', 'bar' )
         expect( ast.isConcept() ).to.equal( true )
@@ -105,7 +105,7 @@ describe( 'Abstract Syntax Tree class (AST)', () => {
         // make an AST whose head is a different one of those concepts and test
         ast = new AST( dummy, 'test3', '-10', '10' )
         expect( ast.isConcept() ).to.equal( true )
-        expect( ast.concept().parentType ).to.equal( 'expression' )
+        expect( ast.concept().parentType ).to.equal( 'expr' )
         expect( ast.concept().putdown ).to.equal( '(@@ A B)' )
     } )
 

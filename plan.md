@@ -33,8 +33,7 @@ General to dos:
  - expand set of tests for many new mathematical expressions in many languages,
    including expressions that bind variables.  Use the grammar here as an
    inspiration: https://github.com/lurchmath/earley-parser/blob/master/earley-tests.js#L225
-    - set membership and its negation
-    - subseteq, union, intersection, complement
+    - small finite sets
     - cartesian product of sets, ordered pair of elements
     - function from A to B, function application, composition, and inverses
     - `<`, `>`, `<=`, `>=`, `=`, `neq`
@@ -54,6 +53,27 @@ General to dos:
    the documentation for the syntactic-types module.
  - add support for features like associativity (in all conversion directions) if,
    indeed, we need associativity in any of the libraries we're planning on?
+
+Bug fixes:
+ - Right now you're using the `->` notation to ensure that shorthand concepts
+   (those that convert to putdown but are not themselves a canonical form) don't
+   get parsed back from putdown into JSON with that concepts as the head.  This
+   is not guaranteed to work if some notation involving `->` is defined.
+   Instead, pass an optional final argument to `addConcept()` that marks the
+   concept as "complex," that is, its meaning is built up from the meanings of
+   other concepts, rather than as its own primitive.  Then store such complex
+   concepts in their own lists in the Converter, rather than in the Grammars, so
+   that they cannot be parsed, and then when rendering to a language, search not
+   only the rhss of grammar rules, but also the rhss of complex concepts.
+   Then document the concept of canonical form.
+ - Returning the alphabetically least JSON parsing result from all ambiguous
+   results leads to right association in most cases.  This is actually a good
+   thing and should be documented somewhere, because for operators that are
+   associative, it doesn't matter which way you do it, but for operators like
+   the conditional, right association is the correct default.  Eventually, you
+   will want to specify how an operator associates (L/R) and have the tree be
+   post-processed to take any `(op (op x y) z)` or` (op x (op y z))` and turn it
+   into the correct default for that specific op.
 
 Information we may need later:
  - infinity      = '\u221e' = ∞

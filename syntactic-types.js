@@ -52,10 +52,29 @@
  * @module SyntacticTypes
  */
 export const hierarchies = [
-    [ 'expression', 'numberexpr', 'sum', 'product', 'factor', 'atomicnumber' ],
-    [ 'expression', 'sentence', 'conditional', 'disjunct', 'conjunct', 'atomicprop' ],
-    // [ 'conjunct', 'equation', 'inequality' ],
-    // [ 'set', 'union', 'intersection', 'atomicset' ]
+    [
+        'expr',
+        'numberexpr',
+        'sumexpr',
+        'prodexpr',
+        'factorexpr',
+        'atomicnumberexpr'
+    ],
+    [
+        'expr',
+        'sentenceexpr',
+        'condexpr',
+        'disjunctexpr',
+        'conjunctexpr',
+        'atomicpropexpr'
+    ],
+    [
+        'expr',
+        'setexpr',
+        'unionexpr',
+        'intersectionexpr',
+        'atomicsetexpr'
+    ]
 ]
 
 /**

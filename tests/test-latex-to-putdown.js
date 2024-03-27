@@ -88,7 +88,9 @@ describe( 'Converting LaTeX to putdown', () => {
     it( 'correctly converts additions and subtractions', () => {
         checkLatexPutdown( 'x + y', '(+ x y)' )
         checkLatexPutdown( '1 - - 3', '(- 1 (- 3))' )
-        checkLatexPutdown( 'A ^ B + C - D', '(- (+ (^ A B) C) D)' )
+        // Following could also be (- (+ (^ A B) C) D), both of which are OK,
+        // but the one shown below is alphabetically earlier:
+        checkLatexPutdown( 'A ^ B + C - D', '(+ (^ A B) (- C D))' )
     } )
     
     it( 'correctly converts number expressions with groupers', () => {
@@ -113,7 +115,9 @@ describe( 'Converting LaTeX to putdown', () => {
     it( 'correctly converts propositional logic conjuncts', () => {
         checkLatexPutdown( '\\top\\wedge\\bot', '(and true false)' )
         checkLatexPutdown( '\\neg P\\wedge\\neg\\top', '(and (not P) (not true))' )
-        checkLatexPutdown( 'a\\wedge b\\wedge c', '(and (and a b) c)' )
+        // Following could also be (and (and a b) c), both of which are OK,
+        // but the one shown below is alphabetically earlier:
+        checkLatexPutdown( 'a\\wedge b\\wedge c', '(and a (and b c))' )
     } )
 
     it( 'correctly converts propositional logic disjuncts', () => {
@@ -126,9 +130,10 @@ describe( 'Converting LaTeX to putdown', () => {
             'A\\Rightarrow Q\\wedge\\neg P',
             '(implies A (and Q (not P)))'
         )
+        // Implication should right-associate:
         checkLatexPutdown(
             'P\\vee Q\\Rightarrow Q\\wedge P\\Rightarrow T',
-            '(implies (implies (or P Q) (and Q P)) T)'
+            '(implies (or P Q) (implies (and Q P) T))'
         )
     } )
 
@@ -137,9 +142,10 @@ describe( 'Converting LaTeX to putdown', () => {
             'A\\Leftrightarrow Q\\wedge\\neg P',
             '(iff A (and Q (not P)))'
         )
+        // Implication should right-associate, including double implications:
         checkLatexPutdown(
             'P\\vee Q\\Leftrightarrow Q\\wedge P\\Rightarrow T',
-            '(implies (iff (or P Q) (and Q P)) T)'
+            '(iff (or P Q) (implies (and Q P) T))'
         )
     } )
 
@@ -159,17 +165,45 @@ describe( 'Converting LaTeX to putdown', () => {
     } )
 
     it( 'correctly converts simple predicate logic expressions', () => {
-        checkLatexPutdown(
-            '\\forall x, P',
-            '(forall (x , P))'
-        )
-        checkLatexPutdown(
-            '\\exists t,\\neg Q',
-            '(exists (t , (not Q)))'
-        )
+        checkLatexPutdown( '\\forall x, P', '(forall (x , P))' )
+        checkLatexPutdown( '\\exists t,\\neg Q', '(exists (t , (not Q)))' )
         checkLatexPutdown(
             '\\exists! k,m\\Rightarrow n',
             '(existsunique (k , (implies m n)))'
+        )
+    } )
+
+    it( 'can convert simple set memberships and subsets', () => {
+        // As before, when a variable could be any type, the alphabetically
+        // least type is numbervariable
+        checkLatexPutdown( 'b \\in B', '(in b B)' )
+        checkLatexPutdown( 'X \\in a \\cup b', '(in X (setuni a b))' )
+        checkLatexPutdown(
+            'A \\cup B \\in X \\cup Y',
+            '(in (setuni A B) (setuni X Y))'
+        )
+        checkLatexPutdown( 'A \\subset \\bar B', '(subset A (setcomp B))' )
+        checkLatexPutdown(
+            'u \\cap v \\subseteq u \\cup v',
+            '(subseteq (setint u v) (setuni u v))'
+        )
+    } )
+
+    it( 'expands "notin" notation into canonical form', () => {
+        checkLatexPutdown( 'a\\notin A', '(not (in a A))' )
+        checkLatexPutdown(
+            '3-5\\notin K\\cap P',
+            '(not (in (- 3 5) (setint K P)))'
+        )
+    } )
+
+    it( 'can convert sentences built from set operators', () => {
+        checkLatexPutdown( 'P \\vee b \\in B', '(or P (in b B))' )
+        checkLatexPutdown( '{P \\vee b} \\in B', '(in (or P b) B)' )
+        checkLatexPutdown( '\\forall x , x \\in X', '(forall (x , (in x X)))' )
+        checkLatexPutdown(
+            'A \\subseteq B \\wedge B \\subseteq A',
+            '(and (subseteq A B) (subseteq B A))'
         )
     } )
 

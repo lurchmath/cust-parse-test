@@ -154,17 +154,45 @@ describe( 'Converting putdown to LaTeX', () => {
     } )
 
     it( 'correctly converts simple predicate logic expressions', () => {
-        checkPutdownLatex(
-            '(forall (x , P))',
-            '\\forall x , P'
-        )
-        checkPutdownLatex(
-            '(exists (t , (not Q)))',
-            '\\exists t , \\neg Q'
-        )
+        checkPutdownLatex( '(forall (x , P))', '\\forall x , P' )
+        checkPutdownLatex( '(exists (t , (not Q)))', '\\exists t , \\neg Q' )
         checkPutdownLatex(
             '(existsunique (k , (implies m n)))',
             '\\exists ! k , m \\Rightarrow n'
+        )
+    } )
+
+    it( 'can convert simple set memberships and subsets', () => {
+        // As before, when a variable could be any type, the alphabetically
+        // least type is numbervariable
+        checkPutdownLatex( '(in b B)', 'b \\in B' )
+        checkPutdownLatex( '(in X (setuni a b))', 'X \\in a \\cup b' )
+        checkPutdownLatex(
+            '(in (setuni A B) (setuni X Y))',
+            'A \\cup B \\in X \\cup Y'
+        )
+        checkPutdownLatex( '(subset A (setcomp B))', 'A \\subset \\bar B' )
+        checkPutdownLatex(
+            '(subseteq (setint u v) (setuni u v))',
+            'u \\cap v \\subseteq u \\cup v'
+        )
+    } )
+
+    it( 'does not undo the canonical form for "notin" notation', () => {
+        checkPutdownLatex( '(not (in a A))', '\\neg a \\in A' )
+        checkPutdownLatex(
+            '(not (in (- 3 5) (setint K P)))',
+            '\\neg 3 - 5 \\in K \\cap P'
+        )
+    } )
+
+    it( 'can convert sentences built from set operators', () => {
+        checkPutdownLatex( '(or P (in b B))', 'P \\vee b \\in B' )
+        checkPutdownLatex( '(in (or P b) B)', '{P \\vee b} \\in B' )
+        checkPutdownLatex( '(forall (x , (in x X)))', '\\forall x , x \\in X' )
+        checkPutdownLatex(
+            '(and (subseteq A B) (subseteq B A))',
+            'A \\subseteq B \\wedge B \\subseteq A'
         )
     } )
 

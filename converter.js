@@ -41,7 +41,6 @@ export class Converter {
         this.languages = new Map()
         this.concepts = new Map()
         SyntacticTypes.hierarchies.forEach( hierarchy => {
-            if ( hierarchy[0] != 'expression' ) return
             const last = hierarchy[hierarchy.length-1]
             if ( SyntacticTypes.isAtomic( last ) )
                 this.addConcept( `grouped${last}`, last, hierarchy[1] )

@@ -268,14 +268,15 @@ describe( 'Parsing latex', () => {
                 [ 'numbernegation', [ 'number', '3' ] ]
             ]
         )
+        // Following could also be a subtraction of a sum and a variable, which
+        // is also OK, but the one shown below is alphabetically earlier:
         checkLatexJson(
             'A^B+C-D',
-            [ 'subtraction',
-                [ 'addition',
-                    [ 'exponentiation',
-                        [ 'numbervariable', 'A' ], [ 'numbervariable', 'B' ] ],
-                    [ 'numbervariable', 'C' ] ],
-                [ 'numbervariable', 'D' ] ]
+            [ 'addition',
+                [ 'exponentiation',
+                    [ 'numbervariable', 'A' ], [ 'numbervariable', 'B' ] ],
+                [ 'subtraction',
+                    [ 'numbervariable', 'C' ], [ 'numbervariable', 'D' ] ] ]
         )
     } )
 
@@ -376,14 +377,16 @@ describe( 'Parsing latex', () => {
                 [ 'logicnegation', [ 'logicaltrue' ] ]
             ]
         )
+        // Following could also be left-associated, which is also a valid
+        // parsing, but the one shown below is alphabetically earlier:
         checkLatexJson(
             'a\\wedge b\\wedge c',
             [ 'conjunction',
+                [ 'logicvariable', 'a' ],
                 [ 'conjunction',
-                    [ 'logicvariable', 'a' ],
-                    [ 'logicvariable', 'b' ]
-                ],
-                [ 'logicvariable', 'c' ]
+                    [ 'logicvariable', 'b' ],
+                    [ 'logicvariable', 'c' ]
+                ]
             ]
         )
     } )
@@ -416,18 +419,17 @@ describe( 'Parsing latex', () => {
                 ]
             ]
         )
+        // Implication should right-associate:
         checkLatexJson(
             'P\\vee Q\\Rightarrow Q\\wedge P\\Rightarrow T',
             [ 'implication',
+                [ 'disjunction',
+                    [ 'logicvariable', 'P' ], [ 'logicvariable', 'Q' ] ],
                 [ 'implication',
-                    [ 'disjunction',
-                        [ 'logicvariable', 'P' ], [ 'logicvariable', 'Q' ] ],
                     [ 'conjunction',
-                        [ 'logicvariable', 'Q' ],
-                        [ 'logicvariable', 'P' ]
-                    ]
-                ],
-                [ 'logicvariable', 'T' ]
+                        [ 'logicvariable', 'Q' ], [ 'logicvariable', 'P' ] ],
+                    [ 'logicvariable', 'T' ]
+                ]
             ]
         )
     } )
@@ -443,18 +445,19 @@ describe( 'Parsing latex', () => {
                 ]
             ]
         )
+        // Implication should right-associate, including double implications:
         checkLatexJson(
             'P\\vee Q\\Leftrightarrow Q\\wedge P\\Rightarrow T',
-            [ 'implication',
-                [ 'iff',
-                    [ 'disjunction',
-                        [ 'logicvariable', 'P' ], [ 'logicvariable', 'Q' ] ],
+            [ 'iff',
+                [ 'disjunction',
+                    [ 'logicvariable', 'P' ], [ 'logicvariable', 'Q' ] ],
+                [ 'implication',
                     [ 'conjunction',
                         [ 'logicvariable', 'Q' ],
                         [ 'logicvariable', 'P' ]
-                    ]
-                ],
-                [ 'logicvariable', 'T' ]
+                    ],
+                    [ 'logicvariable', 'T' ]
+                ]
             ]
         )
     } )
@@ -515,6 +518,88 @@ describe( 'Parsing latex', () => {
                 [ 'implication',
                     [ 'logicvariable', 'm' ], [ 'logicvariable', 'n' ] ]
             ]
+        )
+    } )
+
+    it( 'can convert simple set memberships and subsets to JSON', () => {
+        // As before, when a variable could be any type, the alphabetically
+        // least type is numbervariable
+        checkLatexJson(
+            'b\\in B',
+            [ 'numberisin', [ 'numbervariable', 'b' ], [ 'setvariable', 'B' ] ]
+        )
+        checkLatexJson(
+            'X\\in a\\cup b',
+            [ 'numberisin', [ 'numbervariable', 'X' ],
+                [ 'union', [ 'setvariable', 'a' ], [ 'setvariable', 'b' ] ] ]
+        )
+        checkLatexJson(
+            'A\\cup B\\in X\\cup Y',
+            [ 'setisin',
+                [ 'union', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
+                [ 'union', [ 'setvariable', 'X' ], [ 'setvariable', 'Y' ] ] ]
+        )
+        checkLatexJson(
+            'A\\subset\\bar B',
+            [ 'subset',
+                [ 'setvariable', 'A' ],
+                [ 'complement', [ 'setvariable', 'B' ] ] ]
+        )
+        checkLatexJson(
+            'A\\subset B\'',
+            [ 'subset',
+                [ 'setvariable', 'A' ],
+                [ 'complement', [ 'setvariable', 'B' ] ] ]
+        )
+        checkLatexJson(
+            'u\\cap v\\subseteq u\\cup v',
+            [ 'subseteq',
+                [ 'intersection', [ 'setvariable', 'u' ], [ 'setvariable', 'v' ] ],
+                [ 'union', [ 'setvariable', 'u' ], [ 'setvariable', 'v' ] ] ]
+        )
+    } )
+
+    it( 'converts "notin" notation to its placeholder concept', () => {
+        checkLatexJson(
+            'a\\notin A',
+            [ 'numberisnotin', [ 'numbervariable', 'a' ], [ 'setvariable', 'A' ] ]
+        )
+        checkLatexJson(
+            '3-5 \\notin K\\cap P',
+            [ 'numberisnotin',
+                [ 'subtraction', [ 'number', '3' ], [ 'number', '5' ] ],
+                [ 'intersection', [ 'setvariable', 'K' ], [ 'setvariable', 'P' ] ]
+            ]
+        )
+    } )
+
+    it( 'can parse to JSON sentences built from set operators', () => {
+        checkLatexJson(
+            'P\\vee b\\in B',
+            [ 'disjunction',
+                [ 'logicvariable', 'P' ],
+                [ 'numberisin',
+                    [ 'numbervariable', 'b' ], [ 'setvariable', 'B' ] ] ]
+        )
+        checkLatexJson(
+            '{P \\vee b} \\in B',
+            [ 'propisin',
+                [ 'disjunction',
+                    [ 'logicvariable', 'P' ], [ 'logicvariable', 'b' ] ],
+                [ 'setvariable', 'B' ] ]
+        )
+        checkLatexJson(
+            '\\forall x, x\\in X',
+            [ 'universal',
+                [ 'numbervariable', 'x' ],
+                [ 'numberisin',
+                    [ 'numbervariable', 'x' ], [ 'setvariable', 'X' ] ] ]
+        )
+        checkLatexJson(
+            'A\\subseteq B\\wedge B\\subseteq A',
+            [ 'conjunction',
+                [ 'subseteq', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
+                [ 'subseteq', [ 'setvariable', 'B' ], [ 'setvariable', 'A' ] ] ]
         )
     } )
 

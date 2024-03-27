@@ -73,7 +73,9 @@ describe( 'Creating JSON from putdown', () => {
     } )
 
     it( 'can convert any size variable name to JSON', () => {
-        // one-letter names work
+        // one-letter names work, and the least possible parsing of them (for
+        // many possible parsings, using alphabetical ordering) is as number
+        // variables:
         checkPutdownJson(
             'x',
             [ 'numbervariable', 'x' ]
@@ -94,7 +96,6 @@ describe( 'Creating JSON from putdown', () => {
     } )
 
     it( 'can convert infinity from putdown to JSON', () => {
-        // converter._debug = true
         checkPutdownJson(
             'infinity',
             [ 'infinity' ]
@@ -458,6 +459,78 @@ describe( 'Creating JSON from putdown', () => {
                 [ 'numbervariable', 'k' ],
                 [ 'implication', [ 'logicvariable', 'm' ], [ 'logicvariable', 'n' ] ]
             ]
+        )
+    } )
+
+    it( 'can convert simple set memberships and subsets to JSON', () => {
+        // As before, when a variable could be any type, the alphabetically
+        // least type is numbervariable
+        checkPutdownJson(
+            '(in b B)',
+            [ 'numberisin', [ 'numbervariable', 'b' ], [ 'setvariable', 'B' ] ]
+        )
+        checkPutdownJson(
+            '(in X (setuni a b))',
+            [ 'numberisin', [ 'numbervariable', 'X' ],
+                [ 'union', [ 'setvariable', 'a' ], [ 'setvariable', 'b' ] ] ]
+        )
+        checkPutdownJson(
+            '(in (setuni A B) (setuni X Y))',
+            [ 'setisin',
+                [ 'union', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
+                [ 'union', [ 'setvariable', 'X' ], [ 'setvariable', 'Y' ] ] ]
+        )
+        checkPutdownJson(
+            '(subset A (setcomp B))',
+            [ 'subset',
+                [ 'setvariable', 'A' ],
+                [ 'complement', [ 'setvariable', 'B' ] ] ]
+        )
+        checkPutdownJson(
+            '(subseteq (setint u v) (setuni u v))',
+            [ 'subseteq',
+                [ 'intersection', [ 'setvariable', 'u' ], [ 'setvariable', 'v' ] ],
+                [ 'union', [ 'setvariable', 'u' ], [ 'setvariable', 'v' ] ] ]
+        )
+    } )
+
+    it( 'does not undo the canonical form for "notin" notation', () => {
+        checkPutdownJson(
+            '(not (in a A))',
+            [ 'logicnegation',
+                [ 'numberisin', [ 'numbervariable', 'a' ], [ 'setvariable', 'A' ] ] ]
+        )
+        checkPutdownJson(
+            '(not (in (- 3 5) (setint K P)))',
+            [ 'logicnegation',
+                [ 'numberisin',
+                    [ 'subtraction', [ 'number', '3' ], [ 'number', '5' ] ],
+                    [ 'intersection', [ 'setvariable', 'K' ], [ 'setvariable', 'P' ] ]
+                ]
+            ]
+        )
+    } )
+
+    it( 'can parse to JSON sentences built from set operators', () => {
+        checkPutdownJson(
+            '(or P (in b B))',
+            [ 'disjunction',
+                [ 'logicvariable', 'P' ],
+                [ 'numberisin',
+                    [ 'numbervariable', 'b' ], [ 'setvariable', 'B' ] ] ]
+        )
+        checkPutdownJson(
+            '(forall (x , (in x X)))',
+            [ 'universal',
+                [ 'numbervariable', 'x' ],
+                [ 'numberisin',
+                    [ 'numbervariable', 'x' ], [ 'setvariable', 'X' ] ] ]
+        )
+        checkPutdownJson(
+            '(and (subseteq A B) (subseteq B A))',
+            [ 'conjunction',
+                [ 'subseteq', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
+                [ 'subseteq', [ 'setvariable', 'B' ], [ 'setvariable', 'A' ] ] ]
         )
     } )
 

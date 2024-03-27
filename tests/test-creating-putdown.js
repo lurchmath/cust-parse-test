@@ -486,4 +486,71 @@ describe( 'Creating putdown from JSON', () => {
         )
     } )
 
+    it( 'can convert simple set memberships and subsets to putdown', () => {
+        checkJsonPutdown(
+            [ 'numberisin', [ 'numbervariable', 'b' ], [ 'setvariable', 'B' ] ],
+            '(in b B)'
+        )
+        checkJsonPutdown(
+            [ 'numberisin', [ 'numbervariable', 'X' ],
+                [ 'union', [ 'setvariable', 'a' ], [ 'setvariable', 'b' ] ] ],
+            '(in X (setuni a b))'
+        )
+        checkJsonPutdown(
+            [ 'setisin',
+                [ 'union', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
+                [ 'union', [ 'setvariable', 'X' ], [ 'setvariable', 'Y' ] ] ],
+            '(in (setuni A B) (setuni X Y))'
+        )
+        checkJsonPutdown(
+            [ 'subset',
+                [ 'setvariable', 'A' ],
+                [ 'complement', [ 'setvariable', 'B' ] ] ],
+            '(subset A (setcomp B))'
+        )
+        checkJsonPutdown(
+            [ 'subseteq',
+                [ 'intersection', [ 'setvariable', 'u' ], [ 'setvariable', 'v' ] ],
+                [ 'union', [ 'setvariable', 'u' ], [ 'setvariable', 'v' ] ] ],
+            '(subseteq (setint u v) (setuni u v))'
+        )
+    } )
+
+    it( 'creates the canonical form for "notin" notation', () => {
+        checkJsonPutdown(
+            [ 'numberisnotin', [ 'numbervariable', 'a' ], [ 'setvariable', 'A' ] ],
+            '(not (in a A))'
+        )
+        checkJsonPutdown(
+            [ 'numberisnotin',
+                [ 'subtraction', [ 'number', '3' ], [ 'number', '5' ] ],
+                [ 'intersection', [ 'setvariable', 'K' ], [ 'setvariable', 'P' ] ]
+            ],
+            '(not (in (- 3 5) (setint K P)))'
+        )
+    } )
+
+    it( 'can convert to putdown sentences built from set operators', () => {
+        checkJsonPutdown(
+            [ 'disjunction',
+                [ 'logicvariable', 'P' ],
+                [ 'numberisin',
+                    [ 'numbervariable', 'b' ], [ 'setvariable', 'B' ] ] ],
+            '(or P (in b B))'
+        )
+        checkJsonPutdown(
+            [ 'universal',
+                [ 'numbervariable', 'x' ],
+                [ 'numberisin',
+                    [ 'numbervariable', 'x' ], [ 'setvariable', 'X' ] ] ],
+            '(forall (x , (in x X)))'
+        )
+        checkJsonPutdown(
+            [ 'conjunction',
+                [ 'subseteq', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
+                [ 'subseteq', [ 'setvariable', 'B' ], [ 'setvariable', 'A' ] ] ],
+            '(and (subseteq A B) (subseteq B A))'
+        )
+    } )
+
 } )

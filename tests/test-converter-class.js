@@ -22,10 +22,10 @@ describe( 'Converter instance', () => {
         //  - infix-lang:  2 + 3, 2 * 3, 2 x 3
         //  - prefix-lang: + 2 3, * 2 3, x 2 3
         const converter = new Converter()
-        converter.addConcept( 'int', 'atomicnumber',
+        converter.addConcept( 'int', 'atomicnumberexpr',
             Language.regularExpressions.integer )
-        converter.addConcept( 'add', 'sum', '(+ sum sum)' )
-        converter.addConcept( 'mul', 'product', '(* product product)' )
+        converter.addConcept( 'add', 'sumexpr', '(+ sumexpr sumexpr)' )
+        converter.addConcept( 'mul', 'prodexpr', '(* prodexpr prodexpr)' )
         const infix = new Language( 'infix-lang', converter )
         infix.addNotation( 'add', 'A+B' )
         infix.addNotation( 'mul', 'A*B', { name : 'asterisk multiplication' } )
@@ -68,10 +68,10 @@ describe( 'Converter instance', () => {
         // Define the same converter as in the previous test, but with no
         // notation names, so that all multiplications should become *-type.
         const converter = new Converter()
-        converter.addConcept( 'int', 'atomicnumber',
+        converter.addConcept( 'int', 'atomicnumberexpr',
             Language.regularExpressions.integer )
-        converter.addConcept( 'add', 'sum', '(+ sum sum)' )
-        converter.addConcept( 'mul', 'product', '(* product product)' )
+        converter.addConcept( 'add', 'sumexpr', '(+ sumexpr sumexpr)' )
+        converter.addConcept( 'mul', 'prodexpr', '(* prodexpr prodexpr)' )
         const infix = new Language( 'infix-lang', converter )
         infix.addNotation( 'add', 'A+B' )
         infix.addNotation( 'mul', 'A*B' )
