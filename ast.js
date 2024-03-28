@@ -141,8 +141,7 @@ export class AST extends Array {
      */
     toString () {
         const recur = x => x instanceof AST ? x.toString() : x
-        const notation = this.notationName ? `[${this.notationName}]` : ''
-        return `${recur(this[0])}${notation}(${this.args().map( recur ).join( ',' )})`
+        return `${recur(this[0])}(${this.args().map( recur ).join( ',' )})`
     }
 
     /**
@@ -209,8 +208,6 @@ export class AST extends Array {
             const result = new AST( language, head,
                 ...json.map( ( _, index ) => AST.fromJSON( language,
                     json[rhss[i].putdownToNotation[index]], false ) ) )
-            if ( rhss[i].notationName )
-                result.notationName = rhss[i].notationName
             return top ? result.compcat() : result
         }
         throw new Error( `No notational match for ${JSON.stringify( json )}` )
@@ -249,8 +246,6 @@ export class AST extends Array {
         }
         const recur = Array.from( this ).map( x => x instanceof AST ? x.compact() : x )
         const result = new AST( this.language, ...recur )
-        if ( this.notationName )
-            result.notationName = this.notationName
         return result
     }
 
@@ -329,8 +324,7 @@ export class AST extends Array {
         const rhss = language.grammar.rules[this.head()] || [ ]
         if ( language.derivedNotation.has( this.head() ) )
             rhss.push( language.derivedNotation.get( this.head() ) )
-        const rhs = rhss.find( r => r.notationName === this.notationName )
-                 || rhss[0]
+        const rhs = rhss[0]
         let notation = rhs.notation
         // if this is a canonical form notation, indicated by a prefix "->",
         // then drop that prefix before using the notation as a template

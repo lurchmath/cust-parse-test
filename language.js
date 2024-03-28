@@ -138,15 +138,6 @@ export class Language {
      *    a variable counts as the variable (except inside another word) even if
      *    used multiple times.  So choose variable names that do not show up
      *    in the new notation you are introducing.
-     *  * If you want to assign this notation a name, that name will be stored
-     *    in any AST parsed from this notation.  If you assign the same name to
-     *    a notation for the same concept *in a different language in the same
-     *    converter,* then when translating among languages, the
-     *    {@link Converter} will attempt to map this notation to the notation of
-     *    the same name in another language.  Without giving names to notations,
-     *    the converter just uses the default way to represent a concept in each
-     *    language, preserving meaning only, not any details of the way that
-     *    meaning was written.
      *  * If this notation should be used only for representing the concept in
      *    this language, but not for parsing from this language into an AST,
      *    then you can set `writeOnly : true`.  This can be useful in two cases.
@@ -238,7 +229,6 @@ export class Language {
             newRule.putdownToNotation = putdownToNotation
             newRule.notation = originalNotation
             newRule.variables = options.variables
-            newRule.notationName = options.name
         }
     }
 
