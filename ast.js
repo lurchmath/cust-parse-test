@@ -48,7 +48,7 @@ export class AST extends Array {
      * but only returns it, leaving the AST unaltered.)
      * 
      * @returns {AST|String} the operator of this AST, which is its first entry
-     * @see {@link AST#args}
+     * @see {@link AST#args args()}
      */
     head () { return this[0] }
 
@@ -60,7 +60,7 @@ export class AST extends Array {
      * string or an AST.
      * 
      * @returns {...(String|AST)} the operands of this AST
-     * @see {@link AST#head}
+     * @see {@link AST#head head()}
      */
     args () { return Array.from( this ).slice( 1 ) }
 
@@ -70,7 +70,7 @@ export class AST extends Array {
      * operands.  This function returns the number of operands.
      * 
      * @returns {number} the number of operands
-     * @see {@link AST#args}
+     * @see {@link AST#args args()}
      */
     numArgs () { return this.length - 1 }
 
@@ -83,7 +83,7 @@ export class AST extends Array {
      * 
      * @param {number} index - the index of the operand to return
      * @returns {AST|String} the operand at the given index
-     * @see {@link AST#args}
+     * @see {@link AST#args args()}
      */
     arg ( index ) { return this[index+1] }
 
@@ -105,8 +105,8 @@ export class AST extends Array {
      * (factorial).
      * 
      * @returns {boolean} `true` if this AST is a concept
-     * @see {@link Converter#isConcept}
-     * @see {@link AST#concept}
+     * @see {@link Converter#isConcept isConcept()}
+     * @see {@link AST#concept concept()}
      */
     isConcept () { return this.language.converter.isConcept( this.head() ) }
 
@@ -116,8 +116,8 @@ export class AST extends Array {
      * instance can define a set of semantic types to add to the set of
      * syntactic types.  Those semantic types are called *concepts.*  You can
      * check whether this AST's operator is a concept using the
-     * {@link AST#isConcept} function, and if it returns true, call this
-     * function to get the data about the concept.
+     * {@link AST#isConcept isConcept()} function, and if it returns true, call
+     * this function to get the data about the concept.
      * 
      * The result will be an object with the following properties:
      * 
@@ -155,8 +155,8 @@ export class AST extends Array {
      * `[ 'addition', 'x', [ 'multiplication', 'y', 'z' ] ]`.
      * 
      * @returns {Object|String} a JSON representation of this AST
-     * @see {@link AST.fromJSON}
-     * @see {@link AST#toString}
+     * @see {@link AST.fromJSON fromJSON()}
+     * @see {@link AST#toString toString()}
      */
     toJSON () {
         return Array.from( this ).map( x => x instanceof AST ? x.toJSON() : x )
@@ -264,8 +264,9 @@ export class AST extends Array {
      * associated with this AST's language.
      * 
      * This function requires the AST on which it is called to be in compact
-     * form, as produced by the {@link AST#compact} member function.  The
-     * behavior of this function is undefined if this requirement is not met.
+     * form, as produced by the {@link AST#compact compact()} member function.
+     * The behavior of this function is undefined if this requirement is not
+     * met.
      * 
      * @param {Language} language - the language in which to write the
      *   expression stored in this AST

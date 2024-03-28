@@ -1,6 +1,6 @@
 
 /**
- * This constant stores a collection of hierarchies of syntactic types used in
+ * This module stores a collection of hierarchies of syntactic types used in
  * mathematical writing.  We distinguish "syntactic types" from "semantic types"
  * in the following way.
  * 
@@ -34,22 +34,28 @@
  * type, while `product` always remains a syntactic type.  The language author
  * does not need to specify the precedence of semantic types, because the
  * semantic types are situated within syntactic types, from which they get their
- * behavior.
+ * behavior.  See the documentatin of {@link Converter the Converter class} for
+ * more explanation of semantic types.
  * 
- * This particular variable stores chains of parent-child relationships.  That
- * is, if it contains `[[A_1,...,A_n],[B_1,...,B_n],...]` then `A_1` is a parent
- * type of `A_2`, which is a parent type of `A_3`, and so on.  Similarly, `B_1`
- * is a parent type of `B_2`, which is a parent type of `B_3`, and so on, but
- * there is no assumed relationship between any `A_i` and `B_j` unless the same
- * type appears in both chains.
+ * @see {@link Converter}
+ * @module SyntacticTypes
+ */
+
+/**
+ * This variable stores all the syntactic types recognized by this repository,
+ * as a set of chains of parent-child relationships.  That is, if it contains
+ * `[[A_1,...,A_n],[B_1,...,B_n],...]` then `A_1` is a parent type of `A_2`,
+ * which is a parent type of `A_3`, and so on.  Similarly, `B_1` is a parent
+ * type of `B_2`, which is a parent type of `B_3`, and so on, but there is no
+ * assumed relationship between any `A_i` and `B_j` unless the same type appears
+ * in both chains.
  * 
- * The topmost type in the hierarchy is `expression`, and there should be no
+ * The topmost type in the hierarchy is `expr`, and there should be no
  * types above it.  The lowest types in the hierarchy must all begin with the
- * word `atomic`, as in `atomic_proposition` or `atomicint` or `atomicnumber`.
+ * word `atomic`, as in `atomicpropexpr` or `atomicnumberexpr`.
  * 
  * @see {@link module:SyntacticTypes.types}
  * @see {@link module:SyntacticTypes.isAtomic}
- * @module SyntacticTypes
  */
 export const hierarchies = [
     [
@@ -79,39 +85,40 @@ export const hierarchies = [
 
 /**
  * A single JavaScript array containing all types mentioned in the syntactic
- * types hierarchies defined in the {@link module:SyntacticTypes.hierarchies}
- * variable.  Unlike the hierarchies variable, this array is flat, containing
- * only strings, and containing each type exactly once.  Its order does not
- * matter; the order matters in the {@link module:SyntacticTypes.hierarchies}
- * variable, but not here.
+ * types hierarchies defined in the {@link module:SyntacticTypes.hierarchies
+ * hierarchies} variable.  Unlike the hierarchies variable, this array is flat,
+ * containing only strings, and containing each type exactly once.  Its order
+ * does not matter; the order matters in the
+ * {@link module:SyntacticTypes.hierarchies heirarchies} variable, but not here.
  * 
  * One common use of this variable is to check whether a given identifier is the
  * name of a syntactic type, by checking `.includes()` with respect to this
  * array.
  * 
- * @see {@link module:SyntacticTypes.hierarchies}
+ * @see {@link module:SyntacticTypes.hierarchies hierarchies}
  */
 export const types = Array.from( new Set( hierarchies.flat() ) )
 
 /**
  * This function embodies the convention mentioned in the documentation for the
- * {@link module:SyntacticTypes.hierarchies} variable, which is that atomic
- * types must begin with the word `atomic`.  This function just checks to see if
- * that prefix is present.
+ * {@link module:SyntacticTypes.hierarchies hierarchies} variable, which is that
+ * atomic types must begin with the word `atomic`.  This function just checks to
+ * see if that prefix is present.
  * 
  * @param {String} name - whether this name is the name of an atomic type
  * @returns {boolean} `true` if `name` is the name of an atomic type
  * 
- * @see {@link module:SyntacticTypes.hierarchies}
+ * @see {@link module:SyntacticTypes.hierarchies hierarchies}
  */
 export const isAtomic = name => name.startsWith( 'atomic' )
 
 /**
  * A syntactic type has a lowest subtype if that syntactic type appears in
- * exactly one of the chains in the {@link module:SyntacticTypes.hierarchies}
- * variable.  If there is such a chain, this function returns the name of the
- * lowest subtype in that chain (which is often atomic).  If not, this function
- * returns its input, so that the result is always a valid type name.
+ * exactly one of the chains in the {@link module:SyntacticTypes.hierarchies
+ * hierarchies} variable.  If there is such a chain, this function returns the
+ * name of the lowest subtype in that chain (which is often atomic).  If not,
+ * this function returns its input, so that the result is always a valid type
+ * name.
  * 
  * @param {String} name - the name of the type whose lowest subtype we want
  * @returns {String} the name of its lowest subtype
@@ -160,9 +167,10 @@ const computeSupertypeGraph = () => {
 
 /**
  * Is the syntactic type `a` a proper supertype of the syntactic type `b`?  This
- * function uses the data in the {@link module:SyntacticTypes.hierarchies}
- * variable to answer that question.  Note that this function is not reflexive,
- * but the {@link module:SyntacticTypes.isSupertypeOrEqual} version is.
+ * function uses the data in the {@link module:SyntacticTypes.hierarchies
+ * hierarchies} variable to answer that question.  Note that this function is
+ * not reflexive, but the {@link module:SyntacticTypes.isSupertypeOrEqual
+ * isSupertypeOrEqual()} version is.
  * 
  * @param {String} a - the name of the potential supertype
  * @param {String} b - the name of the potential subtype
@@ -178,9 +186,9 @@ export const isSupertype = ( a, b ) => {
 /**
  * Is the syntactic type `a` a supertype of the syntactic type `b`, whicn
  * includes the possibility that `a` and `b` may be equal?  This function is the
- * same as the {@link module:SyntacticTypes.isSupertype} function, except that
- * it includes the possibility that `a` and `b` may be equal.  That is, this
- * function is reflexive.
+ * same as the {@link module:SyntacticTypes.isSupertype isSupertype()} function,
+ * except that it includes the possibility that `a` and `b` may be equal.  That
+ * is, this function is reflexive.
  * 
  * @param {String} a - the name of the potential supertype
  * @param {String} b - the name of the potential subtype

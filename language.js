@@ -4,10 +4,35 @@ import { AST } from './ast.js'
 import SyntacticTypes from './syntactic-types.js'
 import { notationStringToArray } from './utilities.js'
 
+/**
+ * The Language class represents one of the languages among which a
+ * {@link Converter} can convert notation.  To add a new language to a
+ * {@link Converter} instance, just call the constructor of this class, passing
+ * the {@link Converter} instance.  Every Language instance needs a
+ * {@link Converter} instance to which it belongs, because the purpose of this
+ * class is to enable conversions among languages, by working together with a
+ * {@link Converter} instance.
+ * 
+ * Each instance of this class contains the data passed to its constructor, plus
+ * a reference to its {@link Converter}, plus a tokenizer and parser for reading
+ * notation written in the language represented by this instance.  After
+ * creating an instance of this class, you specify the language itself by
+ * repeated calls to the {@link Language#addNotation addNotation()} function.
+ * This is necessary in order for the language to have any definition at all,
+ * before using it to parse text.
+ * 
+ * Although you can call methods in this class directly to parse text, such as
+ * {@link Language#parse parse()} and {@link Language#convertTo convertTo()}, it
+ * is simpler if you instead use the {@link Converter#convert convert()} method
+ * of the corresponding {@link Converter} instance.  Using the {@link Converter}
+ * will save you from having to deal with intermediate forms like {@link AST
+ * abstract syntax trees}, but you can create and work with such objects if you
+ * wish.
+ */
 export class Language {
 
     /**
-     * To add a new language to a {@link Conveter}, just call this constructor,
+     * To add a new language to a {@link Converter}, just call this constructor,
      * passing the converter object as one of the parameters, and this
      * constructor will add this language to that converter.
      * 
@@ -22,12 +47,12 @@ export class Language {
      * 
      * The default linter for any language is the identity function, meaning
      * that no cleanup is needed for expressions of that language.  If you want
-     * the {@link Converter#convert convert} function, upon creating an
+     * the {@link Converter#convert convert()} function, upon creating an
      * expression in this language, to apply to it any specific formatting
      * conventions you would like to see in the output, you can specify a
-     * linter, which will be run before {@link Converter#convert convert}
+     * linter, which will be run before {@link Converter#convert convert()}
      * returns its result.  Add such a function only if you see output from
-     * {@link Converter#convert convert} that doesn't meet your standards,
+     * {@link Converter#convert convert()} that doesn't meet your standards,
      * aesthetically or for some functional reason.
      * 
      * For example, when installing putdown as the initial language in the
@@ -41,19 +66,19 @@ export class Language {
      *   language (as documented above)
      * @param {Function?} linter - a function that cleans up notation in this
      *   language (as documented above)
-     * @see {@link Converter#convert convert}
-     * @see {@link Converter#languages languages}
-     * @see {@link Converter#isLanguage isLanguage}
+     * @see {@link Converter#convert convert()}
+     * @see {@link Converter#language language()}
+     * @see {@link Converter#isLanguage isLanguage()}
      */
     constructor ( name, converter, groupers = [ '(', ')' ], linter = x => x ) {
-        // allow clients to pass "null" for groupers:
+        // Allow clients to pass "null" for groupers:
         if ( !groupers ) groupers = [ ]
-        // store all parameters:
+        // Store all parameters:
         this.name = name
         this.converter = converter
         this.groupers = groupers
         this.linter = linter
-        // also create a tokenizer and grammar and store them:
+        // Also create a tokenizer and grammar and store them:
         this.tokenizer = new Tokenizer()
         this.tokenizer.addType( /\s/, () => null )
         this.grammar = new Grammar()
@@ -89,7 +114,7 @@ export class Language {
             if ( !this.grammar.rules.hasOwnProperty( lowest ) )
                 this.grammar.rules[lowest] = [ ]
         } )
-        // register ourselves with our converter
+        // Register ourselves with our converter
         converter.languages.set( name, this )
     }
 
@@ -122,6 +147,22 @@ export class Language {
      *    the converter just uses the default way to represent a concept in each
      *    language, preserving meaning only, not any details of the way that
      *    meaning was written.
+     *  * If this notation should be used only for representing the concept in
+     *    this language, but not for parsing from this language into an AST,
+     *    then you can set `writeOnly : true`.  This can be useful in two cases.
+     *      1. If you have multiple notations for the same concept in some
+     *         languages, but not in others.  You can map each notation to a
+     *         separate concept, then map all concepts to one notation in the
+     *         smaller language, marking all but one as write-only, thus
+     *         establishing a canonical form.  And yet between any two languages
+     *         that support all the notations, translation can preserve the
+     *         notational subtleties.
+     *      2. If you have some notation that is just a shorthand for a more
+     *         complex notation, you can parse the notation to a concept named
+     *         for that notation, but convert to putdown form in a write-only
+     *         way, expanding the notation to its underlying (compound) meaning.
+     *         Then the converter will not attempt to invert that expansion when
+     *         parsing putdown, but will preserve its expanded meaning.
      * 
      * There are no other options at this time besides those documented above,
      * but the options object is available for future expansion.
@@ -208,7 +249,7 @@ export class Language {
      * 
      * @param {String} text - the input text to parse
      * @returns {AST} - the parsed AST, or undefined if parsing failed
-     * @see {@link AST#compact compact}
+     * @see {@link AST#compact compact()}
      */
     parse ( text ) {
         const tokens = this.tokenizer.tokenize( text )
