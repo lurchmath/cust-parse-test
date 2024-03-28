@@ -491,10 +491,74 @@ describe( 'Creating latex from JSON', () => {
         )
     } )
 
+    it( 'can convert finite and empty sets from JSON to LaTeX', () => {
+        // { }
+        checkJsonLatex( [ 'emptyset' ], '\\emptyset' )
+        // { 1 }
+        checkJsonLatex(
+            [ 'finiteset', [ 'onenumseq', [ 'number', '1' ] ] ],
+            '\\{ 1 \\}'
+        )
+        // { 1, 2 }
+        checkJsonLatex(
+            [ 'finiteset', [ 'numthenseq', [ 'number', '1' ],
+                [ 'onenumseq', [ 'number', '2' ] ] ] ],
+            '\\{ 1 , 2 \\}'
+        )
+        // { 1, 2, 3 }
+        checkJsonLatex(
+            [ 'finiteset', [ 'numthenseq', [ 'number', '1' ],
+                [ 'numthenseq', [ 'number', '2' ],
+                    [ 'onenumseq', [ 'number', '3' ] ] ] ] ],
+            '\\{ 1 , 2 , 3 \\}'
+        )
+        // { { }, { } }
+        checkJsonLatex(
+            [ 'finiteset', [ 'setthenseq', [ 'emptyset' ],
+                [ 'onesetseq', [ 'emptyset' ] ] ] ],
+            '\\{ \\emptyset , \\emptyset \\}'
+        )
+        // { { { } } }
+        checkJsonLatex(
+            [ 'finiteset', [ 'onesetseq',
+                [ 'finiteset', [ 'onesetseq', [ 'emptyset' ] ] ] ] ],
+            '\\{ \\{ \\emptyset \\} \\}'
+        )
+        // { 3, x }
+        checkJsonLatex(
+            [ 'finiteset', [ 'numthenseq', [ 'number', '3' ],
+                [ 'onenumseq', [ 'numbervariable', 'x' ] ] ] ],
+            '\\{ 3 , x \\}'
+        )
+        // { A cup B, A cap B }
+        checkJsonLatex(
+            [ 'finiteset', [ 'setthenseq',
+                [ 'union', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
+                [ 'onesetseq',
+                    [ 'intersection', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ] ] ] ],
+            '\\{ A \\cup B , A \\cap B \\}'
+        )
+        // { 1, 2, emptyset, K, P }
+        checkJsonLatex(
+            [ 'finiteset', [ 'numthenseq', [ 'number', '1' ],
+                [ 'numthenseq', [ 'number', '2' ],
+                    [ 'setthenseq', [ 'emptyset' ],
+                        [ 'numthenseq', [ 'numbervariable', 'K' ],
+                            [ 'onenumseq', [ 'numbervariable', 'P' ] ] ] ] ] ] ],
+            '\\{ 1 , 2 , \\emptyset , K , P \\}'
+        )
+    } )
+
     it( 'can convert simple set memberships and subsets to LaTeX', () => {
         checkJsonLatex(
             [ 'numberisin', [ 'numbervariable', 'b' ], [ 'setvariable', 'B' ] ],
             'b \\in B'
+        )
+        checkJsonLatex(
+            [ 'numberisin', [ 'number', '2' ],
+                [ 'finiteset', [ 'numthenseq', [ 'number', '1' ],
+                    [ 'onenumseq', [ 'number', '2' ] ] ] ] ],
+            '2 \\in \\{ 1 , 2 \\}'
         )
         checkJsonLatex(
             [ 'numberisin', [ 'numbervariable', 'X' ],
@@ -519,6 +583,14 @@ describe( 'Creating latex from JSON', () => {
                 [ 'union', [ 'setvariable', 'u' ], [ 'setvariable', 'v' ] ] ],
             'u \\cap v \\subseteq u \\cup v'
         )
+        checkJsonLatex(
+            [ 'subseteq',
+                [ 'finiteset', [ 'onenumseq', [ 'number', '1' ] ] ],
+                [ 'union',
+                    [ 'finiteset', [ 'onenumseq', [ 'number', '1' ] ] ],
+                    [ 'finiteset', [ 'onenumseq', [ 'number', '2' ] ] ] ] ],
+            '\\{ 1 \\} \\subseteq \\{ 1 \\} \\cup \\{ 2 \\}'
+        )
     } )
 
     it( 'can represent "notin" notation if JSON explicitly requests it', () => {
@@ -526,6 +598,10 @@ describe( 'Creating latex from JSON', () => {
             [ 'logicnegation',
                 [ 'numberisin', [ 'numbervariable', 'a' ], [ 'setvariable', 'A' ] ] ],
             '\\neg a \\in A'
+        )
+        checkJsonLatex(
+            [ 'logicnegation', [ 'setisin', [ 'emptyset' ], [ 'emptyset' ] ] ],
+            '\\neg \\emptyset \\in \\emptyset'
         )
         checkJsonLatex(
             [ 'logicnegation',

@@ -521,12 +521,78 @@ describe( 'Parsing latex', () => {
         )
     } )
 
+    it( 'can convert finite and empty sets to JSON', () => {
+        // { }
+        checkLatexJson( '\\emptyset', [ 'emptyset' ] )
+        checkLatexJson( '\\{\\}', [ 'emptyset' ] )
+        checkLatexJson( '\\{ \\}', [ 'emptyset' ] )
+        // { 1 }
+        checkLatexJson(
+            '\\{ 1 \\}',
+            [ 'finiteset', [ 'onenumseq', [ 'number', '1' ] ] ]
+        )
+        // { 1, 2 }
+        checkLatexJson(
+            '\\{1,2\\}',
+            [ 'finiteset', [ 'numthenseq', [ 'number', '1' ],
+                [ 'onenumseq', [ 'number', '2' ] ] ] ]
+        )
+        // { 1, 2, 3 }
+        checkLatexJson(
+            '\\{1, 2,   3 \\}',
+            [ 'finiteset', [ 'numthenseq', [ 'number', '1' ],
+                [ 'numthenseq', [ 'number', '2' ],
+                    [ 'onenumseq', [ 'number', '3' ] ] ] ] ]
+        )
+        // { { }, { } }
+        checkLatexJson(
+            '\\{\\{\\},\\emptyset\\}',
+            [ 'finiteset', [ 'setthenseq', [ 'emptyset' ],
+                [ 'onesetseq', [ 'emptyset' ] ] ] ]
+        )
+        // { { { } } }
+        checkLatexJson(
+            '\\{\\{\\emptyset\\}\\}',
+            [ 'finiteset', [ 'onesetseq',
+                [ 'finiteset', [ 'onesetseq', [ 'emptyset' ] ] ] ] ]
+        )
+        // { 3, x }
+        checkLatexJson(
+            '\\{ 3,x \\}',
+            [ 'finiteset', [ 'numthenseq', [ 'number', '3' ],
+                [ 'onenumseq', [ 'numbervariable', 'x' ] ] ] ]
+        )
+        // { A cup B, A cap B }
+        checkLatexJson(
+            '\\{ A\\cup B, A\\cap B \\}',
+            [ 'finiteset', [ 'setthenseq',
+                [ 'union', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
+                [ 'onesetseq',
+                    [ 'intersection', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ] ] ] ]
+        )
+        // { 1, 2, emptyset, K, P }
+        checkLatexJson(
+            '\\{ 1, 2, \\emptyset, K, P \\}',
+            [ 'finiteset', [ 'numthenseq', [ 'number', '1' ],
+                [ 'numthenseq', [ 'number', '2' ],
+                    [ 'setthenseq', [ 'emptyset' ],
+                        [ 'numthenseq', [ 'numbervariable', 'K' ],
+                            [ 'onenumseq', [ 'numbervariable', 'P' ] ] ] ] ] ] ]
+        )
+    } )
+
     it( 'can convert simple set memberships and subsets to JSON', () => {
         // As before, when a variable could be any type, the alphabetically
         // least type is numbervariable
         checkLatexJson(
             'b\\in B',
             [ 'numberisin', [ 'numbervariable', 'b' ], [ 'setvariable', 'B' ] ]
+        )
+        checkLatexJson(
+            '2\\in\\{1,2\\}',
+            [ 'numberisin', [ 'number', '2' ],
+                [ 'finiteset', [ 'numthenseq', [ 'number', '1' ],
+                    [ 'onenumseq', [ 'number', '2' ] ] ] ] ]
         )
         checkLatexJson(
             'X\\in a\\cup b',
@@ -557,12 +623,24 @@ describe( 'Parsing latex', () => {
                 [ 'intersection', [ 'setvariable', 'u' ], [ 'setvariable', 'v' ] ],
                 [ 'union', [ 'setvariable', 'u' ], [ 'setvariable', 'v' ] ] ]
         )
+        checkLatexJson(
+            '\\{1\\}\\subseteq\\{1\\}\\cup\\{2\\}',
+            [ 'subseteq',
+                [ 'finiteset', [ 'onenumseq', [ 'number', '1' ] ] ],
+                [ 'union',
+                    [ 'finiteset', [ 'onenumseq', [ 'number', '1' ] ] ],
+                    [ 'finiteset', [ 'onenumseq', [ 'number', '2' ] ] ] ] ]
+        )
     } )
 
     it( 'converts "notin" notation to its placeholder concept', () => {
         checkLatexJson(
             'a\\notin A',
             [ 'numberisnotin', [ 'numbervariable', 'a' ], [ 'setvariable', 'A' ] ]
+        )
+        checkLatexJson(
+            '\\emptyset\\notin\\emptyset',
+            [ 'setisnotin', [ 'emptyset' ], [ 'emptyset' ] ]
         )
         checkLatexJson(
             '3-5 \\notin K\\cap P',

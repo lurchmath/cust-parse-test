@@ -35,6 +35,13 @@ converter.addConcept( 'existsunique',   'sentenceexpr',     '(existsunique (numb
 
 converter.addConcept( 'setvariable',    'atomicsetexpr',    Language.regularExpressions.oneLetterVariable )
 
+converter.addConcept( 'onenumseq',      'sequenceexpr',     '(elts numberexpr)' )
+converter.addConcept( 'numthenseq',     'sequenceexpr',     '(elts numberexpr sequenceexpr)' )
+converter.addConcept( 'onesetseq',      'sequenceexpr',     '(elts setexpr)' )
+converter.addConcept( 'setthenseq',     'sequenceexpr',     '(elts setexpr sequenceexpr)' )
+converter.addConcept( 'finiteset',      'atomicsetexpr',    '(finiteset sequenceexpr)' )
+converter.addConcept( 'emptyset',       'atomicsetexpr',    'emptyset' )
+
 converter.addConcept( 'intersection',   'setexpr',          '(setint intersectionexpr intersectionexpr)' )
 converter.addConcept( 'setdifference',  'setexpr',          '(setminus intersectionexpr intersectionexpr)' )
 converter.addConcept( 'union',          'setexpr',          '(setuni unionexpr unionexpr)' )
@@ -82,6 +89,14 @@ latex.addNotation( 'iff',            'A\\Leftrightarrow B' )
 latex.addNotation( 'universal',      '\\forall A, B' )
 latex.addNotation( 'existential',    '\\exists A, B' )
 latex.addNotation( 'existsunique',   '\\exists ! A, B' )
+
+latex.addNotation( 'emptyset',       '\\emptyset' )
+latex.addNotation( 'emptyset',       '\\{ \\}' )
+latex.addNotation( 'finiteset',      '\\{A\\}')
+latex.addNotation( 'onenumseq',      'A' )
+latex.addNotation( 'numthenseq',     'A,B' )
+latex.addNotation( 'onesetseq',      'A' )
+latex.addNotation( 'setthenseq',     'A,B' )
 
 latex.addNotation( 'union',          'A\\cup B' )
 latex.addNotation( 'intersection',   'A\\cap B' )

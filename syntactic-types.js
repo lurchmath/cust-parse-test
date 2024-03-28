@@ -80,6 +80,9 @@ export const hierarchies = [
         'unionexpr',
         'intersectionexpr',
         'atomicsetexpr'
+    ],
+    [
+        'sequenceexpr'
     ]
 ]
 

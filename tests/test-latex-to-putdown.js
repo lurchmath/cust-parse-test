@@ -173,10 +173,41 @@ describe( 'Converting LaTeX to putdown', () => {
         )
     } )
 
+    it( 'can convert finite and empty sets', () => {
+        checkLatexPutdown( '\\emptyset', 'emptyset' )
+        checkLatexPutdown( '\\{ 1 \\}', '(finiteset (elts 1))' )
+        checkLatexPutdown( '\\{ 1 , 2 \\}', '(finiteset (elts 1 (elts 2)))' )
+        checkLatexPutdown(
+            '\\{ 1 , 2 , 3 \\}',
+            '(finiteset (elts 1 (elts 2 (elts 3))))'
+        )
+        checkLatexPutdown(
+            '\\{ \\emptyset , \\emptyset \\}',
+            '(finiteset (elts emptyset (elts emptyset)))'
+        )
+        checkLatexPutdown(
+            '\\{ \\{ \\emptyset \\} \\}',
+            '(finiteset (elts (finiteset (elts emptyset))))'
+        )
+        checkLatexPutdown( '\\{ 3 , x \\}', '(finiteset (elts 3 (elts x)))' )
+        checkLatexPutdown(
+            '\\{ A \\cup B , A \\cap B \\}',
+            '(finiteset (elts (setuni A B) (elts (setint A B))))'
+        )
+        checkLatexPutdown(
+            '\\{ 1 , 2 , \\emptyset , K , P \\}',
+            '(finiteset (elts 1 (elts 2 (elts emptyset (elts K (elts P))))))'
+        )
+    } )
+
     it( 'can convert simple set memberships and subsets', () => {
         // As before, when a variable could be any type, the alphabetically
         // least type is numbervariable
         checkLatexPutdown( 'b \\in B', '(in b B)' )
+        checkLatexPutdown(
+            '2 \\in \\{ 1 , 2 \\}',
+            '(in 2 (finiteset (elts 1 (elts 2))))'
+        )
         checkLatexPutdown( 'X \\in a \\cup b', '(in X (setuni a b))' )
         checkLatexPutdown(
             'A \\cup B \\in X \\cup Y',
@@ -187,10 +218,18 @@ describe( 'Converting LaTeX to putdown', () => {
             'u \\cap v \\subseteq u \\cup v',
             '(subseteq (setint u v) (setuni u v))'
         )
+        checkLatexPutdown(
+            '\\{1\\}\\subseteq\\{1\\}\\cup\\{2\\}',
+            '(subseteq (finiteset (elts 1)) (setuni (finiteset (elts 1)) (finiteset (elts 2))))'
+        )
     } )
 
     it( 'expands "notin" notation into canonical form', () => {
         checkLatexPutdown( 'a\\notin A', '(not (in a A))' )
+        checkLatexPutdown(
+            '\\emptyset \\notin \\emptyset',
+            '(not (in emptyset emptyset))'
+        )
         checkLatexPutdown(
             '3-5\\notin K\\cap P',
             '(not (in (- 3 5) (setint K P)))'

@@ -486,10 +486,74 @@ describe( 'Creating putdown from JSON', () => {
         )
     } )
 
+    it( 'can convert finite and empty sets to putdown', () => {
+        // { }
+        checkJsonPutdown( [ 'emptyset' ], 'emptyset' )
+        // { 1 }
+        checkJsonPutdown(
+            [ 'finiteset', [ 'onenumseq', [ 'number', '1' ] ] ],
+            '(finiteset (elts 1))'
+        )
+        // { 1, 2 }
+        checkJsonPutdown(
+            [ 'finiteset', [ 'numthenseq', [ 'number', '1' ],
+                [ 'onenumseq', [ 'number', '2' ] ] ] ],
+            '(finiteset (elts 1 (elts 2)))'
+        )
+        // { 1, 2, 3 }
+        checkJsonPutdown(
+            [ 'finiteset', [ 'numthenseq', [ 'number', '1' ],
+                [ 'numthenseq', [ 'number', '2' ],
+                    [ 'onenumseq', [ 'number', '3' ] ] ] ] ],
+            '(finiteset (elts 1 (elts 2 (elts 3))))'
+        )
+        // { { }, { } }
+        checkJsonPutdown(
+            [ 'finiteset', [ 'setthenseq', [ 'emptyset' ],
+                [ 'onesetseq', [ 'emptyset' ] ] ] ],
+            '(finiteset (elts emptyset (elts emptyset)))'
+        )
+        // { { { } } }
+        checkJsonPutdown(
+            [ 'finiteset', [ 'onesetseq',
+                [ 'finiteset', [ 'onesetseq', [ 'emptyset' ] ] ] ] ],
+            '(finiteset (elts (finiteset (elts emptyset))))'
+        )
+        // { 3, x }
+        checkJsonPutdown(
+            [ 'finiteset', [ 'numthenseq', [ 'number', '3' ],
+                [ 'onenumseq', [ 'numbervariable', 'x' ] ] ] ],
+            '(finiteset (elts 3 (elts x)))'
+        )
+        // { A cup B, A cap B }
+        checkJsonPutdown(
+            [ 'finiteset', [ 'setthenseq',
+                [ 'union', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
+                [ 'onesetseq',
+                    [ 'intersection', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ] ] ] ],
+            '(finiteset (elts (setuni A B) (elts (setint A B))))'
+        )
+        // { 1, 2, emptyset, K, P }
+        checkJsonPutdown(
+            [ 'finiteset', [ 'numthenseq', [ 'number', '1' ],
+                [ 'numthenseq', [ 'number', '2' ],
+                    [ 'setthenseq', [ 'emptyset' ],
+                        [ 'numthenseq', [ 'numbervariable', 'K' ],
+                            [ 'onenumseq', [ 'numbervariable', 'P' ] ] ] ] ] ] ],
+            '(finiteset (elts 1 (elts 2 (elts emptyset (elts K (elts P))))))'
+        )
+    } )
+
     it( 'can convert simple set memberships and subsets to putdown', () => {
         checkJsonPutdown(
             [ 'numberisin', [ 'numbervariable', 'b' ], [ 'setvariable', 'B' ] ],
             '(in b B)'
+        )
+        checkJsonPutdown(
+            [ 'numberisin', [ 'number', '2' ],
+                [ 'finiteset', [ 'numthenseq', [ 'number', '1' ],
+                    [ 'onenumseq', [ 'number', '2' ] ] ] ] ],
+            '(in 2 (finiteset (elts 1 (elts 2))))'
         )
         checkJsonPutdown(
             [ 'numberisin', [ 'numbervariable', 'X' ],
@@ -514,12 +578,24 @@ describe( 'Creating putdown from JSON', () => {
                 [ 'union', [ 'setvariable', 'u' ], [ 'setvariable', 'v' ] ] ],
             '(subseteq (setint u v) (setuni u v))'
         )
+        checkJsonPutdown(
+            [ 'subseteq',
+                [ 'finiteset', [ 'onenumseq', [ 'number', '1' ] ] ],
+                [ 'union',
+                    [ 'finiteset', [ 'onenumseq', [ 'number', '1' ] ] ],
+                    [ 'finiteset', [ 'onenumseq', [ 'number', '2' ] ] ] ] ],
+            '(subseteq (finiteset (elts 1)) (setuni (finiteset (elts 1)) (finiteset (elts 2))))'
+        )
     } )
 
     it( 'creates the canonical form for "notin" notation', () => {
         checkJsonPutdown(
             [ 'numberisnotin', [ 'numbervariable', 'a' ], [ 'setvariable', 'A' ] ],
             '(not (in a A))'
+        )
+        checkJsonPutdown(
+            [ 'logicnegation', [ 'setisin', [ 'emptyset' ], [ 'emptyset' ] ] ],
+            '(not (in emptyset emptyset))'
         )
         checkJsonPutdown(
             [ 'numberisnotin',

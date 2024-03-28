@@ -462,12 +462,76 @@ describe( 'Creating JSON from putdown', () => {
         )
     } )
 
+    it( 'can convert finite and empty sets to JSON', () => {
+        // { }
+        checkPutdownJson( 'emptyset', [ 'emptyset' ] )
+        // { 1 }
+        checkPutdownJson(
+            '(finiteset (elts 1))',
+            [ 'finiteset', [ 'onenumseq', [ 'number', '1' ] ] ]
+        )
+        // { 1, 2 }
+        checkPutdownJson(
+            '(finiteset (elts 1 (elts 2)))',
+            [ 'finiteset', [ 'numthenseq', [ 'number', '1' ],
+                [ 'onenumseq', [ 'number', '2' ] ] ] ]
+        )
+        // { 1, 2, 3 }
+        checkPutdownJson(
+            '(finiteset (elts 1 (elts 2 (elts 3))))',
+            [ 'finiteset', [ 'numthenseq', [ 'number', '1' ],
+                [ 'numthenseq', [ 'number', '2' ],
+                    [ 'onenumseq', [ 'number', '3' ] ] ] ] ]
+        )
+        // { { }, { } }
+        checkPutdownJson(
+            '(finiteset (elts emptyset (elts emptyset)))',
+            [ 'finiteset', [ 'setthenseq', [ 'emptyset' ],
+                [ 'onesetseq', [ 'emptyset' ] ] ] ]
+        )
+        // { { { } } }
+        checkPutdownJson(
+            '(finiteset (elts (finiteset (elts emptyset))))',
+            [ 'finiteset', [ 'onesetseq',
+                [ 'finiteset', [ 'onesetseq', [ 'emptyset' ] ] ] ] ]
+        )
+        // { 3, x }
+        checkPutdownJson(
+            '(finiteset (elts 3 (elts x)))',
+            [ 'finiteset', [ 'numthenseq', [ 'number', '3' ],
+                [ 'onenumseq', [ 'numbervariable', 'x' ] ] ] ]
+        )
+        // { A cup B, A cap B }
+        checkPutdownJson(
+            '(finiteset (elts (setuni A B) (elts (setint A B))))',
+            [ 'finiteset', [ 'setthenseq',
+                [ 'union', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
+                [ 'onesetseq',
+                    [ 'intersection', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ] ] ] ]
+        )
+        // { 1, 2, emptyset, K, P }
+        checkPutdownJson(
+            '(finiteset (elts 1 (elts 2 (elts emptyset (elts K (elts P))))))',
+            [ 'finiteset', [ 'numthenseq', [ 'number', '1' ],
+                [ 'numthenseq', [ 'number', '2' ],
+                    [ 'setthenseq', [ 'emptyset' ],
+                        [ 'numthenseq', [ 'numbervariable', 'K' ],
+                            [ 'onenumseq', [ 'numbervariable', 'P' ] ] ] ] ] ] ]
+        )
+    } )
+
     it( 'can convert simple set memberships and subsets to JSON', () => {
         // As before, when a variable could be any type, the alphabetically
         // least type is numbervariable
         checkPutdownJson(
             '(in b B)',
             [ 'numberisin', [ 'numbervariable', 'b' ], [ 'setvariable', 'B' ] ]
+        )
+        checkPutdownJson(
+            '(in 2 (finiteset (elts 1 (elts 2))))',
+            [ 'numberisin', [ 'number', '2' ],
+                [ 'finiteset', [ 'numthenseq', [ 'number', '1' ],
+                    [ 'onenumseq', [ 'number', '2' ] ] ] ] ]
         )
         checkPutdownJson(
             '(in X (setuni a b))',
@@ -492,6 +556,14 @@ describe( 'Creating JSON from putdown', () => {
                 [ 'intersection', [ 'setvariable', 'u' ], [ 'setvariable', 'v' ] ],
                 [ 'union', [ 'setvariable', 'u' ], [ 'setvariable', 'v' ] ] ]
         )
+        checkPutdownJson(
+            '(subseteq (finiteset (elts 1)) (setuni (finiteset (elts 1)) (finiteset (elts 2))))',
+            [ 'subseteq',
+                [ 'finiteset', [ 'onenumseq', [ 'number', '1' ] ] ],
+                [ 'union',
+                    [ 'finiteset', [ 'onenumseq', [ 'number', '1' ] ] ],
+                    [ 'finiteset', [ 'onenumseq', [ 'number', '2' ] ] ] ] ]
+        )
     } )
 
     it( 'does not undo the canonical form for "notin" notation', () => {
@@ -499,6 +571,10 @@ describe( 'Creating JSON from putdown', () => {
             '(not (in a A))',
             [ 'logicnegation',
                 [ 'numberisin', [ 'numbervariable', 'a' ], [ 'setvariable', 'A' ] ] ]
+        )
+        checkPutdownJson(
+            '(not (in emptyset emptyset))',
+            [ 'logicnegation', [ 'setisin', [ 'emptyset' ], [ 'emptyset' ] ] ]
         )
         checkPutdownJson(
             '(not (in (- 3 5) (setint K P)))',
