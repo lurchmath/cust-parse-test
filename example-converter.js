@@ -45,9 +45,9 @@ converter.addConcept( 'subseteq',       'atomicpropexpr',   '(subseteq setexpr s
 converter.addConcept( 'numberisin',     'atomicpropexpr',   '(in numberexpr setexpr)' )
 converter.addConcept( 'propisin',       'atomicpropexpr',   '(in atomicpropexpr setexpr)' )
 converter.addConcept( 'setisin',        'atomicpropexpr',   '(in setexpr setexpr)' )
-converter.addConcept( 'numberisnotin',  'atomicpropexpr',   '-> (not (in numberexpr setexpr))' )
-converter.addConcept( 'propisnotin',    'atomicpropexpr',   '-> (not (in condexpr setexpr))' )
-converter.addConcept( 'setisnotin',     'atomicpropexpr',   '-> (not (in setexpr setexpr))' )
+converter.addConcept( 'numberisnotin',  'atomicpropexpr',   '(not (in numberexpr setexpr))', false )
+converter.addConcept( 'propisnotin',    'atomicpropexpr',   '(not (in condexpr setexpr))', false )
+converter.addConcept( 'setisnotin',     'atomicpropexpr',   '(not (in setexpr setexpr))', false )
 
 const latex = new Language( 'latex', converter, [ '{', '}', '(', ')' ] )
 

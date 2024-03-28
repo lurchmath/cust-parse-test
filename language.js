@@ -58,6 +58,8 @@ export class Language {
         this.tokenizer.addType( /\s/, () => null )
         this.grammar = new Grammar()
         this.grammar.START = SyntacticTypes.hierarchies[0][0]
+        // For storing derived concepts' putdown forms:
+        this.derivedNotation = new Map()
         // For each concept in the converter, if it is atomic and has a putdown
         // form, use that as the default notation in the new language; this can
         // be overridden by any later call to addNotation().
@@ -172,20 +174,31 @@ export class Language {
         // add notation to grammar (which can modify the array in-place, so
         // it is necessary to do this only after using it to make tokens, above)
         let parentType = concept.parentType
-        // putdown is a special language in which every notation counts as a
-        // grouper, so everything has high precedence (lowest subtype)
-        if ( this.name == 'putdown' )
-            parentType = SyntacticTypes.lowestSubtype( parentType )
-        this.grammar.addRule( parentType, conceptName )
-        this.grammar.addRule( conceptName, notation )
-        const rhss = this.grammar.rules[conceptName]
-        const newRule = rhss[rhss.length - 1]
-        // record in the new rule RHS several data about how the rule was made
-        newRule.notationToPutdown = notationToPutdown
-        newRule.putdownToNotation = putdownToNotation
-        newRule.notation = originalNotation
-        newRule.variables = options.variables
-        newRule.notationName = options.name
+        // If this notation is write-only, add it to the derived notations list:
+        if ( options.writeOnly ) {
+            this.derivedNotation.set( conceptName, notation )
+            // record in that notation array several data needed for rendering
+            notation.notationToPutdown = notationToPutdown
+            notation.putdownToNotation = putdownToNotation
+            notation.notation = originalNotation
+            notation.variables = options.variables
+        // But if it is NOT write-only, add it to the parser:
+        } else {
+            // putdown is a special language in which every notation counts as a
+            // grouper, so everything has high precedence (lowest subtype)
+            if ( this.name == 'putdown' )
+                parentType = SyntacticTypes.lowestSubtype( parentType )
+            this.grammar.addRule( parentType, conceptName )
+            this.grammar.addRule( conceptName, notation )
+            const rhss = this.grammar.rules[conceptName]
+            const newRule = rhss[rhss.length - 1]
+            // record in the new rule RHS several data about how the rule was made
+            newRule.notationToPutdown = notationToPutdown
+            newRule.putdownToNotation = putdownToNotation
+            newRule.notation = originalNotation
+            newRule.variables = options.variables
+            newRule.notationName = options.name
+        }
     }
 
     /**

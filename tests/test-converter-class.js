@@ -9,7 +9,7 @@ describe( 'Converter instance', () => {
         expect( Converter ).to.be.ok
     } )
 
-    it( 'should support the option of naming notations', () => {
+    it( 'should support write-only notation for derived concepts', () => {
         // Technically, we've tested most of the converter class in the other
         // test files, such as "test-creating-latex.js" etc.  But those use the
         // example-converter.js, which does not name any of its notations (as of
@@ -26,14 +26,15 @@ describe( 'Converter instance', () => {
             Language.regularExpressions.integer )
         converter.addConcept( 'add', 'sumexpr', '(+ sumexpr sumexpr)' )
         converter.addConcept( 'mul', 'prodexpr', '(* prodexpr prodexpr)' )
+        converter.addConcept( 'xmul', 'prodexpr', '(* prodexpr prodexpr)', false )
         const infix = new Language( 'infix-lang', converter )
         infix.addNotation( 'add', 'A+B' )
-        infix.addNotation( 'mul', 'A*B', { name : 'asterisk multiplication' } )
-        infix.addNotation( 'mul', 'A x B', { name : 'x multiplication' } )
+        infix.addNotation( 'mul', 'A*B' )
+        infix.addNotation( 'xmul', 'A x B' )
         const prefix = new Language( 'prefix-lang', converter )
         prefix.addNotation( 'add', '+ A B' )
-        prefix.addNotation( 'mul', '* A B', { name : 'asterisk multiplication' } )
-        prefix.addNotation( 'mul', 'x A B', { name : 'x multiplication' } )
+        prefix.addNotation( 'mul', '* A B' )
+        prefix.addNotation( 'xmul', 'x A B' )
         
         // Be sure we can convert atomic expressions in both directions
         expect( infix.convertTo( '2', prefix ) ).to.equal( '2' )
@@ -64,7 +65,7 @@ describe( 'Converter instance', () => {
         expect( prefix.convertTo( '+ * 10 20 40', infix ) ).to.equal( '10 * 20 + 40' )
     } )
 
-    it( 'should behave differently without naming notations', () => {
+    it( 'should behave differently without derived concepts', () => {
         // Define the same converter as in the previous test, but with no
         // notation names, so that all multiplications should become *-type.
         const converter = new Converter()

@@ -325,7 +325,9 @@ export class AST extends Array {
             }
         } )
         // get the default way to write that concept in this language
-        const rhss = language.grammar.rules[this.head()]
+        const rhss = language.grammar.rules[this.head()] || [ ]
+        if ( language.derivedNotation.has( this.head() ) )
+            rhss.push( language.derivedNotation.get( this.head() ) )
         const rhs = rhss.find( r => r.notationName === this.notationName )
                  || rhss[0]
         let notation = rhs.notation

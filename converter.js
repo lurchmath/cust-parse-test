@@ -117,7 +117,7 @@ export class Converter {
      * @param {String|RegExp} putdown - the notation for this concept in the
      *   putdown language
      */
-    addConcept ( name, parentType, putdown ) {
+    addConcept ( name, parentType, putdown, primitive = true ) {
         if ( !putdown ) putdown = name
         const data = { parentType, putdown }
         data.typeSequence = putdown instanceof RegExp ? [ ] :
@@ -134,7 +134,7 @@ export class Converter {
                     putdownForParsing = putdownForParsing.replace(
                         new RegExp( `\\b${type}\\b` ), variables[index] ) )
                 this.languages.get( 'putdown' ).addNotation( name,
-                    putdownForParsing, { variables } )
+                    putdownForParsing, { variables, writeOnly : !primitive } )
             } else {
                 throw new Error( 'Invalid putdown content: ' + putdown )
             }

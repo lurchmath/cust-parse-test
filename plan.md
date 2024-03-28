@@ -49,6 +49,7 @@ General to dos:
  - define new language of Lurch notation and verify all (or almost all) of its
    features can be supported
  - test whether all MathLive output can be parsed by this LaTeX parser
+ - Eventually make overview documentation for the main docs index page.
  - Eventually make a nice diagram of the syntactic types hierarchy and add it to
    the documentation for the syntactic-types module.
  - add support for features like associativity (in all conversion directions) if,
