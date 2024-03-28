@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Customizable Parsing Test Repository: Language</title>
+    
+      <link type="text/css" rel="stylesheet" href="styles/vendor/prism-default.css">
+    
+    <link type="text/css" rel="stylesheet" href="styles/styles.css">
+    
+    
+    <style>
+      :root {
+      
+      
+        --nav-width: 335px;
+      
+      }
+    </style>
+    
+</head>
+<body>
+
+<header class="layout-header">
+  
+  <h1>
+    <a href="./index.html">
+      Customizable Parsing Test Repository
+    </a>
+  </h1>
+  <nav class="layout-nav">
+    <ul><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class" title="class">C</span><span class="nav-item-name is-class"><a href="AST.html">AST</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#.fromJSON">fromJSON</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#arg">arg</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#args">args</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#concept">concept</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#head">head</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#isConcept">isConcept</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#numArgs">numArgs</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#toJSON">toJSON</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#toLanguage">toLanguage</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#toString">toString</a></span></li><li class="nav-heading"><span class="nav-item-type type-class" title="class">C</span><span class="nav-item-name is-class"><a href="Converter.html">Converter</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#addConcept">addConcept</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#concept">concept</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#convert">convert</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#isConcept">isConcept</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#isLanguage">isLanguage</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#language">language</a></span></li><li class="nav-heading"><span class="nav-item-type type-class" title="class">C</span><span class="nav-item-name is-class"><a href="Language.html">Language</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="Language.html#regularExpressions">regularExpressions</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Language.html#addNotation">addNotation</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Language.html#convertTo">convertTo</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Language.html#parse">parse</a></span></li></ul><ul><li class="nav-heading">Modules</li><li class="nav-heading"><span class="nav-item-type type-module" title="module">M</span><span class="nav-item-name is-module"><a href="module-SyntacticTypes.html">SyntacticTypes</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.hierarchies">hierarchies</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.isAtomic">isAtomic</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.isSupertype">isSupertype</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.isSupertypeOrEqual">isSupertypeOrEqual</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.lowestSubtype">lowestSubtype</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.types">types</a></span></li></ul><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="global.html#escapeRegExp">escapeRegExp</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="global.html#notationStringToArray">notationStringToArray</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="global.html#putdownLeaves">putdownLeaves</a></span></li>
+  </nav>
+</header>
+
+
+<main class="layout-main ">
+  <div class="container">
+    <p class="page-kind">Class</p>
+    <h1 class="page-title">Language</h1>
+    
+
+
+
+
+<section>
+
+
+<header class="class">
+
+
+    
+        
+        <!-- <h2>Language</h2> -->
+
+        
+
+        
+
+        
+            
+            <div class="class-description"><p>The Language class represents one of the languages among which a
+<a href="Converter.html">Converter</a> can convert notation.  To add a new language to a
+<a href="Converter.html">Converter</a> instance, just call the constructor of this class, passing
+the <a href="Converter.html">Converter</a> instance.  Every Language instance needs a
+<a href="Converter.html">Converter</a> instance to which it belongs, because the purpose of this
+class is to enable conversions among languages, by working together with a
+<a href="Converter.html">Converter</a> instance.</p>
+<p>Each instance of this class contains the data passed to its constructor, plus
+a reference to its <a href="Converter.html">Converter</a>, plus a tokenizer and parser for reading
+notation written in the language represented by this instance.  After
+creating an instance of this class, you specify the language itself by
+repeated calls to the <a href="Language.html#addNotation">addNotation()</a> function.
+This is necessary in order for the language to have any definition at all,
+before using it to parse text.</p>
+<p>Although you can call methods in this class directly to parse text, such as
+<a href="Language.html#parse">parse()</a> and <a href="Language.html#convertTo">convertTo()</a>, it
+is simpler if you instead use the <a href="Converter.html#convert">convert()</a> method
+of the corresponding <a href="Converter.html">Converter</a> instance.  Using the <a href="Converter.html">Converter</a>
+will save you from having to deal with intermediate forms like <a href="AST.html">abstract syntax trees</a>, but you can create and work with such objects if you
+wish.</p></div>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+
+
+
+    
+        
+
+
+
+
+
+    
+
+
+    
+    <h3 class="subtitle">Constructor</h3>
+    
+
+    <div class="method-type">
+    
+    </div>
+
+    <h4 class="method-name" id="Language">new Language<span class="signature">(name, converter, groupers, linter<span class="signature-attributes">nullable</span>)</span><span class="return-type-signature"></span>
+    </h4>
+
+
+
+
+
+<div class="method-description">
+    
+    <p>To add a new language to a <a href="Converter.html">Converter</a>, just call this constructor,
+passing the converter object as one of the parameters, and this
+constructor will add this language to that converter.</p>
+<p>The default grouping symbols for any newly installed language are <code>(</code> and
+<code>)</code>.  You may wish to override this default for a number of reasons.  For
+example, internally, when this class adds the putdown language, it
+specifies the empty array, since putdown uses no grouping symbols.  And
+if you were to define a parser for LaTeX, you might want to add the
+symbols <code>{</code> and <code>}</code> to the list, since they are groupers in LaTeX.  Note
+that the array must be of even length, pairs of open and close groupers,
+in that order, as in <code>[ '(', ')', '{', '}' ]</code> for LaTeX.</p>
+<p>The default linter for any language is the identity function, meaning
+that no cleanup is needed for expressions of that language.  If you want
+the <a href="Converter.html#convert">convert()</a> function, upon creating an
+expression in this language, to apply to it any specific formatting
+conventions you would like to see in the output, you can specify a
+linter, which will be run before <a href="Converter.html#convert">convert()</a>
+returns its result.  Add such a function only if you see output from
+<a href="Converter.html#convert">convert()</a> that doesn't meet your standards,
+aesthetically or for some functional reason.</p>
+<p>For example, when installing putdown as the initial language in the
+constructor for this class, it provides a linter that removes unnecessary
+spaces around parentheses.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h4 class="method-heading">Parameters</h4>
+    
+
+<ul class="method-params">
+    
+
+        <li>
+            
+                <span class="param-name">name</span>
+            
+
+            
+                
+
+
+    <span class="param-type">
+        <code>String</code>
+    </span>
+    
+
+            
+
+            
+                <span class="param-attributes">
+                
+
+                
+
+                
+                </span>
+            
+
+            
+
+            <div class="param-description"><p>the name of the new language (e.g., &quot;latex&quot;)</p></div>
+            
+        </li>
+
+    
+
+        <li>
+            
+                <span class="param-name">converter</span>
+            
+
+            
+                
+
+
+    <span class="param-type">
+        <code><a href="Converter.html">Converter</a></code>
+    </span>
+    
+
+            
+
+            
+                <span class="param-attributes">
+                
+
+                
+
+                
+                </span>
+            
+
+            
+
+            <div class="param-description"><p>the converter into which to install this
+language</p></div>
+            
+        </li>
+
+    
+
+        <li>
+            
+                <span class="param-name">groupers</span>
+            
+
+            
+                
+
+
+    <span class="param-type">
+        <code>Array.&lt;String></code>
+    </span>
+    
+
+            
+
+            
+                <span class="param-attributes">
+                
+
+                
+
+                
+                </span>
+            
+
+            
+
+            <div class="param-description"><p>any pairs of grouping symbols used by the
+language (as documented above)</p></div>
+            
+        </li>
+
+    
+
+        <li>
+            
+                <span class="param-name">linter</span>
+            
+
+            
+                
+
+
+    <span class="param-type">
+        <code>function</code>
+    </span>
+    
+
+            
+
+            
+                <span class="param-attributes">
+                
+
+                
+                    &lt;nullable&gt;<br>
+                
+
+                
+                </span>
+            
+
+            
+
+            <div class="param-description"><p>a function that cleans up notation in this
+language (as documented above)</p></div>
+            
+        </li>
+
+    
+</ul>
+
+
+
+
+
+<div class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h4 class="method-heading">See</h4>
+        <ul>
+            
+                <li><a href="Converter.html#convert">convert()</a></li>
+            
+                <li><a href="Converter.html#language">language()</a></li>
+            
+                <li><a href="Converter.html#isLanguage">isLanguage()</a></li>
+            
+        </ul>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h4 class="method-heading">Source</h4>
+    <ul>
+        <li class="method-source">
+            <a href="language.js.html">language.js</a><a href="language.js.html#source.32">, line 32</a>
+        </li>
+    </ul>
+
+
+
+    
+    </div>
+
+    
+
+    
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="Language.html">Language</a></dt>
+            <dd></dd>
+        </dl>
+    
+
+     
+
+    
+
+    
+
+
+    
+        <h3 class="subtitle">Members</h3>
+
+        
+            
+
+<article class="member">
+    <div class="method-type">
+        
+    </div>
+<h4 class="member-name" id="regularExpressions">regularExpressions<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>This static member of the class contains regular expressions for some
+common types of notation.  The following regular expressions are
+available to make it easier to define new concepts or notations.</p>
+<ul>
+<li><code>oneLetterVariable</code> - a single letter variable expressed in Roman
+letters (lower-case or upper-case A, B, C, ...)</li>
+<li><code>nonnegativeInteger</code> - an integer expressed using just the digits 0-9</li>
+<li><code>integer</code> - same as the previous, but possibly preceded by a <code>-</code></li>
+<li><code>nonnegativeNumber</code> - a number expressed using the digits 0-9 and a
+decimal point (optional)</li>
+<li><code>number</code> - same as the previous, but possibly preceded by a <code>-</code></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+<div class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    <h4>Source</h4>
+    <ul>
+        <li class="method-source">
+            <a href="language.js.html">language.js</a><a href="language.js.html#source.298">, line 298</a>
+        </li>
+    </ul>
+
+
+</article>
+        
+    
+
+    
+        <h3 class="subtitle">Methods</h3>
+
+        
+            
+
+
+    <article class="method">
+
+
+
+
+    
+
+
+    
+
+    <div class="method-type">
+    
+    </div>
+
+    <h4 class="method-name" id="addNotation">addNotation<span class="signature">(conceptName, notation, options<span class="signature-attributes">nullable</span>)</span><span class="return-type-signature"></span>
+    </h4>
+
+
+
+
+
+<div class="method-description">
+    
+    <p>Add a new notation to this language, for one of its converter's concepts.
+Specify the name of the concept being represented, then the notation
+using a string in which the letters <code>A</code>, <code>B</code>, and <code>C</code> represent the
+first, second, and third arguments, respectively.  (You can omit any
+arguments you do not need.  For example, you might write <code>A+B</code> for
+addition, <code>-A</code> for negation, or just <code>\\bot</code> for the logical constant
+&quot;false&quot; in LaTeX.)</p>
+<p>The options object supports the following fields.</p>
+<ul>
+<li>If you need to use one of the letters <code>A</code>, <code>B</code>, or <code>C</code> in the notation
+itself, or if you need to use more than three parameters in your
+notation (continuing on to <code>D</code>, <code>E</code>, etc.) then you can use the
+options object to specify the variables in your notation.  For
+example, you could use notation <code>x+y</code> and then use the options object
+to specify <code>{ variables : [ 'x', 'y' ] }</code>.  Note that every occurrence
+a variable counts as the variable (except inside another word) even if
+used multiple times.  So choose variable names that do not show up
+in the new notation you are introducing.</li>
+<li>If you want to assign this notation a name, that name will be stored
+in any AST parsed from this notation.  If you assign the same name to
+a notation for the same concept <em>in a different language in the same
+converter,</em> then when translating among languages, the
+<a href="Converter.html">Converter</a> will attempt to map this notation to the notation of
+the same name in another language.  Without giving names to notations,
+the converter just uses the default way to represent a concept in each
+language, preserving meaning only, not any details of the way that
+meaning was written.</li>
+<li>If this notation should be used only for representing the concept in
+this language, but not for parsing from this language into an AST,
+then you can set <code>writeOnly : true</code>.  This can be useful in two cases.
+<ol>
+<li>If you have multiple notations for the same concept in some
+languages, but not in others.  You can map each notation to a
+separate concept, then map all concepts to one notation in the
+smaller language, marking all but one as write-only, thus
+establishing a canonical form.  And yet between any two languages
+that support all the notations, translation can preserve the
+notational subtleties.</li>
+<li>If you have some notation that is just a shorthand for a more
+complex notation, you can parse the notation to a concept named
+for that notation, but convert to putdown form in a write-only
+way, expanding the notation to its underlying (compound) meaning.
+Then the converter will not attempt to invert that expansion when
+parsing putdown, but will preserve its expanded meaning.</li>
+</ol>
+</li>
+</ul>
+<p>There are no other options at this time besides those documented above,
+but the options object is available for future expansion.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h4 class="method-heading">Parameters</h4>
+    
+
+<ul class="method-params">
+    
+
+        <li>
+            
+                <span class="param-name">conceptName</span>
+            
+
+            
+                
+
+
+    <span class="param-type">
+        <code>String</code>
+    </span>
+    
+
+            
+
+            
+                <span class="param-attributes">
+                
+
+                
+
+                
+                </span>
+            
+
+            
+
+            <div class="param-description"><p>the name of the concept represented by this
+new notation</p></div>
+            
+        </li>
+
+    
+
+        <li>
+            
+                <span class="param-name">notation</span>
+            
+
+            
+                
+
+
+    <span class="param-type">
+        <code>String</code>
+    </span>
+    
+
+            
+
+            
+                <span class="param-attributes">
+                
+
+                
+
+                
+                </span>
+            
+
+            
+
+            <div class="param-description"><p>the notation being added</p></div>
+            
+        </li>
+
+    
+
+        <li>
+            
+                <span class="param-name">options</span>
+            
+
+            
+                
+
+
+    <span class="param-type">
+        <code>Object</code>
+    </span>
+    
+
+            
+
+            
+                <span class="param-attributes">
+                
+
+                
+                    &lt;nullable&gt;<br>
+                
+
+                
+                </span>
+            
+
+            
+
+            <div class="param-description"><p>any additional options, as documented above</p></div>
+            
+        </li>
+
+    
+</ul>
+
+
+
+
+
+<div class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h4 class="method-heading">Source</h4>
+    <ul>
+        <li class="method-source">
+            <a href="language.js.html">language.js</a><a href="language.js.html#source.175">, line 175</a>
+        </li>
+    </ul>
+
+
+
+    </article>
+
+        
+            
+
+
+    <article class="method">
+
+
+
+
+    
+
+
+    
+
+    <div class="method-type">
+    
+    </div>
+
+    <h4 class="method-name" id="convertTo">convertTo<span class="signature">(text, language)</span><span class="return-type-signature"> &rarr; {String}</span>
+    </h4>
+
+
+
+
+
+<div class="method-description">
+    
+    <p>Convert text in this language to text in another language.  If the text
+cannot be parsed in this language, then undefined is returned instead.
+Note that this object and <code>language</code> must have the same <a href="Converter.html">Converter</a>
+instance associated with them, or this function will throw an error.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h4 class="method-heading">Parameters</h4>
+    
+
+<ul class="method-params">
+    
+
+        <li>
+            
+                <span class="param-name">text</span>
+            
+
+            
+                
+
+
+    <span class="param-type">
+        <code>String</code>
+    </span>
+    
+
+            
+
+            
+
+            
+
+            <div class="param-description"><p>the text in this language to be converter to the
+other language</p></div>
+            
+        </li>
+
+    
+
+        <li>
+            
+                <span class="param-name">language</span>
+            
+
+            
+                
+
+
+    <span class="param-type">
+        <code><a href="Language.html">Language</a></code>
+    </span>
+    
+
+            
+
+            
+
+            
+
+            <div class="param-description"><p>the destination language</p></div>
+            
+        </li>
+
+    
+</ul>
+
+
+
+
+
+<div class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</div>
+
+
+
+    <h4 class="method-heading">Returns</h4>
+    <ul>
+    
+        <li class="method-returns">
+            
+                <code>String</code>
+            
+            
+                <p>the converted text, if the conversion was possible, and
+undefined otherwise</p>
+            
+        </li>
+    
+    </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h4 class="method-heading">Source</h4>
+    <ul>
+        <li class="method-source">
+            <a href="language.js.html">language.js</a><a href="language.js.html#source.279">, line 279</a>
+        </li>
+    </ul>
+
+
+
+    </article>
+
+        
+            
+
+
+    <article class="method">
+
+
+
+
+    
+
+
+    
+
+    <div class="method-type">
+    
+    </div>
+
+    <h4 class="method-name" id="parse">parse<span class="signature">(text)</span><span class="return-type-signature"> &rarr; {<a href="AST.html">AST</a>}</span>
+    </h4>
+
+
+
+
+
+<div class="method-description">
+    
+    <p>Treat the given text as an expression in this language and attempt to
+parse it.  Return an abstract syntax tree (<a href="AST.html">AST</a>) on success, or
+<code>undefined</code> on failure.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h4 class="method-heading">Parameters</h4>
+    
+
+<ul class="method-params">
+    
+
+        <li>
+            
+                <span class="param-name">text</span>
+            
+
+            
+                
+
+
+    <span class="param-type">
+        <code>String</code>
+    </span>
+    
+
+            
+
+            
+
+            
+
+            <div class="param-description"><p>the input text to parse</p></div>
+            
+        </li>
+
+    
+</ul>
+
+
+
+
+
+<div class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h4 class="method-heading">See</h4>
+        <ul>
+            
+                <li>compact()</li>
+            
+        </ul>
+    
+
+    
+</div>
+
+
+
+    <h4 class="method-heading">Returns</h4>
+    <ul>
+    
+        <li class="method-returns">
+            
+                <code>AST</code>
+            
+            
+                <ul>
+<li>the parsed AST, or undefined if parsing failed</li>
+</ul>
+            
+        </li>
+    
+    </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h4 class="method-heading">Source</h4>
+    <ul>
+        <li class="method-source">
+            <a href="language.js.html">language.js</a><a href="language.js.html#source.254">, line 254</a>
+        </li>
+    </ul>
+
+
+
+    </article>
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+  </div>
+</main>
+
+<footer class="layout-footer">
+  <div class="container">
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a>
+  </div>
+</footer>
+
+
+
+<script src="scripts/prism.dev.js"></script>
+</body>
+</html>
