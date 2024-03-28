@@ -4,16 +4,15 @@ import { converter } from '../example-converter.js'
 
 const latex = converter.languages.get( 'latex' )
 
-describe( 'Parsing latex', () => {
+describe( 'Parsing LaTeX', () => {
 
-    const whitespace = '                                            '
-    const lpad = str => whitespace.substr( 0, whitespace.length - str.length ) + str
     const checkLatexJson = ( latexText, json ) => {
         expect( latex.parse( latexText ).toJSON() ).to.eql( json )
-        // console.log( `${lpad( latexText )}  -->  ${JSON.stringify( json )}` )
+        global.log?.( 'LaTeX', latexText, 'JSON', json )
     }
     const checkLatexJsonFail = ( latexText ) => {
         expect( latex.parse( latexText ) ).to.be.undefined
+        global.log?.( 'LaTeX', latexText, 'JSON', null )
     }
 
     it( 'can parse many kinds of numbers to JSON', () => {
@@ -166,7 +165,7 @@ describe( 'Parsing latex', () => {
             ]
         )
         checkLatexJson(
-            '10\\%\\div2^100',
+            '10\\%\\div2^{100}',
             [ 'division',
                 [ 'percentage', [ 'number', '10' ] ],
                 [ 'exponentiation', [ 'number', '2' ], [ 'number', '100' ] ]
@@ -206,7 +205,7 @@ describe( 'Parsing latex', () => {
             ]
         )
         checkLatexJson(
-            '10\\%\\cdot2^100',
+            '10\\%\\cdot2^{100}',
             [ 'multiplication',
                 [ 'percentage', [ 'number', '10' ] ],
                 [ 'exponentiation', [ 'number', '2' ], [ 'number', '100' ] ]

@@ -5,15 +5,13 @@ import { AST } from '../ast.js'
 
 const latex = converter.languages.get( 'latex' )
 
-describe( 'Creating latex from JSON', () => {
+describe( 'Rendering JSON into LaTeX', () => {
 
-    const whitespace = '                                            '
-    const lpad = str => whitespace.substr( 0, whitespace.length - str.length ) + str
     const checkJsonLatex = ( json, latexText ) => {
         expect(
             new AST( latex, ...json ).toLanguage( latex )
         ).to.eql( latexText )
-        // console.log( `${lpad( latexText )}  -->  ${JSON.stringify( json )}` )
+        global.log?.( 'JSON', json, 'LaTeX', latexText )
     }
 
     it( 'can convert JSON numbers to LaTeX', () => {

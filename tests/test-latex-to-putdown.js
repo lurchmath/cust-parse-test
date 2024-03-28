@@ -4,17 +4,15 @@ import { converter } from '../example-converter.js'
 
 describe( 'Converting LaTeX to putdown', () => {
     
-    const whitespace = '                                            '
-    const lpad = str => whitespace.substr( 0, whitespace.length - str.length ) + str
-    
     const latex = converter.languages.get( 'latex' )
     const putdown = converter.languages.get( 'putdown' )
     const checkLatexPutdown = ( latexText, putdownText ) => {
         expect( latex.convertTo( latexText, putdown ) ).to.equal( putdownText )
-        // console.log( `${lpad( latexText )}  -->  ${putdown}` )
+        global.log?.( 'LaTeX', latexText, 'putdown', putdownText )
     }
     const checkLatexPutdownFail = ( latexText ) => {
         expect( latex.convertTo( latexText, putdown ) ).to.be.undefined
+        global.log?.( 'LaTeX', latexText, 'putdown', null )
     }
 
     it( 'correctly converts many kinds of numbers but not malformed ones', () => {
@@ -62,7 +60,7 @@ describe( 'Converting LaTeX to putdown', () => {
         // division of factors
         checkLatexPutdown( 'x^2\\div3', '(/ (^ x 2) 3)' )
         checkLatexPutdown( '1\\div e^x', '(/ 1 (^ e x))' )
-        checkLatexPutdown( '10\\%\\div2^100', '(/ (% 10) (^ 2 100))' )
+        checkLatexPutdown( '10\\%\\div2^{100}', '(/ (% 10) (^ 2 100))' )
     } )
 
     it( 'correctly converts multiplication of atomics or factors', () => {
@@ -73,7 +71,7 @@ describe( 'Converting LaTeX to putdown', () => {
         // multiplication of factors
         checkLatexPutdown( 'x^2\\cdot3', '(* (^ x 2) 3)' )
         checkLatexPutdown( '1\\times e^x', '(* 1 (^ e x))' )
-        checkLatexPutdown( '10\\%\\cdot2^100', '(* (% 10) (^ 2 100))' )
+        checkLatexPutdown( '10\\%\\cdot2^{100}', '(* (% 10) (^ 2 100))' )
     } )
 
     it( 'correctly converts negations of atomics or factors', () => {

@@ -4,16 +4,15 @@ import { converter } from '../example-converter.js'
 
 const putdown = converter.languages.get( 'putdown' )
 
-describe( 'Creating JSON from putdown', () => {
+describe( 'Parsing putdown', () => {
 
-    const whitespace = '                                            '
-    const lpad = str => whitespace.substr( 0, whitespace.length - str.length ) + str
     const checkPutdownJson = ( putdownText, json ) => {
         expect( putdown.parse( putdownText ).toJSON() ).to.eql( json )
-        // console.log( `${lpad( putdown )}  -->  ${JSON.stringify( json )}` )
+        global.log?.( 'putdown', putdownText, 'JSON', json )
     }
     const checkPutdownJsonFail = ( putdownText ) => {
         expect( putdown.parse( putdownText ) ).to.be.undefined
+        global.log?.( 'putdown', putdownText, 'JSON', null )
     }
 
     it( 'can convert putdown numbers to JSON', () => {

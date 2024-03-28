@@ -5,15 +5,13 @@ import { AST } from '../ast.js'
 
 const putdown = converter.languages.get( 'putdown' )
 
-describe( 'Creating putdown from JSON', () => {
+describe( 'Rendering JSON into putdown', () => {
 
-    const whitespace = '                                            '
-    const lpad = str => whitespace.substr( 0, whitespace.length - str.length ) + str
     const checkJsonPutdown = ( json, putdownText ) => {
         expect(
             new AST( putdown, ...json ).toLanguage( putdown )
         ).to.equal( putdownText )
-        // console.log( `${lpad( putdownText )}  <--  ${JSON.stringify( json )}` )
+        global.log?.( 'JSON', json, 'putdown', putdownText )
     }
 
     it( 'can convert JSON numbers to putdown', () => {

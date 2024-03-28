@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "node ./node_modules/mocha/bin/mocha.js tests/",
-    "docs": "rm -rf docs && jsdoc *.js -d docs -R doc-main.md -c jsdoc-conf.json --verbose"
+    "log-test": "node ./node_modules/mocha/bin/mocha.js --require tests/log-hooks.js tests/",
+    "docs": "rm -rf docs && node scripts/pre-jsdoc.js && jsdoc *.js -d docs -R doc-main.md -c jsdoc-conf.json --verbose && node scripts/post-jsdoc.js"
   },
   "author": "Nathan Carter (ncarter@bentley.edu)",
   "license": "MIT",

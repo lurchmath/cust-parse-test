@@ -4,17 +4,15 @@ import { converter } from '../example-converter.js'
 
 describe( 'Converting putdown to LaTeX', () => {
     
-    const whitespace = '                                            '
-    const lpad = str => whitespace.substr( 0, whitespace.length - str.length ) + str
-
     const putdown = converter.languages.get( 'putdown' )
     const latex = converter.languages.get( 'latex' )
     const checkPutdownLatex = ( putdownText, latexText ) => {
         expect( putdown.convertTo( putdownText, latex ) ).to.equal( latexText )
-        // console.log( `${lpad( putdown )}  -->  ${latex}` )
+        global.log?.( 'putdown', putdownText, 'LaTeX', latexText )
     }
     const checkPutdownLatexFail = ( putdownText ) => {
         expect( putdown.convertTo( putdownText, latex ) ).to.be.undefined
+        global.log?.( 'putdown', putdownText, 'LaTeX', null )
     }
 
     it( 'correctly converts many kinds of numbers but not malformed ones', () => {
