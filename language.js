@@ -87,11 +87,15 @@ export class Language {
         this.derivedNotation = new Map()
         // For each concept in the converter, if it is atomic and has a putdown
         // form, use that as the default notation in the new language; this can
-        // be overridden by any later call to addNotation().
+        // be overridden by any later call to addNotation().  So we mark it here
+        // as the default, so they know they can delete it later.
         Array.from( converter.concepts.keys() ).forEach( conceptName => {
             const concept = converter.concepts.get( conceptName )
-            if ( SyntacticTypes.isAtomic( concept.parentType ) )
+            if ( SyntacticTypes.isAtomic( concept.parentType ) ) {
                 this.addNotation( conceptName, concept.putdown )
+                const rhss = this.grammar.rules[conceptName]
+                rhss[rhss.length-1].putdownDefault = true
+            }
         } )
         // Add subtyping rules and grouping rules to the grammar.
         // Also, for each atomic type, give it zero rules, to avoid Earley
@@ -172,14 +176,13 @@ export class Language {
         const concept = this.converter.concept( conceptName )
         if ( !concept )
             throw new Error( `Not a valid concept: ${conceptName}` )
-        // if this is an atomic concept, delete any previous notation it had
-        // (since that was probably the putdown default installed at language
-        // creation time, which the user is now overriding)
-        // but this does not apply to groupers; there can be more than one
-        // set of groupers in a language, and thus more than one way to form an
-        // atomic concept using groupers
+        // if this is an atomic concept, and the only previous notation it had
+        // was the putdown default installed at language creation time, then the
+        // user is now overriding that, so we should delete it.
         if ( SyntacticTypes.isAtomic( concept.parentType )
-          && !conceptName.startsWith( 'grouped' ) )
+          && this.grammar.rules.hasOwnProperty( conceptName )
+          && this.grammar.rules[conceptName].length == 1
+          && this.grammar.rules[conceptName][0].putdownDefault )
             delete this.grammar.rules[conceptName]
         // convert notation to array if needed and extract its tokens
         if ( notation instanceof RegExp )
