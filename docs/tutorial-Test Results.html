@@ -1,0 +1,3742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Customizable Parsing Test Repository: Tutorial: Test Results</title>
+    
+      <link type="text/css" rel="stylesheet" href="styles/vendor/prism-default.css">
+    
+    <link type="text/css" rel="stylesheet" href="styles/styles.css">
+    
+    
+    <style>
+      :root {
+      
+      
+        --nav-width: 335px;
+      
+      }
+    </style>
+    
+
+<script>
+    MathJax = { tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] } };
+</script>
+<script id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+</head>
+<body>
+
+<header class="layout-header">
+  
+  <h1>
+    <a href="./index.html">
+      Customizable Parsing Test Repository
+    </a>
+  </h1>
+  <nav class="layout-nav">
+    <ul><li class="nav-heading">Tutorials</li><li class="nav-item"><a href="tutorial-Test Results.html">Test Results</a></li></ul><ul><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class" title="class">C</span><span class="nav-item-name is-class"><a href="AST.html">AST</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#.fromJSON">fromJSON</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#arg">arg</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#args">args</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#concept">concept</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#head">head</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#isConcept">isConcept</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#numArgs">numArgs</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#toJSON">toJSON</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#toLanguage">toLanguage</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="AST.html#toString">toString</a></span></li><li class="nav-heading"><span class="nav-item-type type-class" title="class">C</span><span class="nav-item-name is-class"><a href="Converter.html">Converter</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#addConcept">addConcept</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#concept">concept</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#convert">convert</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#isConcept">isConcept</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#isLanguage">isLanguage</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Converter.html#language">language</a></span></li><li class="nav-heading"><span class="nav-item-type type-class" title="class">C</span><span class="nav-item-name is-class"><a href="Language.html">Language</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="Language.html#regularExpressions">regularExpressions</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Language.html#addNotation">addNotation</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Language.html#convertTo">convertTo</a></span></li><li class="nav-item"><span class="nav-item-type type-function" title="function">F</span><span class="nav-item-name is-function"><a href="Language.html#parse">parse</a></span></li></ul><ul><li class="nav-heading">Modules</li><li class="nav-heading"><span class="nav-item-type type-module" title="module">M</span><span class="nav-item-name is-module"><a href="module-SyntacticTypes.html">SyntacticTypes</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.hierarchies">hierarchies</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.isAtomic">isAtomic</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.isSupertype">isSupertype</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.isSupertypeOrEqual">isSupertypeOrEqual</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.lowestSubtype">lowestSubtype</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="module-SyntacticTypes.html#.types">types</a></span></li></ul><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="global.html#escapeRegExp">escapeRegExp</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="global.html#notationStringToArray">notationStringToArray</a></span></li><li class="nav-item"><span class="nav-item-type type-member" title="member">M</span><span class="nav-item-name is-member"><a href="global.html#putdownLeaves">putdownLeaves</a></span></li>
+  </nav>
+</header>
+
+
+<main class="layout-main ">
+  <div class="container">
+    <p class="page-kind"></p>
+    <h1 class="page-title">Tutorial: Test Results</h1>
+    <section>
+
+<header>
+    
+
+    <h2>Test Results</h2>
+</header>
+
+<article>
+    <p>The following page lists all tests run using the example converter in this
+repository, which was build to verify that the language-building and conversion
+tools in this repository work.  It can convert among LaTeX, putdown, and JSON
+formats (as of this writing).  The specific conversions it performed (to
+satisfy the requirements of the test suite) are shown below.</p>
+<h2>Table of contents</h2>
+<ul>
+<li><a href="#Parsing-putdown">Parsing putdown</a></li>
+<li><a href="#Rendering-JSON-into-putdown">Rendering JSON into putdown</a></li>
+<li><a href="#Parsing-LaTeX">Parsing LaTeX</a></li>
+<li><a href="#Rendering-JSON-into-LaTeX">Rendering JSON into LaTeX</a></li>
+<li><a href="#Converting-putdown-to-LaTeX">Converting putdown to LaTeX</a></li>
+<li><a href="#Converting-LaTeX-to-putdown">Converting LaTeX to putdown</a></li>
+</ul>
+<h2><a name="Parsing-putdown">Parsing putdown</a></h2>
+<h3>can convert putdown numbers to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>0</code></li>
+<li>output: JSON <code>[&quot;number&quot;,&quot;0&quot;]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>453789</code></li>
+<li>output: JSON <code>[&quot;number&quot;,&quot;453789&quot;]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>99999999999999999999999999999999999999999</code></li>
+<li>output: JSON <code>[&quot;number&quot;,&quot;99999999999999999999999999999999999999999&quot;]</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: putdown <code>(- 453789)</code></li>
+<li>output: JSON <code>[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;453789&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: putdown <code>(- 99999999999999999999999999999999999999999)</code></li>
+<li>output: JSON <code>[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;99999999999999999999999999999999999999999&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: putdown <code>0.0</code></li>
+<li>output: JSON <code>[&quot;number&quot;,&quot;0.0&quot;]</code></li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: putdown <code>29835.6875940</code></li>
+<li>output: JSON <code>[&quot;number&quot;,&quot;29835.6875940&quot;]</code></li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: putdown <code>653280458689.</code></li>
+<li>output: JSON <code>[&quot;number&quot;,&quot;653280458689.&quot;]</code></li>
+</ul>
+</li>
+<li>Test 9
+<ul>
+<li>input: putdown <code>.000006327589</code></li>
+<li>output: JSON <code>[&quot;number&quot;,&quot;.000006327589&quot;]</code></li>
+</ul>
+</li>
+<li>Test 10
+<ul>
+<li>input: putdown <code>(- 29835.6875940)</code></li>
+<li>output: JSON <code>[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;29835.6875940&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 11
+<ul>
+<li>input: putdown <code>(- 653280458689.)</code></li>
+<li>output: JSON <code>[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;653280458689.&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 12
+<ul>
+<li>input: putdown <code>(- .000006327589)</code></li>
+<li>output: JSON <code>[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;.000006327589&quot;]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert any size variable name to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>x</code></li>
+<li>output: JSON <code>[&quot;numbervariable&quot;,&quot;x&quot;]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>E</code></li>
+<li>output: JSON <code>[&quot;numbervariable&quot;,&quot;E&quot;]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>q</code></li>
+<li>output: JSON <code>[&quot;numbervariable&quot;,&quot;q&quot;]</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: putdown <code>foo</code></li>
+<li>output: JSON <code>null</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: putdown <code>bar</code></li>
+<li>output: JSON <code>null</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: putdown <code>to</code></li>
+<li>output: JSON <code>null</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert infinity from putdown to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>infinity</code></li>
+<li>output: JSON <code>[&quot;infinity&quot;]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert exponentiation of atomics to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(^ 1 2)</code></li>
+<li>output: JSON <code>[&quot;exponentiation&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(^ e x)</code></li>
+<li>output: JSON <code>[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;e&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(^ 1 infinity)</code></li>
+<li>output: JSON <code>[&quot;exponentiation&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;infinity&quot;]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert atomic percentages and factorials to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(% 10)</code></li>
+<li>output: JSON <code>[&quot;percentage&quot;,[&quot;number&quot;,&quot;10&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(% t)</code></li>
+<li>output: JSON <code>[&quot;percentage&quot;,[&quot;numbervariable&quot;,&quot;t&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(! 6)</code></li>
+<li>output: JSON <code>[&quot;factorial&quot;,[&quot;number&quot;,&quot;6&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: putdown <code>(! n)</code></li>
+<li>output: JSON <code>[&quot;factorial&quot;,[&quot;numbervariable&quot;,&quot;n&quot;]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert division of atomics or factors to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(/ 1 2)</code></li>
+<li>output: JSON <code>[&quot;division&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(/ x y)</code></li>
+<li>output: JSON <code>[&quot;division&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;numbervariable&quot;,&quot;y&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(/ 0 infinity)</code></li>
+<li>output: JSON <code>[&quot;division&quot;,[&quot;number&quot;,&quot;0&quot;],[&quot;infinity&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: putdown <code>(/ (^ x 2) 3)</code></li>
+<li>output: JSON <code>[&quot;division&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;number&quot;,&quot;2&quot;]],[&quot;number&quot;,&quot;3&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: putdown <code>(/ 1 (^ e x))</code></li>
+<li>output: JSON <code>[&quot;division&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;e&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: putdown <code>(/ (% 10) (^ 2 100))</code></li>
+<li>output: JSON <code>[&quot;division&quot;,[&quot;percentage&quot;,[&quot;number&quot;,&quot;10&quot;]],[&quot;exponentiation&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;number&quot;,&quot;100&quot;]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert multiplication of atomics or factors to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(* 1 2)</code></li>
+<li>output: JSON <code>[&quot;multiplication&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(* x y)</code></li>
+<li>output: JSON <code>[&quot;multiplication&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;numbervariable&quot;,&quot;y&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(* 0 infinity)</code></li>
+<li>output: JSON <code>[&quot;multiplication&quot;,[&quot;number&quot;,&quot;0&quot;],[&quot;infinity&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: putdown <code>(* (^ x 2) 3)</code></li>
+<li>output: JSON <code>[&quot;multiplication&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;number&quot;,&quot;2&quot;]],[&quot;number&quot;,&quot;3&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: putdown <code>(* 1 (^ e x))</code></li>
+<li>output: JSON <code>[&quot;multiplication&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;e&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: putdown <code>(* (% 10) (^ 2 100))</code></li>
+<li>output: JSON <code>[&quot;multiplication&quot;,[&quot;percentage&quot;,[&quot;number&quot;,&quot;10&quot;]],[&quot;exponentiation&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;number&quot;,&quot;100&quot;]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert negations of atomics or factors to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(* (- 1) 2)</code></li>
+<li>output: JSON <code>[&quot;multiplication&quot;,[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;1&quot;]],[&quot;number&quot;,&quot;2&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(* x (- y))</code></li>
+<li>output: JSON <code>[&quot;multiplication&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;numbernegation&quot;,[&quot;numbervariable&quot;,&quot;y&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(* (- (^ x 2)) (- 3))</code></li>
+<li>output: JSON <code>[&quot;multiplication&quot;,[&quot;numbernegation&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;number&quot;,&quot;2&quot;]]],[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;3&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: putdown <code>(- (- (- (- 1000))))</code></li>
+<li>output: JSON <code>[&quot;numbernegation&quot;,[&quot;numbernegation&quot;,[&quot;numbernegation&quot;,[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;1000&quot;]]]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert additions and subtractions to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(+ x y)</code></li>
+<li>output: JSON <code>[&quot;addition&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;numbervariable&quot;,&quot;y&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(- 1 (- 3))</code></li>
+<li>output: JSON <code>[&quot;subtraction&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;3&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(+ (^ A B) (- C D))</code></li>
+<li>output: JSON <code>[&quot;addition&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;A&quot;],[&quot;numbervariable&quot;,&quot;B&quot;]],[&quot;subtraction&quot;,[&quot;numbervariable&quot;,&quot;C&quot;],[&quot;numbervariable&quot;,&quot;D&quot;]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert number exprs that normally require groupers to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(- (* 1 2))</code></li>
+<li>output: JSON <code>[&quot;numbernegation&quot;,[&quot;multiplication&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(! (^ x 2))</code></li>
+<li>output: JSON <code>[&quot;factorial&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;number&quot;,&quot;2&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(^ (- x) (* 2 (- 3)))</code></li>
+<li>output: JSON <code>[&quot;exponentiation&quot;,[&quot;numbernegation&quot;,[&quot;numbervariable&quot;,&quot;x&quot;]],[&quot;multiplication&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;3&quot;]]]]</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: putdown <code>(^ (- 3) (+ 1 2))</code></li>
+<li>output: JSON <code>[&quot;exponentiation&quot;,[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;3&quot;]],[&quot;addition&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert propositional logic atomics to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>true</code></li>
+<li>output: JSON <code>[&quot;logicaltrue&quot;]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>false</code></li>
+<li>output: JSON <code>[&quot;logicalfalse&quot;]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>contradiction</code></li>
+<li>output: JSON <code>[&quot;contradiction&quot;]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert propositional logic conjuncts to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(and true false)</code></li>
+<li>output: JSON <code>[&quot;conjunction&quot;,[&quot;logicaltrue&quot;],[&quot;logicalfalse&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(and (not P) (not true))</code></li>
+<li>output: JSON <code>[&quot;conjunction&quot;,[&quot;logicnegation&quot;,[&quot;logicvariable&quot;,&quot;P&quot;]],[&quot;logicnegation&quot;,[&quot;logicaltrue&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(and (and a b) c)</code></li>
+<li>output: JSON <code>[&quot;conjunction&quot;,[&quot;conjunction&quot;,[&quot;logicvariable&quot;,&quot;a&quot;],[&quot;logicvariable&quot;,&quot;b&quot;]],[&quot;logicvariable&quot;,&quot;c&quot;]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert propositional logic disjuncts to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(or true (not A))</code></li>
+<li>output: JSON <code>[&quot;disjunction&quot;,[&quot;logicaltrue&quot;],[&quot;logicnegation&quot;,[&quot;logicvariable&quot;,&quot;A&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(or (and P Q) (and Q P))</code></li>
+<li>output: JSON <code>[&quot;disjunction&quot;,[&quot;conjunction&quot;,[&quot;logicvariable&quot;,&quot;P&quot;],[&quot;logicvariable&quot;,&quot;Q&quot;]],[&quot;conjunction&quot;,[&quot;logicvariable&quot;,&quot;Q&quot;],[&quot;logicvariable&quot;,&quot;P&quot;]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert propositional logic conditionals to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(implies A (and Q (not P)))</code></li>
+<li>output: JSON <code>[&quot;implication&quot;,[&quot;logicvariable&quot;,&quot;A&quot;],[&quot;conjunction&quot;,[&quot;logicvariable&quot;,&quot;Q&quot;],[&quot;logicnegation&quot;,[&quot;logicvariable&quot;,&quot;P&quot;]]]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(implies (implies (or P Q) (and Q P)) T)</code></li>
+<li>output: JSON <code>[&quot;implication&quot;,[&quot;implication&quot;,[&quot;disjunction&quot;,[&quot;logicvariable&quot;,&quot;P&quot;],[&quot;logicvariable&quot;,&quot;Q&quot;]],[&quot;conjunction&quot;,[&quot;logicvariable&quot;,&quot;Q&quot;],[&quot;logicvariable&quot;,&quot;P&quot;]]],[&quot;logicvariable&quot;,&quot;T&quot;]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert propositional logic biconditionals to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(iff A (and Q (not P)))</code></li>
+<li>output: JSON <code>[&quot;iff&quot;,[&quot;logicvariable&quot;,&quot;A&quot;],[&quot;conjunction&quot;,[&quot;logicvariable&quot;,&quot;Q&quot;],[&quot;logicnegation&quot;,[&quot;logicvariable&quot;,&quot;P&quot;]]]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(implies (iff (or P Q) (and Q P)) T)</code></li>
+<li>output: JSON <code>[&quot;implication&quot;,[&quot;iff&quot;,[&quot;disjunction&quot;,[&quot;logicvariable&quot;,&quot;P&quot;],[&quot;logicvariable&quot;,&quot;Q&quot;]],[&quot;conjunction&quot;,[&quot;logicvariable&quot;,&quot;Q&quot;],[&quot;logicvariable&quot;,&quot;P&quot;]]],[&quot;logicvariable&quot;,&quot;T&quot;]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert propositional expressions with groupers to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(or P (and (iff Q Q) P))</code></li>
+<li>output: JSON <code>[&quot;disjunction&quot;,[&quot;logicvariable&quot;,&quot;P&quot;],[&quot;conjunction&quot;,[&quot;iff&quot;,[&quot;logicvariable&quot;,&quot;Q&quot;],[&quot;logicvariable&quot;,&quot;Q&quot;]],[&quot;logicvariable&quot;,&quot;P&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(not (iff true false))</code></li>
+<li>output: JSON <code>[&quot;logicnegation&quot;,[&quot;iff&quot;,[&quot;logicaltrue&quot;],[&quot;logicalfalse&quot;]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert simple predicate logic expressions to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(forall (x , P))</code></li>
+<li>output: JSON <code>[&quot;universal&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;logicvariable&quot;,&quot;P&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(exists (t , (not Q)))</code></li>
+<li>output: JSON <code>[&quot;existential&quot;,[&quot;numbervariable&quot;,&quot;t&quot;],[&quot;logicnegation&quot;,[&quot;logicvariable&quot;,&quot;Q&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(existsunique (k , (implies m n)))</code></li>
+<li>output: JSON <code>[&quot;existsunique&quot;,[&quot;numbervariable&quot;,&quot;k&quot;],[&quot;implication&quot;,[&quot;logicvariable&quot;,&quot;m&quot;],[&quot;logicvariable&quot;,&quot;n&quot;]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert finite and empty sets to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>emptyset</code></li>
+<li>output: JSON <code>[&quot;emptyset&quot;]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(finiteset (elts 1))</code></li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;1&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(finiteset (elts 1 (elts 2)))</code></li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: putdown <code>(finiteset (elts 1 (elts 2 (elts 3))))</code></li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;3&quot;]]]]]</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: putdown <code>(finiteset (elts emptyset (elts emptyset)))</code></li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;setthenseq&quot;,[&quot;emptyset&quot;],[&quot;onesetseq&quot;,[&quot;emptyset&quot;]]]]</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: putdown <code>(finiteset (elts (finiteset (elts emptyset))))</code></li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;onesetseq&quot;,[&quot;finiteset&quot;,[&quot;onesetseq&quot;,[&quot;emptyset&quot;]]]]]</code></li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: putdown <code>(finiteset (elts 3 (elts x)))</code></li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;onenumseq&quot;,[&quot;numbervariable&quot;,&quot;x&quot;]]]]</code></li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: putdown <code>(finiteset (elts (setuni A B) (elts (setint A B))))</code></li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;setthenseq&quot;,[&quot;union&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;onesetseq&quot;,[&quot;intersection&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]]]</code></li>
+</ul>
+</li>
+<li>Test 9
+<ul>
+<li>input: putdown <code>(finiteset (elts 1 (elts 2 (elts emptyset (elts K (elts P))))))</code></li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;setthenseq&quot;,[&quot;emptyset&quot;],[&quot;numthenseq&quot;,[&quot;numbervariable&quot;,&quot;K&quot;],[&quot;onenumseq&quot;,[&quot;numbervariable&quot;,&quot;P&quot;]]]]]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert simple set memberships and subsets to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(in b B)</code></li>
+<li>output: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;b&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(in 2 (finiteset (elts 1 (elts 2))))</code></li>
+<li>output: JSON <code>[&quot;numberisin&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(in X (setuni a b))</code></li>
+<li>output: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;X&quot;],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;a&quot;],[&quot;setvariable&quot;,&quot;b&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: putdown <code>(in (setuni A B) (setuni X Y))</code></li>
+<li>output: JSON <code>[&quot;setisin&quot;,[&quot;union&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;X&quot;],[&quot;setvariable&quot;,&quot;Y&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: putdown <code>(subset A (setcomp B))</code></li>
+<li>output: JSON <code>[&quot;subset&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;complement&quot;,[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: putdown <code>(subseteq (setint u v) (setuni u v))</code></li>
+<li>output: JSON <code>[&quot;subseteq&quot;,[&quot;intersection&quot;,[&quot;setvariable&quot;,&quot;u&quot;],[&quot;setvariable&quot;,&quot;v&quot;]],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;u&quot;],[&quot;setvariable&quot;,&quot;v&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: putdown <code>(subseteq (finiteset (elts 1)) (setuni (finiteset (elts 1)) (finiteset (elts 2))))</code></li>
+<li>output: JSON <code>[&quot;subseteq&quot;,[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;1&quot;]]],[&quot;union&quot;,[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;1&quot;]]],[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>does not undo the canonical form for &quot;notin&quot; notation</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(not (in a A))</code></li>
+<li>output: JSON <code>[&quot;logicnegation&quot;,[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;a&quot;],[&quot;setvariable&quot;,&quot;A&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(not (in emptyset emptyset))</code></li>
+<li>output: JSON <code>[&quot;logicnegation&quot;,[&quot;setisin&quot;,[&quot;emptyset&quot;],[&quot;emptyset&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(not (in (- 3 5) (setint K P)))</code></li>
+<li>output: JSON <code>[&quot;logicnegation&quot;,[&quot;numberisin&quot;,[&quot;subtraction&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;number&quot;,&quot;5&quot;]],[&quot;intersection&quot;,[&quot;setvariable&quot;,&quot;K&quot;],[&quot;setvariable&quot;,&quot;P&quot;]]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can parse to JSON sentences built from set operators</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(or P (in b B))</code></li>
+<li>output: JSON <code>[&quot;disjunction&quot;,[&quot;logicvariable&quot;,&quot;P&quot;],[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;b&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(forall (x , (in x X)))</code></li>
+<li>output: JSON <code>[&quot;universal&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;setvariable&quot;,&quot;X&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(and (subseteq A B) (subseteq B A))</code></li>
+<li>output: JSON <code>[&quot;conjunction&quot;,[&quot;subseteq&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;subseteq&quot;,[&quot;setvariable&quot;,&quot;B&quot;],[&quot;setvariable&quot;,&quot;A&quot;]]]</code></li>
+</ul>
+</li>
+</ul>
+<h2><a name="Rendering-JSON-into-putdown">Rendering JSON into putdown</a></h2>
+<h3>can convert JSON numbers to putdown</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;number&quot;,&quot;0&quot;]</code></li>
+<li>output: putdown <code>0</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;number&quot;,&quot;453789&quot;]</code></li>
+<li>output: putdown <code>453789</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;number&quot;,&quot;99999999999999999999999999999999999999999&quot;]</code></li>
+<li>output: putdown <code>99999999999999999999999999999999999999999</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;453789&quot;]]</code></li>
+<li>output: putdown <code>(- 453789)</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: JSON <code>[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;99999999999999999999999999999999999999999&quot;]]</code></li>
+<li>output: putdown <code>(- 99999999999999999999999999999999999999999)</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: JSON <code>[&quot;number&quot;,&quot;0.0&quot;]</code></li>
+<li>output: putdown <code>0.0</code></li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: JSON <code>[&quot;number&quot;,&quot;29835.6875940&quot;]</code></li>
+<li>output: putdown <code>29835.6875940</code></li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: JSON <code>[&quot;number&quot;,&quot;653280458689.&quot;]</code></li>
+<li>output: putdown <code>653280458689.</code></li>
+</ul>
+</li>
+<li>Test 9
+<ul>
+<li>input: JSON <code>[&quot;number&quot;,&quot;.000006327589&quot;]</code></li>
+<li>output: putdown <code>.000006327589</code></li>
+</ul>
+</li>
+<li>Test 10
+<ul>
+<li>input: JSON <code>[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;29835.6875940&quot;]]</code></li>
+<li>output: putdown <code>(- 29835.6875940)</code></li>
+</ul>
+</li>
+<li>Test 11
+<ul>
+<li>input: JSON <code>[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;653280458689.&quot;]]</code></li>
+<li>output: putdown <code>(- 653280458689.)</code></li>
+</ul>
+</li>
+<li>Test 12
+<ul>
+<li>input: JSON <code>[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;.000006327589&quot;]]</code></li>
+<li>output: putdown <code>(- .000006327589)</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert any size variable name from JSON to putdown</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;numbervariable&quot;,&quot;x&quot;]</code></li>
+<li>output: putdown <code>x</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;numbervariable&quot;,&quot;E&quot;]</code></li>
+<li>output: putdown <code>E</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;numbervariable&quot;,&quot;q&quot;]</code></li>
+<li>output: putdown <code>q</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;numbervariable&quot;,&quot;foo&quot;]</code></li>
+<li>output: putdown <code>foo</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: JSON <code>[&quot;numbervariable&quot;,&quot;bar&quot;]</code></li>
+<li>output: putdown <code>bar</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: JSON <code>[&quot;numbervariable&quot;,&quot;to&quot;]</code></li>
+<li>output: putdown <code>to</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert infinity from JSON to putdown</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;infinity&quot;]</code></li>
+<li>output: putdown <code>infinity</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert exponentiation of atomics to putdown</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;exponentiation&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]</code></li>
+<li>output: putdown <code>(^ 1 2)</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;e&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]</code></li>
+<li>output: putdown <code>(^ e x)</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;exponentiation&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;infinity&quot;]]</code></li>
+<li>output: putdown <code>(^ 1 infinity)</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert atomic percentages and factorials to putdown</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;percentage&quot;,[&quot;number&quot;,&quot;10&quot;]]</code></li>
+<li>output: putdown <code>(% 10)</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;percentage&quot;,[&quot;numbervariable&quot;,&quot;t&quot;]]</code></li>
+<li>output: putdown <code>(% t)</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;factorial&quot;,[&quot;number&quot;,&quot;100&quot;]]</code></li>
+<li>output: putdown <code>(! 100)</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;factorial&quot;,[&quot;numbervariable&quot;,&quot;J&quot;]]</code></li>
+<li>output: putdown <code>(! J)</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert division of atomics or factors to putdown</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;division&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]</code></li>
+<li>output: putdown <code>(/ 1 2)</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;division&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;numbervariable&quot;,&quot;y&quot;]]</code></li>
+<li>output: putdown <code>(/ x y)</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;division&quot;,[&quot;number&quot;,&quot;0&quot;],[&quot;infinity&quot;]]</code></li>
+<li>output: putdown <code>(/ 0 infinity)</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;division&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;number&quot;,&quot;2&quot;]],[&quot;number&quot;,&quot;3&quot;]]</code></li>
+<li>output: putdown <code>(/ (^ x 2) 3)</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: JSON <code>[&quot;division&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;e&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]]</code></li>
+<li>output: putdown <code>(/ 1 (^ e x))</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: JSON <code>[&quot;division&quot;,[&quot;percentage&quot;,[&quot;number&quot;,&quot;10&quot;]],[&quot;exponentiation&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;number&quot;,&quot;100&quot;]]]</code></li>
+<li>output: putdown <code>(/ (% 10) (^ 2 100))</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert multiplication of atomics or factors to putdown</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;multiplication&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]</code></li>
+<li>output: putdown <code>(* 1 2)</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;multiplication&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;numbervariable&quot;,&quot;y&quot;]]</code></li>
+<li>output: putdown <code>(* x y)</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;multiplication&quot;,[&quot;number&quot;,&quot;0&quot;],[&quot;infinity&quot;]]</code></li>
+<li>output: putdown <code>(* 0 infinity)</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;multiplication&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;number&quot;,&quot;2&quot;]],[&quot;number&quot;,&quot;3&quot;]]</code></li>
+<li>output: putdown <code>(* (^ x 2) 3)</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: JSON <code>[&quot;multiplication&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;e&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]]</code></li>
+<li>output: putdown <code>(* 1 (^ e x))</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: JSON <code>[&quot;multiplication&quot;,[&quot;percentage&quot;,[&quot;number&quot;,&quot;10&quot;]],[&quot;exponentiation&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;number&quot;,&quot;100&quot;]]]</code></li>
+<li>output: putdown <code>(* (% 10) (^ 2 100))</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert negations of atomics or factors to putdown</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;multiplication&quot;,[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;1&quot;]],[&quot;number&quot;,&quot;2&quot;]]</code></li>
+<li>output: putdown <code>(* (- 1) 2)</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;multiplication&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;numbernegation&quot;,[&quot;numbervariable&quot;,&quot;y&quot;]]]</code></li>
+<li>output: putdown <code>(* x (- y))</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;multiplication&quot;,[&quot;numbernegation&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;number&quot;,&quot;2&quot;]]],[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;3&quot;]]]</code></li>
+<li>output: putdown <code>(* (- (^ x 2)) (- 3))</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;numbernegation&quot;,[&quot;numbernegation&quot;,[&quot;numbernegation&quot;,[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;1000&quot;]]]]]</code></li>
+<li>output: putdown <code>(- (- (- (- 1000))))</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert additions and subtractions to putdown</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;addition&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;numbervariable&quot;,&quot;y&quot;]]</code></li>
+<li>output: putdown <code>(+ x y)</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;subtraction&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;3&quot;]]]</code></li>
+<li>output: putdown <code>(- 1 (- 3))</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;addition&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;A&quot;],[&quot;numbervariable&quot;,&quot;B&quot;]],[&quot;subtraction&quot;,[&quot;numbervariable&quot;,&quot;C&quot;],[&quot;numbervariable&quot;,&quot;D&quot;]]]</code></li>
+<li>output: putdown <code>(+ (^ A B) (- C D))</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert number expressions with groupers to putdown</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;numbernegation&quot;,[&quot;multiplication&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]]</code></li>
+<li>output: putdown <code>(- (* 1 2))</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;factorial&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;number&quot;,&quot;2&quot;]]]</code></li>
+<li>output: putdown <code>(! (^ x 2))</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;exponentiation&quot;,[&quot;numbernegation&quot;,[&quot;numbervariable&quot;,&quot;x&quot;]],[&quot;multiplication&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;3&quot;]]]]</code></li>
+<li>output: putdown <code>(^ (- x) (* 2 (- 3)))</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;exponentiation&quot;,[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;3&quot;]],[&quot;addition&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]]</code></li>
+<li>output: putdown <code>(^ (- 3) (+ 1 2))</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert propositional logic atomics to putdown</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;logicaltrue&quot;]</code></li>
+<li>output: putdown <code>true</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;logicalfalse&quot;]</code></li>
+<li>output: putdown <code>false</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;contradiction&quot;]</code></li>
+<li>output: putdown <code>contradiction</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;logicvariable&quot;,&quot;P&quot;]</code></li>
+<li>output: putdown <code>P</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: JSON <code>[&quot;logicvariable&quot;,&quot;a&quot;]</code></li>
+<li>output: putdown <code>a</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: JSON <code>[&quot;logicvariable&quot;,&quot;somethingLarge&quot;]</code></li>
+<li>output: putdown <code>somethingLarge</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert propositional logic conjuncts to putdown</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;conjunction&quot;,[&quot;logicaltrue&quot;],[&quot;logicalfalse&quot;]]</code></li>
+<li>output: putdown <code>(and true false)</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;conjunction&quot;,[&quot;logicnegation&quot;,[&quot;logicvariable&quot;,&quot;P&quot;]],[&quot;logicnegation&quot;,[&quot;logicaltrue&quot;]]]</code></li>
+<li>output: putdown <code>(and (not P) (not true))</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;conjunction&quot;,[&quot;conjunction&quot;,[&quot;logicvariable&quot;,&quot;a&quot;],[&quot;logicvariable&quot;,&quot;b&quot;]],[&quot;logicvariable&quot;,&quot;c&quot;]]</code></li>
+<li>output: putdown <code>(and (and a b) c)</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert propositional logic disjuncts to putdown</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;disjunction&quot;,[&quot;logicaltrue&quot;],[&quot;logicnegation&quot;,[&quot;logicvariable&quot;,&quot;A&quot;]]]</code></li>
+<li>output: putdown <code>(or true (not A))</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;disjunction&quot;,[&quot;conjunction&quot;,[&quot;logicvariable&quot;,&quot;P&quot;],[&quot;logicvariable&quot;,&quot;Q&quot;]],[&quot;conjunction&quot;,[&quot;logicvariable&quot;,&quot;Q&quot;],[&quot;logicvariable&quot;,&quot;P&quot;]]]</code></li>
+<li>output: putdown <code>(or (and P Q) (and Q P))</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert propositional logic conditionals to putdown</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;implication&quot;,[&quot;logicvariable&quot;,&quot;A&quot;],[&quot;conjunction&quot;,[&quot;logicvariable&quot;,&quot;Q&quot;],[&quot;logicnegation&quot;,[&quot;logicvariable&quot;,&quot;P&quot;]]]]</code></li>
+<li>output: putdown <code>(implies A (and Q (not P)))</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;implication&quot;,[&quot;implication&quot;,[&quot;disjunction&quot;,[&quot;logicvariable&quot;,&quot;P&quot;],[&quot;logicvariable&quot;,&quot;Q&quot;]],[&quot;conjunction&quot;,[&quot;logicvariable&quot;,&quot;Q&quot;],[&quot;logicvariable&quot;,&quot;P&quot;]]],[&quot;logicvariable&quot;,&quot;T&quot;]]</code></li>
+<li>output: putdown <code>(implies (implies (or P Q) (and Q P)) T)</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert propositional logic biconditionals to putdown</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;iff&quot;,[&quot;logicvariable&quot;,&quot;A&quot;],[&quot;conjunction&quot;,[&quot;logicvariable&quot;,&quot;Q&quot;],[&quot;logicnegation&quot;,[&quot;logicvariable&quot;,&quot;P&quot;]]]]</code></li>
+<li>output: putdown <code>(iff A (and Q (not P)))</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;implication&quot;,[&quot;iff&quot;,[&quot;disjunction&quot;,[&quot;logicvariable&quot;,&quot;P&quot;],[&quot;logicvariable&quot;,&quot;Q&quot;]],[&quot;conjunction&quot;,[&quot;logicvariable&quot;,&quot;Q&quot;],[&quot;logicvariable&quot;,&quot;P&quot;]]],[&quot;logicvariable&quot;,&quot;T&quot;]]</code></li>
+<li>output: putdown <code>(implies (iff (or P Q) (and Q P)) T)</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert propositional expressions with groupers to putdown</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;disjunction&quot;,[&quot;logicvariable&quot;,&quot;P&quot;],[&quot;conjunction&quot;,[&quot;iff&quot;,[&quot;logicvariable&quot;,&quot;Q&quot;],[&quot;logicvariable&quot;,&quot;Q&quot;]],[&quot;logicvariable&quot;,&quot;P&quot;]]]</code></li>
+<li>output: putdown <code>(or P (and (iff Q Q) P))</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;logicnegation&quot;,[&quot;iff&quot;,[&quot;logicaltrue&quot;],[&quot;logicalfalse&quot;]]]</code></li>
+<li>output: putdown <code>(not (iff true false))</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert simple predicate logic expressions to putdown</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;universal&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;logicvariable&quot;,&quot;P&quot;]]</code></li>
+<li>output: putdown <code>(forall (x , P))</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;existential&quot;,[&quot;numbervariable&quot;,&quot;t&quot;],[&quot;logicnegation&quot;,[&quot;logicvariable&quot;,&quot;Q&quot;]]]</code></li>
+<li>output: putdown <code>(exists (t , (not Q)))</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;existsunique&quot;,[&quot;numbervariable&quot;,&quot;k&quot;],[&quot;implication&quot;,[&quot;logicvariable&quot;,&quot;m&quot;],[&quot;logicvariable&quot;,&quot;n&quot;]]]</code></li>
+<li>output: putdown <code>(existsunique (k , (implies m n)))</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert finite and empty sets to putdown</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;emptyset&quot;]</code></li>
+<li>output: putdown <code>emptyset</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;1&quot;]]]</code></li>
+<li>output: putdown <code>(finiteset (elts 1))</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]</code></li>
+<li>output: putdown <code>(finiteset (elts 1 (elts 2)))</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;3&quot;]]]]]</code></li>
+<li>output: putdown <code>(finiteset (elts 1 (elts 2 (elts 3))))</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;setthenseq&quot;,[&quot;emptyset&quot;],[&quot;onesetseq&quot;,[&quot;emptyset&quot;]]]]</code></li>
+<li>output: putdown <code>(finiteset (elts emptyset (elts emptyset)))</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;onesetseq&quot;,[&quot;finiteset&quot;,[&quot;onesetseq&quot;,[&quot;emptyset&quot;]]]]]</code></li>
+<li>output: putdown <code>(finiteset (elts (finiteset (elts emptyset))))</code></li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;onenumseq&quot;,[&quot;numbervariable&quot;,&quot;x&quot;]]]]</code></li>
+<li>output: putdown <code>(finiteset (elts 3 (elts x)))</code></li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;setthenseq&quot;,[&quot;union&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;onesetseq&quot;,[&quot;intersection&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]]]</code></li>
+<li>output: putdown <code>(finiteset (elts (setuni A B) (elts (setint A B))))</code></li>
+</ul>
+</li>
+<li>Test 9
+<ul>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;setthenseq&quot;,[&quot;emptyset&quot;],[&quot;numthenseq&quot;,[&quot;numbervariable&quot;,&quot;K&quot;],[&quot;onenumseq&quot;,[&quot;numbervariable&quot;,&quot;P&quot;]]]]]]]</code></li>
+<li>output: putdown <code>(finiteset (elts 1 (elts 2 (elts emptyset (elts K (elts P))))))</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert simple set memberships and subsets to putdown</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;b&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]</code></li>
+<li>output: putdown <code>(in b B)</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;numberisin&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]]</code></li>
+<li>output: putdown <code>(in 2 (finiteset (elts 1 (elts 2))))</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;X&quot;],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;a&quot;],[&quot;setvariable&quot;,&quot;b&quot;]]]</code></li>
+<li>output: putdown <code>(in X (setuni a b))</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;setisin&quot;,[&quot;union&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;X&quot;],[&quot;setvariable&quot;,&quot;Y&quot;]]]</code></li>
+<li>output: putdown <code>(in (setuni A B) (setuni X Y))</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: JSON <code>[&quot;subset&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;complement&quot;,[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
+<li>output: putdown <code>(subset A (setcomp B))</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: JSON <code>[&quot;subseteq&quot;,[&quot;intersection&quot;,[&quot;setvariable&quot;,&quot;u&quot;],[&quot;setvariable&quot;,&quot;v&quot;]],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;u&quot;],[&quot;setvariable&quot;,&quot;v&quot;]]]</code></li>
+<li>output: putdown <code>(subseteq (setint u v) (setuni u v))</code></li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: JSON <code>[&quot;subseteq&quot;,[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;1&quot;]]],[&quot;union&quot;,[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;1&quot;]]],[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]]</code></li>
+<li>output: putdown <code>(subseteq (finiteset (elts 1)) (setuni (finiteset (elts 1)) (finiteset (elts 2))))</code></li>
+</ul>
+</li>
+</ul>
+<h3>creates the canonical form for &quot;notin&quot; notation</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;numberisnotin&quot;,[&quot;numbervariable&quot;,&quot;a&quot;],[&quot;setvariable&quot;,&quot;A&quot;]]</code></li>
+<li>output: putdown <code>(not (in a A))</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;logicnegation&quot;,[&quot;setisin&quot;,[&quot;emptyset&quot;],[&quot;emptyset&quot;]]]</code></li>
+<li>output: putdown <code>(not (in emptyset emptyset))</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;numberisnotin&quot;,[&quot;subtraction&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;number&quot;,&quot;5&quot;]],[&quot;intersection&quot;,[&quot;setvariable&quot;,&quot;K&quot;],[&quot;setvariable&quot;,&quot;P&quot;]]]</code></li>
+<li>output: putdown <code>(not (in (- 3 5) (setint K P)))</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert to putdown sentences built from set operators</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;disjunction&quot;,[&quot;logicvariable&quot;,&quot;P&quot;],[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;b&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
+<li>output: putdown <code>(or P (in b B))</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;universal&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;setvariable&quot;,&quot;X&quot;]]]</code></li>
+<li>output: putdown <code>(forall (x , (in x X)))</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;conjunction&quot;,[&quot;subseteq&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;subseteq&quot;,[&quot;setvariable&quot;,&quot;B&quot;],[&quot;setvariable&quot;,&quot;A&quot;]]]</code></li>
+<li>output: putdown <code>(and (subseteq A B) (subseteq B A))</code></li>
+</ul>
+</li>
+</ul>
+<h2><a name="Parsing-LaTeX">Parsing LaTeX</a></h2>
+<h3>can parse many kinds of numbers to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>0</code>, typeset $0$</li>
+<li>output: JSON <code>[&quot;number&quot;,&quot;0&quot;]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>453789</code>, typeset $453789$</li>
+<li>output: JSON <code>[&quot;number&quot;,&quot;453789&quot;]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>99999999999999999999999999999999999999999</code>, typeset $99999999999999999999999999999999999999999$</li>
+<li>output: JSON <code>[&quot;number&quot;,&quot;99999999999999999999999999999999999999999&quot;]</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: LaTeX <code>-453789</code>, typeset $-453789$</li>
+<li>output: JSON <code>[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;453789&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: LaTeX <code>-99999999999999999999999999999999999999999</code>, typeset $-99999999999999999999999999999999999999999$</li>
+<li>output: JSON <code>[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;99999999999999999999999999999999999999999&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: LaTeX <code>0.0</code>, typeset $0.0$</li>
+<li>output: JSON <code>[&quot;number&quot;,&quot;0.0&quot;]</code></li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: LaTeX <code>29835.6875940</code>, typeset $29835.6875940$</li>
+<li>output: JSON <code>[&quot;number&quot;,&quot;29835.6875940&quot;]</code></li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: LaTeX <code>653280458689.</code>, typeset $653280458689.$</li>
+<li>output: JSON <code>[&quot;number&quot;,&quot;653280458689.&quot;]</code></li>
+</ul>
+</li>
+<li>Test 9
+<ul>
+<li>input: LaTeX <code>.000006327589</code>, typeset $.000006327589$</li>
+<li>output: JSON <code>[&quot;number&quot;,&quot;.000006327589&quot;]</code></li>
+</ul>
+</li>
+<li>Test 10
+<ul>
+<li>input: LaTeX <code>-29835.6875940</code>, typeset $-29835.6875940$</li>
+<li>output: JSON <code>[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;29835.6875940&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 11
+<ul>
+<li>input: LaTeX <code>-653280458689.</code>, typeset $-653280458689.$</li>
+<li>output: JSON <code>[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;653280458689.&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 12
+<ul>
+<li>input: LaTeX <code>-.000006327589</code>, typeset $-.000006327589$</li>
+<li>output: JSON <code>[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;.000006327589&quot;]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can parse one-letter variable names to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>x</code>, typeset $x$</li>
+<li>output: JSON <code>[&quot;numbervariable&quot;,&quot;x&quot;]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>E</code>, typeset $E$</li>
+<li>output: JSON <code>[&quot;numbervariable&quot;,&quot;E&quot;]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>q</code>, typeset $q$</li>
+<li>output: JSON <code>[&quot;numbervariable&quot;,&quot;q&quot;]</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: LaTeX <code>foo</code>, typeset $foo$</li>
+<li>output: JSON <code>null</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: LaTeX <code>bar</code>, typeset $bar$</li>
+<li>output: JSON <code>null</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: LaTeX <code>to</code>, typeset $to$</li>
+<li>output: JSON <code>null</code></li>
+</ul>
+</li>
+</ul>
+<h3>can parse LaTeX infinity to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>\infty</code>, typeset $\infty$</li>
+<li>output: JSON <code>[&quot;infinity&quot;]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can parse exponentiation of atomics to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>1^2</code>, typeset $1^2$</li>
+<li>output: JSON <code>[&quot;exponentiation&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>e^x</code>, typeset $e^x$</li>
+<li>output: JSON <code>[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;e&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>1^\infty</code>, typeset $1^\infty$</li>
+<li>output: JSON <code>[&quot;exponentiation&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;infinity&quot;]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can parse atomic percentages and factorials to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>10\%</code>, typeset $10\%$</li>
+<li>output: JSON <code>[&quot;percentage&quot;,[&quot;number&quot;,&quot;10&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>t\%</code>, typeset $t\%$</li>
+<li>output: JSON <code>[&quot;percentage&quot;,[&quot;numbervariable&quot;,&quot;t&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>77!</code>, typeset $77!$</li>
+<li>output: JSON <code>[&quot;factorial&quot;,[&quot;number&quot;,&quot;77&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: LaTeX <code>y!</code>, typeset $y!$</li>
+<li>output: JSON <code>[&quot;factorial&quot;,[&quot;numbervariable&quot;,&quot;y&quot;]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can parse division of atomics or factors to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>1\div2</code>, typeset $1\div2$</li>
+<li>output: JSON <code>[&quot;division&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>x\div y</code>, typeset $x\div y$</li>
+<li>output: JSON <code>[&quot;division&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;numbervariable&quot;,&quot;y&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>0\div\infty</code>, typeset $0\div\infty$</li>
+<li>output: JSON <code>[&quot;division&quot;,[&quot;number&quot;,&quot;0&quot;],[&quot;infinity&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: LaTeX <code>x^2\div3</code>, typeset $x^2\div3$</li>
+<li>output: JSON <code>[&quot;division&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;number&quot;,&quot;2&quot;]],[&quot;number&quot;,&quot;3&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: LaTeX <code>1\div e^x</code>, typeset $1\div e^x$</li>
+<li>output: JSON <code>[&quot;division&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;e&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: LaTeX <code>10\%\div2^{100}</code>, typeset $10\%\div2^{100}$</li>
+<li>output: JSON <code>[&quot;division&quot;,[&quot;percentage&quot;,[&quot;number&quot;,&quot;10&quot;]],[&quot;exponentiation&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;number&quot;,&quot;100&quot;]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can parse multiplication of atomics or factors to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>1\times2</code>, typeset $1\times2$</li>
+<li>output: JSON <code>[&quot;multiplication&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>x\cdot y</code>, typeset $x\cdot y$</li>
+<li>output: JSON <code>[&quot;multiplication&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;numbervariable&quot;,&quot;y&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>0\times\infty</code>, typeset $0\times\infty$</li>
+<li>output: JSON <code>[&quot;multiplication&quot;,[&quot;number&quot;,&quot;0&quot;],[&quot;infinity&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: LaTeX <code>x^2\cdot3</code>, typeset $x^2\cdot3$</li>
+<li>output: JSON <code>[&quot;multiplication&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;number&quot;,&quot;2&quot;]],[&quot;number&quot;,&quot;3&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: LaTeX <code>1\times e^x</code>, typeset $1\times e^x$</li>
+<li>output: JSON <code>[&quot;multiplication&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;e&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: LaTeX <code>10\%\cdot2^{100}</code>, typeset $10\%\cdot2^{100}$</li>
+<li>output: JSON <code>[&quot;multiplication&quot;,[&quot;percentage&quot;,[&quot;number&quot;,&quot;10&quot;]],[&quot;exponentiation&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;number&quot;,&quot;100&quot;]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can parse negations of atomics or factors to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>-1\times2</code>, typeset $-1\times2$</li>
+<li>output: JSON <code>[&quot;multiplication&quot;,[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;1&quot;]],[&quot;number&quot;,&quot;2&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>x\cdot{-y}</code>, typeset $x\cdot{-y}$</li>
+<li>output: JSON <code>[&quot;multiplication&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;numbernegation&quot;,[&quot;numbervariable&quot;,&quot;y&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>{-x^2}\cdot{-3}</code>, typeset ${-x^2}\cdot{-3}$</li>
+<li>output: JSON <code>[&quot;multiplication&quot;,[&quot;numbernegation&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;number&quot;,&quot;2&quot;]]],[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;3&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: LaTeX <code>(-x^2)\cdot(-3)</code>, typeset $(-x^2)\cdot(-3)$</li>
+<li>output: JSON <code>[&quot;multiplication&quot;,[&quot;numbernegation&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;number&quot;,&quot;2&quot;]]],[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;3&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: LaTeX <code>----1000</code>, typeset $----1000$</li>
+<li>output: JSON <code>[&quot;numbernegation&quot;,[&quot;numbernegation&quot;,[&quot;numbernegation&quot;,[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;1000&quot;]]]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert additions and subtractions to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>x+y</code>, typeset $x+y$</li>
+<li>output: JSON <code>[&quot;addition&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;numbervariable&quot;,&quot;y&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>1--3</code>, typeset $1--3$</li>
+<li>output: JSON <code>[&quot;subtraction&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;3&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>A^B+C-D</code>, typeset $A^B+C-D$</li>
+<li>output: JSON <code>[&quot;addition&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;A&quot;],[&quot;numbervariable&quot;,&quot;B&quot;]],[&quot;subtraction&quot;,[&quot;numbervariable&quot;,&quot;C&quot;],[&quot;numbervariable&quot;,&quot;D&quot;]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can parse number expressions with groupers to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>-{1\times2}</code>, typeset $-{1\times2}$</li>
+<li>output: JSON <code>[&quot;numbernegation&quot;,[&quot;multiplication&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>-(1\times2)</code>, typeset $-(1\times2)$</li>
+<li>output: JSON <code>[&quot;numbernegation&quot;,[&quot;multiplication&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>(N-1)!</code>, typeset $(N-1)!$</li>
+<li>output: JSON <code>[&quot;factorial&quot;,[&quot;subtraction&quot;,[&quot;numbervariable&quot;,&quot;N&quot;],[&quot;number&quot;,&quot;1&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: LaTeX <code>{-x}^{2\cdot{-3}}</code>, typeset ${-x}^{2\cdot{-3}}$</li>
+<li>output: JSON <code>[&quot;exponentiation&quot;,[&quot;numbernegation&quot;,[&quot;numbervariable&quot;,&quot;x&quot;]],[&quot;multiplication&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;3&quot;]]]]</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: LaTeX <code>(-x)^(2\cdot(-3))</code>, typeset $(-x)^(2\cdot(-3))$</li>
+<li>output: JSON <code>[&quot;exponentiation&quot;,[&quot;numbernegation&quot;,[&quot;numbervariable&quot;,&quot;x&quot;]],[&quot;multiplication&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;3&quot;]]]]</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: LaTeX <code>(-x)^{2\cdot(-3)}</code>, typeset $(-x)^{2\cdot(-3)}$</li>
+<li>output: JSON <code>[&quot;exponentiation&quot;,[&quot;numbernegation&quot;,[&quot;numbervariable&quot;,&quot;x&quot;]],[&quot;multiplication&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;3&quot;]]]]</code></li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: LaTeX <code>A^B+(C-D)</code>, typeset $A^B+(C-D)$</li>
+<li>output: JSON <code>[&quot;addition&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;A&quot;],[&quot;numbervariable&quot;,&quot;B&quot;]],[&quot;subtraction&quot;,[&quot;numbervariable&quot;,&quot;C&quot;],[&quot;numbervariable&quot;,&quot;D&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: LaTeX <code>k^{1-y}\cdot(2+k)</code>, typeset $k^{1-y}\cdot(2+k)$</li>
+<li>output: JSON <code>[&quot;multiplication&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;k&quot;],[&quot;subtraction&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numbervariable&quot;,&quot;y&quot;]]],[&quot;addition&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;numbervariable&quot;,&quot;k&quot;]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can parse propositional logic atomics to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>\top</code>, typeset $\top$</li>
+<li>output: JSON <code>[&quot;logicaltrue&quot;]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>\bot</code>, typeset $\bot$</li>
+<li>output: JSON <code>[&quot;logicalfalse&quot;]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>\rightarrow\leftarrow</code>, typeset $\rightarrow\leftarrow$</li>
+<li>output: JSON <code>[&quot;contradiction&quot;]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can parse propositional logic conjuncts to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>\top\wedge\bot</code>, typeset $\top\wedge\bot$</li>
+<li>output: JSON <code>[&quot;conjunction&quot;,[&quot;logicaltrue&quot;],[&quot;logicalfalse&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>\neg P\wedge\neg\top</code>, typeset $\neg P\wedge\neg\top$</li>
+<li>output: JSON <code>[&quot;conjunction&quot;,[&quot;logicnegation&quot;,[&quot;logicvariable&quot;,&quot;P&quot;]],[&quot;logicnegation&quot;,[&quot;logicaltrue&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>a\wedge b\wedge c</code>, typeset $a\wedge b\wedge c$</li>
+<li>output: JSON <code>[&quot;conjunction&quot;,[&quot;logicvariable&quot;,&quot;a&quot;],[&quot;conjunction&quot;,[&quot;logicvariable&quot;,&quot;b&quot;],[&quot;logicvariable&quot;,&quot;c&quot;]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can parse propositional logic disjuncts to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>\top\vee \neg A</code>, typeset $\top\vee \neg A$</li>
+<li>output: JSON <code>[&quot;disjunction&quot;,[&quot;logicaltrue&quot;],[&quot;logicnegation&quot;,[&quot;logicvariable&quot;,&quot;A&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>P\wedge Q\vee Q\wedge P</code>, typeset $P\wedge Q\vee Q\wedge P$</li>
+<li>output: JSON <code>[&quot;disjunction&quot;,[&quot;conjunction&quot;,[&quot;logicvariable&quot;,&quot;P&quot;],[&quot;logicvariable&quot;,&quot;Q&quot;]],[&quot;conjunction&quot;,[&quot;logicvariable&quot;,&quot;Q&quot;],[&quot;logicvariable&quot;,&quot;P&quot;]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can parse propositional logic conditionals to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>A\Rightarrow Q\wedge\neg P</code>, typeset $A\Rightarrow Q\wedge\neg P$</li>
+<li>output: JSON <code>[&quot;implication&quot;,[&quot;logicvariable&quot;,&quot;A&quot;],[&quot;conjunction&quot;,[&quot;logicvariable&quot;,&quot;Q&quot;],[&quot;logicnegation&quot;,[&quot;logicvariable&quot;,&quot;P&quot;]]]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>P\vee Q\Rightarrow Q\wedge P\Rightarrow T</code>, typeset $P\vee Q\Rightarrow Q\wedge P\Rightarrow T$</li>
+<li>output: JSON <code>[&quot;implication&quot;,[&quot;disjunction&quot;,[&quot;logicvariable&quot;,&quot;P&quot;],[&quot;logicvariable&quot;,&quot;Q&quot;]],[&quot;implication&quot;,[&quot;conjunction&quot;,[&quot;logicvariable&quot;,&quot;Q&quot;],[&quot;logicvariable&quot;,&quot;P&quot;]],[&quot;logicvariable&quot;,&quot;T&quot;]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can parse propositional logic biconditionals to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>A\Leftrightarrow Q\wedge\neg P</code>, typeset $A\Leftrightarrow Q\wedge\neg P$</li>
+<li>output: JSON <code>[&quot;iff&quot;,[&quot;logicvariable&quot;,&quot;A&quot;],[&quot;conjunction&quot;,[&quot;logicvariable&quot;,&quot;Q&quot;],[&quot;logicnegation&quot;,[&quot;logicvariable&quot;,&quot;P&quot;]]]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>P\vee Q\Leftrightarrow Q\wedge P\Rightarrow T</code>, typeset $P\vee Q\Leftrightarrow Q\wedge P\Rightarrow T$</li>
+<li>output: JSON <code>[&quot;iff&quot;,[&quot;disjunction&quot;,[&quot;logicvariable&quot;,&quot;P&quot;],[&quot;logicvariable&quot;,&quot;Q&quot;]],[&quot;implication&quot;,[&quot;conjunction&quot;,[&quot;logicvariable&quot;,&quot;Q&quot;],[&quot;logicvariable&quot;,&quot;P&quot;]],[&quot;logicvariable&quot;,&quot;T&quot;]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can parse propositional expressions with groupers to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>P\lor {Q\Leftrightarrow Q}\land P</code>, typeset $P\lor {Q\Leftrightarrow Q}\land P$</li>
+<li>output: JSON <code>[&quot;disjunction&quot;,[&quot;logicvariable&quot;,&quot;P&quot;],[&quot;conjunction&quot;,[&quot;iff&quot;,[&quot;logicvariable&quot;,&quot;Q&quot;],[&quot;logicvariable&quot;,&quot;Q&quot;]],[&quot;logicvariable&quot;,&quot;P&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>\lnot{\top\Leftrightarrow\bot}</code>, typeset $\lnot{\top\Leftrightarrow\bot}$</li>
+<li>output: JSON <code>[&quot;logicnegation&quot;,[&quot;iff&quot;,[&quot;logicaltrue&quot;],[&quot;logicalfalse&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>\lnot(\top\Leftrightarrow\bot)</code>, typeset $\lnot(\top\Leftrightarrow\bot)$</li>
+<li>output: JSON <code>[&quot;logicnegation&quot;,[&quot;iff&quot;,[&quot;logicaltrue&quot;],[&quot;logicalfalse&quot;]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can parse simple predicate logic expressions to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>\forall x, P</code>, typeset $\forall x, P$</li>
+<li>output: JSON <code>[&quot;universal&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;logicvariable&quot;,&quot;P&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>\exists t,\neg Q</code>, typeset $\exists t,\neg Q$</li>
+<li>output: JSON <code>[&quot;existential&quot;,[&quot;numbervariable&quot;,&quot;t&quot;],[&quot;logicnegation&quot;,[&quot;logicvariable&quot;,&quot;Q&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>\exists! k,m\Rightarrow n</code>, typeset $\exists! k,m\Rightarrow n$</li>
+<li>output: JSON <code>[&quot;existsunique&quot;,[&quot;numbervariable&quot;,&quot;k&quot;],[&quot;implication&quot;,[&quot;logicvariable&quot;,&quot;m&quot;],[&quot;logicvariable&quot;,&quot;n&quot;]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert finite and empty sets to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>\emptyset</code>, typeset $\emptyset$</li>
+<li>output: JSON <code>[&quot;emptyset&quot;]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>\{\}</code>, typeset ${}$</li>
+<li>output: JSON <code>[&quot;emptyset&quot;]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>\{ \}</code>, typeset ${ }$</li>
+<li>output: JSON <code>[&quot;emptyset&quot;]</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: LaTeX <code>\{ 1 \}</code>, typeset ${ 1 }$</li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;1&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: LaTeX <code>\{1,2\}</code>, typeset ${1,2}$</li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: LaTeX <code>\{1, 2,   3 \}</code>, typeset ${1, 2,   3 }$</li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;3&quot;]]]]]</code></li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: LaTeX <code>\{\{\},\emptyset\}</code>, typeset ${{},\emptyset}$</li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;setthenseq&quot;,[&quot;emptyset&quot;],[&quot;onesetseq&quot;,[&quot;emptyset&quot;]]]]</code></li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: LaTeX <code>\{\{\emptyset\}\}</code>, typeset ${{\emptyset}}$</li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;onesetseq&quot;,[&quot;finiteset&quot;,[&quot;onesetseq&quot;,[&quot;emptyset&quot;]]]]]</code></li>
+</ul>
+</li>
+<li>Test 9
+<ul>
+<li>input: LaTeX <code>\{ 3,x \}</code>, typeset ${ 3,x }$</li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;onenumseq&quot;,[&quot;numbervariable&quot;,&quot;x&quot;]]]]</code></li>
+</ul>
+</li>
+<li>Test 10
+<ul>
+<li>input: LaTeX <code>\{ A\cup B, A\cap B \}</code>, typeset ${ A\cup B, A\cap B }$</li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;setthenseq&quot;,[&quot;union&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;onesetseq&quot;,[&quot;intersection&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]]]</code></li>
+</ul>
+</li>
+<li>Test 11
+<ul>
+<li>input: LaTeX <code>\{ 1, 2, \emptyset, K, P \}</code>, typeset ${ 1, 2, \emptyset, K, P }$</li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;setthenseq&quot;,[&quot;emptyset&quot;],[&quot;numthenseq&quot;,[&quot;numbervariable&quot;,&quot;K&quot;],[&quot;onenumseq&quot;,[&quot;numbervariable&quot;,&quot;P&quot;]]]]]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert simple set memberships and subsets to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>b\in B</code>, typeset $b\in B$</li>
+<li>output: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;b&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>2\in\{1,2\}</code>, typeset $2\in{1,2}$</li>
+<li>output: JSON <code>[&quot;numberisin&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>X\in a\cup b</code>, typeset $X\in a\cup b$</li>
+<li>output: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;X&quot;],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;a&quot;],[&quot;setvariable&quot;,&quot;b&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: LaTeX <code>A\cup B\in X\cup Y</code>, typeset $A\cup B\in X\cup Y$</li>
+<li>output: JSON <code>[&quot;setisin&quot;,[&quot;union&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;X&quot;],[&quot;setvariable&quot;,&quot;Y&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: LaTeX <code>A\subset\bar B</code>, typeset $A\subset\bar B$</li>
+<li>output: JSON <code>[&quot;subset&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;complement&quot;,[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: LaTeX <code>A\subset B'</code>, typeset $A\subset B'$</li>
+<li>output: JSON <code>[&quot;subset&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;complement&quot;,[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: LaTeX <code>u\cap v\subseteq u\cup v</code>, typeset $u\cap v\subseteq u\cup v$</li>
+<li>output: JSON <code>[&quot;subseteq&quot;,[&quot;intersection&quot;,[&quot;setvariable&quot;,&quot;u&quot;],[&quot;setvariable&quot;,&quot;v&quot;]],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;u&quot;],[&quot;setvariable&quot;,&quot;v&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: LaTeX <code>\{1\}\subseteq\{1\}\cup\{2\}</code>, typeset ${1}\subseteq{1}\cup{2}$</li>
+<li>output: JSON <code>[&quot;subseteq&quot;,[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;1&quot;]]],[&quot;union&quot;,[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;1&quot;]]],[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>converts &quot;notin&quot; notation to its placeholder concept</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>a\notin A</code>, typeset $a\notin A$</li>
+<li>output: JSON <code>[&quot;numberisnotin&quot;,[&quot;numbervariable&quot;,&quot;a&quot;],[&quot;setvariable&quot;,&quot;A&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>\emptyset\notin\emptyset</code>, typeset $\emptyset\notin\emptyset$</li>
+<li>output: JSON <code>[&quot;setisnotin&quot;,[&quot;emptyset&quot;],[&quot;emptyset&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>3-5 \notin K\cap P</code>, typeset $3-5 \notin K\cap P$</li>
+<li>output: JSON <code>[&quot;numberisnotin&quot;,[&quot;subtraction&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;number&quot;,&quot;5&quot;]],[&quot;intersection&quot;,[&quot;setvariable&quot;,&quot;K&quot;],[&quot;setvariable&quot;,&quot;P&quot;]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can parse to JSON sentences built from set operators</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>P\vee b\in B</code>, typeset $P\vee b\in B$</li>
+<li>output: JSON <code>[&quot;disjunction&quot;,[&quot;logicvariable&quot;,&quot;P&quot;],[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;b&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>{P \vee b} \in B</code>, typeset ${P \vee b} \in B$</li>
+<li>output: JSON <code>[&quot;propisin&quot;,[&quot;disjunction&quot;,[&quot;logicvariable&quot;,&quot;P&quot;],[&quot;logicvariable&quot;,&quot;b&quot;]],[&quot;setvariable&quot;,&quot;B&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>\forall x, x\in X</code>, typeset $\forall x, x\in X$</li>
+<li>output: JSON <code>[&quot;universal&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;setvariable&quot;,&quot;X&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: LaTeX <code>A\subseteq B\wedge B\subseteq A</code>, typeset $A\subseteq B\wedge B\subseteq A$</li>
+<li>output: JSON <code>[&quot;conjunction&quot;,[&quot;subseteq&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;subseteq&quot;,[&quot;setvariable&quot;,&quot;B&quot;],[&quot;setvariable&quot;,&quot;A&quot;]]]</code></li>
+</ul>
+</li>
+</ul>
+<h2><a name="Rendering-JSON-into-LaTeX">Rendering JSON into LaTeX</a></h2>
+<h3>can convert JSON numbers to LaTeX</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;number&quot;,&quot;0&quot;]</code></li>
+<li>output: LaTeX <code>0</code>, typeset $0$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;number&quot;,&quot;453789&quot;]</code></li>
+<li>output: LaTeX <code>453789</code>, typeset $453789$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;number&quot;,&quot;99999999999999999999999999999999999999999&quot;]</code></li>
+<li>output: LaTeX <code>99999999999999999999999999999999999999999</code>, typeset $99999999999999999999999999999999999999999$</li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;453789&quot;]]</code></li>
+<li>output: LaTeX <code>- 453789</code>, typeset $- 453789$</li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: JSON <code>[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;99999999999999999999999999999999999999999&quot;]]</code></li>
+<li>output: LaTeX <code>- 99999999999999999999999999999999999999999</code>, typeset $- 99999999999999999999999999999999999999999$</li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: JSON <code>[&quot;number&quot;,&quot;0.0&quot;]</code></li>
+<li>output: LaTeX <code>0.0</code>, typeset $0.0$</li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: JSON <code>[&quot;number&quot;,&quot;29835.6875940&quot;]</code></li>
+<li>output: LaTeX <code>29835.6875940</code>, typeset $29835.6875940$</li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: JSON <code>[&quot;number&quot;,&quot;653280458689.&quot;]</code></li>
+<li>output: LaTeX <code>653280458689.</code>, typeset $653280458689.$</li>
+</ul>
+</li>
+<li>Test 9
+<ul>
+<li>input: JSON <code>[&quot;number&quot;,&quot;.000006327589&quot;]</code></li>
+<li>output: LaTeX <code>.000006327589</code>, typeset $.000006327589$</li>
+</ul>
+</li>
+<li>Test 10
+<ul>
+<li>input: JSON <code>[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;29835.6875940&quot;]]</code></li>
+<li>output: LaTeX <code>- 29835.6875940</code>, typeset $- 29835.6875940$</li>
+</ul>
+</li>
+<li>Test 11
+<ul>
+<li>input: JSON <code>[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;653280458689.&quot;]]</code></li>
+<li>output: LaTeX <code>- 653280458689.</code>, typeset $- 653280458689.$</li>
+</ul>
+</li>
+<li>Test 12
+<ul>
+<li>input: JSON <code>[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;.000006327589&quot;]]</code></li>
+<li>output: LaTeX <code>- .000006327589</code>, typeset $- .000006327589$</li>
+</ul>
+</li>
+</ul>
+<h3>can convert any size variable name from JSON to LaTeX</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;numbervariable&quot;,&quot;x&quot;]</code></li>
+<li>output: LaTeX <code>x</code>, typeset $x$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;numbervariable&quot;,&quot;E&quot;]</code></li>
+<li>output: LaTeX <code>E</code>, typeset $E$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;numbervariable&quot;,&quot;q&quot;]</code></li>
+<li>output: LaTeX <code>q</code>, typeset $q$</li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;numbervariable&quot;,&quot;foo&quot;]</code></li>
+<li>output: LaTeX <code>foo</code>, typeset $foo$</li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: JSON <code>[&quot;numbervariable&quot;,&quot;bar&quot;]</code></li>
+<li>output: LaTeX <code>bar</code>, typeset $bar$</li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: JSON <code>[&quot;numbervariable&quot;,&quot;to&quot;]</code></li>
+<li>output: LaTeX <code>to</code>, typeset $to$</li>
+</ul>
+</li>
+</ul>
+<h3>can convert infinity from JSON to LaTeX</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;infinity&quot;]</code></li>
+<li>output: LaTeX <code>\infty</code>, typeset $\infty$</li>
+</ul>
+</li>
+</ul>
+<h3>can convert exponentiation of atomics from JSON to LaTeX</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;exponentiation&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]</code></li>
+<li>output: LaTeX <code>1 ^ 2</code>, typeset $1 ^ 2$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;e&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]</code></li>
+<li>output: LaTeX <code>e ^ x</code>, typeset $e ^ x$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;exponentiation&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;infinity&quot;]]</code></li>
+<li>output: LaTeX <code>1 ^ \infty</code>, typeset $1 ^ \infty$</li>
+</ul>
+</li>
+</ul>
+<h3>can convert atomic percentages and factorials from JSON to LaTeX</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;percentage&quot;,[&quot;number&quot;,&quot;10&quot;]]</code></li>
+<li>output: LaTeX <code>10 \%</code>, typeset $10 \%$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;percentage&quot;,[&quot;numbervariable&quot;,&quot;t&quot;]]</code></li>
+<li>output: LaTeX <code>t \%</code>, typeset $t \%$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;factorial&quot;,[&quot;number&quot;,&quot;10&quot;]]</code></li>
+<li>output: LaTeX <code>10 !</code>, typeset $10 !$</li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;factorial&quot;,[&quot;numbervariable&quot;,&quot;t&quot;]]</code></li>
+<li>output: LaTeX <code>t !</code>, typeset $t !$</li>
+</ul>
+</li>
+</ul>
+<h3>can convert division of atomics or factors from JSON to LaTeX</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;division&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]</code></li>
+<li>output: LaTeX <code>1 \div 2</code>, typeset $1 \div 2$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;division&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;numbervariable&quot;,&quot;y&quot;]]</code></li>
+<li>output: LaTeX <code>x \div y</code>, typeset $x \div y$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;division&quot;,[&quot;number&quot;,&quot;0&quot;],[&quot;infinity&quot;]]</code></li>
+<li>output: LaTeX <code>0 \div \infty</code>, typeset $0 \div \infty$</li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;division&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;number&quot;,&quot;2&quot;]],[&quot;number&quot;,&quot;3&quot;]]</code></li>
+<li>output: LaTeX <code>x ^ 2 \div 3</code>, typeset $x ^ 2 \div 3$</li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: JSON <code>[&quot;division&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;e&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]]</code></li>
+<li>output: LaTeX <code>1 \div e ^ x</code>, typeset $1 \div e ^ x$</li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: JSON <code>[&quot;division&quot;,[&quot;percentage&quot;,[&quot;number&quot;,&quot;10&quot;]],[&quot;exponentiation&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;number&quot;,&quot;100&quot;]]]</code></li>
+<li>output: LaTeX <code>10 \% \div 2 ^ 100</code>, typeset $10 \% \div 2 ^ 100$</li>
+</ul>
+</li>
+</ul>
+<h3>can convert multiplication of atomics or factors from JSON to LaTeX</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;multiplication&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]</code></li>
+<li>output: LaTeX <code>1 \times 2</code>, typeset $1 \times 2$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;multiplication&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;numbervariable&quot;,&quot;y&quot;]]</code></li>
+<li>output: LaTeX <code>x \times y</code>, typeset $x \times y$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;multiplication&quot;,[&quot;number&quot;,&quot;0&quot;],[&quot;infinity&quot;]]</code></li>
+<li>output: LaTeX <code>0 \times \infty</code>, typeset $0 \times \infty$</li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;multiplication&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;number&quot;,&quot;2&quot;]],[&quot;number&quot;,&quot;3&quot;]]</code></li>
+<li>output: LaTeX <code>x ^ 2 \times 3</code>, typeset $x ^ 2 \times 3$</li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: JSON <code>[&quot;multiplication&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;e&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]]</code></li>
+<li>output: LaTeX <code>1 \times e ^ x</code>, typeset $1 \times e ^ x$</li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: JSON <code>[&quot;multiplication&quot;,[&quot;percentage&quot;,[&quot;number&quot;,&quot;10&quot;]],[&quot;exponentiation&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;number&quot;,&quot;100&quot;]]]</code></li>
+<li>output: LaTeX <code>10 \% \times 2 ^ 100</code>, typeset $10 \% \times 2 ^ 100$</li>
+</ul>
+</li>
+</ul>
+<h3>can convert negations of atomics or factors from JSON to LaTeX</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;multiplication&quot;,[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;1&quot;]],[&quot;number&quot;,&quot;2&quot;]]</code></li>
+<li>output: LaTeX <code>- 1 \times 2</code>, typeset $- 1 \times 2$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;multiplication&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;numbernegation&quot;,[&quot;numbervariable&quot;,&quot;y&quot;]]]</code></li>
+<li>output: LaTeX <code>x \times - y</code>, typeset $x \times - y$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;multiplication&quot;,[&quot;numbernegation&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;number&quot;,&quot;2&quot;]]],[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;3&quot;]]]</code></li>
+<li>output: LaTeX <code>- x ^ 2 \times - 3</code>, typeset $- x ^ 2 \times - 3$</li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;numbernegation&quot;,[&quot;numbernegation&quot;,[&quot;numbernegation&quot;,[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;1000&quot;]]]]]</code></li>
+<li>output: LaTeX <code>- - - - 1000</code>, typeset $- - - - 1000$</li>
+</ul>
+</li>
+</ul>
+<h3>can convert additions and subtractions from JSON to LaTeX</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;addition&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;numbervariable&quot;,&quot;y&quot;]]</code></li>
+<li>output: LaTeX <code>x + y</code>, typeset $x + y$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;subtraction&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;3&quot;]]]</code></li>
+<li>output: LaTeX <code>1 - - 3</code>, typeset $1 - - 3$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;subtraction&quot;,[&quot;addition&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;A&quot;],[&quot;numbervariable&quot;,&quot;B&quot;]],[&quot;numbervariable&quot;,&quot;C&quot;]],[&quot;numbervariable&quot;,&quot;D&quot;]]</code></li>
+<li>output: LaTeX <code>A ^ B + C - D</code>, typeset $A ^ B + C - D$</li>
+</ul>
+</li>
+</ul>
+<h3>can convert number expressions with groupers from JSON to LaTeX</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;numbernegation&quot;,[&quot;multiplication&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]]</code></li>
+<li>output: LaTeX <code>- 1 \times 2</code>, typeset $- 1 \times 2$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;factorial&quot;,[&quot;addition&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]]</code></li>
+<li>output: LaTeX <code>{1 + 2} !</code>, typeset ${1 + 2} !$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;exponentiation&quot;,[&quot;numbernegation&quot;,[&quot;numbervariable&quot;,&quot;x&quot;]],[&quot;multiplication&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;3&quot;]]]]</code></li>
+<li>output: LaTeX <code>{- x} ^ {2 \times - 3}</code>, typeset ${- x} ^ {2 \times - 3}$</li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;addition&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;A&quot;],[&quot;numbervariable&quot;,&quot;B&quot;]],[&quot;subtraction&quot;,[&quot;numbervariable&quot;,&quot;C&quot;],[&quot;numbervariable&quot;,&quot;D&quot;]]]</code></li>
+<li>output: LaTeX <code>A ^ B + C - D</code>, typeset $A ^ B + C - D$</li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: JSON <code>[&quot;multiplication&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;k&quot;],[&quot;subtraction&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numbervariable&quot;,&quot;y&quot;]]],[&quot;addition&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;numbervariable&quot;,&quot;k&quot;]]]</code></li>
+<li>output: LaTeX <code>k ^ {1 - y} \times {2 + k}</code>, typeset $k ^ {1 - y} \times {2 + k}$</li>
+</ul>
+</li>
+</ul>
+<h3>can convert propositional logic atomics from JSON to LaTeX</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;logicaltrue&quot;]</code></li>
+<li>output: LaTeX <code>\top</code>, typeset $\top$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;logicalfalse&quot;]</code></li>
+<li>output: LaTeX <code>\bot</code>, typeset $\bot$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;contradiction&quot;]</code></li>
+<li>output: LaTeX <code>\rightarrow \leftarrow</code>, typeset $\rightarrow \leftarrow$</li>
+</ul>
+</li>
+</ul>
+<h3>can convert propositional logic conjuncts from JSON to LaTeX</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;conjunction&quot;,[&quot;logicaltrue&quot;],[&quot;logicalfalse&quot;]]</code></li>
+<li>output: LaTeX <code>\top \wedge \bot</code>, typeset $\top \wedge \bot$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;conjunction&quot;,[&quot;logicnegation&quot;,[&quot;logicvariable&quot;,&quot;P&quot;]],[&quot;logicnegation&quot;,[&quot;logicaltrue&quot;]]]</code></li>
+<li>output: LaTeX <code>\neg P \wedge \neg \top</code>, typeset $\neg P \wedge \neg \top$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;conjunction&quot;,[&quot;conjunction&quot;,[&quot;logicvariable&quot;,&quot;a&quot;],[&quot;logicvariable&quot;,&quot;b&quot;]],[&quot;logicvariable&quot;,&quot;c&quot;]]</code></li>
+<li>output: LaTeX <code>a \wedge b \wedge c</code>, typeset $a \wedge b \wedge c$</li>
+</ul>
+</li>
+</ul>
+<h3>can convert propositional logic disjuncts from JSON to LaTeX</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;disjunction&quot;,[&quot;logicaltrue&quot;],[&quot;logicnegation&quot;,[&quot;logicvariable&quot;,&quot;A&quot;]]]</code></li>
+<li>output: LaTeX <code>\top \vee \neg A</code>, typeset $\top \vee \neg A$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;disjunction&quot;,[&quot;conjunction&quot;,[&quot;logicvariable&quot;,&quot;P&quot;],[&quot;logicvariable&quot;,&quot;Q&quot;]],[&quot;conjunction&quot;,[&quot;logicvariable&quot;,&quot;Q&quot;],[&quot;logicvariable&quot;,&quot;P&quot;]]]</code></li>
+<li>output: LaTeX <code>P \wedge Q \vee Q \wedge P</code>, typeset $P \wedge Q \vee Q \wedge P$</li>
+</ul>
+</li>
+</ul>
+<h3>can convert propositional logic conditionals from JSON to LaTeX</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;implication&quot;,[&quot;logicvariable&quot;,&quot;A&quot;],[&quot;conjunction&quot;,[&quot;logicvariable&quot;,&quot;Q&quot;],[&quot;logicnegation&quot;,[&quot;logicvariable&quot;,&quot;P&quot;]]]]</code></li>
+<li>output: LaTeX <code>A \Rightarrow Q \wedge \neg P</code>, typeset $A \Rightarrow Q \wedge \neg P$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;implication&quot;,[&quot;implication&quot;,[&quot;disjunction&quot;,[&quot;logicvariable&quot;,&quot;P&quot;],[&quot;logicvariable&quot;,&quot;Q&quot;]],[&quot;conjunction&quot;,[&quot;logicvariable&quot;,&quot;Q&quot;],[&quot;logicvariable&quot;,&quot;P&quot;]]],[&quot;logicvariable&quot;,&quot;T&quot;]]</code></li>
+<li>output: LaTeX <code>P \vee Q \Rightarrow Q \wedge P \Rightarrow T</code>, typeset $P \vee Q \Rightarrow Q \wedge P \Rightarrow T$</li>
+</ul>
+</li>
+</ul>
+<h3>can convert propositional logic biconditionals from JSON to LaTeX</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;iff&quot;,[&quot;logicvariable&quot;,&quot;A&quot;],[&quot;conjunction&quot;,[&quot;logicvariable&quot;,&quot;Q&quot;],[&quot;logicnegation&quot;,[&quot;logicvariable&quot;,&quot;P&quot;]]]]</code></li>
+<li>output: LaTeX <code>A \Leftrightarrow Q \wedge \neg P</code>, typeset $A \Leftrightarrow Q \wedge \neg P$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;implication&quot;,[&quot;iff&quot;,[&quot;disjunction&quot;,[&quot;logicvariable&quot;,&quot;P&quot;],[&quot;logicvariable&quot;,&quot;Q&quot;]],[&quot;conjunction&quot;,[&quot;logicvariable&quot;,&quot;Q&quot;],[&quot;logicvariable&quot;,&quot;P&quot;]]],[&quot;logicvariable&quot;,&quot;T&quot;]]</code></li>
+<li>output: LaTeX <code>P \vee Q \Leftrightarrow Q \wedge P \Rightarrow T</code>, typeset $P \vee Q \Leftrightarrow Q \wedge P \Rightarrow T$</li>
+</ul>
+</li>
+</ul>
+<h3>can convert propositional expressions with groupers from JSON to LaTeX</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;disjunction&quot;,[&quot;logicvariable&quot;,&quot;P&quot;],[&quot;conjunction&quot;,[&quot;iff&quot;,[&quot;logicvariable&quot;,&quot;Q&quot;],[&quot;logicvariable&quot;,&quot;Q&quot;]],[&quot;logicvariable&quot;,&quot;P&quot;]]]</code></li>
+<li>output: LaTeX <code>P \vee {Q \Leftrightarrow Q} \wedge P</code>, typeset $P \vee {Q \Leftrightarrow Q} \wedge P$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;logicnegation&quot;,[&quot;iff&quot;,[&quot;logicaltrue&quot;],[&quot;logicalfalse&quot;]]]</code></li>
+<li>output: LaTeX <code>\neg {\top \Leftrightarrow \bot}</code>, typeset $\neg {\top \Leftrightarrow \bot}$</li>
+</ul>
+</li>
+</ul>
+<h3>can convert simple predicate logic expressions from JSON to LaTeX</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;universal&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;logicvariable&quot;,&quot;P&quot;]]</code></li>
+<li>output: LaTeX <code>\forall x , P</code>, typeset $\forall x , P$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;existential&quot;,[&quot;numbervariable&quot;,&quot;t&quot;],[&quot;logicnegation&quot;,[&quot;logicvariable&quot;,&quot;Q&quot;]]]</code></li>
+<li>output: LaTeX <code>\exists t , \neg Q</code>, typeset $\exists t , \neg Q$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;existsunique&quot;,[&quot;numbervariable&quot;,&quot;k&quot;],[&quot;implication&quot;,[&quot;logicvariable&quot;,&quot;m&quot;],[&quot;logicvariable&quot;,&quot;n&quot;]]]</code></li>
+<li>output: LaTeX <code>\exists ! k , m \Rightarrow n</code>, typeset $\exists ! k , m \Rightarrow n$</li>
+</ul>
+</li>
+</ul>
+<h3>can convert finite and empty sets from JSON to LaTeX</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;emptyset&quot;]</code></li>
+<li>output: LaTeX <code>\emptyset</code>, typeset $\emptyset$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;1&quot;]]]</code></li>
+<li>output: LaTeX <code>\{ 1 \}</code>, typeset ${ 1 }$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]</code></li>
+<li>output: LaTeX <code>\{ 1 , 2 \}</code>, typeset ${ 1 , 2 }$</li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;3&quot;]]]]]</code></li>
+<li>output: LaTeX <code>\{ 1 , 2 , 3 \}</code>, typeset ${ 1 , 2 , 3 }$</li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;setthenseq&quot;,[&quot;emptyset&quot;],[&quot;onesetseq&quot;,[&quot;emptyset&quot;]]]]</code></li>
+<li>output: LaTeX <code>\{ \emptyset , \emptyset \}</code>, typeset ${ \emptyset , \emptyset }$</li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;onesetseq&quot;,[&quot;finiteset&quot;,[&quot;onesetseq&quot;,[&quot;emptyset&quot;]]]]]</code></li>
+<li>output: LaTeX <code>\{ \{ \emptyset \} \}</code>, typeset ${ { \emptyset } }$</li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;onenumseq&quot;,[&quot;numbervariable&quot;,&quot;x&quot;]]]]</code></li>
+<li>output: LaTeX <code>\{ 3 , x \}</code>, typeset ${ 3 , x }$</li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;setthenseq&quot;,[&quot;union&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;onesetseq&quot;,[&quot;intersection&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]]]</code></li>
+<li>output: LaTeX <code>\{ A \cup B , A \cap B \}</code>, typeset ${ A \cup B , A \cap B }$</li>
+</ul>
+</li>
+<li>Test 9
+<ul>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;setthenseq&quot;,[&quot;emptyset&quot;],[&quot;numthenseq&quot;,[&quot;numbervariable&quot;,&quot;K&quot;],[&quot;onenumseq&quot;,[&quot;numbervariable&quot;,&quot;P&quot;]]]]]]]</code></li>
+<li>output: LaTeX <code>\{ 1 , 2 , \emptyset , K , P \}</code>, typeset ${ 1 , 2 , \emptyset , K , P }$</li>
+</ul>
+</li>
+</ul>
+<h3>can convert simple set memberships and subsets to LaTeX</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;b&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]</code></li>
+<li>output: LaTeX <code>b \in B</code>, typeset $b \in B$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;numberisin&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]]</code></li>
+<li>output: LaTeX <code>2 \in \{ 1 , 2 \}</code>, typeset $2 \in { 1 , 2 }$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;X&quot;],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;a&quot;],[&quot;setvariable&quot;,&quot;b&quot;]]]</code></li>
+<li>output: LaTeX <code>X \in a \cup b</code>, typeset $X \in a \cup b$</li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;setisin&quot;,[&quot;union&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;X&quot;],[&quot;setvariable&quot;,&quot;Y&quot;]]]</code></li>
+<li>output: LaTeX <code>A \cup B \in X \cup Y</code>, typeset $A \cup B \in X \cup Y$</li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: JSON <code>[&quot;subset&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;complement&quot;,[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
+<li>output: LaTeX <code>A \subset \bar B</code>, typeset $A \subset \bar B$</li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: JSON <code>[&quot;subseteq&quot;,[&quot;intersection&quot;,[&quot;setvariable&quot;,&quot;u&quot;],[&quot;setvariable&quot;,&quot;v&quot;]],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;u&quot;],[&quot;setvariable&quot;,&quot;v&quot;]]]</code></li>
+<li>output: LaTeX <code>u \cap v \subseteq u \cup v</code>, typeset $u \cap v \subseteq u \cup v$</li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: JSON <code>[&quot;subseteq&quot;,[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;1&quot;]]],[&quot;union&quot;,[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;1&quot;]]],[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]]</code></li>
+<li>output: LaTeX <code>\{ 1 \} \subseteq \{ 1 \} \cup \{ 2 \}</code>, typeset ${ 1 } \subseteq { 1 } \cup { 2 }$</li>
+</ul>
+</li>
+</ul>
+<h3>can represent &quot;notin&quot; notation if JSON explicitly requests it</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;logicnegation&quot;,[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;a&quot;],[&quot;setvariable&quot;,&quot;A&quot;]]]</code></li>
+<li>output: LaTeX <code>\neg a \in A</code>, typeset $\neg a \in A$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;logicnegation&quot;,[&quot;setisin&quot;,[&quot;emptyset&quot;],[&quot;emptyset&quot;]]]</code></li>
+<li>output: LaTeX <code>\neg \emptyset \in \emptyset</code>, typeset $\neg \emptyset \in \emptyset$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;logicnegation&quot;,[&quot;numberisin&quot;,[&quot;subtraction&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;number&quot;,&quot;5&quot;]],[&quot;intersection&quot;,[&quot;setvariable&quot;,&quot;K&quot;],[&quot;setvariable&quot;,&quot;P&quot;]]]]</code></li>
+<li>output: LaTeX <code>\neg 3 - 5 \in K \cap P</code>, typeset $\neg 3 - 5 \in K \cap P$</li>
+</ul>
+</li>
+</ul>
+<h3>can convert to LaTeX sentences built from set operators</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;disjunction&quot;,[&quot;logicvariable&quot;,&quot;P&quot;],[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;b&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
+<li>output: LaTeX <code>P \vee b \in B</code>, typeset $P \vee b \in B$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;propisin&quot;,[&quot;disjunction&quot;,[&quot;logicvariable&quot;,&quot;P&quot;],[&quot;logicvariable&quot;,&quot;b&quot;]],[&quot;setvariable&quot;,&quot;B&quot;]]</code></li>
+<li>output: LaTeX <code>{P \vee b} \in B</code>, typeset ${P \vee b} \in B$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;universal&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;setvariable&quot;,&quot;X&quot;]]]</code></li>
+<li>output: LaTeX <code>\forall x , x \in X</code>, typeset $\forall x , x \in X$</li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;conjunction&quot;,[&quot;subseteq&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;subseteq&quot;,[&quot;setvariable&quot;,&quot;B&quot;],[&quot;setvariable&quot;,&quot;A&quot;]]]</code></li>
+<li>output: LaTeX <code>A \subseteq B \wedge B \subseteq A</code>, typeset $A \subseteq B \wedge B \subseteq A$</li>
+</ul>
+</li>
+</ul>
+<h2><a name="Converting-putdown-to-LaTeX">Converting putdown to LaTeX</a></h2>
+<h3>correctly converts many kinds of numbers but not malformed ones</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>0</code></li>
+<li>output: LaTeX <code>0</code>, typeset $0$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>328975289</code></li>
+<li>output: LaTeX <code>328975289</code>, typeset $328975289$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(- 9097285323)</code></li>
+<li>output: LaTeX <code>- 9097285323</code>, typeset $- 9097285323$</li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: putdown <code>0.0</code></li>
+<li>output: LaTeX <code>0.0</code>, typeset $0.0$</li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: putdown <code>32897.5289</code></li>
+<li>output: LaTeX <code>32897.5289</code>, typeset $32897.5289$</li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: putdown <code>(- 1.9097285323)</code></li>
+<li>output: LaTeX <code>- 1.9097285323</code>, typeset $- 1.9097285323$</li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: putdown <code>0.0.0</code></li>
+<li>output: LaTeX <code>null</code>, typeset $undefined$</li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: putdown <code>0k0</code></li>
+<li>output: LaTeX <code>null</code>, typeset $undefined$</li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts one-letter variable names but not larger ones</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>x</code></li>
+<li>output: LaTeX <code>x</code>, typeset $x$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>U</code></li>
+<li>output: LaTeX <code>U</code>, typeset $U$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>Q</code></li>
+<li>output: LaTeX <code>Q</code>, typeset $Q$</li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: putdown <code>m</code></li>
+<li>output: LaTeX <code>m</code>, typeset $m$</li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: putdown <code>foo</code></li>
+<li>output: LaTeX <code>null</code>, typeset $undefined$</li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: putdown <code>Hi</code></li>
+<li>output: LaTeX <code>null</code>, typeset $undefined$</li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts the infinity symbol</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>infinity</code></li>
+<li>output: LaTeX <code>\infty</code>, typeset $\infty$</li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts exponentiation of atomics</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(^ 1 2)</code></li>
+<li>output: LaTeX <code>1 ^ 2</code>, typeset $1 ^ 2$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(^ e x)</code></li>
+<li>output: LaTeX <code>e ^ x</code>, typeset $e ^ x$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(^ 1 infinity)</code></li>
+<li>output: LaTeX <code>1 ^ \infty</code>, typeset $1 ^ \infty$</li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts atomic percentages and factorials</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(% 10)</code></li>
+<li>output: LaTeX <code>10 \%</code>, typeset $10 \%$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(% t)</code></li>
+<li>output: LaTeX <code>t \%</code>, typeset $t \%$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(! 10)</code></li>
+<li>output: LaTeX <code>10 !</code>, typeset $10 !$</li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: putdown <code>(! t)</code></li>
+<li>output: LaTeX <code>t !</code>, typeset $t !$</li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts division of atomics or factors</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(/ 1 2)</code></li>
+<li>output: LaTeX <code>1 \div 2</code>, typeset $1 \div 2$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(/ x y)</code></li>
+<li>output: LaTeX <code>x \div y</code>, typeset $x \div y$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(/ 0 infinity)</code></li>
+<li>output: LaTeX <code>0 \div \infty</code>, typeset $0 \div \infty$</li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: putdown <code>(/ (^ x 2) 3)</code></li>
+<li>output: LaTeX <code>x ^ 2 \div 3</code>, typeset $x ^ 2 \div 3$</li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: putdown <code>(/ 1 (^ e x))</code></li>
+<li>output: LaTeX <code>1 \div e ^ x</code>, typeset $1 \div e ^ x$</li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: putdown <code>(/ (% 10) (^ 2 100))</code></li>
+<li>output: LaTeX <code>10 \% \div 2 ^ 100</code>, typeset $10 \% \div 2 ^ 100$</li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts multiplication of atomics or factors</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(* 1 2)</code></li>
+<li>output: LaTeX <code>1 \times 2</code>, typeset $1 \times 2$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(* x y)</code></li>
+<li>output: LaTeX <code>x \times y</code>, typeset $x \times y$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(* 0 infinity)</code></li>
+<li>output: LaTeX <code>0 \times \infty</code>, typeset $0 \times \infty$</li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: putdown <code>(* (^ x 2) 3)</code></li>
+<li>output: LaTeX <code>x ^ 2 \times 3</code>, typeset $x ^ 2 \times 3$</li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: putdown <code>(* 1 (^ e x))</code></li>
+<li>output: LaTeX <code>1 \times e ^ x</code>, typeset $1 \times e ^ x$</li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: putdown <code>(* (% 10) (^ 2 100))</code></li>
+<li>output: LaTeX <code>10 \% \times 2 ^ 100</code>, typeset $10 \% \times 2 ^ 100$</li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts negations of atomics or factors</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(* (- 1) 2)</code></li>
+<li>output: LaTeX <code>- 1 \times 2</code>, typeset $- 1 \times 2$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(* x (- y))</code></li>
+<li>output: LaTeX <code>x \times - y</code>, typeset $x \times - y$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(* (- (^ x 2)) (- 3))</code></li>
+<li>output: LaTeX <code>- x ^ 2 \times - 3</code>, typeset $- x ^ 2 \times - 3$</li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: putdown <code>(- (- (- (- 1000))))</code></li>
+<li>output: LaTeX <code>- - - - 1000</code>, typeset $- - - - 1000$</li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts additions and subtractions</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(+ x y)</code></li>
+<li>output: LaTeX <code>x + y</code>, typeset $x + y$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(- 1 (- 3))</code></li>
+<li>output: LaTeX <code>1 - - 3</code>, typeset $1 - - 3$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(+ (^ A B) (- C D))</code></li>
+<li>output: LaTeX <code>A ^ B + C - D</code>, typeset $A ^ B + C - D$</li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts number expressions with groupers</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(- (* 1 2))</code></li>
+<li>output: LaTeX <code>- 1 \times 2</code>, typeset $- 1 \times 2$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(! (^ x 2))</code></li>
+<li>output: LaTeX <code>{x ^ 2} !</code>, typeset ${x ^ 2} !$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(^ (- x) (* 2 (- 3)))</code></li>
+<li>output: LaTeX <code>{- x} ^ {2 \times - 3}</code>, typeset ${- x} ^ {2 \times - 3}$</li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: putdown <code>(^ (- 3) (+ 1 2))</code></li>
+<li>output: LaTeX <code>{- 3} ^ {1 + 2}</code>, typeset ${- 3} ^ {1 + 2}$</li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts propositional logic atomics</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>true</code></li>
+<li>output: LaTeX <code>\top</code>, typeset $\top$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>false</code></li>
+<li>output: LaTeX <code>\bot</code>, typeset $\bot$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>contradiction</code></li>
+<li>output: LaTeX <code>\rightarrow \leftarrow</code>, typeset $\rightarrow \leftarrow$</li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts propositional logic conjuncts</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(and true false)</code></li>
+<li>output: LaTeX <code>\top \wedge \bot</code>, typeset $\top \wedge \bot$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(and (not P) (not true))</code></li>
+<li>output: LaTeX <code>\neg P \wedge \neg \top</code>, typeset $\neg P \wedge \neg \top$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(and (and a b) c)</code></li>
+<li>output: LaTeX <code>a \wedge b \wedge c</code>, typeset $a \wedge b \wedge c$</li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts propositional logic disjuncts</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(or true (not A))</code></li>
+<li>output: LaTeX <code>\top \vee \neg A</code>, typeset $\top \vee \neg A$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(or (and P Q) (and Q P))</code></li>
+<li>output: LaTeX <code>P \wedge Q \vee Q \wedge P</code>, typeset $P \wedge Q \vee Q \wedge P$</li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts propositional logic conditionals</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(implies A (and Q (not P)))</code></li>
+<li>output: LaTeX <code>A \Rightarrow Q \wedge \neg P</code>, typeset $A \Rightarrow Q \wedge \neg P$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(implies (implies (or P Q) (and Q P)) T)</code></li>
+<li>output: LaTeX <code>P \vee Q \Rightarrow Q \wedge P \Rightarrow T</code>, typeset $P \vee Q \Rightarrow Q \wedge P \Rightarrow T$</li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts propositional logic biconditionals</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(iff A (and Q (not P)))</code></li>
+<li>output: LaTeX <code>A \Leftrightarrow Q \wedge \neg P</code>, typeset $A \Leftrightarrow Q \wedge \neg P$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(implies (iff (or P Q) (and Q P)) T)</code></li>
+<li>output: LaTeX <code>P \vee Q \Leftrightarrow Q \wedge P \Rightarrow T</code>, typeset $P \vee Q \Leftrightarrow Q \wedge P \Rightarrow T$</li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts propositional expressions with groupers</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(or P (and (iff Q Q) P))</code></li>
+<li>output: LaTeX <code>P \vee {Q \Leftrightarrow Q} \wedge P</code>, typeset $P \vee {Q \Leftrightarrow Q} \wedge P$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(not (iff true false))</code></li>
+<li>output: LaTeX <code>\neg {\top \Leftrightarrow \bot}</code>, typeset $\neg {\top \Leftrightarrow \bot}$</li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts simple predicate logic expressions</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(forall (x , P))</code></li>
+<li>output: LaTeX <code>\forall x , P</code>, typeset $\forall x , P$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(exists (t , (not Q)))</code></li>
+<li>output: LaTeX <code>\exists t , \neg Q</code>, typeset $\exists t , \neg Q$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(existsunique (k , (implies m n)))</code></li>
+<li>output: LaTeX <code>\exists ! k , m \Rightarrow n</code>, typeset $\exists ! k , m \Rightarrow n$</li>
+</ul>
+</li>
+</ul>
+<h3>can convert finite and empty sets</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>emptyset</code></li>
+<li>output: LaTeX <code>\emptyset</code>, typeset $\emptyset$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(finiteset (elts 1))</code></li>
+<li>output: LaTeX <code>\{ 1 \}</code>, typeset ${ 1 }$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(finiteset (elts 1 (elts 2)))</code></li>
+<li>output: LaTeX <code>\{ 1 , 2 \}</code>, typeset ${ 1 , 2 }$</li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: putdown <code>(finiteset (elts 1 (elts 2 (elts 3))))</code></li>
+<li>output: LaTeX <code>\{ 1 , 2 , 3 \}</code>, typeset ${ 1 , 2 , 3 }$</li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: putdown <code>(finiteset (elts emptyset (elts emptyset)))</code></li>
+<li>output: LaTeX <code>\{ \emptyset , \emptyset \}</code>, typeset ${ \emptyset , \emptyset }$</li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: putdown <code>(finiteset (elts (finiteset (elts emptyset))))</code></li>
+<li>output: LaTeX <code>\{ \{ \emptyset \} \}</code>, typeset ${ { \emptyset } }$</li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: putdown <code>(finiteset (elts 3 (elts x)))</code></li>
+<li>output: LaTeX <code>\{ 3 , x \}</code>, typeset ${ 3 , x }$</li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: putdown <code>(finiteset (elts (setuni A B) (elts (setint A B))))</code></li>
+<li>output: LaTeX <code>\{ A \cup B , A \cap B \}</code>, typeset ${ A \cup B , A \cap B }$</li>
+</ul>
+</li>
+<li>Test 9
+<ul>
+<li>input: putdown <code>(finiteset (elts 1 (elts 2 (elts emptyset (elts K (elts P))))))</code></li>
+<li>output: LaTeX <code>\{ 1 , 2 , \emptyset , K , P \}</code>, typeset ${ 1 , 2 , \emptyset , K , P }$</li>
+</ul>
+</li>
+</ul>
+<h3>can convert simple set memberships and subsets</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(in b B)</code></li>
+<li>output: LaTeX <code>b \in B</code>, typeset $b \in B$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(in 2 (finiteset (elts 1 (elts 2))))</code></li>
+<li>output: LaTeX <code>2 \in \{ 1 , 2 \}</code>, typeset $2 \in { 1 , 2 }$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(in X (setuni a b))</code></li>
+<li>output: LaTeX <code>X \in a \cup b</code>, typeset $X \in a \cup b$</li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: putdown <code>(in (setuni A B) (setuni X Y))</code></li>
+<li>output: LaTeX <code>A \cup B \in X \cup Y</code>, typeset $A \cup B \in X \cup Y$</li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: putdown <code>(subset A (setcomp B))</code></li>
+<li>output: LaTeX <code>A \subset \bar B</code>, typeset $A \subset \bar B$</li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: putdown <code>(subseteq (setint u v) (setuni u v))</code></li>
+<li>output: LaTeX <code>u \cap v \subseteq u \cup v</code>, typeset $u \cap v \subseteq u \cup v$</li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: putdown <code>(subseteq (finiteset (elts 1)) (setuni (finiteset (elts 1)) (finiteset (elts 2))))</code></li>
+<li>output: LaTeX <code>\{ 1 \} \subseteq \{ 1 \} \cup \{ 2 \}</code>, typeset ${ 1 } \subseteq { 1 } \cup { 2 }$</li>
+</ul>
+</li>
+</ul>
+<h3>does not undo the canonical form for &quot;notin&quot; notation</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(not (in a A))</code></li>
+<li>output: LaTeX <code>\neg a \in A</code>, typeset $\neg a \in A$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(not (in emptyset emptyset))</code></li>
+<li>output: LaTeX <code>\neg \emptyset \in \emptyset</code>, typeset $\neg \emptyset \in \emptyset$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(not (in (- 3 5) (setint K P)))</code></li>
+<li>output: LaTeX <code>\neg 3 - 5 \in K \cap P</code>, typeset $\neg 3 - 5 \in K \cap P$</li>
+</ul>
+</li>
+</ul>
+<h3>can convert sentences built from set operators</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(or P (in b B))</code></li>
+<li>output: LaTeX <code>P \vee b \in B</code>, typeset $P \vee b \in B$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(in (or P b) B)</code></li>
+<li>output: LaTeX <code>{P \vee b} \in B</code>, typeset ${P \vee b} \in B$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(forall (x , (in x X)))</code></li>
+<li>output: LaTeX <code>\forall x , x \in X</code>, typeset $\forall x , x \in X$</li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: putdown <code>(and (subseteq A B) (subseteq B A))</code></li>
+<li>output: LaTeX <code>A \subseteq B \wedge B \subseteq A</code>, typeset $A \subseteq B \wedge B \subseteq A$</li>
+</ul>
+</li>
+</ul>
+<h2><a name="Converting-LaTeX-to-putdown">Converting LaTeX to putdown</a></h2>
+<h3>correctly converts many kinds of numbers but not malformed ones</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>0</code>, typeset $0$</li>
+<li>output: putdown <code>0</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>328975289</code>, typeset $328975289$</li>
+<li>output: putdown <code>328975289</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>-9097285323</code>, typeset $-9097285323$</li>
+<li>output: putdown <code>(- 9097285323)</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: LaTeX <code>0.0</code>, typeset $0.0$</li>
+<li>output: putdown <code>0.0</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: LaTeX <code>32897.5289</code>, typeset $32897.5289$</li>
+<li>output: putdown <code>32897.5289</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: LaTeX <code>-1.9097285323</code>, typeset $-1.9097285323$</li>
+<li>output: putdown <code>(- 1.9097285323)</code></li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: LaTeX <code>0.0.0</code>, typeset $0.0.0$</li>
+<li>output: putdown <code>null</code></li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: LaTeX <code>0k0</code>, typeset $0k0$</li>
+<li>output: putdown <code>null</code></li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts one-letter variable names but not larger ones</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>x</code>, typeset $x$</li>
+<li>output: putdown <code>x</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>U</code>, typeset $U$</li>
+<li>output: putdown <code>U</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>Q</code>, typeset $Q$</li>
+<li>output: putdown <code>Q</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: LaTeX <code>m</code>, typeset $m$</li>
+<li>output: putdown <code>m</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: LaTeX <code>foo</code>, typeset $foo$</li>
+<li>output: putdown <code>null</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: LaTeX <code>Hi</code>, typeset $Hi$</li>
+<li>output: putdown <code>null</code></li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts the infinity symbol</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>\infty</code>, typeset $\infty$</li>
+<li>output: putdown <code>infinity</code></li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts exponentiation of atomics</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>1^2</code>, typeset $1^2$</li>
+<li>output: putdown <code>(^ 1 2)</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>e^x</code>, typeset $e^x$</li>
+<li>output: putdown <code>(^ e x)</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>1^\infty</code>, typeset $1^\infty$</li>
+<li>output: putdown <code>(^ 1 infinity)</code></li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts atomic percentages</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>10\%</code>, typeset $10\%$</li>
+<li>output: putdown <code>(% 10)</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>t\%</code>, typeset $t\%$</li>
+<li>output: putdown <code>(% t)</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>10!</code>, typeset $10!$</li>
+<li>output: putdown <code>(! 10)</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: LaTeX <code>t!</code>, typeset $t!$</li>
+<li>output: putdown <code>(! t)</code></li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts division of atomics or factors</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>1\div2</code>, typeset $1\div2$</li>
+<li>output: putdown <code>(/ 1 2)</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>x\div y</code>, typeset $x\div y$</li>
+<li>output: putdown <code>(/ x y)</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>0\div\infty</code>, typeset $0\div\infty$</li>
+<li>output: putdown <code>(/ 0 infinity)</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: LaTeX <code>x^2\div3</code>, typeset $x^2\div3$</li>
+<li>output: putdown <code>(/ (^ x 2) 3)</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: LaTeX <code>1\div e^x</code>, typeset $1\div e^x$</li>
+<li>output: putdown <code>(/ 1 (^ e x))</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: LaTeX <code>10\%\div2^{100}</code>, typeset $10\%\div2^{100}$</li>
+<li>output: putdown <code>(/ (% 10) (^ 2 100))</code></li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts multiplication of atomics or factors</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>1\times2</code>, typeset $1\times2$</li>
+<li>output: putdown <code>(* 1 2)</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>x\cdot y</code>, typeset $x\cdot y$</li>
+<li>output: putdown <code>(* x y)</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>0\times\infty</code>, typeset $0\times\infty$</li>
+<li>output: putdown <code>(* 0 infinity)</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: LaTeX <code>x^2\cdot3</code>, typeset $x^2\cdot3$</li>
+<li>output: putdown <code>(* (^ x 2) 3)</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: LaTeX <code>1\times e^x</code>, typeset $1\times e^x$</li>
+<li>output: putdown <code>(* 1 (^ e x))</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: LaTeX <code>10\%\cdot2^{100}</code>, typeset $10\%\cdot2^{100}$</li>
+<li>output: putdown <code>(* (% 10) (^ 2 100))</code></li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts negations of atomics or factors</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>-1\times2</code>, typeset $-1\times2$</li>
+<li>output: putdown <code>(* (- 1) 2)</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>x\cdot{-y}</code>, typeset $x\cdot{-y}$</li>
+<li>output: putdown <code>(* x (- y))</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>x\cdot(-y)</code>, typeset $x\cdot(-y)$</li>
+<li>output: putdown <code>(* x (- y))</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: LaTeX <code>{-x^2}\cdot{-3}</code>, typeset ${-x^2}\cdot{-3}$</li>
+<li>output: putdown <code>(* (- (^ x 2)) (- 3))</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: LaTeX <code>(-x^2)\cdot(-3)</code>, typeset $(-x^2)\cdot(-3)$</li>
+<li>output: putdown <code>(* (- (^ x 2)) (- 3))</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: LaTeX <code>----1000</code>, typeset $----1000$</li>
+<li>output: putdown <code>(- (- (- (- 1000))))</code></li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts additions and subtractions</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>x + y</code>, typeset $x + y$</li>
+<li>output: putdown <code>(+ x y)</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>1 - - 3</code>, typeset $1 - - 3$</li>
+<li>output: putdown <code>(- 1 (- 3))</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>A ^ B + C - D</code>, typeset $A ^ B + C - D$</li>
+<li>output: putdown <code>(+ (^ A B) (- C D))</code></li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts number expressions with groupers</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>-{1\times2}</code>, typeset $-{1\times2}$</li>
+<li>output: putdown <code>(- (* 1 2))</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>-(1\times2)</code>, typeset $-(1\times2)$</li>
+<li>output: putdown <code>(- (* 1 2))</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>{x^2}!</code>, typeset ${x^2}!$</li>
+<li>output: putdown <code>(! (^ x 2))</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: LaTeX <code>3!\cdot4!</code>, typeset $3!\cdot4!$</li>
+<li>output: putdown <code>(* (! 3) (! 4))</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: LaTeX <code>{-x}^{2\cdot{-3}}</code>, typeset ${-x}^{2\cdot{-3}}$</li>
+<li>output: putdown <code>(^ (- x) (* 2 (- 3)))</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: LaTeX <code>(-x)^(2\cdot(-3))</code>, typeset $(-x)^(2\cdot(-3))$</li>
+<li>output: putdown <code>(^ (- x) (* 2 (- 3)))</code></li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: LaTeX <code>(-x)^{2\cdot(-3)}</code>, typeset $(-x)^{2\cdot(-3)}$</li>
+<li>output: putdown <code>(^ (- x) (* 2 (- 3)))</code></li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: LaTeX <code>{-3}^{1+2}</code>, typeset ${-3}^{1+2}$</li>
+<li>output: putdown <code>(^ (- 3) (+ 1 2))</code></li>
+</ul>
+</li>
+<li>Test 9
+<ul>
+<li>input: LaTeX <code>k^{1-y}\cdot(2+k)</code>, typeset $k^{1-y}\cdot(2+k)$</li>
+<li>output: putdown <code>(* (^ k (- 1 y)) (+ 2 k))</code></li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts propositional logic atomics</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>\top</code>, typeset $\top$</li>
+<li>output: putdown <code>true</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>\bot</code>, typeset $\bot$</li>
+<li>output: putdown <code>false</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>\rightarrow\leftarrow</code>, typeset $\rightarrow\leftarrow$</li>
+<li>output: putdown <code>contradiction</code></li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts propositional logic conjuncts</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>\top\wedge\bot</code>, typeset $\top\wedge\bot$</li>
+<li>output: putdown <code>(and true false)</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>\neg P\wedge\neg\top</code>, typeset $\neg P\wedge\neg\top$</li>
+<li>output: putdown <code>(and (not P) (not true))</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>a\wedge b\wedge c</code>, typeset $a\wedge b\wedge c$</li>
+<li>output: putdown <code>(and a (and b c))</code></li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts propositional logic disjuncts</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>\top\vee \neg A</code>, typeset $\top\vee \neg A$</li>
+<li>output: putdown <code>(or true (not A))</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>P\wedge Q\vee Q\wedge P</code>, typeset $P\wedge Q\vee Q\wedge P$</li>
+<li>output: putdown <code>(or (and P Q) (and Q P))</code></li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts propositional logic conditionals</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>A\Rightarrow Q\wedge\neg P</code>, typeset $A\Rightarrow Q\wedge\neg P$</li>
+<li>output: putdown <code>(implies A (and Q (not P)))</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>P\vee Q\Rightarrow Q\wedge P\Rightarrow T</code>, typeset $P\vee Q\Rightarrow Q\wedge P\Rightarrow T$</li>
+<li>output: putdown <code>(implies (or P Q) (implies (and Q P) T))</code></li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts propositional logic biconditionals</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>A\Leftrightarrow Q\wedge\neg P</code>, typeset $A\Leftrightarrow Q\wedge\neg P$</li>
+<li>output: putdown <code>(iff A (and Q (not P)))</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>P\vee Q\Leftrightarrow Q\wedge P\Rightarrow T</code>, typeset $P\vee Q\Leftrightarrow Q\wedge P\Rightarrow T$</li>
+<li>output: putdown <code>(iff (or P Q) (implies (and Q P) T))</code></li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts propositional expressions with groupers</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>P\lor {Q\Leftrightarrow Q}\land P</code>, typeset $P\lor {Q\Leftrightarrow Q}\land P$</li>
+<li>output: putdown <code>(or P (and (iff Q Q) P))</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>\lnot{\top\Leftrightarrow\bot}</code>, typeset $\lnot{\top\Leftrightarrow\bot}$</li>
+<li>output: putdown <code>(not (iff true false))</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>\lnot(\top\Leftrightarrow\bot)</code>, typeset $\lnot(\top\Leftrightarrow\bot)$</li>
+<li>output: putdown <code>(not (iff true false))</code></li>
+</ul>
+</li>
+</ul>
+<h3>correctly converts simple predicate logic expressions</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>\forall x, P</code>, typeset $\forall x, P$</li>
+<li>output: putdown <code>(forall (x , P))</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>\exists t,\neg Q</code>, typeset $\exists t,\neg Q$</li>
+<li>output: putdown <code>(exists (t , (not Q)))</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>\exists! k,m\Rightarrow n</code>, typeset $\exists! k,m\Rightarrow n$</li>
+<li>output: putdown <code>(existsunique (k , (implies m n)))</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert finite and empty sets</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>\emptyset</code>, typeset $\emptyset$</li>
+<li>output: putdown <code>emptyset</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>\{ 1 \}</code>, typeset ${ 1 }$</li>
+<li>output: putdown <code>(finiteset (elts 1))</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>\{ 1 , 2 \}</code>, typeset ${ 1 , 2 }$</li>
+<li>output: putdown <code>(finiteset (elts 1 (elts 2)))</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: LaTeX <code>\{ 1 , 2 , 3 \}</code>, typeset ${ 1 , 2 , 3 }$</li>
+<li>output: putdown <code>(finiteset (elts 1 (elts 2 (elts 3))))</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: LaTeX <code>\{ \emptyset , \emptyset \}</code>, typeset ${ \emptyset , \emptyset }$</li>
+<li>output: putdown <code>(finiteset (elts emptyset (elts emptyset)))</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: LaTeX <code>\{ \{ \emptyset \} \}</code>, typeset ${ { \emptyset } }$</li>
+<li>output: putdown <code>(finiteset (elts (finiteset (elts emptyset))))</code></li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: LaTeX <code>\{ 3 , x \}</code>, typeset ${ 3 , x }$</li>
+<li>output: putdown <code>(finiteset (elts 3 (elts x)))</code></li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: LaTeX <code>\{ A \cup B , A \cap B \}</code>, typeset ${ A \cup B , A \cap B }$</li>
+<li>output: putdown <code>(finiteset (elts (setuni A B) (elts (setint A B))))</code></li>
+</ul>
+</li>
+<li>Test 9
+<ul>
+<li>input: LaTeX <code>\{ 1 , 2 , \emptyset , K , P \}</code>, typeset ${ 1 , 2 , \emptyset , K , P }$</li>
+<li>output: putdown <code>(finiteset (elts 1 (elts 2 (elts emptyset (elts K (elts P))))))</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert simple set memberships and subsets</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>b \in B</code>, typeset $b \in B$</li>
+<li>output: putdown <code>(in b B)</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>2 \in \{ 1 , 2 \}</code>, typeset $2 \in { 1 , 2 }$</li>
+<li>output: putdown <code>(in 2 (finiteset (elts 1 (elts 2))))</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>X \in a \cup b</code>, typeset $X \in a \cup b$</li>
+<li>output: putdown <code>(in X (setuni a b))</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: LaTeX <code>A \cup B \in X \cup Y</code>, typeset $A \cup B \in X \cup Y$</li>
+<li>output: putdown <code>(in (setuni A B) (setuni X Y))</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: LaTeX <code>A \subset \bar B</code>, typeset $A \subset \bar B$</li>
+<li>output: putdown <code>(subset A (setcomp B))</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: LaTeX <code>u \cap v \subseteq u \cup v</code>, typeset $u \cap v \subseteq u \cup v$</li>
+<li>output: putdown <code>(subseteq (setint u v) (setuni u v))</code></li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: LaTeX <code>\{1\}\subseteq\{1\}\cup\{2\}</code>, typeset ${1}\subseteq{1}\cup{2}$</li>
+<li>output: putdown <code>(subseteq (finiteset (elts 1)) (setuni (finiteset (elts 1)) (finiteset (elts 2))))</code></li>
+</ul>
+</li>
+</ul>
+<h3>expands &quot;notin&quot; notation into canonical form</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>a\notin A</code>, typeset $a\notin A$</li>
+<li>output: putdown <code>(not (in a A))</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>\emptyset \notin \emptyset</code>, typeset $\emptyset \notin \emptyset$</li>
+<li>output: putdown <code>(not (in emptyset emptyset))</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>3-5\notin K\cap P</code>, typeset $3-5\notin K\cap P$</li>
+<li>output: putdown <code>(not (in (- 3 5) (setint K P)))</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert sentences built from set operators</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>P \vee b \in B</code>, typeset $P \vee b \in B$</li>
+<li>output: putdown <code>(or P (in b B))</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>{P \vee b} \in B</code>, typeset ${P \vee b} \in B$</li>
+<li>output: putdown <code>(in (or P b) B)</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>\forall x , x \in X</code>, typeset $\forall x , x \in X$</li>
+<li>output: putdown <code>(forall (x , (in x X)))</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: LaTeX <code>A \subseteq B \wedge B \subseteq A</code>, typeset $A \subseteq B \wedge B \subseteq A$</li>
+<li>output: putdown <code>(and (subseteq A B) (subseteq B A))</code></li>
+</ul>
+</li>
+</ul>
+</article>
+
+</section>
+
+  </div>
+</main>
+
+<footer class="layout-footer">
+  <div class="container">
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.11</a>
+  </div>
+</footer>
+
+
+
+<script src="scripts/prism.dev.js"></script>
+</body>
+</html>
