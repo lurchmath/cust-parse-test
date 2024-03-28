@@ -216,11 +216,17 @@ export class Converter {
      *  * `associative` - this allows you to specify whether this concept
      *    functions as an associative operator, in the sense that nested copies
      *    of it should be flattened out into a single copy with more arguments.
-     *    If true, then whenever an {@link AST} is created with this concept as
-     *    its head, any children that have the same head will be merged with
-     *    their parent to perform that flattening.  The default is false, which
-     *    will cause most operators to associate to the right, so that, for
-     *    example, `A -> B -> C` is stored internally as `A -> (B -> C)`.
+     *    The default is that the concept is not associative, which will cause
+     *    most operators to associate to the right, so that, for example,
+     *    `A -> B -> C` is stored internally as `A -> (B -> C)`.  You can change
+     *    this behavior by setting the option to a list of other concepts that,
+     *    if they show up as children of this one, will be flattened into this
+     *    one.  For example, for a concept "add" you might use `["add"]` to say
+     *    that it only flattens into itself.  But if you have multiple ways to
+     *    add numbers, you can add all the concepts to the list.  You typically
+     *    want to do this in the definitions for all of those concepts, forming
+     *    an equivalence class, so all will merge with one another in any order
+     *    in which they might be nested.
      * 
      * @param {String} name - the name of the concept to add
      * @param {String} parentType - the name of the parent type, which must be a
@@ -233,7 +239,7 @@ export class Converter {
         if ( !putdown ) putdown = name
         options = Object.assign( {
             primitive : true,
-            associative : false
+            associative : [ ]
         }, options )
         const conceptData = {
             parentType,

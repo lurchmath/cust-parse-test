@@ -238,7 +238,7 @@ export class AST extends Array {
     // its syntactic type, leaving only a hierarchy of semantic information.
     // This function also flattens associative operators, where an associative
     // operator is defined by those that have the "associative" option set to
-    // true in the concept's definition in Converter#addConcept().
+    // a nonempty array in the concept's definition in Converter#addConcept().
     compact () {
         // console.log( 'compactifying: ' + this )
         if ( this.length == 0 )
@@ -262,12 +262,11 @@ export class AST extends Array {
             }
         }
         const recur = Array.from( this ).map( x => x instanceof AST ? x.compact() : x )
-        if ( this.concept().associative ) {
-            for ( let i = recur.length - 1 ; i >= 0 ; i-- ) {
-                if ( !( recur[i] instanceof AST ) ) continue
-                if ( recur[i].head() != this.head() ) continue
-                recur.splice( i, 1, ...recur[i].args() )
-            }
+        const concept = this.concept()
+        for ( let i = recur.length - 1 ; i >= 0 ; i-- ) {
+            if ( !( recur[i] instanceof AST ) ) continue
+            if ( !concept.associative.includes( recur[i].head() ) ) continue
+            recur.splice( i, 1, ...recur[i].args() )
         }
         return new AST( this.language, ...recur )
     }

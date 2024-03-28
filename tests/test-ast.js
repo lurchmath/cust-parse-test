@@ -154,7 +154,7 @@ describe( 'Abstract Syntax Tree class (AST)', () => {
         tempConv2.addConcept( 'int', 'atomicnumberexpr',
             Language.regularExpressions.integer )
         tempConv2.addConcept( 'add', 'sumexpr', '(+ sumexpr sumexpr)',
-            { associative : true } )
+            { associative : 'add' } )
         const tempLang2 = new Language( 'tempLang2', tempConv2 )
         tempLang2.addNotation( 'add', 'A+B' )
         // check two hierarchies of additions
