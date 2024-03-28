@@ -131,4 +131,37 @@ describe( 'Abstract Syntax Tree class (AST)', () => {
         expect( ast.toJSON() ).to.eql( [ '*', [ '+', 'a', 'b' ], '10' ] )
     } )
 
+    it( 'should respect associativity attribute of concepts', () => {
+        let ast
+        // by default, concepts are not associative, so if we define a tiny
+        // converter and language for addition of numbers, it should make
+        // hierarchies of binary additions
+        const tempConv1 = new Converter()
+        tempConv1.addConcept( 'int', 'atomicnumberexpr',
+            Language.regularExpressions.integer )
+        tempConv1.addConcept( 'add', 'sumexpr', '(+ sumexpr sumexpr)' )
+        const tempLang1 = new Language( 'tempLang1', tempConv1 )
+        tempLang1.addNotation( 'add', 'A+B' )
+        // check two hierarchies of additions
+        expect( () => ast = tempLang1.parse( '1+2+3' ) ).to.not.throw()
+        expect( ast.toString() ).to.equal( 'add(add(int(1),int(2)),int(3))' )
+        expect( () => ast = tempLang1.parse( '1+(2+3)' ) ).to.not.throw()
+        expect( ast.toString() ).to.equal( 'add(int(1),add(int(2),int(3)))' )
+        // but we can mark concepts as associative, and if we do so in a tiny
+        // converter and language for addition of numbers, it should flatten
+        // hierarchies of binary additions
+        const tempConv2 = new Converter()
+        tempConv2.addConcept( 'int', 'atomicnumberexpr',
+            Language.regularExpressions.integer )
+        tempConv2.addConcept( 'add', 'sumexpr', '(+ sumexpr sumexpr)',
+            { associative : true } )
+        const tempLang2 = new Language( 'tempLang2', tempConv2 )
+        tempLang2.addNotation( 'add', 'A+B' )
+        // check two hierarchies of additions
+        expect( () => ast = tempLang2.parse( '1+2+3' ) ).to.not.throw()
+        expect( ast.toString() ).to.equal( 'add(int(1),int(2),int(3))' )
+        expect( () => ast = tempLang2.parse( '(1+2)+3' ) ).to.not.throw()
+        expect( ast.toString() ).to.equal( 'add(int(1),int(2),int(3))' )
+    } )
+
 } )

@@ -26,6 +26,10 @@ export class AST extends Array {
      *  * an AST, so that ASTs can be recursive, since they are trees
      *  * an array of any of these, which will be converted into an AST
      * 
+     * Note that constructing an AST this way takes the JSON structure as given,
+     * and does not alter it.  To construct an AST that performs changes based
+     * on associativity of concepts, see {@link AST.fromJSON fromJSON()}.
+     * 
      * @param {Language} language - the language from which this AST was parsed
      * @param  {...any} components - the operator and operands of this AST, in
      *   that order (operator first, operands in the order appropriate for the
@@ -171,6 +175,13 @@ export class AST extends Array {
      * removes the unnecessary `'*'` entry, since the meaning is clear from the
      * first element of the array anyway.
      * 
+     * It also flattens any nested ASTs for concepts that are classified as
+     * associative.  For example, if the JSON representation of the AST were
+     * `['addition','x',['addition','y','z']]`, and the concept of addition were
+     * marked associative (in the {@link Converter}'s list of concepts), then
+     * this function will not create a nested tree imitating that JSON, but will
+     * create one isomorphic to `['addition','x','y','z']` instead.
+     * 
      * @param {Language} language - the language from which the JSON was parsed
      * @param {Array} json - a hierarchy of JavaScript Arrays (with strings as
      *   leaves) representing an AST
@@ -186,6 +197,7 @@ export class AST extends Array {
         if ( !concept ) {
             const result = new AST( language, ...[ head, ...json ].map(
                 piece => AST.fromJSON( language, piece, false ) ) )
+            // .compact() also performs associativity flattening:
             return top ? result.compact() : result
         }
         const rhss = language.grammar.rules[head]
@@ -201,14 +213,16 @@ export class AST extends Array {
             if ( rhss[i].notation instanceof RegExp ) {
                 const result = new AST( language, head,
                     AST.fromJSON( language, json[0], false ) )
+                // .compact() also performs associativity flattening:
                 return top ? result.compact() : result
             }
             json = json.filter( ( _, index ) =>
                 !( rhss[i][index] instanceof RegExp ) )
-            const result = new AST( language, head,
-                ...json.map( ( _, index ) => AST.fromJSON( language,
-                    json[rhss[i].putdownToNotation[index]], false ) ) )
-            return top ? result.compcat() : result
+            const children = json.map( ( _, index ) => AST.fromJSON( language,
+                json[rhss[i].putdownToNotation[index]], false ) )
+            const result = new AST( language, head, ...children )
+            // .compact() also performs associativity flattening:
+            return top ? result.compact() : result
         }
         throw new Error( `No notational match for ${JSON.stringify( json )}` )
     }
@@ -222,6 +236,9 @@ export class AST extends Array {
     // `[ 'expr', [ 'numberexpr', [ 'sumexpr', [ 'addition', 'x', 'y' ] ] ] ]`.
     // Compact form removes all wrappers that serve only to label an AST with
     // its syntactic type, leaving only a hierarchy of semantic information.
+    // This function also flattens associative operators, where an associative
+    // operator is defined by those that have the "associative" option set to
+    // true in the concept's definition in Converter#addConcept().
     compact () {
         // console.log( 'compactifying: ' + this )
         if ( this.length == 0 )
@@ -245,8 +262,14 @@ export class AST extends Array {
             }
         }
         const recur = Array.from( this ).map( x => x instanceof AST ? x.compact() : x )
-        const result = new AST( this.language, ...recur )
-        return result
+        if ( this.concept().associative ) {
+            for ( let i = recur.length - 1 ; i >= 0 ; i-- ) {
+                if ( !( recur[i] instanceof AST ) ) continue
+                if ( recur[i].head() != this.head() ) continue
+                recur.splice( i, 1, ...recur[i].args() )
+            }
+        }
+        return new AST( this.language, ...recur )
     }
 
     /**

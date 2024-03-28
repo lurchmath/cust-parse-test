@@ -52,8 +52,6 @@ General to dos:
  - Eventually make overview documentation for the main docs index page.
  - Eventually make a nice diagram of the syntactic types hierarchy and add it to
    the documentation for the syntactic-types module.
- - add support for features like associativity (in all conversion directions) if,
-   indeed, we need associativity in any of the libraries we're planning on?
 
 Bug fixes:
  - Right now you're using the `->` notation to ensure that shorthand concepts

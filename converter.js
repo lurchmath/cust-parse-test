@@ -204,38 +204,60 @@ export class Converter {
      * written in any language other than putdown.  To do so, you must make
      * calls to {@link Language#addNotation addNotation()}.
      * 
-     * The final parameter allows you to specify whether this concept is a
-     * primitive concept (the default) or a derived concept (by setting that
-     * parameter to `false`).  See the documentation for this class for an
-     * overview of primitive vs. derived concepts.  The final parameter is
-     * ignored in the case where `putdown` is a regular expression, because such
-     * a value makes sense only if the concept is primitive.
+     * The final parameter is an options object, which supports the following
+     * fields.
+     * 
+     *  * `primitive` - this allows you to specify whether this concept is a
+     *    primitive concept (the default) or a derived concept (by setting the
+     *    option to `false`).  See the documentation for this class for an
+     *    overview of primitive vs. derived concepts.  The final parameter is
+     *    ignored in the case where `putdown` is a regular expression, because
+     *    such a value makes sense only if the concept is primitive.
+     *  * `associative` - this allows you to specify whether this concept
+     *    functions as an associative operator, in the sense that nested copies
+     *    of it should be flattened out into a single copy with more arguments.
+     *    If true, then whenever an {@link AST} is created with this concept as
+     *    its head, any children that have the same head will be merged with
+     *    their parent to perform that flattening.  The default is false, which
+     *    will cause most operators to associate to the right, so that, for
+     *    example, `A -> B -> C` is stored internally as `A -> (B -> C)`.
      * 
      * @param {String} name - the name of the concept to add
      * @param {String} parentType - the name of the parent type, which must be a
      *   {@link module:SyntacticTypes syntactic type}
      * @param {String|RegExp} putdown - the notation for this concept in the
      *   putdown language
-     * @param {boolean} [primitive=true] - whether this is a primitive concept
+     * @param {Object?} options - see supported fields above
      */
-    addConcept ( name, parentType, putdown, primitive = true ) {
+    addConcept ( name, parentType, putdown, options = { } ) {
         if ( !putdown ) putdown = name
-        const data = { parentType, putdown }
-        data.typeSequence = putdown instanceof RegExp ? [ ] :
-            putdownLeaves( putdown ).filter( leaf =>
-                SyntacticTypes.types.includes( leaf ) || this.isConcept( leaf ) )
-        this.concepts.set( name, data )
+        options = Object.assign( {
+            primitive : true,
+            associative : false
+        }, options )
+        const conceptData = {
+            parentType,
+            putdown,
+            associative : options.associative,
+            typeSequence : putdown instanceof RegExp ? [ ] :
+                putdownLeaves( putdown ).filter( leaf => this.isConcept( leaf )
+                    || SyntacticTypes.types.includes( leaf ) )
+        }
+        this.concepts.set( name, conceptData )
         if ( this.isLanguage( 'putdown' ) ) {
             if ( putdown instanceof RegExp ) {
                 this.languages.get( 'putdown' ).addNotation( name, putdown )
             } else if ( typeof( putdown ) == 'string' ) {
                 const variables = Array.from( Language.defaultVarNames )
                 let putdownForParsing = putdown.replace( /([()])/g, ' $1 ' ).trim()
-                data.typeSequence.forEach( ( type, index ) =>
+                conceptData.typeSequence.forEach( ( type, index ) =>
                     putdownForParsing = putdownForParsing.replace(
                         new RegExp( `\\b${type}\\b` ), variables[index] ) )
                 this.languages.get( 'putdown' ).addNotation( name,
-                    putdownForParsing, { variables, writeOnly : !primitive } )
+                    putdownForParsing, {
+                        variables,
+                        writeOnly : !options.primitive
+                    } )
             } else {
                 throw new Error( 'Invalid putdown content: ' + putdown )
             }
