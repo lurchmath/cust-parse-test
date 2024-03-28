@@ -73,6 +73,10 @@ Bug fixes:
    will want to specify how an operator associates (L/R) and have the tree be
    post-processed to take any `(op (op x y) z)` or` (op x (op y z))` and turn it
    into the correct default for that specific op.
+ - Associativity right now works well in that it will produce ASTs that are
+   flattened, but it fails in that those ASTs will then be unable to convert to
+   putdown because they have the wrong number of arguments for the putdown form
+   as originally defined.  Redesign?
 
 Information we may need later:
  - infinity      = '\u221e' = ∞
