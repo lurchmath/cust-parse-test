@@ -326,7 +326,7 @@ other functions in this class to set an instance up for your needs.</p>
     
     </div>
 
-    <h4 class="method-name" id="addConcept">addConcept<span class="signature">(name, parentType, putdown, primitive<span class="signature-attributes">opt</span>)</span><span class="return-type-signature"></span>
+    <h4 class="method-name" id="addConcept">addConcept<span class="signature">(name, parentType, putdown, options<span class="signature-attributes">nullable</span>)</span><span class="return-type-signature"></span>
     </h4>
 
 
@@ -369,12 +369,30 @@ notation just the word &quot;infinity&quot;.</li>
 <p>Note that this function does not allow you to specify how the concept is
 written in any language other than putdown.  To do so, you must make
 calls to <a href="Language.html#addNotation">addNotation()</a>.</p>
-<p>The final parameter allows you to specify whether this concept is a
-primitive concept (the default) or a derived concept (by setting that
-parameter to <code>false</code>).  See the documentation for this class for an
+<p>The final parameter is an options object, which supports the following
+fields.</p>
+<ul>
+<li><code>primitive</code> - this allows you to specify whether this concept is a
+primitive concept (the default) or a derived concept (by setting the
+option to <code>false</code>).  See the documentation for this class for an
 overview of primitive vs. derived concepts.  The final parameter is
-ignored in the case where <code>putdown</code> is a regular expression, because such
-a value makes sense only if the concept is primitive.</p>
+ignored in the case where <code>putdown</code> is a regular expression, because
+such a value makes sense only if the concept is primitive.</li>
+<li><code>associative</code> - this allows you to specify whether this concept
+functions as an associative operator, in the sense that nested copies
+of it should be flattened out into a single copy with more arguments.
+The default is that the concept is not associative, which will cause
+most operators to associate to the right, so that, for example,
+<code>A -&gt; B -&gt; C</code> is stored internally as <code>A -&gt; (B -&gt; C)</code>.  You can change
+this behavior by setting the option to a list of other concepts that,
+if they show up as children of this one, will be flattened into this
+one.  For example, for a concept &quot;add&quot; you might use <code>[&quot;add&quot;]</code> to say
+that it only flattens into itself.  But if you have multiple ways to
+add numbers, you can add all the concepts to the list.  You typically
+want to do this in the definitions for all of those concepts, forming
+an equivalence class, so all will merge with one another in any order
+in which they might be nested.</li>
+</ul>
 </div>
 
 
@@ -418,8 +436,6 @@ a value makes sense only if the concept is primitive.</p>
             
 
             
-                
-            
 
             <div class="param-description"><p>the name of the concept to add</p></div>
             
@@ -453,8 +469,6 @@ a value makes sense only if the concept is primitive.</p>
                 </span>
             
 
-            
-                
             
 
             <div class="param-description"><p>the name of the parent type, which must be a
@@ -496,8 +510,6 @@ a value makes sense only if the concept is primitive.</p>
             
 
             
-                
-            
 
             <div class="param-description"><p>the notation for this concept in the
 putdown language</p></div>
@@ -508,7 +520,7 @@ putdown language</p></div>
 
         <li>
             
-                <span class="param-name">primitive</span>
+                <span class="param-name">options</span>
             
 
             
@@ -516,7 +528,7 @@ putdown language</p></div>
 
 
     <span class="param-type">
-        <code>boolean</code>
+        <code>Object</code>
     </span>
     
 
@@ -525,9 +537,9 @@ putdown language</p></div>
             
                 <span class="param-attributes">
                 
-                    &lt;optional&gt;<br>
-                
 
+                
+                    &lt;nullable&gt;<br>
                 
 
                 
@@ -535,14 +547,8 @@ putdown language</p></div>
             
 
             
-                
-                    <span class="param-default">
-                        true
-                    </span>
-                
-            
 
-            <div class="param-description"><p>whether this is a primitive concept</p></div>
+            <div class="param-description"><p>see supported fields above</p></div>
             
         </li>
 
@@ -605,7 +611,7 @@ putdown language</p></div>
     <h4 class="method-heading">Source</h4>
     <ul>
         <li class="method-source">
-            <a href="converter.js.html">converter.js</a><a href="converter.js.html#source.221">, line 221</a>
+            <a href="converter.js.html">converter.js</a><a href="converter.js.html#source.238">, line 238</a>
         </li>
     </ul>
 
@@ -764,7 +770,7 @@ calls to <a href="Converter.html#addConcept">addConcept()</a>.</p>
     <h4 class="method-heading">Source</h4>
     <ul>
         <li class="method-source">
-            <a href="converter.js.html">converter.js</a><a href="converter.js.html#source.267">, line 267</a>
+            <a href="converter.js.html">converter.js</a><a href="converter.js.html#source.295">, line 295</a>
         </li>
     </ul>
 
@@ -980,7 +986,7 @@ the input</p></div>
     <h4 class="method-heading">Source</h4>
     <ul>
         <li class="method-source">
-            <a href="converter.js.html">converter.js</a><a href="converter.js.html#source.288">, line 288</a>
+            <a href="converter.js.html">converter.js</a><a href="converter.js.html#source.316">, line 316</a>
         </li>
     </ul>
 
@@ -1139,7 +1145,7 @@ this converter</p>
     <h4 class="method-heading">Source</h4>
     <ul>
         <li class="method-source">
-            <a href="converter.js.html">converter.js</a><a href="converter.js.html#source.254">, line 254</a>
+            <a href="converter.js.html">converter.js</a><a href="converter.js.html#source.282">, line 282</a>
         </li>
     </ul>
 

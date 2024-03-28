@@ -135,11 +135,15 @@ export class Language {
         this.derivedNotation = new Map()
         // For each concept in the converter, if it is atomic and has a putdown
         // form, use that as the default notation in the new language; this can
-        // be overridden by any later call to addNotation().
+        // be overridden by any later call to addNotation().  So we mark it here
+        // as the default, so they know they can delete it later.
         Array.from( converter.concepts.keys() ).forEach( conceptName => {
             const concept = converter.concepts.get( conceptName )
-            if ( SyntacticTypes.isAtomic( concept.parentType ) )
+            if ( SyntacticTypes.isAtomic( concept.parentType ) ) {
                 this.addNotation( conceptName, concept.putdown )
+                const rhss = this.grammar.rules[conceptName]
+                rhss[rhss.length-1].putdownDefault = true
+            }
         } )
         // Add subtyping rules and grouping rules to the grammar.
         // Also, for each atomic type, give it zero rules, to avoid Earley
@@ -186,15 +190,6 @@ export class Language {
      *    a variable counts as the variable (except inside another word) even if
      *    used multiple times.  So choose variable names that do not show up
      *    in the new notation you are introducing.
-     *  * If you want to assign this notation a name, that name will be stored
-     *    in any AST parsed from this notation.  If you assign the same name to
-     *    a notation for the same concept *in a different language in the same
-     *    converter,* then when translating among languages, the
-     *    {@link Converter} will attempt to map this notation to the notation of
-     *    the same name in another language.  Without giving names to notations,
-     *    the converter just uses the default way to represent a concept in each
-     *    language, preserving meaning only, not any details of the way that
-     *    meaning was written.
      *  * If this notation should be used only for representing the concept in
      *    this language, but not for parsing from this language into an AST,
      *    then you can set `writeOnly : true`.  This can be useful in two cases.
@@ -229,14 +224,13 @@ export class Language {
         const concept = this.converter.concept( conceptName )
         if ( !concept )
             throw new Error( `Not a valid concept: ${conceptName}` )
-        // if this is an atomic concept, delete any previous notation it had
-        // (since that was probably the putdown default installed at language
-        // creation time, which the user is now overriding)
-        // but this does not apply to groupers; there can be more than one
-        // set of groupers in a language, and thus more than one way to form an
-        // atomic concept using groupers
+        // if this is an atomic concept, and the only previous notation it had
+        // was the putdown default installed at language creation time, then the
+        // user is now overriding that, so we should delete it.
         if ( SyntacticTypes.isAtomic( concept.parentType )
-          &amp;&amp; !conceptName.startsWith( 'grouped' ) )
+          &amp;&amp; this.grammar.rules.hasOwnProperty( conceptName )
+          &amp;&amp; this.grammar.rules[conceptName].length == 1
+          &amp;&amp; this.grammar.rules[conceptName][0].putdownDefault )
             delete this.grammar.rules[conceptName]
         // convert notation to array if needed and extract its tokens
         if ( notation instanceof RegExp )
@@ -286,7 +280,6 @@ export class Language {
             newRule.putdownToNotation = putdownToNotation
             newRule.notation = originalNotation
             newRule.variables = options.variables
-            newRule.notationName = options.name
         }
     }
 
