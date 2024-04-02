@@ -290,44 +290,90 @@ satisfy the requirements of the test suite) are shown below.
    - output: JSON `["emptyset"]`
 - Test 2
    - input: putdown `(finiteset (elts 1))`
-   - output: JSON `["finiteset",["onenumseq",["number","1"]]]`
+   - output: JSON `["finiteset",["oneeltseq",["number","1"]]]`
 - Test 3
    - input: putdown `(finiteset (elts 1 (elts 2)))`
-   - output: JSON `["finiteset",["numthenseq",["number","1"],["onenumseq",["number","2"]]]]`
+   - output: JSON `["finiteset",["eltthenseq",["number","1"],["oneeltseq",["number","2"]]]]`
 - Test 4
    - input: putdown `(finiteset (elts 1 (elts 2 (elts 3))))`
-   - output: JSON `["finiteset",["numthenseq",["number","1"],["numthenseq",["number","2"],["onenumseq",["number","3"]]]]]`
+   - output: JSON `["finiteset",["eltthenseq",["number","1"],["eltthenseq",["number","2"],["oneeltseq",["number","3"]]]]]`
 - Test 5
    - input: putdown `(finiteset (elts emptyset (elts emptyset)))`
-   - output: JSON `["finiteset",["setthenseq",["emptyset"],["onesetseq",["emptyset"]]]]`
+   - output: JSON `["finiteset",["eltthenseq",["emptyset"],["oneeltseq",["emptyset"]]]]`
 - Test 6
    - input: putdown `(finiteset (elts (finiteset (elts emptyset))))`
-   - output: JSON `["finiteset",["onesetseq",["finiteset",["onesetseq",["emptyset"]]]]]`
+   - output: JSON `["finiteset",["oneeltseq",["finiteset",["oneeltseq",["emptyset"]]]]]`
 - Test 7
    - input: putdown `(finiteset (elts 3 (elts x)))`
-   - output: JSON `["finiteset",["numthenseq",["number","3"],["onenumseq",["numbervariable","x"]]]]`
+   - output: JSON `["finiteset",["eltthenseq",["number","3"],["oneeltseq",["numbervariable","x"]]]]`
 - Test 8
    - input: putdown `(finiteset (elts (setuni A B) (elts (setint A B))))`
-   - output: JSON `["finiteset",["setthenseq",["union",["setvariable","A"],["setvariable","B"]],["onesetseq",["intersection",["setvariable","A"],["setvariable","B"]]]]]`
+   - output: JSON `["finiteset",["eltthenseq",["union",["setvariable","A"],["setvariable","B"]],["oneeltseq",["intersection",["setvariable","A"],["setvariable","B"]]]]]`
 - Test 9
    - input: putdown `(finiteset (elts 1 (elts 2 (elts emptyset (elts K (elts P))))))`
-   - output: JSON `["finiteset",["numthenseq",["number","1"],["numthenseq",["number","2"],["setthenseq",["emptyset"],["numthenseq",["numbervariable","K"],["onenumseq",["numbervariable","P"]]]]]]]`
+   - output: JSON `["finiteset",["eltthenseq",["number","1"],["eltthenseq",["number","2"],["eltthenseq",["emptyset"],["eltthenseq",["numbervariable","K"],["oneeltseq",["numbervariable","P"]]]]]]]`
+
+
+### can convert tuples and vectors to JSON
+
+- Test 1
+   - input: putdown `(tuple (elts 5 (elts 6)))`
+   - output: JSON `["tuple",["eltthenseq",["number","5"],["oneeltseq",["number","6"]]]]`
+- Test 2
+   - input: putdown `(tuple (elts 5 (elts (setuni A B) (elts k))))`
+   - output: JSON `["tuple",["eltthenseq",["number","5"],["eltthenseq",["union",["setvariable","A"],["setvariable","B"]],["oneeltseq",["numbervariable","k"]]]]]`
+- Test 3
+   - input: putdown `(vector (elts 5 (elts 6)))`
+   - output: JSON `["vector",["numthenseq",["number","5"],["onenumseq",["number","6"]]]]`
+- Test 4
+   - input: putdown `(vector (elts 5 (elts (- 7) (elts k))))`
+   - output: JSON `["vector",["numthenseq",["number","5"],["numthenseq",["numbernegation",["number","7"]],["onenumseq",["numbervariable","k"]]]]]`
+- Test 5
+   - input: putdown `(tuple)`
+   - output: JSON `null`
+- Test 6
+   - input: putdown `(tuple (elts))`
+   - output: JSON `null`
+- Test 7
+   - input: putdown `(tuple (elts 3))`
+   - output: JSON `null`
+- Test 8
+   - input: putdown `(vector)`
+   - output: JSON `null`
+- Test 9
+   - input: putdown `(vector (elts))`
+   - output: JSON `null`
+- Test 10
+   - input: putdown `(vector (elts 3))`
+   - output: JSON `null`
+- Test 11
+   - input: putdown `(tuple (elts (tuple (elts 1 (elts 2))) (elts 6)))`
+   - output: JSON `["tuple",["eltthenseq",["tuple",["eltthenseq",["number","1"],["oneeltseq",["number","2"]]]],["oneeltseq",["number","6"]]]]`
+- Test 12
+   - input: putdown `(vector (elts (tuple (elts 1 (elts 2))) (elts 6)))`
+   - output: JSON `null`
+- Test 13
+   - input: putdown `(vector (elts (vector (elts 1 (elts 2))) (elts 6)))`
+   - output: JSON `null`
+- Test 14
+   - input: putdown `(vector (elts (setuni A B) (elts 6)))`
+   - output: JSON `null`
 
 
 ### can convert simple set memberships and subsets to JSON
 
 - Test 1
    - input: putdown `(in b B)`
-   - output: JSON `["numberisin",["numbervariable","b"],["setvariable","B"]]`
+   - output: JSON `["nounisin",["numbervariable","b"],["setvariable","B"]]`
 - Test 2
    - input: putdown `(in 2 (finiteset (elts 1 (elts 2))))`
-   - output: JSON `["numberisin",["number","2"],["finiteset",["numthenseq",["number","1"],["onenumseq",["number","2"]]]]]`
+   - output: JSON `["nounisin",["number","2"],["finiteset",["eltthenseq",["number","1"],["oneeltseq",["number","2"]]]]]`
 - Test 3
    - input: putdown `(in X (setuni a b))`
-   - output: JSON `["numberisin",["numbervariable","X"],["union",["setvariable","a"],["setvariable","b"]]]`
+   - output: JSON `["nounisin",["numbervariable","X"],["union",["setvariable","a"],["setvariable","b"]]]`
 - Test 4
    - input: putdown `(in (setuni A B) (setuni X Y))`
-   - output: JSON `["setisin",["union",["setvariable","A"],["setvariable","B"]],["union",["setvariable","X"],["setvariable","Y"]]]`
+   - output: JSON `["nounisin",["union",["setvariable","A"],["setvariable","B"]],["union",["setvariable","X"],["setvariable","Y"]]]`
 - Test 5
    - input: putdown `(subset A (setcomp B))`
    - output: JSON `["subset",["setvariable","A"],["complement",["setvariable","B"]]]`
@@ -336,36 +382,42 @@ satisfy the requirements of the test suite) are shown below.
    - output: JSON `["subseteq",["intersection",["setvariable","u"],["setvariable","v"]],["union",["setvariable","u"],["setvariable","v"]]]`
 - Test 7
    - input: putdown `(subseteq (finiteset (elts 1)) (setuni (finiteset (elts 1)) (finiteset (elts 2))))`
-   - output: JSON `["subseteq",["finiteset",["onenumseq",["number","1"]]],["union",["finiteset",["onenumseq",["number","1"]]],["finiteset",["onenumseq",["number","2"]]]]]`
+   - output: JSON `["subseteq",["finiteset",["oneeltseq",["number","1"]]],["union",["finiteset",["oneeltseq",["number","1"]]],["finiteset",["oneeltseq",["number","2"]]]]]`
 - Test 8
    - input: putdown `(in p (setprod U V))`
-   - output: JSON `["numberisin",["numbervariable","p"],["setproduct",["setvariable","U"],["setvariable","V"]]]`
+   - output: JSON `["nounisin",["numbervariable","p"],["setproduct",["setvariable","U"],["setvariable","V"]]]`
 - Test 9
    - input: putdown `(in q (setuni (setcomp U) (setprod V W)))`
-   - output: JSON `["numberisin",["numbervariable","q"],["union",["complement",["setvariable","U"]],["setproduct",["setvariable","V"],["setvariable","W"]]]]`
+   - output: JSON `["nounisin",["numbervariable","q"],["union",["complement",["setvariable","U"]],["setproduct",["setvariable","V"],["setvariable","W"]]]]`
+- Test 10
+   - input: putdown `(in (tuple (elts a (elts b))) (setprod A B))`
+   - output: JSON `["nounisin",["tuple",["eltthenseq",["numbervariable","a"],["oneeltseq",["numbervariable","b"]]]],["setproduct",["setvariable","A"],["setvariable","B"]]]`
+- Test 11
+   - input: putdown `(in (vector (elts a (elts b))) (setprod A B))`
+   - output: JSON `["nounisin",["vector",["numthenseq",["numbervariable","a"],["onenumseq",["numbervariable","b"]]]],["setproduct",["setvariable","A"],["setvariable","B"]]]`
 
 
 ### does not undo the canonical form for "notin" notation
 
 - Test 1
    - input: putdown `(not (in a A))`
-   - output: JSON `["logicnegation",["numberisin",["numbervariable","a"],["setvariable","A"]]]`
+   - output: JSON `["logicnegation",["nounisin",["numbervariable","a"],["setvariable","A"]]]`
 - Test 2
    - input: putdown `(not (in emptyset emptyset))`
-   - output: JSON `["logicnegation",["setisin",["emptyset"],["emptyset"]]]`
+   - output: JSON `["logicnegation",["nounisin",["emptyset"],["emptyset"]]]`
 - Test 3
    - input: putdown `(not (in (- 3 5) (setint K P)))`
-   - output: JSON `["logicnegation",["numberisin",["subtraction",["number","3"],["number","5"]],["intersection",["setvariable","K"],["setvariable","P"]]]]`
+   - output: JSON `["logicnegation",["nounisin",["subtraction",["number","3"],["number","5"]],["intersection",["setvariable","K"],["setvariable","P"]]]]`
 
 
 ### can parse to JSON sentences built from set operators
 
 - Test 1
    - input: putdown `(or P (in b B))`
-   - output: JSON `["disjunction",["logicvariable","P"],["numberisin",["numbervariable","b"],["setvariable","B"]]]`
+   - output: JSON `["disjunction",["logicvariable","P"],["nounisin",["numbervariable","b"],["setvariable","B"]]]`
 - Test 2
    - input: putdown `(forall (x , (in x X)))`
-   - output: JSON `["universal",["numbervariable","x"],["numberisin",["numbervariable","x"],["setvariable","X"]]]`
+   - output: JSON `["universal",["numbervariable","x"],["nounisin",["numbervariable","x"],["setvariable","X"]]]`
 - Test 3
    - input: putdown `(and (subseteq A B) (subseteq B A))`
    - output: JSON `["conjunction",["subseteq",["setvariable","A"],["setvariable","B"]],["subseteq",["setvariable","B"],["setvariable","A"]]]`
@@ -654,44 +706,63 @@ satisfy the requirements of the test suite) are shown below.
    - input: JSON `["emptyset"]`
    - output: putdown `emptyset`
 - Test 2
-   - input: JSON `["finiteset",["onenumseq",["number","1"]]]`
+   - input: JSON `["finiteset",["oneeltseq",["number","1"]]]`
    - output: putdown `(finiteset (elts 1))`
 - Test 3
-   - input: JSON `["finiteset",["numthenseq",["number","1"],["onenumseq",["number","2"]]]]`
+   - input: JSON `["finiteset",["eltthenseq",["number","1"],["oneeltseq",["number","2"]]]]`
    - output: putdown `(finiteset (elts 1 (elts 2)))`
 - Test 4
-   - input: JSON `["finiteset",["numthenseq",["number","1"],["numthenseq",["number","2"],["onenumseq",["number","3"]]]]]`
+   - input: JSON `["finiteset",["eltthenseq",["number","1"],["eltthenseq",["number","2"],["oneeltseq",["number","3"]]]]]`
    - output: putdown `(finiteset (elts 1 (elts 2 (elts 3))))`
 - Test 5
-   - input: JSON `["finiteset",["setthenseq",["emptyset"],["onesetseq",["emptyset"]]]]`
+   - input: JSON `["finiteset",["eltthenseq",["emptyset"],["oneeltseq",["emptyset"]]]]`
    - output: putdown `(finiteset (elts emptyset (elts emptyset)))`
 - Test 6
-   - input: JSON `["finiteset",["onesetseq",["finiteset",["onesetseq",["emptyset"]]]]]`
+   - input: JSON `["finiteset",["oneeltseq",["finiteset",["oneeltseq",["emptyset"]]]]]`
    - output: putdown `(finiteset (elts (finiteset (elts emptyset))))`
 - Test 7
-   - input: JSON `["finiteset",["numthenseq",["number","3"],["onenumseq",["numbervariable","x"]]]]`
+   - input: JSON `["finiteset",["eltthenseq",["number","3"],["oneeltseq",["numbervariable","x"]]]]`
    - output: putdown `(finiteset (elts 3 (elts x)))`
 - Test 8
-   - input: JSON `["finiteset",["setthenseq",["union",["setvariable","A"],["setvariable","B"]],["onesetseq",["intersection",["setvariable","A"],["setvariable","B"]]]]]`
+   - input: JSON `["finiteset",["eltthenseq",["union",["setvariable","A"],["setvariable","B"]],["oneeltseq",["intersection",["setvariable","A"],["setvariable","B"]]]]]`
    - output: putdown `(finiteset (elts (setuni A B) (elts (setint A B))))`
 - Test 9
-   - input: JSON `["finiteset",["numthenseq",["number","1"],["numthenseq",["number","2"],["setthenseq",["emptyset"],["numthenseq",["numbervariable","K"],["onenumseq",["numbervariable","P"]]]]]]]`
+   - input: JSON `["finiteset",["eltthenseq",["number","1"],["eltthenseq",["number","2"],["eltthenseq",["emptyset"],["eltthenseq",["numbervariable","K"],["oneeltseq",["numbervariable","P"]]]]]]]`
    - output: putdown `(finiteset (elts 1 (elts 2 (elts emptyset (elts K (elts P))))))`
+
+
+### can convert tuples and vectors to putdown
+
+- Test 1
+   - input: JSON `["tuple",["eltthenseq",["number","5"],["oneeltseq",["number","6"]]]]`
+   - output: putdown `(tuple (elts 5 (elts 6)))`
+- Test 2
+   - input: JSON `["tuple",["eltthenseq",["number","5"],["eltthenseq",["union",["setvariable","A"],["setvariable","B"]],["oneeltseq",["numbervariable","k"]]]]]`
+   - output: putdown `(tuple (elts 5 (elts (setuni A B) (elts k))))`
+- Test 3
+   - input: JSON `["vector",["numthenseq",["number","5"],["onenumseq",["number","6"]]]]`
+   - output: putdown `(vector (elts 5 (elts 6)))`
+- Test 4
+   - input: JSON `["vector",["numthenseq",["number","5"],["numthenseq",["numbernegation",["number","7"]],["onenumseq",["numbervariable","k"]]]]]`
+   - output: putdown `(vector (elts 5 (elts (- 7) (elts k))))`
+- Test 5
+   - input: JSON `["tuple",["eltthenseq",["tuple",["eltthenseq",["number","1"],["oneeltseq",["number","2"]]]],["oneeltseq",["number","6"]]]]`
+   - output: putdown `(tuple (elts (tuple (elts 1 (elts 2))) (elts 6)))`
 
 
 ### can convert simple set memberships and subsets to putdown
 
 - Test 1
-   - input: JSON `["numberisin",["numbervariable","b"],["setvariable","B"]]`
+   - input: JSON `["nounisin",["numbervariable","b"],["setvariable","B"]]`
    - output: putdown `(in b B)`
 - Test 2
-   - input: JSON `["numberisin",["number","2"],["finiteset",["numthenseq",["number","1"],["onenumseq",["number","2"]]]]]`
+   - input: JSON `["nounisin",["number","2"],["finiteset",["eltthenseq",["number","1"],["oneeltseq",["number","2"]]]]]`
    - output: putdown `(in 2 (finiteset (elts 1 (elts 2))))`
 - Test 3
-   - input: JSON `["numberisin",["numbervariable","X"],["union",["setvariable","a"],["setvariable","b"]]]`
+   - input: JSON `["nounisin",["numbervariable","X"],["union",["setvariable","a"],["setvariable","b"]]]`
    - output: putdown `(in X (setuni a b))`
 - Test 4
-   - input: JSON `["setisin",["union",["setvariable","A"],["setvariable","B"]],["union",["setvariable","X"],["setvariable","Y"]]]`
+   - input: JSON `["nounisin",["union",["setvariable","A"],["setvariable","B"]],["union",["setvariable","X"],["setvariable","Y"]]]`
    - output: putdown `(in (setuni A B) (setuni X Y))`
 - Test 5
    - input: JSON `["subset",["setvariable","A"],["complement",["setvariable","B"]]]`
@@ -700,36 +771,42 @@ satisfy the requirements of the test suite) are shown below.
    - input: JSON `["subseteq",["intersection",["setvariable","u"],["setvariable","v"]],["union",["setvariable","u"],["setvariable","v"]]]`
    - output: putdown `(subseteq (setint u v) (setuni u v))`
 - Test 7
-   - input: JSON `["subseteq",["finiteset",["onenumseq",["number","1"]]],["union",["finiteset",["onenumseq",["number","1"]]],["finiteset",["onenumseq",["number","2"]]]]]`
+   - input: JSON `["subseteq",["finiteset",["oneeltseq",["number","1"]]],["union",["finiteset",["oneeltseq",["number","1"]]],["finiteset",["oneeltseq",["number","2"]]]]]`
    - output: putdown `(subseteq (finiteset (elts 1)) (setuni (finiteset (elts 1)) (finiteset (elts 2))))`
 - Test 8
-   - input: JSON `["numberisin",["numbervariable","p"],["setproduct",["setvariable","U"],["setvariable","V"]]]`
+   - input: JSON `["nounisin",["numbervariable","p"],["setproduct",["setvariable","U"],["setvariable","V"]]]`
    - output: putdown `(in p (setprod U V))`
 - Test 9
-   - input: JSON `["numberisin",["numbervariable","q"],["union",["complement",["setvariable","U"]],["setproduct",["setvariable","V"],["setvariable","W"]]]]`
+   - input: JSON `["nounisin",["numbervariable","q"],["union",["complement",["setvariable","U"]],["setproduct",["setvariable","V"],["setvariable","W"]]]]`
    - output: putdown `(in q (setuni (setcomp U) (setprod V W)))`
+- Test 10
+   - input: JSON `["nounisin",["tuple",["eltthenseq",["numbervariable","a"],["oneeltseq",["numbervariable","b"]]]],["setproduct",["setvariable","A"],["setvariable","B"]]]`
+   - output: putdown `(in (tuple (elts a (elts b))) (setprod A B))`
+- Test 11
+   - input: JSON `["nounisin",["vector",["numthenseq",["numbervariable","a"],["onenumseq",["numbervariable","b"]]]],["setproduct",["setvariable","A"],["setvariable","B"]]]`
+   - output: putdown `(in (vector (elts a (elts b))) (setprod A B))`
 
 
 ### creates the canonical form for "notin" notation
 
 - Test 1
-   - input: JSON `["numberisnotin",["numbervariable","a"],["setvariable","A"]]`
+   - input: JSON `["nounisnotin",["numbervariable","a"],["setvariable","A"]]`
    - output: putdown `(not (in a A))`
 - Test 2
-   - input: JSON `["logicnegation",["setisin",["emptyset"],["emptyset"]]]`
+   - input: JSON `["logicnegation",["nounisin",["emptyset"],["emptyset"]]]`
    - output: putdown `(not (in emptyset emptyset))`
 - Test 3
-   - input: JSON `["numberisnotin",["subtraction",["number","3"],["number","5"]],["intersection",["setvariable","K"],["setvariable","P"]]]`
+   - input: JSON `["nounisnotin",["subtraction",["number","3"],["number","5"]],["intersection",["setvariable","K"],["setvariable","P"]]]`
    - output: putdown `(not (in (- 3 5) (setint K P)))`
 
 
 ### can convert to putdown sentences built from set operators
 
 - Test 1
-   - input: JSON `["disjunction",["logicvariable","P"],["numberisin",["numbervariable","b"],["setvariable","B"]]]`
+   - input: JSON `["disjunction",["logicvariable","P"],["nounisin",["numbervariable","b"],["setvariable","B"]]]`
    - output: putdown `(or P (in b B))`
 - Test 2
-   - input: JSON `["universal",["numbervariable","x"],["numberisin",["numbervariable","x"],["setvariable","X"]]]`
+   - input: JSON `["universal",["numbervariable","x"],["nounisin",["numbervariable","x"],["setvariable","X"]]]`
    - output: putdown `(forall (x , (in x X)))`
 - Test 3
    - input: JSON `["conjunction",["subseteq",["setvariable","A"],["setvariable","B"]],["subseteq",["setvariable","B"],["setvariable","A"]]]`
@@ -1035,44 +1112,87 @@ satisfy the requirements of the test suite) are shown below.
    - output: JSON `["emptyset"]`
 - Test 4
    - input: LaTeX `\{ 1 \}`, typeset $\{ 1 \}$
-   - output: JSON `["finiteset",["onenumseq",["number","1"]]]`
+   - output: JSON `["finiteset",["oneeltseq",["number","1"]]]`
 - Test 5
    - input: LaTeX `\{1,2\}`, typeset $\{1,2\}$
-   - output: JSON `["finiteset",["numthenseq",["number","1"],["onenumseq",["number","2"]]]]`
+   - output: JSON `["finiteset",["eltthenseq",["number","1"],["oneeltseq",["number","2"]]]]`
 - Test 6
    - input: LaTeX `\{1, 2,   3 \}`, typeset $\{1, 2,   3 \}$
-   - output: JSON `["finiteset",["numthenseq",["number","1"],["numthenseq",["number","2"],["onenumseq",["number","3"]]]]]`
+   - output: JSON `["finiteset",["eltthenseq",["number","1"],["eltthenseq",["number","2"],["oneeltseq",["number","3"]]]]]`
 - Test 7
    - input: LaTeX `\{\{\},\emptyset\}`, typeset $\{\{\},\emptyset\}$
-   - output: JSON `["finiteset",["setthenseq",["emptyset"],["onesetseq",["emptyset"]]]]`
+   - output: JSON `["finiteset",["eltthenseq",["emptyset"],["oneeltseq",["emptyset"]]]]`
 - Test 8
    - input: LaTeX `\{\{\emptyset\}\}`, typeset $\{\{\emptyset\}\}$
-   - output: JSON `["finiteset",["onesetseq",["finiteset",["onesetseq",["emptyset"]]]]]`
+   - output: JSON `["finiteset",["oneeltseq",["finiteset",["oneeltseq",["emptyset"]]]]]`
 - Test 9
    - input: LaTeX `\{ 3,x \}`, typeset $\{ 3,x \}$
-   - output: JSON `["finiteset",["numthenseq",["number","3"],["onenumseq",["numbervariable","x"]]]]`
+   - output: JSON `["finiteset",["eltthenseq",["number","3"],["oneeltseq",["numbervariable","x"]]]]`
 - Test 10
    - input: LaTeX `\{ A\cup B, A\cap B \}`, typeset $\{ A\cup B, A\cap B \}$
-   - output: JSON `["finiteset",["setthenseq",["union",["setvariable","A"],["setvariable","B"]],["onesetseq",["intersection",["setvariable","A"],["setvariable","B"]]]]]`
+   - output: JSON `["finiteset",["eltthenseq",["union",["setvariable","A"],["setvariable","B"]],["oneeltseq",["intersection",["setvariable","A"],["setvariable","B"]]]]]`
 - Test 11
    - input: LaTeX `\{ 1, 2, \emptyset, K, P \}`, typeset $\{ 1, 2, \emptyset, K, P \}$
-   - output: JSON `["finiteset",["numthenseq",["number","1"],["numthenseq",["number","2"],["setthenseq",["emptyset"],["numthenseq",["numbervariable","K"],["onenumseq",["numbervariable","P"]]]]]]]`
+   - output: JSON `["finiteset",["eltthenseq",["number","1"],["eltthenseq",["number","2"],["eltthenseq",["emptyset"],["eltthenseq",["numbervariable","K"],["oneeltseq",["numbervariable","P"]]]]]]]`
+
+
+### can convert tuples and vectors to JSON
+
+- Test 1
+   - input: LaTeX `(5,6)`, typeset $(5,6)$
+   - output: JSON `["tuple",["eltthenseq",["number","5"],["oneeltseq",["number","6"]]]]`
+- Test 2
+   - input: LaTeX `(5,A\cup B,k)`, typeset $(5,A\cup B,k)$
+   - output: JSON `["tuple",["eltthenseq",["number","5"],["eltthenseq",["union",["setvariable","A"],["setvariable","B"]],["oneeltseq",["numbervariable","k"]]]]]`
+- Test 3
+   - input: LaTeX `\langle5,6\rangle`, typeset $\langle5,6\rangle$
+   - output: JSON `["vector",["numthenseq",["number","5"],["onenumseq",["number","6"]]]]`
+- Test 4
+   - input: LaTeX `\langle5,-7,k\rangle`, typeset $\langle5,-7,k\rangle$
+   - output: JSON `["vector",["numthenseq",["number","5"],["numthenseq",["numbernegation",["number","7"]],["onenumseq",["numbervariable","k"]]]]]`
+- Test 5
+   - input: LaTeX `()`, typeset $()$
+   - output: JSON `null`
+- Test 6
+   - input: LaTeX `(())`, typeset $(())$
+   - output: JSON `null`
+- Test 7
+   - input: LaTeX `(3)`, typeset $(3)$
+   - output: JSON `["number","3"]`
+- Test 8
+   - input: LaTeX `\langle\rangle`, typeset $\langle\rangle$
+   - output: JSON `null`
+- Test 9
+   - input: LaTeX `\langle3\rangle`, typeset $\langle3\rangle$
+   - output: JSON `null`
+- Test 10
+   - input: LaTeX `((1,2),6)`, typeset $((1,2),6)$
+   - output: JSON `["tuple",["eltthenseq",["tuple",["eltthenseq",["number","1"],["oneeltseq",["number","2"]]]],["oneeltseq",["number","6"]]]]`
+- Test 11
+   - input: LaTeX `\langle(1,2),6\rangle`, typeset $\langle(1,2),6\rangle$
+   - output: JSON `null`
+- Test 12
+   - input: LaTeX `\langle\langle1,2\rangle,6\rangle`, typeset $\langle\langle1,2\rangle,6\rangle$
+   - output: JSON `null`
+- Test 13
+   - input: LaTeX `\langle A\cup B,6\rangle`, typeset $\langle A\cup B,6\rangle$
+   - output: JSON `null`
 
 
 ### can convert simple set memberships and subsets to JSON
 
 - Test 1
    - input: LaTeX `b\in B`, typeset $b\in B$
-   - output: JSON `["numberisin",["numbervariable","b"],["setvariable","B"]]`
+   - output: JSON `["nounisin",["numbervariable","b"],["setvariable","B"]]`
 - Test 2
    - input: LaTeX `2\in\{1,2\}`, typeset $2\in\{1,2\}$
-   - output: JSON `["numberisin",["number","2"],["finiteset",["numthenseq",["number","1"],["onenumseq",["number","2"]]]]]`
+   - output: JSON `["nounisin",["number","2"],["finiteset",["eltthenseq",["number","1"],["oneeltseq",["number","2"]]]]]`
 - Test 3
    - input: LaTeX `X\in a\cup b`, typeset $X\in a\cup b$
-   - output: JSON `["numberisin",["numbervariable","X"],["union",["setvariable","a"],["setvariable","b"]]]`
+   - output: JSON `["nounisin",["numbervariable","X"],["union",["setvariable","a"],["setvariable","b"]]]`
 - Test 4
    - input: LaTeX `A\cup B\in X\cup Y`, typeset $A\cup B\in X\cup Y$
-   - output: JSON `["setisin",["union",["setvariable","A"],["setvariable","B"]],["union",["setvariable","X"],["setvariable","Y"]]]`
+   - output: JSON `["nounisin",["union",["setvariable","A"],["setvariable","B"]],["union",["setvariable","X"],["setvariable","Y"]]]`
 - Test 5
    - input: LaTeX `A\subset\bar B`, typeset $A\subset\bar B$
    - output: JSON `["subset",["setvariable","A"],["complement",["setvariable","B"]]]`
@@ -1084,39 +1204,45 @@ satisfy the requirements of the test suite) are shown below.
    - output: JSON `["subseteq",["intersection",["setvariable","u"],["setvariable","v"]],["union",["setvariable","u"],["setvariable","v"]]]`
 - Test 8
    - input: LaTeX `\{1\}\subseteq\{1\}\cup\{2\}`, typeset $\{1\}\subseteq\{1\}\cup\{2\}$
-   - output: JSON `["subseteq",["finiteset",["onenumseq",["number","1"]]],["union",["finiteset",["onenumseq",["number","1"]]],["finiteset",["onenumseq",["number","2"]]]]]`
+   - output: JSON `["subseteq",["finiteset",["oneeltseq",["number","1"]]],["union",["finiteset",["oneeltseq",["number","1"]]],["finiteset",["oneeltseq",["number","2"]]]]]`
 - Test 9
    - input: LaTeX `p\in U\times V`, typeset $p\in U\times V$
-   - output: JSON `["numberisin",["numbervariable","p"],["setproduct",["setvariable","U"],["setvariable","V"]]]`
+   - output: JSON `["nounisin",["numbervariable","p"],["setproduct",["setvariable","U"],["setvariable","V"]]]`
 - Test 10
    - input: LaTeX `q \in U'\cup V\times W`, typeset $q \in U'\cup V\times W$
-   - output: JSON `["numberisin",["numbervariable","q"],["union",["complement",["setvariable","U"]],["setproduct",["setvariable","V"],["setvariable","W"]]]]`
+   - output: JSON `["nounisin",["numbervariable","q"],["union",["complement",["setvariable","U"]],["setproduct",["setvariable","V"],["setvariable","W"]]]]`
+- Test 11
+   - input: LaTeX `(a,b)\in A\times B`, typeset $(a,b)\in A\times B$
+   - output: JSON `["nounisin",["tuple",["eltthenseq",["numbervariable","a"],["oneeltseq",["numbervariable","b"]]]],["setproduct",["setvariable","A"],["setvariable","B"]]]`
+- Test 12
+   - input: LaTeX `\langle a,b\rangle\in A\times B`, typeset $\langle a,b\rangle\in A\times B$
+   - output: JSON `["nounisin",["vector",["numthenseq",["numbervariable","a"],["onenumseq",["numbervariable","b"]]]],["setproduct",["setvariable","A"],["setvariable","B"]]]`
 
 
 ### converts "notin" notation to its placeholder concept
 
 - Test 1
    - input: LaTeX `a\notin A`, typeset $a\notin A$
-   - output: JSON `["numberisnotin",["numbervariable","a"],["setvariable","A"]]`
+   - output: JSON `["nounisnotin",["numbervariable","a"],["setvariable","A"]]`
 - Test 2
    - input: LaTeX `\emptyset\notin\emptyset`, typeset $\emptyset\notin\emptyset$
-   - output: JSON `["setisnotin",["emptyset"],["emptyset"]]`
+   - output: JSON `["nounisnotin",["emptyset"],["emptyset"]]`
 - Test 3
    - input: LaTeX `3-5 \notin K\cap P`, typeset $3-5 \notin K\cap P$
-   - output: JSON `["numberisnotin",["subtraction",["number","3"],["number","5"]],["intersection",["setvariable","K"],["setvariable","P"]]]`
+   - output: JSON `["nounisnotin",["subtraction",["number","3"],["number","5"]],["intersection",["setvariable","K"],["setvariable","P"]]]`
 
 
 ### can parse to JSON sentences built from set operators
 
 - Test 1
    - input: LaTeX `P\vee b\in B`, typeset $P\vee b\in B$
-   - output: JSON `["disjunction",["logicvariable","P"],["numberisin",["numbervariable","b"],["setvariable","B"]]]`
+   - output: JSON `["disjunction",["logicvariable","P"],["nounisin",["numbervariable","b"],["setvariable","B"]]]`
 - Test 2
    - input: LaTeX `{P \vee b} \in B`, typeset ${P \vee b} \in B$
    - output: JSON `["propisin",["disjunction",["logicvariable","P"],["logicvariable","b"]],["setvariable","B"]]`
 - Test 3
    - input: LaTeX `\forall x, x\in X`, typeset $\forall x, x\in X$
-   - output: JSON `["universal",["numbervariable","x"],["numberisin",["numbervariable","x"],["setvariable","X"]]]`
+   - output: JSON `["universal",["numbervariable","x"],["nounisin",["numbervariable","x"],["setvariable","X"]]]`
 - Test 4
    - input: LaTeX `A\subseteq B\wedge B\subseteq A`, typeset $A\subseteq B\wedge B\subseteq A$
    - output: JSON `["conjunction",["subseteq",["setvariable","A"],["setvariable","B"]],["subseteq",["setvariable","B"],["setvariable","A"]]]`
@@ -1399,44 +1525,63 @@ satisfy the requirements of the test suite) are shown below.
    - input: JSON `["emptyset"]`
    - output: LaTeX `\emptyset`, typeset $\emptyset$
 - Test 2
-   - input: JSON `["finiteset",["onenumseq",["number","1"]]]`
+   - input: JSON `["finiteset",["oneeltseq",["number","1"]]]`
    - output: LaTeX `\{ 1 \}`, typeset $\{ 1 \}$
 - Test 3
-   - input: JSON `["finiteset",["numthenseq",["number","1"],["onenumseq",["number","2"]]]]`
+   - input: JSON `["finiteset",["eltthenseq",["number","1"],["oneeltseq",["number","2"]]]]`
    - output: LaTeX `\{ 1 , 2 \}`, typeset $\{ 1 , 2 \}$
 - Test 4
-   - input: JSON `["finiteset",["numthenseq",["number","1"],["numthenseq",["number","2"],["onenumseq",["number","3"]]]]]`
+   - input: JSON `["finiteset",["eltthenseq",["number","1"],["eltthenseq",["number","2"],["oneeltseq",["number","3"]]]]]`
    - output: LaTeX `\{ 1 , 2 , 3 \}`, typeset $\{ 1 , 2 , 3 \}$
 - Test 5
-   - input: JSON `["finiteset",["setthenseq",["emptyset"],["onesetseq",["emptyset"]]]]`
+   - input: JSON `["finiteset",["eltthenseq",["emptyset"],["oneeltseq",["emptyset"]]]]`
    - output: LaTeX `\{ \emptyset , \emptyset \}`, typeset $\{ \emptyset , \emptyset \}$
 - Test 6
-   - input: JSON `["finiteset",["onesetseq",["finiteset",["onesetseq",["emptyset"]]]]]`
+   - input: JSON `["finiteset",["oneeltseq",["finiteset",["oneeltseq",["emptyset"]]]]]`
    - output: LaTeX `\{ \{ \emptyset \} \}`, typeset $\{ \{ \emptyset \} \}$
 - Test 7
-   - input: JSON `["finiteset",["numthenseq",["number","3"],["onenumseq",["numbervariable","x"]]]]`
+   - input: JSON `["finiteset",["eltthenseq",["number","3"],["oneeltseq",["numbervariable","x"]]]]`
    - output: LaTeX `\{ 3 , x \}`, typeset $\{ 3 , x \}$
 - Test 8
-   - input: JSON `["finiteset",["setthenseq",["union",["setvariable","A"],["setvariable","B"]],["onesetseq",["intersection",["setvariable","A"],["setvariable","B"]]]]]`
+   - input: JSON `["finiteset",["eltthenseq",["union",["setvariable","A"],["setvariable","B"]],["oneeltseq",["intersection",["setvariable","A"],["setvariable","B"]]]]]`
    - output: LaTeX `\{ A \cup B , A \cap B \}`, typeset $\{ A \cup B , A \cap B \}$
 - Test 9
-   - input: JSON `["finiteset",["numthenseq",["number","1"],["numthenseq",["number","2"],["setthenseq",["emptyset"],["numthenseq",["numbervariable","K"],["onenumseq",["numbervariable","P"]]]]]]]`
+   - input: JSON `["finiteset",["eltthenseq",["number","1"],["eltthenseq",["number","2"],["eltthenseq",["emptyset"],["eltthenseq",["numbervariable","K"],["oneeltseq",["numbervariable","P"]]]]]]]`
    - output: LaTeX `\{ 1 , 2 , \emptyset , K , P \}`, typeset $\{ 1 , 2 , \emptyset , K , P \}$
+
+
+### can convert tuples and vectors from JSON to LaTeX
+
+- Test 1
+   - input: JSON `["tuple",["eltthenseq",["number","5"],["oneeltseq",["number","6"]]]]`
+   - output: LaTeX `( 5 , 6 )`, typeset $( 5 , 6 )$
+- Test 2
+   - input: JSON `["tuple",["eltthenseq",["number","5"],["eltthenseq",["union",["setvariable","A"],["setvariable","B"]],["oneeltseq",["numbervariable","k"]]]]]`
+   - output: LaTeX `( 5 , A \cup B , k )`, typeset $( 5 , A \cup B , k )$
+- Test 3
+   - input: JSON `["vector",["numthenseq",["number","5"],["onenumseq",["number","6"]]]]`
+   - output: LaTeX `\langle 5 , 6 \rangle`, typeset $\langle 5 , 6 \rangle$
+- Test 4
+   - input: JSON `["vector",["numthenseq",["number","5"],["numthenseq",["numbernegation",["number","7"]],["onenumseq",["numbervariable","k"]]]]]`
+   - output: LaTeX `\langle 5 , - 7 , k \rangle`, typeset $\langle 5 , - 7 , k \rangle$
+- Test 5
+   - input: JSON `["tuple",["eltthenseq",["tuple",["eltthenseq",["number","1"],["oneeltseq",["number","2"]]]],["oneeltseq",["number","6"]]]]`
+   - output: LaTeX `( ( 1 , 2 ) , 6 )`, typeset $( ( 1 , 2 ) , 6 )$
 
 
 ### can convert simple set memberships and subsets to LaTeX
 
 - Test 1
-   - input: JSON `["numberisin",["numbervariable","b"],["setvariable","B"]]`
+   - input: JSON `["nounisin",["numbervariable","b"],["setvariable","B"]]`
    - output: LaTeX `b \in B`, typeset $b \in B$
 - Test 2
-   - input: JSON `["numberisin",["number","2"],["finiteset",["numthenseq",["number","1"],["onenumseq",["number","2"]]]]]`
+   - input: JSON `["nounisin",["number","2"],["finiteset",["eltthenseq",["number","1"],["oneeltseq",["number","2"]]]]]`
    - output: LaTeX `2 \in \{ 1 , 2 \}`, typeset $2 \in \{ 1 , 2 \}$
 - Test 3
-   - input: JSON `["numberisin",["numbervariable","X"],["union",["setvariable","a"],["setvariable","b"]]]`
+   - input: JSON `["nounisin",["numbervariable","X"],["union",["setvariable","a"],["setvariable","b"]]]`
    - output: LaTeX `X \in a \cup b`, typeset $X \in a \cup b$
 - Test 4
-   - input: JSON `["setisin",["union",["setvariable","A"],["setvariable","B"]],["union",["setvariable","X"],["setvariable","Y"]]]`
+   - input: JSON `["nounisin",["union",["setvariable","A"],["setvariable","B"]],["union",["setvariable","X"],["setvariable","Y"]]]`
    - output: LaTeX `A \cup B \in X \cup Y`, typeset $A \cup B \in X \cup Y$
 - Test 5
    - input: JSON `["subset",["setvariable","A"],["complement",["setvariable","B"]]]`
@@ -1445,39 +1590,45 @@ satisfy the requirements of the test suite) are shown below.
    - input: JSON `["subseteq",["intersection",["setvariable","u"],["setvariable","v"]],["union",["setvariable","u"],["setvariable","v"]]]`
    - output: LaTeX `u \cap v \subseteq u \cup v`, typeset $u \cap v \subseteq u \cup v$
 - Test 7
-   - input: JSON `["subseteq",["finiteset",["onenumseq",["number","1"]]],["union",["finiteset",["onenumseq",["number","1"]]],["finiteset",["onenumseq",["number","2"]]]]]`
+   - input: JSON `["subseteq",["finiteset",["oneeltseq",["number","1"]]],["union",["finiteset",["oneeltseq",["number","1"]]],["finiteset",["oneeltseq",["number","2"]]]]]`
    - output: LaTeX `\{ 1 \} \subseteq \{ 1 \} \cup \{ 2 \}`, typeset $\{ 1 \} \subseteq \{ 1 \} \cup \{ 2 \}$
 - Test 8
-   - input: JSON `["numberisin",["numbervariable","p"],["setproduct",["setvariable","U"],["setvariable","V"]]]`
+   - input: JSON `["nounisin",["numbervariable","p"],["setproduct",["setvariable","U"],["setvariable","V"]]]`
    - output: LaTeX `p \in U \times V`, typeset $p \in U \times V$
 - Test 9
-   - input: JSON `["numberisin",["numbervariable","q"],["union",["complement",["setvariable","U"]],["setproduct",["setvariable","V"],["setvariable","W"]]]]`
+   - input: JSON `["nounisin",["numbervariable","q"],["union",["complement",["setvariable","U"]],["setproduct",["setvariable","V"],["setvariable","W"]]]]`
    - output: LaTeX `q \in \bar U \cup V \times W`, typeset $q \in \bar U \cup V \times W$
+- Test 10
+   - input: JSON `["nounisin",["tuple",["eltthenseq",["numbervariable","a"],["oneeltseq",["numbervariable","b"]]]],["setproduct",["setvariable","A"],["setvariable","B"]]]`
+   - output: LaTeX `( a , b ) \in A \times B`, typeset $( a , b ) \in A \times B$
+- Test 11
+   - input: JSON `["nounisin",["vector",["numthenseq",["numbervariable","a"],["onenumseq",["numbervariable","b"]]]],["setproduct",["setvariable","A"],["setvariable","B"]]]`
+   - output: LaTeX `\langle a , b \rangle \in A \times B`, typeset $\langle a , b \rangle \in A \times B$
 
 
 ### can represent "notin" notation if JSON explicitly requests it
 
 - Test 1
-   - input: JSON `["logicnegation",["numberisin",["numbervariable","a"],["setvariable","A"]]]`
+   - input: JSON `["logicnegation",["nounisin",["numbervariable","a"],["setvariable","A"]]]`
    - output: LaTeX `\neg a \in A`, typeset $\neg a \in A$
 - Test 2
-   - input: JSON `["logicnegation",["setisin",["emptyset"],["emptyset"]]]`
+   - input: JSON `["logicnegation",["nounisin",["emptyset"],["emptyset"]]]`
    - output: LaTeX `\neg \emptyset \in \emptyset`, typeset $\neg \emptyset \in \emptyset$
 - Test 3
-   - input: JSON `["logicnegation",["numberisin",["subtraction",["number","3"],["number","5"]],["intersection",["setvariable","K"],["setvariable","P"]]]]`
+   - input: JSON `["logicnegation",["nounisin",["subtraction",["number","3"],["number","5"]],["intersection",["setvariable","K"],["setvariable","P"]]]]`
    - output: LaTeX `\neg 3 - 5 \in K \cap P`, typeset $\neg 3 - 5 \in K \cap P$
 
 
 ### can convert to LaTeX sentences built from set operators
 
 - Test 1
-   - input: JSON `["disjunction",["logicvariable","P"],["numberisin",["numbervariable","b"],["setvariable","B"]]]`
+   - input: JSON `["disjunction",["logicvariable","P"],["nounisin",["numbervariable","b"],["setvariable","B"]]]`
    - output: LaTeX `P \vee b \in B`, typeset $P \vee b \in B$
 - Test 2
    - input: JSON `["propisin",["disjunction",["logicvariable","P"],["logicvariable","b"]],["setvariable","B"]]`
    - output: LaTeX `{P \vee b} \in B`, typeset ${P \vee b} \in B$
 - Test 3
-   - input: JSON `["universal",["numbervariable","x"],["numberisin",["numbervariable","x"],["setvariable","X"]]]`
+   - input: JSON `["universal",["numbervariable","x"],["nounisin",["numbervariable","x"],["setvariable","X"]]]`
    - output: LaTeX `\forall x , x \in X`, typeset $\forall x , x \in X$
 - Test 4
    - input: JSON `["conjunction",["subseteq",["setvariable","A"],["setvariable","B"]],["subseteq",["setvariable","B"],["setvariable","A"]]]`
@@ -1771,6 +1922,52 @@ satisfy the requirements of the test suite) are shown below.
    - output: LaTeX `\{ 1 , 2 , \emptyset , K , P \}`, typeset $\{ 1 , 2 , \emptyset , K , P \}$
 
 
+### correctly converts tuples and vectors
+
+- Test 1
+   - input: putdown `(tuple (elts 5 (elts 6)))`
+   - output: LaTeX `( 5 , 6 )`, typeset $( 5 , 6 )$
+- Test 2
+   - input: putdown `(tuple (elts 5 (elts (setuni A B) (elts k))))`
+   - output: LaTeX `( 5 , A \cup B , k )`, typeset $( 5 , A \cup B , k )$
+- Test 3
+   - input: putdown `(vector (elts 5 (elts 6)))`
+   - output: LaTeX `\langle 5 , 6 \rangle`, typeset $\langle 5 , 6 \rangle$
+- Test 4
+   - input: putdown `(vector (elts 5 (elts (- 7) (elts k))))`
+   - output: LaTeX `\langle 5 , - 7 , k \rangle`, typeset $\langle 5 , - 7 , k \rangle$
+- Test 5
+   - input: putdown `(tuple)`
+   - output: LaTeX `null`, typeset $undefined$
+- Test 6
+   - input: putdown `(tuple (elts))`
+   - output: LaTeX `null`, typeset $undefined$
+- Test 7
+   - input: putdown `(tuple (elts 3))`
+   - output: LaTeX `null`, typeset $undefined$
+- Test 8
+   - input: putdown `(vector)`
+   - output: LaTeX `null`, typeset $undefined$
+- Test 9
+   - input: putdown `(vector (elts))`
+   - output: LaTeX `null`, typeset $undefined$
+- Test 10
+   - input: putdown `(vector (elts 3))`
+   - output: LaTeX `null`, typeset $undefined$
+- Test 11
+   - input: putdown `(tuple (elts (tuple (elts 1 (elts 2))) (elts 6)))`
+   - output: LaTeX `( ( 1 , 2 ) , 6 )`, typeset $( ( 1 , 2 ) , 6 )$
+- Test 12
+   - input: putdown `(vector (elts (tuple (elts 1 (elts 2))) (elts 6)))`
+   - output: LaTeX `null`, typeset $undefined$
+- Test 13
+   - input: putdown `(vector (elts (vector (elts 1 (elts 2))) (elts 6)))`
+   - output: LaTeX `null`, typeset $undefined$
+- Test 14
+   - input: putdown `(vector (elts (setuni A B) (elts 6)))`
+   - output: LaTeX `null`, typeset $undefined$
+
+
 ### can convert simple set memberships and subsets
 
 - Test 1
@@ -1800,6 +1997,12 @@ satisfy the requirements of the test suite) are shown below.
 - Test 9
    - input: putdown `(in q (setuni (setcomp U) (setprod V W)))`
    - output: LaTeX `q \in \bar U \cup V \times W`, typeset $q \in \bar U \cup V \times W$
+- Test 10
+   - input: putdown `(in (tuple (elts a (elts b))) (setprod A B))`
+   - output: LaTeX `( a , b ) \in A \times B`, typeset $( a , b ) \in A \times B$
+- Test 11
+   - input: putdown `(in (vector (elts a (elts b))) (setprod A B))`
+   - output: LaTeX `\langle a , b \rangle \in A \times B`, typeset $\langle a , b \rangle \in A \times B$
 
 
 ### does not undo the canonical form for "notin" notation
@@ -2142,6 +2345,49 @@ satisfy the requirements of the test suite) are shown below.
    - output: putdown `(finiteset (elts 1 (elts 2 (elts emptyset (elts K (elts P))))))`
 
 
+### correctly converts tuples and vectors
+
+- Test 1
+   - input: LaTeX `( 5 , 6 )`, typeset $( 5 , 6 )$
+   - output: putdown `(tuple (elts 5 (elts 6)))`
+- Test 2
+   - input: LaTeX `( 5 , A \cup B , k )`, typeset $( 5 , A \cup B , k )$
+   - output: putdown `(tuple (elts 5 (elts (setuni A B) (elts k))))`
+- Test 3
+   - input: LaTeX `\langle 5 , 6 \rangle`, typeset $\langle 5 , 6 \rangle$
+   - output: putdown `(vector (elts 5 (elts 6)))`
+- Test 4
+   - input: LaTeX `\langle 5 , - 7 , k \rangle`, typeset $\langle 5 , - 7 , k \rangle$
+   - output: putdown `(vector (elts 5 (elts (- 7) (elts k))))`
+- Test 5
+   - input: LaTeX `()`, typeset $()$
+   - output: putdown `null`
+- Test 6
+   - input: LaTeX `(())`, typeset $(())$
+   - output: putdown `null`
+- Test 7
+   - input: LaTeX `(3)`, typeset $(3)$
+   - output: putdown `3`
+- Test 8
+   - input: LaTeX `\langle\rangle`, typeset $\langle\rangle$
+   - output: putdown `null`
+- Test 9
+   - input: LaTeX `\langle3\rangle`, typeset $\langle3\rangle$
+   - output: putdown `null`
+- Test 10
+   - input: LaTeX `( ( 1 , 2 ) , 6 )`, typeset $( ( 1 , 2 ) , 6 )$
+   - output: putdown `(tuple (elts (tuple (elts 1 (elts 2))) (elts 6)))`
+- Test 11
+   - input: LaTeX `\langle(1,2),6\rangle`, typeset $\langle(1,2),6\rangle$
+   - output: putdown `null`
+- Test 12
+   - input: LaTeX `\langle\langle1,2\rangle,6\rangle`, typeset $\langle\langle1,2\rangle,6\rangle$
+   - output: putdown `null`
+- Test 13
+   - input: LaTeX `\langle A\cup B,6\rangle`, typeset $\langle A\cup B,6\rangle$
+   - output: putdown `null`
+
+
 ### can convert simple set memberships and subsets
 
 - Test 1
@@ -2171,6 +2417,12 @@ satisfy the requirements of the test suite) are shown below.
 - Test 9
    - input: LaTeX `q \in \bar U \cup V \times W`, typeset $q \in \bar U \cup V \times W$
    - output: putdown `(in q (setuni (setcomp U) (setprod V W)))`
+- Test 10
+   - input: LaTeX `( a , b ) \in A \times B`, typeset $( a , b ) \in A \times B$
+   - output: putdown `(in (tuple (elts a (elts b))) (setprod A B))`
+- Test 11
+   - input: LaTeX `\langle a , b \rangle \in A \times B`, typeset $\langle a , b \rangle \in A \times B$
+   - output: putdown `(in (vector (elts a (elts b))) (setprod A B))`
 
 
 ### expands "notin" notation into canonical form

@@ -367,7 +367,7 @@ export class AST extends Array {
         }
         // since it's not a syntactic type, it better be a concept
         if ( !this.isConcept() )
-            throw new Error( 'Not a syntactic type nor a concept: ' + ast.head() )
+            throw new Error( 'Not a syntactic type nor a concept: ' + this.head() )
         // if it's an atomic concept with one argument, defined by a regular
         // expression, just return the argument, because this is a base case
         const concept = this.concept()

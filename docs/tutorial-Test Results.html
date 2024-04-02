@@ -527,49 +527,136 @@ satisfy the requirements of the test suite) are shown below.</p>
 <li>Test 2
 <ul>
 <li>input: putdown <code>(finiteset (elts 1))</code></li>
-<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;1&quot;]]]</code></li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;1&quot;]]]</code></li>
 </ul>
 </li>
 <li>Test 3
 <ul>
 <li>input: putdown <code>(finiteset (elts 1 (elts 2)))</code></li>
-<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]</code></li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]</code></li>
 </ul>
 </li>
 <li>Test 4
 <ul>
 <li>input: putdown <code>(finiteset (elts 1 (elts 2 (elts 3))))</code></li>
-<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;3&quot;]]]]]</code></li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;3&quot;]]]]]</code></li>
 </ul>
 </li>
 <li>Test 5
 <ul>
 <li>input: putdown <code>(finiteset (elts emptyset (elts emptyset)))</code></li>
-<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;setthenseq&quot;,[&quot;emptyset&quot;],[&quot;onesetseq&quot;,[&quot;emptyset&quot;]]]]</code></li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;eltthenseq&quot;,[&quot;emptyset&quot;],[&quot;oneeltseq&quot;,[&quot;emptyset&quot;]]]]</code></li>
 </ul>
 </li>
 <li>Test 6
 <ul>
 <li>input: putdown <code>(finiteset (elts (finiteset (elts emptyset))))</code></li>
-<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;onesetseq&quot;,[&quot;finiteset&quot;,[&quot;onesetseq&quot;,[&quot;emptyset&quot;]]]]]</code></li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;oneeltseq&quot;,[&quot;finiteset&quot;,[&quot;oneeltseq&quot;,[&quot;emptyset&quot;]]]]]</code></li>
 </ul>
 </li>
 <li>Test 7
 <ul>
 <li>input: putdown <code>(finiteset (elts 3 (elts x)))</code></li>
-<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;onenumseq&quot;,[&quot;numbervariable&quot;,&quot;x&quot;]]]]</code></li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;oneeltseq&quot;,[&quot;numbervariable&quot;,&quot;x&quot;]]]]</code></li>
 </ul>
 </li>
 <li>Test 8
 <ul>
 <li>input: putdown <code>(finiteset (elts (setuni A B) (elts (setint A B))))</code></li>
-<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;setthenseq&quot;,[&quot;union&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;onesetseq&quot;,[&quot;intersection&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]]]</code></li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;eltthenseq&quot;,[&quot;union&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;oneeltseq&quot;,[&quot;intersection&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]]]</code></li>
 </ul>
 </li>
 <li>Test 9
 <ul>
 <li>input: putdown <code>(finiteset (elts 1 (elts 2 (elts emptyset (elts K (elts P))))))</code></li>
-<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;setthenseq&quot;,[&quot;emptyset&quot;],[&quot;numthenseq&quot;,[&quot;numbervariable&quot;,&quot;K&quot;],[&quot;onenumseq&quot;,[&quot;numbervariable&quot;,&quot;P&quot;]]]]]]]</code></li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;eltthenseq&quot;,[&quot;emptyset&quot;],[&quot;eltthenseq&quot;,[&quot;numbervariable&quot;,&quot;K&quot;],[&quot;oneeltseq&quot;,[&quot;numbervariable&quot;,&quot;P&quot;]]]]]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert tuples and vectors to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(tuple (elts 5 (elts 6)))</code></li>
+<li>output: JSON <code>[&quot;tuple&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;5&quot;],[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;6&quot;]]]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(tuple (elts 5 (elts (setuni A B) (elts k))))</code></li>
+<li>output: JSON <code>[&quot;tuple&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;5&quot;],[&quot;eltthenseq&quot;,[&quot;union&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;oneeltseq&quot;,[&quot;numbervariable&quot;,&quot;k&quot;]]]]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(vector (elts 5 (elts 6)))</code></li>
+<li>output: JSON <code>[&quot;vector&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;5&quot;],[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;6&quot;]]]]</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: putdown <code>(vector (elts 5 (elts (- 7) (elts k))))</code></li>
+<li>output: JSON <code>[&quot;vector&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;5&quot;],[&quot;numthenseq&quot;,[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;7&quot;]],[&quot;onenumseq&quot;,[&quot;numbervariable&quot;,&quot;k&quot;]]]]]</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: putdown <code>(tuple)</code></li>
+<li>output: JSON <code>null</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: putdown <code>(tuple (elts))</code></li>
+<li>output: JSON <code>null</code></li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: putdown <code>(tuple (elts 3))</code></li>
+<li>output: JSON <code>null</code></li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: putdown <code>(vector)</code></li>
+<li>output: JSON <code>null</code></li>
+</ul>
+</li>
+<li>Test 9
+<ul>
+<li>input: putdown <code>(vector (elts))</code></li>
+<li>output: JSON <code>null</code></li>
+</ul>
+</li>
+<li>Test 10
+<ul>
+<li>input: putdown <code>(vector (elts 3))</code></li>
+<li>output: JSON <code>null</code></li>
+</ul>
+</li>
+<li>Test 11
+<ul>
+<li>input: putdown <code>(tuple (elts (tuple (elts 1 (elts 2))) (elts 6)))</code></li>
+<li>output: JSON <code>[&quot;tuple&quot;,[&quot;eltthenseq&quot;,[&quot;tuple&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]],[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;6&quot;]]]]</code></li>
+</ul>
+</li>
+<li>Test 12
+<ul>
+<li>input: putdown <code>(vector (elts (tuple (elts 1 (elts 2))) (elts 6)))</code></li>
+<li>output: JSON <code>null</code></li>
+</ul>
+</li>
+<li>Test 13
+<ul>
+<li>input: putdown <code>(vector (elts (vector (elts 1 (elts 2))) (elts 6)))</code></li>
+<li>output: JSON <code>null</code></li>
+</ul>
+</li>
+<li>Test 14
+<ul>
+<li>input: putdown <code>(vector (elts (setuni A B) (elts 6)))</code></li>
+<li>output: JSON <code>null</code></li>
 </ul>
 </li>
 </ul>
@@ -578,25 +665,25 @@ satisfy the requirements of the test suite) are shown below.</p>
 <li>Test 1
 <ul>
 <li>input: putdown <code>(in b B)</code></li>
-<li>output: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;b&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]</code></li>
+<li>output: JSON <code>[&quot;nounisin&quot;,[&quot;numbervariable&quot;,&quot;b&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]</code></li>
 </ul>
 </li>
 <li>Test 2
 <ul>
 <li>input: putdown <code>(in 2 (finiteset (elts 1 (elts 2))))</code></li>
-<li>output: JSON <code>[&quot;numberisin&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]]</code></li>
+<li>output: JSON <code>[&quot;nounisin&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;finiteset&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]]</code></li>
 </ul>
 </li>
 <li>Test 3
 <ul>
 <li>input: putdown <code>(in X (setuni a b))</code></li>
-<li>output: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;X&quot;],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;a&quot;],[&quot;setvariable&quot;,&quot;b&quot;]]]</code></li>
+<li>output: JSON <code>[&quot;nounisin&quot;,[&quot;numbervariable&quot;,&quot;X&quot;],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;a&quot;],[&quot;setvariable&quot;,&quot;b&quot;]]]</code></li>
 </ul>
 </li>
 <li>Test 4
 <ul>
 <li>input: putdown <code>(in (setuni A B) (setuni X Y))</code></li>
-<li>output: JSON <code>[&quot;setisin&quot;,[&quot;union&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;X&quot;],[&quot;setvariable&quot;,&quot;Y&quot;]]]</code></li>
+<li>output: JSON <code>[&quot;nounisin&quot;,[&quot;union&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;X&quot;],[&quot;setvariable&quot;,&quot;Y&quot;]]]</code></li>
 </ul>
 </li>
 <li>Test 5
@@ -614,19 +701,31 @@ satisfy the requirements of the test suite) are shown below.</p>
 <li>Test 7
 <ul>
 <li>input: putdown <code>(subseteq (finiteset (elts 1)) (setuni (finiteset (elts 1)) (finiteset (elts 2))))</code></li>
-<li>output: JSON <code>[&quot;subseteq&quot;,[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;1&quot;]]],[&quot;union&quot;,[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;1&quot;]]],[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]]</code></li>
+<li>output: JSON <code>[&quot;subseteq&quot;,[&quot;finiteset&quot;,[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;1&quot;]]],[&quot;union&quot;,[&quot;finiteset&quot;,[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;1&quot;]]],[&quot;finiteset&quot;,[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]]</code></li>
 </ul>
 </li>
 <li>Test 8
 <ul>
 <li>input: putdown <code>(in p (setprod U V))</code></li>
-<li>output: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;p&quot;],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;U&quot;],[&quot;setvariable&quot;,&quot;V&quot;]]]</code></li>
+<li>output: JSON <code>[&quot;nounisin&quot;,[&quot;numbervariable&quot;,&quot;p&quot;],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;U&quot;],[&quot;setvariable&quot;,&quot;V&quot;]]]</code></li>
 </ul>
 </li>
 <li>Test 9
 <ul>
 <li>input: putdown <code>(in q (setuni (setcomp U) (setprod V W)))</code></li>
-<li>output: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;q&quot;],[&quot;union&quot;,[&quot;complement&quot;,[&quot;setvariable&quot;,&quot;U&quot;]],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;V&quot;],[&quot;setvariable&quot;,&quot;W&quot;]]]]</code></li>
+<li>output: JSON <code>[&quot;nounisin&quot;,[&quot;numbervariable&quot;,&quot;q&quot;],[&quot;union&quot;,[&quot;complement&quot;,[&quot;setvariable&quot;,&quot;U&quot;]],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;V&quot;],[&quot;setvariable&quot;,&quot;W&quot;]]]]</code></li>
+</ul>
+</li>
+<li>Test 10
+<ul>
+<li>input: putdown <code>(in (tuple (elts a (elts b))) (setprod A B))</code></li>
+<li>output: JSON <code>[&quot;nounisin&quot;,[&quot;tuple&quot;,[&quot;eltthenseq&quot;,[&quot;numbervariable&quot;,&quot;a&quot;],[&quot;oneeltseq&quot;,[&quot;numbervariable&quot;,&quot;b&quot;]]]],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 11
+<ul>
+<li>input: putdown <code>(in (vector (elts a (elts b))) (setprod A B))</code></li>
+<li>output: JSON <code>[&quot;nounisin&quot;,[&quot;vector&quot;,[&quot;numthenseq&quot;,[&quot;numbervariable&quot;,&quot;a&quot;],[&quot;onenumseq&quot;,[&quot;numbervariable&quot;,&quot;b&quot;]]]],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
 </ul>
 </li>
 </ul>
@@ -635,19 +734,19 @@ satisfy the requirements of the test suite) are shown below.</p>
 <li>Test 1
 <ul>
 <li>input: putdown <code>(not (in a A))</code></li>
-<li>output: JSON <code>[&quot;logicnegation&quot;,[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;a&quot;],[&quot;setvariable&quot;,&quot;A&quot;]]]</code></li>
+<li>output: JSON <code>[&quot;logicnegation&quot;,[&quot;nounisin&quot;,[&quot;numbervariable&quot;,&quot;a&quot;],[&quot;setvariable&quot;,&quot;A&quot;]]]</code></li>
 </ul>
 </li>
 <li>Test 2
 <ul>
 <li>input: putdown <code>(not (in emptyset emptyset))</code></li>
-<li>output: JSON <code>[&quot;logicnegation&quot;,[&quot;setisin&quot;,[&quot;emptyset&quot;],[&quot;emptyset&quot;]]]</code></li>
+<li>output: JSON <code>[&quot;logicnegation&quot;,[&quot;nounisin&quot;,[&quot;emptyset&quot;],[&quot;emptyset&quot;]]]</code></li>
 </ul>
 </li>
 <li>Test 3
 <ul>
 <li>input: putdown <code>(not (in (- 3 5) (setint K P)))</code></li>
-<li>output: JSON <code>[&quot;logicnegation&quot;,[&quot;numberisin&quot;,[&quot;subtraction&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;number&quot;,&quot;5&quot;]],[&quot;intersection&quot;,[&quot;setvariable&quot;,&quot;K&quot;],[&quot;setvariable&quot;,&quot;P&quot;]]]]</code></li>
+<li>output: JSON <code>[&quot;logicnegation&quot;,[&quot;nounisin&quot;,[&quot;subtraction&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;number&quot;,&quot;5&quot;]],[&quot;intersection&quot;,[&quot;setvariable&quot;,&quot;K&quot;],[&quot;setvariable&quot;,&quot;P&quot;]]]]</code></li>
 </ul>
 </li>
 </ul>
@@ -656,13 +755,13 @@ satisfy the requirements of the test suite) are shown below.</p>
 <li>Test 1
 <ul>
 <li>input: putdown <code>(or P (in b B))</code></li>
-<li>output: JSON <code>[&quot;disjunction&quot;,[&quot;logicvariable&quot;,&quot;P&quot;],[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;b&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
+<li>output: JSON <code>[&quot;disjunction&quot;,[&quot;logicvariable&quot;,&quot;P&quot;],[&quot;nounisin&quot;,[&quot;numbervariable&quot;,&quot;b&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
 </ul>
 </li>
 <li>Test 2
 <ul>
 <li>input: putdown <code>(forall (x , (in x X)))</code></li>
-<li>output: JSON <code>[&quot;universal&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;setvariable&quot;,&quot;X&quot;]]]</code></li>
+<li>output: JSON <code>[&quot;universal&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;nounisin&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;setvariable&quot;,&quot;X&quot;]]]</code></li>
 </ul>
 </li>
 <li>Test 3
@@ -1148,50 +1247,83 @@ satisfy the requirements of the test suite) are shown below.</p>
 </li>
 <li>Test 2
 <ul>
-<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;1&quot;]]]</code></li>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;1&quot;]]]</code></li>
 <li>output: putdown <code>(finiteset (elts 1))</code></li>
 </ul>
 </li>
 <li>Test 3
 <ul>
-<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]</code></li>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]</code></li>
 <li>output: putdown <code>(finiteset (elts 1 (elts 2)))</code></li>
 </ul>
 </li>
 <li>Test 4
 <ul>
-<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;3&quot;]]]]]</code></li>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;3&quot;]]]]]</code></li>
 <li>output: putdown <code>(finiteset (elts 1 (elts 2 (elts 3))))</code></li>
 </ul>
 </li>
 <li>Test 5
 <ul>
-<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;setthenseq&quot;,[&quot;emptyset&quot;],[&quot;onesetseq&quot;,[&quot;emptyset&quot;]]]]</code></li>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;eltthenseq&quot;,[&quot;emptyset&quot;],[&quot;oneeltseq&quot;,[&quot;emptyset&quot;]]]]</code></li>
 <li>output: putdown <code>(finiteset (elts emptyset (elts emptyset)))</code></li>
 </ul>
 </li>
 <li>Test 6
 <ul>
-<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;onesetseq&quot;,[&quot;finiteset&quot;,[&quot;onesetseq&quot;,[&quot;emptyset&quot;]]]]]</code></li>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;oneeltseq&quot;,[&quot;finiteset&quot;,[&quot;oneeltseq&quot;,[&quot;emptyset&quot;]]]]]</code></li>
 <li>output: putdown <code>(finiteset (elts (finiteset (elts emptyset))))</code></li>
 </ul>
 </li>
 <li>Test 7
 <ul>
-<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;onenumseq&quot;,[&quot;numbervariable&quot;,&quot;x&quot;]]]]</code></li>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;oneeltseq&quot;,[&quot;numbervariable&quot;,&quot;x&quot;]]]]</code></li>
 <li>output: putdown <code>(finiteset (elts 3 (elts x)))</code></li>
 </ul>
 </li>
 <li>Test 8
 <ul>
-<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;setthenseq&quot;,[&quot;union&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;onesetseq&quot;,[&quot;intersection&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]]]</code></li>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;eltthenseq&quot;,[&quot;union&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;oneeltseq&quot;,[&quot;intersection&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]]]</code></li>
 <li>output: putdown <code>(finiteset (elts (setuni A B) (elts (setint A B))))</code></li>
 </ul>
 </li>
 <li>Test 9
 <ul>
-<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;setthenseq&quot;,[&quot;emptyset&quot;],[&quot;numthenseq&quot;,[&quot;numbervariable&quot;,&quot;K&quot;],[&quot;onenumseq&quot;,[&quot;numbervariable&quot;,&quot;P&quot;]]]]]]]</code></li>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;eltthenseq&quot;,[&quot;emptyset&quot;],[&quot;eltthenseq&quot;,[&quot;numbervariable&quot;,&quot;K&quot;],[&quot;oneeltseq&quot;,[&quot;numbervariable&quot;,&quot;P&quot;]]]]]]]</code></li>
 <li>output: putdown <code>(finiteset (elts 1 (elts 2 (elts emptyset (elts K (elts P))))))</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert tuples and vectors to putdown</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;tuple&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;5&quot;],[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;6&quot;]]]]</code></li>
+<li>output: putdown <code>(tuple (elts 5 (elts 6)))</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;tuple&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;5&quot;],[&quot;eltthenseq&quot;,[&quot;union&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;oneeltseq&quot;,[&quot;numbervariable&quot;,&quot;k&quot;]]]]]</code></li>
+<li>output: putdown <code>(tuple (elts 5 (elts (setuni A B) (elts k))))</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;vector&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;5&quot;],[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;6&quot;]]]]</code></li>
+<li>output: putdown <code>(vector (elts 5 (elts 6)))</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;vector&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;5&quot;],[&quot;numthenseq&quot;,[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;7&quot;]],[&quot;onenumseq&quot;,[&quot;numbervariable&quot;,&quot;k&quot;]]]]]</code></li>
+<li>output: putdown <code>(vector (elts 5 (elts (- 7) (elts k))))</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: JSON <code>[&quot;tuple&quot;,[&quot;eltthenseq&quot;,[&quot;tuple&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]],[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;6&quot;]]]]</code></li>
+<li>output: putdown <code>(tuple (elts (tuple (elts 1 (elts 2))) (elts 6)))</code></li>
 </ul>
 </li>
 </ul>
@@ -1199,25 +1331,25 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>Test 1
 <ul>
-<li>input: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;b&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]</code></li>
+<li>input: JSON <code>[&quot;nounisin&quot;,[&quot;numbervariable&quot;,&quot;b&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]</code></li>
 <li>output: putdown <code>(in b B)</code></li>
 </ul>
 </li>
 <li>Test 2
 <ul>
-<li>input: JSON <code>[&quot;numberisin&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]]</code></li>
+<li>input: JSON <code>[&quot;nounisin&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;finiteset&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]]</code></li>
 <li>output: putdown <code>(in 2 (finiteset (elts 1 (elts 2))))</code></li>
 </ul>
 </li>
 <li>Test 3
 <ul>
-<li>input: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;X&quot;],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;a&quot;],[&quot;setvariable&quot;,&quot;b&quot;]]]</code></li>
+<li>input: JSON <code>[&quot;nounisin&quot;,[&quot;numbervariable&quot;,&quot;X&quot;],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;a&quot;],[&quot;setvariable&quot;,&quot;b&quot;]]]</code></li>
 <li>output: putdown <code>(in X (setuni a b))</code></li>
 </ul>
 </li>
 <li>Test 4
 <ul>
-<li>input: JSON <code>[&quot;setisin&quot;,[&quot;union&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;X&quot;],[&quot;setvariable&quot;,&quot;Y&quot;]]]</code></li>
+<li>input: JSON <code>[&quot;nounisin&quot;,[&quot;union&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;X&quot;],[&quot;setvariable&quot;,&quot;Y&quot;]]]</code></li>
 <li>output: putdown <code>(in (setuni A B) (setuni X Y))</code></li>
 </ul>
 </li>
@@ -1235,20 +1367,32 @@ satisfy the requirements of the test suite) are shown below.</p>
 </li>
 <li>Test 7
 <ul>
-<li>input: JSON <code>[&quot;subseteq&quot;,[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;1&quot;]]],[&quot;union&quot;,[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;1&quot;]]],[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]]</code></li>
+<li>input: JSON <code>[&quot;subseteq&quot;,[&quot;finiteset&quot;,[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;1&quot;]]],[&quot;union&quot;,[&quot;finiteset&quot;,[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;1&quot;]]],[&quot;finiteset&quot;,[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]]</code></li>
 <li>output: putdown <code>(subseteq (finiteset (elts 1)) (setuni (finiteset (elts 1)) (finiteset (elts 2))))</code></li>
 </ul>
 </li>
 <li>Test 8
 <ul>
-<li>input: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;p&quot;],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;U&quot;],[&quot;setvariable&quot;,&quot;V&quot;]]]</code></li>
+<li>input: JSON <code>[&quot;nounisin&quot;,[&quot;numbervariable&quot;,&quot;p&quot;],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;U&quot;],[&quot;setvariable&quot;,&quot;V&quot;]]]</code></li>
 <li>output: putdown <code>(in p (setprod U V))</code></li>
 </ul>
 </li>
 <li>Test 9
 <ul>
-<li>input: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;q&quot;],[&quot;union&quot;,[&quot;complement&quot;,[&quot;setvariable&quot;,&quot;U&quot;]],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;V&quot;],[&quot;setvariable&quot;,&quot;W&quot;]]]]</code></li>
+<li>input: JSON <code>[&quot;nounisin&quot;,[&quot;numbervariable&quot;,&quot;q&quot;],[&quot;union&quot;,[&quot;complement&quot;,[&quot;setvariable&quot;,&quot;U&quot;]],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;V&quot;],[&quot;setvariable&quot;,&quot;W&quot;]]]]</code></li>
 <li>output: putdown <code>(in q (setuni (setcomp U) (setprod V W)))</code></li>
+</ul>
+</li>
+<li>Test 10
+<ul>
+<li>input: JSON <code>[&quot;nounisin&quot;,[&quot;tuple&quot;,[&quot;eltthenseq&quot;,[&quot;numbervariable&quot;,&quot;a&quot;],[&quot;oneeltseq&quot;,[&quot;numbervariable&quot;,&quot;b&quot;]]]],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
+<li>output: putdown <code>(in (tuple (elts a (elts b))) (setprod A B))</code></li>
+</ul>
+</li>
+<li>Test 11
+<ul>
+<li>input: JSON <code>[&quot;nounisin&quot;,[&quot;vector&quot;,[&quot;numthenseq&quot;,[&quot;numbervariable&quot;,&quot;a&quot;],[&quot;onenumseq&quot;,[&quot;numbervariable&quot;,&quot;b&quot;]]]],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
+<li>output: putdown <code>(in (vector (elts a (elts b))) (setprod A B))</code></li>
 </ul>
 </li>
 </ul>
@@ -1256,19 +1400,19 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>Test 1
 <ul>
-<li>input: JSON <code>[&quot;numberisnotin&quot;,[&quot;numbervariable&quot;,&quot;a&quot;],[&quot;setvariable&quot;,&quot;A&quot;]]</code></li>
+<li>input: JSON <code>[&quot;nounisnotin&quot;,[&quot;numbervariable&quot;,&quot;a&quot;],[&quot;setvariable&quot;,&quot;A&quot;]]</code></li>
 <li>output: putdown <code>(not (in a A))</code></li>
 </ul>
 </li>
 <li>Test 2
 <ul>
-<li>input: JSON <code>[&quot;logicnegation&quot;,[&quot;setisin&quot;,[&quot;emptyset&quot;],[&quot;emptyset&quot;]]]</code></li>
+<li>input: JSON <code>[&quot;logicnegation&quot;,[&quot;nounisin&quot;,[&quot;emptyset&quot;],[&quot;emptyset&quot;]]]</code></li>
 <li>output: putdown <code>(not (in emptyset emptyset))</code></li>
 </ul>
 </li>
 <li>Test 3
 <ul>
-<li>input: JSON <code>[&quot;numberisnotin&quot;,[&quot;subtraction&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;number&quot;,&quot;5&quot;]],[&quot;intersection&quot;,[&quot;setvariable&quot;,&quot;K&quot;],[&quot;setvariable&quot;,&quot;P&quot;]]]</code></li>
+<li>input: JSON <code>[&quot;nounisnotin&quot;,[&quot;subtraction&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;number&quot;,&quot;5&quot;]],[&quot;intersection&quot;,[&quot;setvariable&quot;,&quot;K&quot;],[&quot;setvariable&quot;,&quot;P&quot;]]]</code></li>
 <li>output: putdown <code>(not (in (- 3 5) (setint K P)))</code></li>
 </ul>
 </li>
@@ -1277,13 +1421,13 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>Test 1
 <ul>
-<li>input: JSON <code>[&quot;disjunction&quot;,[&quot;logicvariable&quot;,&quot;P&quot;],[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;b&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
+<li>input: JSON <code>[&quot;disjunction&quot;,[&quot;logicvariable&quot;,&quot;P&quot;],[&quot;nounisin&quot;,[&quot;numbervariable&quot;,&quot;b&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
 <li>output: putdown <code>(or P (in b B))</code></li>
 </ul>
 </li>
 <li>Test 2
 <ul>
-<li>input: JSON <code>[&quot;universal&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;setvariable&quot;,&quot;X&quot;]]]</code></li>
+<li>input: JSON <code>[&quot;universal&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;nounisin&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;setvariable&quot;,&quot;X&quot;]]]</code></li>
 <li>output: putdown <code>(forall (x , (in x X)))</code></li>
 </ul>
 </li>
@@ -1801,49 +1945,130 @@ satisfy the requirements of the test suite) are shown below.</p>
 <li>Test 4
 <ul>
 <li>input: LaTeX <code>\{ 1 \}</code>, typeset ${ 1 }$</li>
-<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;1&quot;]]]</code></li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;1&quot;]]]</code></li>
 </ul>
 </li>
 <li>Test 5
 <ul>
 <li>input: LaTeX <code>\{1,2\}</code>, typeset ${1,2}$</li>
-<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]</code></li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]</code></li>
 </ul>
 </li>
 <li>Test 6
 <ul>
 <li>input: LaTeX <code>\{1, 2,   3 \}</code>, typeset ${1, 2,   3 }$</li>
-<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;3&quot;]]]]]</code></li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;3&quot;]]]]]</code></li>
 </ul>
 </li>
 <li>Test 7
 <ul>
 <li>input: LaTeX <code>\{\{\},\emptyset\}</code>, typeset ${{},\emptyset}$</li>
-<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;setthenseq&quot;,[&quot;emptyset&quot;],[&quot;onesetseq&quot;,[&quot;emptyset&quot;]]]]</code></li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;eltthenseq&quot;,[&quot;emptyset&quot;],[&quot;oneeltseq&quot;,[&quot;emptyset&quot;]]]]</code></li>
 </ul>
 </li>
 <li>Test 8
 <ul>
 <li>input: LaTeX <code>\{\{\emptyset\}\}</code>, typeset ${{\emptyset}}$</li>
-<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;onesetseq&quot;,[&quot;finiteset&quot;,[&quot;onesetseq&quot;,[&quot;emptyset&quot;]]]]]</code></li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;oneeltseq&quot;,[&quot;finiteset&quot;,[&quot;oneeltseq&quot;,[&quot;emptyset&quot;]]]]]</code></li>
 </ul>
 </li>
 <li>Test 9
 <ul>
 <li>input: LaTeX <code>\{ 3,x \}</code>, typeset ${ 3,x }$</li>
-<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;onenumseq&quot;,[&quot;numbervariable&quot;,&quot;x&quot;]]]]</code></li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;oneeltseq&quot;,[&quot;numbervariable&quot;,&quot;x&quot;]]]]</code></li>
 </ul>
 </li>
 <li>Test 10
 <ul>
 <li>input: LaTeX <code>\{ A\cup B, A\cap B \}</code>, typeset ${ A\cup B, A\cap B }$</li>
-<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;setthenseq&quot;,[&quot;union&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;onesetseq&quot;,[&quot;intersection&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]]]</code></li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;eltthenseq&quot;,[&quot;union&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;oneeltseq&quot;,[&quot;intersection&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]]]</code></li>
 </ul>
 </li>
 <li>Test 11
 <ul>
 <li>input: LaTeX <code>\{ 1, 2, \emptyset, K, P \}</code>, typeset ${ 1, 2, \emptyset, K, P }$</li>
-<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;setthenseq&quot;,[&quot;emptyset&quot;],[&quot;numthenseq&quot;,[&quot;numbervariable&quot;,&quot;K&quot;],[&quot;onenumseq&quot;,[&quot;numbervariable&quot;,&quot;P&quot;]]]]]]]</code></li>
+<li>output: JSON <code>[&quot;finiteset&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;eltthenseq&quot;,[&quot;emptyset&quot;],[&quot;eltthenseq&quot;,[&quot;numbervariable&quot;,&quot;K&quot;],[&quot;oneeltseq&quot;,[&quot;numbervariable&quot;,&quot;P&quot;]]]]]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert tuples and vectors to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>(5,6)</code>, typeset $(5,6)$</li>
+<li>output: JSON <code>[&quot;tuple&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;5&quot;],[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;6&quot;]]]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>(5,A\cup B,k)</code>, typeset $(5,A\cup B,k)$</li>
+<li>output: JSON <code>[&quot;tuple&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;5&quot;],[&quot;eltthenseq&quot;,[&quot;union&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;oneeltseq&quot;,[&quot;numbervariable&quot;,&quot;k&quot;]]]]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>\langle5,6\rangle</code>, typeset $\langle5,6\rangle$</li>
+<li>output: JSON <code>[&quot;vector&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;5&quot;],[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;6&quot;]]]]</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: LaTeX <code>\langle5,-7,k\rangle</code>, typeset $\langle5,-7,k\rangle$</li>
+<li>output: JSON <code>[&quot;vector&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;5&quot;],[&quot;numthenseq&quot;,[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;7&quot;]],[&quot;onenumseq&quot;,[&quot;numbervariable&quot;,&quot;k&quot;]]]]]</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: LaTeX <code>()</code>, typeset $()$</li>
+<li>output: JSON <code>null</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: LaTeX <code>(())</code>, typeset $(())$</li>
+<li>output: JSON <code>null</code></li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: LaTeX <code>(3)</code>, typeset $(3)$</li>
+<li>output: JSON <code>[&quot;number&quot;,&quot;3&quot;]</code></li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: LaTeX <code>\langle\rangle</code>, typeset $\langle\rangle$</li>
+<li>output: JSON <code>null</code></li>
+</ul>
+</li>
+<li>Test 9
+<ul>
+<li>input: LaTeX <code>\langle3\rangle</code>, typeset $\langle3\rangle$</li>
+<li>output: JSON <code>null</code></li>
+</ul>
+</li>
+<li>Test 10
+<ul>
+<li>input: LaTeX <code>((1,2),6)</code>, typeset $((1,2),6)$</li>
+<li>output: JSON <code>[&quot;tuple&quot;,[&quot;eltthenseq&quot;,[&quot;tuple&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]],[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;6&quot;]]]]</code></li>
+</ul>
+</li>
+<li>Test 11
+<ul>
+<li>input: LaTeX <code>\langle(1,2),6\rangle</code>, typeset $\langle(1,2),6\rangle$</li>
+<li>output: JSON <code>null</code></li>
+</ul>
+</li>
+<li>Test 12
+<ul>
+<li>input: LaTeX <code>\langle\langle1,2\rangle,6\rangle</code>, typeset $\langle\langle1,2\rangle,6\rangle$</li>
+<li>output: JSON <code>null</code></li>
+</ul>
+</li>
+<li>Test 13
+<ul>
+<li>input: LaTeX <code>\langle A\cup B,6\rangle</code>, typeset $\langle A\cup B,6\rangle$</li>
+<li>output: JSON <code>null</code></li>
 </ul>
 </li>
 </ul>
@@ -1852,25 +2077,25 @@ satisfy the requirements of the test suite) are shown below.</p>
 <li>Test 1
 <ul>
 <li>input: LaTeX <code>b\in B</code>, typeset $b\in B$</li>
-<li>output: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;b&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]</code></li>
+<li>output: JSON <code>[&quot;nounisin&quot;,[&quot;numbervariable&quot;,&quot;b&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]</code></li>
 </ul>
 </li>
 <li>Test 2
 <ul>
 <li>input: LaTeX <code>2\in\{1,2\}</code>, typeset $2\in{1,2}$</li>
-<li>output: JSON <code>[&quot;numberisin&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]]</code></li>
+<li>output: JSON <code>[&quot;nounisin&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;finiteset&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]]</code></li>
 </ul>
 </li>
 <li>Test 3
 <ul>
 <li>input: LaTeX <code>X\in a\cup b</code>, typeset $X\in a\cup b$</li>
-<li>output: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;X&quot;],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;a&quot;],[&quot;setvariable&quot;,&quot;b&quot;]]]</code></li>
+<li>output: JSON <code>[&quot;nounisin&quot;,[&quot;numbervariable&quot;,&quot;X&quot;],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;a&quot;],[&quot;setvariable&quot;,&quot;b&quot;]]]</code></li>
 </ul>
 </li>
 <li>Test 4
 <ul>
 <li>input: LaTeX <code>A\cup B\in X\cup Y</code>, typeset $A\cup B\in X\cup Y$</li>
-<li>output: JSON <code>[&quot;setisin&quot;,[&quot;union&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;X&quot;],[&quot;setvariable&quot;,&quot;Y&quot;]]]</code></li>
+<li>output: JSON <code>[&quot;nounisin&quot;,[&quot;union&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;X&quot;],[&quot;setvariable&quot;,&quot;Y&quot;]]]</code></li>
 </ul>
 </li>
 <li>Test 5
@@ -1894,19 +2119,31 @@ satisfy the requirements of the test suite) are shown below.</p>
 <li>Test 8
 <ul>
 <li>input: LaTeX <code>\{1\}\subseteq\{1\}\cup\{2\}</code>, typeset ${1}\subseteq{1}\cup{2}$</li>
-<li>output: JSON <code>[&quot;subseteq&quot;,[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;1&quot;]]],[&quot;union&quot;,[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;1&quot;]]],[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]]</code></li>
+<li>output: JSON <code>[&quot;subseteq&quot;,[&quot;finiteset&quot;,[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;1&quot;]]],[&quot;union&quot;,[&quot;finiteset&quot;,[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;1&quot;]]],[&quot;finiteset&quot;,[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]]</code></li>
 </ul>
 </li>
 <li>Test 9
 <ul>
 <li>input: LaTeX <code>p\in U\times V</code>, typeset $p\in U\times V$</li>
-<li>output: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;p&quot;],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;U&quot;],[&quot;setvariable&quot;,&quot;V&quot;]]]</code></li>
+<li>output: JSON <code>[&quot;nounisin&quot;,[&quot;numbervariable&quot;,&quot;p&quot;],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;U&quot;],[&quot;setvariable&quot;,&quot;V&quot;]]]</code></li>
 </ul>
 </li>
 <li>Test 10
 <ul>
 <li>input: LaTeX <code>q \in U'\cup V\times W</code>, typeset $q \in U'\cup V\times W$</li>
-<li>output: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;q&quot;],[&quot;union&quot;,[&quot;complement&quot;,[&quot;setvariable&quot;,&quot;U&quot;]],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;V&quot;],[&quot;setvariable&quot;,&quot;W&quot;]]]]</code></li>
+<li>output: JSON <code>[&quot;nounisin&quot;,[&quot;numbervariable&quot;,&quot;q&quot;],[&quot;union&quot;,[&quot;complement&quot;,[&quot;setvariable&quot;,&quot;U&quot;]],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;V&quot;],[&quot;setvariable&quot;,&quot;W&quot;]]]]</code></li>
+</ul>
+</li>
+<li>Test 11
+<ul>
+<li>input: LaTeX <code>(a,b)\in A\times B</code>, typeset $(a,b)\in A\times B$</li>
+<li>output: JSON <code>[&quot;nounisin&quot;,[&quot;tuple&quot;,[&quot;eltthenseq&quot;,[&quot;numbervariable&quot;,&quot;a&quot;],[&quot;oneeltseq&quot;,[&quot;numbervariable&quot;,&quot;b&quot;]]]],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 12
+<ul>
+<li>input: LaTeX <code>\langle a,b\rangle\in A\times B</code>, typeset $\langle a,b\rangle\in A\times B$</li>
+<li>output: JSON <code>[&quot;nounisin&quot;,[&quot;vector&quot;,[&quot;numthenseq&quot;,[&quot;numbervariable&quot;,&quot;a&quot;],[&quot;onenumseq&quot;,[&quot;numbervariable&quot;,&quot;b&quot;]]]],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
 </ul>
 </li>
 </ul>
@@ -1915,19 +2152,19 @@ satisfy the requirements of the test suite) are shown below.</p>
 <li>Test 1
 <ul>
 <li>input: LaTeX <code>a\notin A</code>, typeset $a\notin A$</li>
-<li>output: JSON <code>[&quot;numberisnotin&quot;,[&quot;numbervariable&quot;,&quot;a&quot;],[&quot;setvariable&quot;,&quot;A&quot;]]</code></li>
+<li>output: JSON <code>[&quot;nounisnotin&quot;,[&quot;numbervariable&quot;,&quot;a&quot;],[&quot;setvariable&quot;,&quot;A&quot;]]</code></li>
 </ul>
 </li>
 <li>Test 2
 <ul>
 <li>input: LaTeX <code>\emptyset\notin\emptyset</code>, typeset $\emptyset\notin\emptyset$</li>
-<li>output: JSON <code>[&quot;setisnotin&quot;,[&quot;emptyset&quot;],[&quot;emptyset&quot;]]</code></li>
+<li>output: JSON <code>[&quot;nounisnotin&quot;,[&quot;emptyset&quot;],[&quot;emptyset&quot;]]</code></li>
 </ul>
 </li>
 <li>Test 3
 <ul>
 <li>input: LaTeX <code>3-5 \notin K\cap P</code>, typeset $3-5 \notin K\cap P$</li>
-<li>output: JSON <code>[&quot;numberisnotin&quot;,[&quot;subtraction&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;number&quot;,&quot;5&quot;]],[&quot;intersection&quot;,[&quot;setvariable&quot;,&quot;K&quot;],[&quot;setvariable&quot;,&quot;P&quot;]]]</code></li>
+<li>output: JSON <code>[&quot;nounisnotin&quot;,[&quot;subtraction&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;number&quot;,&quot;5&quot;]],[&quot;intersection&quot;,[&quot;setvariable&quot;,&quot;K&quot;],[&quot;setvariable&quot;,&quot;P&quot;]]]</code></li>
 </ul>
 </li>
 </ul>
@@ -1936,7 +2173,7 @@ satisfy the requirements of the test suite) are shown below.</p>
 <li>Test 1
 <ul>
 <li>input: LaTeX <code>P\vee b\in B</code>, typeset $P\vee b\in B$</li>
-<li>output: JSON <code>[&quot;disjunction&quot;,[&quot;logicvariable&quot;,&quot;P&quot;],[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;b&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
+<li>output: JSON <code>[&quot;disjunction&quot;,[&quot;logicvariable&quot;,&quot;P&quot;],[&quot;nounisin&quot;,[&quot;numbervariable&quot;,&quot;b&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
 </ul>
 </li>
 <li>Test 2
@@ -1948,7 +2185,7 @@ satisfy the requirements of the test suite) are shown below.</p>
 <li>Test 3
 <ul>
 <li>input: LaTeX <code>\forall x, x\in X</code>, typeset $\forall x, x\in X$</li>
-<li>output: JSON <code>[&quot;universal&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;setvariable&quot;,&quot;X&quot;]]]</code></li>
+<li>output: JSON <code>[&quot;universal&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;nounisin&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;setvariable&quot;,&quot;X&quot;]]]</code></li>
 </ul>
 </li>
 <li>Test 4
@@ -2422,50 +2659,83 @@ satisfy the requirements of the test suite) are shown below.</p>
 </li>
 <li>Test 2
 <ul>
-<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;1&quot;]]]</code></li>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;1&quot;]]]</code></li>
 <li>output: LaTeX <code>\{ 1 \}</code>, typeset ${ 1 }$</li>
 </ul>
 </li>
 <li>Test 3
 <ul>
-<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]</code></li>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]</code></li>
 <li>output: LaTeX <code>\{ 1 , 2 \}</code>, typeset ${ 1 , 2 }$</li>
 </ul>
 </li>
 <li>Test 4
 <ul>
-<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;3&quot;]]]]]</code></li>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;3&quot;]]]]]</code></li>
 <li>output: LaTeX <code>\{ 1 , 2 , 3 \}</code>, typeset ${ 1 , 2 , 3 }$</li>
 </ul>
 </li>
 <li>Test 5
 <ul>
-<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;setthenseq&quot;,[&quot;emptyset&quot;],[&quot;onesetseq&quot;,[&quot;emptyset&quot;]]]]</code></li>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;eltthenseq&quot;,[&quot;emptyset&quot;],[&quot;oneeltseq&quot;,[&quot;emptyset&quot;]]]]</code></li>
 <li>output: LaTeX <code>\{ \emptyset , \emptyset \}</code>, typeset ${ \emptyset , \emptyset }$</li>
 </ul>
 </li>
 <li>Test 6
 <ul>
-<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;onesetseq&quot;,[&quot;finiteset&quot;,[&quot;onesetseq&quot;,[&quot;emptyset&quot;]]]]]</code></li>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;oneeltseq&quot;,[&quot;finiteset&quot;,[&quot;oneeltseq&quot;,[&quot;emptyset&quot;]]]]]</code></li>
 <li>output: LaTeX <code>\{ \{ \emptyset \} \}</code>, typeset ${ { \emptyset } }$</li>
 </ul>
 </li>
 <li>Test 7
 <ul>
-<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;onenumseq&quot;,[&quot;numbervariable&quot;,&quot;x&quot;]]]]</code></li>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;oneeltseq&quot;,[&quot;numbervariable&quot;,&quot;x&quot;]]]]</code></li>
 <li>output: LaTeX <code>\{ 3 , x \}</code>, typeset ${ 3 , x }$</li>
 </ul>
 </li>
 <li>Test 8
 <ul>
-<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;setthenseq&quot;,[&quot;union&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;onesetseq&quot;,[&quot;intersection&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]]]</code></li>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;eltthenseq&quot;,[&quot;union&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;oneeltseq&quot;,[&quot;intersection&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]]]</code></li>
 <li>output: LaTeX <code>\{ A \cup B , A \cap B \}</code>, typeset ${ A \cup B , A \cap B }$</li>
 </ul>
 </li>
 <li>Test 9
 <ul>
-<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;setthenseq&quot;,[&quot;emptyset&quot;],[&quot;numthenseq&quot;,[&quot;numbervariable&quot;,&quot;K&quot;],[&quot;onenumseq&quot;,[&quot;numbervariable&quot;,&quot;P&quot;]]]]]]]</code></li>
+<li>input: JSON <code>[&quot;finiteset&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;eltthenseq&quot;,[&quot;emptyset&quot;],[&quot;eltthenseq&quot;,[&quot;numbervariable&quot;,&quot;K&quot;],[&quot;oneeltseq&quot;,[&quot;numbervariable&quot;,&quot;P&quot;]]]]]]]</code></li>
 <li>output: LaTeX <code>\{ 1 , 2 , \emptyset , K , P \}</code>, typeset ${ 1 , 2 , \emptyset , K , P }$</li>
+</ul>
+</li>
+</ul>
+<h3>can convert tuples and vectors from JSON to LaTeX</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;tuple&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;5&quot;],[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;6&quot;]]]]</code></li>
+<li>output: LaTeX <code>( 5 , 6 )</code>, typeset $( 5 , 6 )$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;tuple&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;5&quot;],[&quot;eltthenseq&quot;,[&quot;union&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;oneeltseq&quot;,[&quot;numbervariable&quot;,&quot;k&quot;]]]]]</code></li>
+<li>output: LaTeX <code>( 5 , A \cup B , k )</code>, typeset $( 5 , A \cup B , k )$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;vector&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;5&quot;],[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;6&quot;]]]]</code></li>
+<li>output: LaTeX <code>\langle 5 , 6 \rangle</code>, typeset $\langle 5 , 6 \rangle$</li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;vector&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;5&quot;],[&quot;numthenseq&quot;,[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;7&quot;]],[&quot;onenumseq&quot;,[&quot;numbervariable&quot;,&quot;k&quot;]]]]]</code></li>
+<li>output: LaTeX <code>\langle 5 , - 7 , k \rangle</code>, typeset $\langle 5 , - 7 , k \rangle$</li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: JSON <code>[&quot;tuple&quot;,[&quot;eltthenseq&quot;,[&quot;tuple&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]],[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;6&quot;]]]]</code></li>
+<li>output: LaTeX <code>( ( 1 , 2 ) , 6 )</code>, typeset $( ( 1 , 2 ) , 6 )$</li>
 </ul>
 </li>
 </ul>
@@ -2473,25 +2743,25 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>Test 1
 <ul>
-<li>input: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;b&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]</code></li>
+<li>input: JSON <code>[&quot;nounisin&quot;,[&quot;numbervariable&quot;,&quot;b&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]</code></li>
 <li>output: LaTeX <code>b \in B</code>, typeset $b \in B$</li>
 </ul>
 </li>
 <li>Test 2
 <ul>
-<li>input: JSON <code>[&quot;numberisin&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;finiteset&quot;,[&quot;numthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]]</code></li>
+<li>input: JSON <code>[&quot;nounisin&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;finiteset&quot;,[&quot;eltthenseq&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]]</code></li>
 <li>output: LaTeX <code>2 \in \{ 1 , 2 \}</code>, typeset $2 \in { 1 , 2 }$</li>
 </ul>
 </li>
 <li>Test 3
 <ul>
-<li>input: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;X&quot;],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;a&quot;],[&quot;setvariable&quot;,&quot;b&quot;]]]</code></li>
+<li>input: JSON <code>[&quot;nounisin&quot;,[&quot;numbervariable&quot;,&quot;X&quot;],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;a&quot;],[&quot;setvariable&quot;,&quot;b&quot;]]]</code></li>
 <li>output: LaTeX <code>X \in a \cup b</code>, typeset $X \in a \cup b$</li>
 </ul>
 </li>
 <li>Test 4
 <ul>
-<li>input: JSON <code>[&quot;setisin&quot;,[&quot;union&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;X&quot;],[&quot;setvariable&quot;,&quot;Y&quot;]]]</code></li>
+<li>input: JSON <code>[&quot;nounisin&quot;,[&quot;union&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;X&quot;],[&quot;setvariable&quot;,&quot;Y&quot;]]]</code></li>
 <li>output: LaTeX <code>A \cup B \in X \cup Y</code>, typeset $A \cup B \in X \cup Y$</li>
 </ul>
 </li>
@@ -2509,20 +2779,32 @@ satisfy the requirements of the test suite) are shown below.</p>
 </li>
 <li>Test 7
 <ul>
-<li>input: JSON <code>[&quot;subseteq&quot;,[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;1&quot;]]],[&quot;union&quot;,[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;1&quot;]]],[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]]</code></li>
+<li>input: JSON <code>[&quot;subseteq&quot;,[&quot;finiteset&quot;,[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;1&quot;]]],[&quot;union&quot;,[&quot;finiteset&quot;,[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;1&quot;]]],[&quot;finiteset&quot;,[&quot;oneeltseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]]</code></li>
 <li>output: LaTeX <code>\{ 1 \} \subseteq \{ 1 \} \cup \{ 2 \}</code>, typeset ${ 1 } \subseteq { 1 } \cup { 2 }$</li>
 </ul>
 </li>
 <li>Test 8
 <ul>
-<li>input: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;p&quot;],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;U&quot;],[&quot;setvariable&quot;,&quot;V&quot;]]]</code></li>
+<li>input: JSON <code>[&quot;nounisin&quot;,[&quot;numbervariable&quot;,&quot;p&quot;],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;U&quot;],[&quot;setvariable&quot;,&quot;V&quot;]]]</code></li>
 <li>output: LaTeX <code>p \in U \times V</code>, typeset $p \in U \times V$</li>
 </ul>
 </li>
 <li>Test 9
 <ul>
-<li>input: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;q&quot;],[&quot;union&quot;,[&quot;complement&quot;,[&quot;setvariable&quot;,&quot;U&quot;]],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;V&quot;],[&quot;setvariable&quot;,&quot;W&quot;]]]]</code></li>
+<li>input: JSON <code>[&quot;nounisin&quot;,[&quot;numbervariable&quot;,&quot;q&quot;],[&quot;union&quot;,[&quot;complement&quot;,[&quot;setvariable&quot;,&quot;U&quot;]],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;V&quot;],[&quot;setvariable&quot;,&quot;W&quot;]]]]</code></li>
 <li>output: LaTeX <code>q \in \bar U \cup V \times W</code>, typeset $q \in \bar U \cup V \times W$</li>
+</ul>
+</li>
+<li>Test 10
+<ul>
+<li>input: JSON <code>[&quot;nounisin&quot;,[&quot;tuple&quot;,[&quot;eltthenseq&quot;,[&quot;numbervariable&quot;,&quot;a&quot;],[&quot;oneeltseq&quot;,[&quot;numbervariable&quot;,&quot;b&quot;]]]],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
+<li>output: LaTeX <code>( a , b ) \in A \times B</code>, typeset $( a , b ) \in A \times B$</li>
+</ul>
+</li>
+<li>Test 11
+<ul>
+<li>input: JSON <code>[&quot;nounisin&quot;,[&quot;vector&quot;,[&quot;numthenseq&quot;,[&quot;numbervariable&quot;,&quot;a&quot;],[&quot;onenumseq&quot;,[&quot;numbervariable&quot;,&quot;b&quot;]]]],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
+<li>output: LaTeX <code>\langle a , b \rangle \in A \times B</code>, typeset $\langle a , b \rangle \in A \times B$</li>
 </ul>
 </li>
 </ul>
@@ -2530,19 +2812,19 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>Test 1
 <ul>
-<li>input: JSON <code>[&quot;logicnegation&quot;,[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;a&quot;],[&quot;setvariable&quot;,&quot;A&quot;]]]</code></li>
+<li>input: JSON <code>[&quot;logicnegation&quot;,[&quot;nounisin&quot;,[&quot;numbervariable&quot;,&quot;a&quot;],[&quot;setvariable&quot;,&quot;A&quot;]]]</code></li>
 <li>output: LaTeX <code>\neg a \in A</code>, typeset $\neg a \in A$</li>
 </ul>
 </li>
 <li>Test 2
 <ul>
-<li>input: JSON <code>[&quot;logicnegation&quot;,[&quot;setisin&quot;,[&quot;emptyset&quot;],[&quot;emptyset&quot;]]]</code></li>
+<li>input: JSON <code>[&quot;logicnegation&quot;,[&quot;nounisin&quot;,[&quot;emptyset&quot;],[&quot;emptyset&quot;]]]</code></li>
 <li>output: LaTeX <code>\neg \emptyset \in \emptyset</code>, typeset $\neg \emptyset \in \emptyset$</li>
 </ul>
 </li>
 <li>Test 3
 <ul>
-<li>input: JSON <code>[&quot;logicnegation&quot;,[&quot;numberisin&quot;,[&quot;subtraction&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;number&quot;,&quot;5&quot;]],[&quot;intersection&quot;,[&quot;setvariable&quot;,&quot;K&quot;],[&quot;setvariable&quot;,&quot;P&quot;]]]]</code></li>
+<li>input: JSON <code>[&quot;logicnegation&quot;,[&quot;nounisin&quot;,[&quot;subtraction&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;number&quot;,&quot;5&quot;]],[&quot;intersection&quot;,[&quot;setvariable&quot;,&quot;K&quot;],[&quot;setvariable&quot;,&quot;P&quot;]]]]</code></li>
 <li>output: LaTeX <code>\neg 3 - 5 \in K \cap P</code>, typeset $\neg 3 - 5 \in K \cap P$</li>
 </ul>
 </li>
@@ -2551,7 +2833,7 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>Test 1
 <ul>
-<li>input: JSON <code>[&quot;disjunction&quot;,[&quot;logicvariable&quot;,&quot;P&quot;],[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;b&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
+<li>input: JSON <code>[&quot;disjunction&quot;,[&quot;logicvariable&quot;,&quot;P&quot;],[&quot;nounisin&quot;,[&quot;numbervariable&quot;,&quot;b&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
 <li>output: LaTeX <code>P \vee b \in B</code>, typeset $P \vee b \in B$</li>
 </ul>
 </li>
@@ -2563,7 +2845,7 @@ satisfy the requirements of the test suite) are shown below.</p>
 </li>
 <li>Test 3
 <ul>
-<li>input: JSON <code>[&quot;universal&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;setvariable&quot;,&quot;X&quot;]]]</code></li>
+<li>input: JSON <code>[&quot;universal&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;nounisin&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;setvariable&quot;,&quot;X&quot;]]]</code></li>
 <li>output: LaTeX <code>\forall x , x \in X</code>, typeset $\forall x , x \in X$</li>
 </ul>
 </li>
@@ -3055,6 +3337,93 @@ satisfy the requirements of the test suite) are shown below.</p>
 </ul>
 </li>
 </ul>
+<h3>correctly converts tuples and vectors</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(tuple (elts 5 (elts 6)))</code></li>
+<li>output: LaTeX <code>( 5 , 6 )</code>, typeset $( 5 , 6 )$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(tuple (elts 5 (elts (setuni A B) (elts k))))</code></li>
+<li>output: LaTeX <code>( 5 , A \cup B , k )</code>, typeset $( 5 , A \cup B , k )$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(vector (elts 5 (elts 6)))</code></li>
+<li>output: LaTeX <code>\langle 5 , 6 \rangle</code>, typeset $\langle 5 , 6 \rangle$</li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: putdown <code>(vector (elts 5 (elts (- 7) (elts k))))</code></li>
+<li>output: LaTeX <code>\langle 5 , - 7 , k \rangle</code>, typeset $\langle 5 , - 7 , k \rangle$</li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: putdown <code>(tuple)</code></li>
+<li>output: LaTeX <code>null</code>, typeset $undefined$</li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: putdown <code>(tuple (elts))</code></li>
+<li>output: LaTeX <code>null</code>, typeset $undefined$</li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: putdown <code>(tuple (elts 3))</code></li>
+<li>output: LaTeX <code>null</code>, typeset $undefined$</li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: putdown <code>(vector)</code></li>
+<li>output: LaTeX <code>null</code>, typeset $undefined$</li>
+</ul>
+</li>
+<li>Test 9
+<ul>
+<li>input: putdown <code>(vector (elts))</code></li>
+<li>output: LaTeX <code>null</code>, typeset $undefined$</li>
+</ul>
+</li>
+<li>Test 10
+<ul>
+<li>input: putdown <code>(vector (elts 3))</code></li>
+<li>output: LaTeX <code>null</code>, typeset $undefined$</li>
+</ul>
+</li>
+<li>Test 11
+<ul>
+<li>input: putdown <code>(tuple (elts (tuple (elts 1 (elts 2))) (elts 6)))</code></li>
+<li>output: LaTeX <code>( ( 1 , 2 ) , 6 )</code>, typeset $( ( 1 , 2 ) , 6 )$</li>
+</ul>
+</li>
+<li>Test 12
+<ul>
+<li>input: putdown <code>(vector (elts (tuple (elts 1 (elts 2))) (elts 6)))</code></li>
+<li>output: LaTeX <code>null</code>, typeset $undefined$</li>
+</ul>
+</li>
+<li>Test 13
+<ul>
+<li>input: putdown <code>(vector (elts (vector (elts 1 (elts 2))) (elts 6)))</code></li>
+<li>output: LaTeX <code>null</code>, typeset $undefined$</li>
+</ul>
+</li>
+<li>Test 14
+<ul>
+<li>input: putdown <code>(vector (elts (setuni A B) (elts 6)))</code></li>
+<li>output: LaTeX <code>null</code>, typeset $undefined$</li>
+</ul>
+</li>
+</ul>
 <h3>can convert simple set memberships and subsets</h3>
 <ul>
 <li>Test 1
@@ -3109,6 +3478,18 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: putdown <code>(in q (setuni (setcomp U) (setprod V W)))</code></li>
 <li>output: LaTeX <code>q \in \bar U \cup V \times W</code>, typeset $q \in \bar U \cup V \times W$</li>
+</ul>
+</li>
+<li>Test 10
+<ul>
+<li>input: putdown <code>(in (tuple (elts a (elts b))) (setprod A B))</code></li>
+<li>output: LaTeX <code>( a , b ) \in A \times B</code>, typeset $( a , b ) \in A \times B$</li>
+</ul>
+</li>
+<li>Test 11
+<ul>
+<li>input: putdown <code>(in (vector (elts a (elts b))) (setprod A B))</code></li>
+<li>output: LaTeX <code>\langle a , b \rangle \in A \times B</code>, typeset $\langle a , b \rangle \in A \times B$</li>
 </ul>
 </li>
 </ul>
@@ -3689,6 +4070,87 @@ satisfy the requirements of the test suite) are shown below.</p>
 </ul>
 </li>
 </ul>
+<h3>correctly converts tuples and vectors</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>( 5 , 6 )</code>, typeset $( 5 , 6 )$</li>
+<li>output: putdown <code>(tuple (elts 5 (elts 6)))</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>( 5 , A \cup B , k )</code>, typeset $( 5 , A \cup B , k )$</li>
+<li>output: putdown <code>(tuple (elts 5 (elts (setuni A B) (elts k))))</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>\langle 5 , 6 \rangle</code>, typeset $\langle 5 , 6 \rangle$</li>
+<li>output: putdown <code>(vector (elts 5 (elts 6)))</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: LaTeX <code>\langle 5 , - 7 , k \rangle</code>, typeset $\langle 5 , - 7 , k \rangle$</li>
+<li>output: putdown <code>(vector (elts 5 (elts (- 7) (elts k))))</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: LaTeX <code>()</code>, typeset $()$</li>
+<li>output: putdown <code>null</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: LaTeX <code>(())</code>, typeset $(())$</li>
+<li>output: putdown <code>null</code></li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: LaTeX <code>(3)</code>, typeset $(3)$</li>
+<li>output: putdown <code>3</code></li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: LaTeX <code>\langle\rangle</code>, typeset $\langle\rangle$</li>
+<li>output: putdown <code>null</code></li>
+</ul>
+</li>
+<li>Test 9
+<ul>
+<li>input: LaTeX <code>\langle3\rangle</code>, typeset $\langle3\rangle$</li>
+<li>output: putdown <code>null</code></li>
+</ul>
+</li>
+<li>Test 10
+<ul>
+<li>input: LaTeX <code>( ( 1 , 2 ) , 6 )</code>, typeset $( ( 1 , 2 ) , 6 )$</li>
+<li>output: putdown <code>(tuple (elts (tuple (elts 1 (elts 2))) (elts 6)))</code></li>
+</ul>
+</li>
+<li>Test 11
+<ul>
+<li>input: LaTeX <code>\langle(1,2),6\rangle</code>, typeset $\langle(1,2),6\rangle$</li>
+<li>output: putdown <code>null</code></li>
+</ul>
+</li>
+<li>Test 12
+<ul>
+<li>input: LaTeX <code>\langle\langle1,2\rangle,6\rangle</code>, typeset $\langle\langle1,2\rangle,6\rangle$</li>
+<li>output: putdown <code>null</code></li>
+</ul>
+</li>
+<li>Test 13
+<ul>
+<li>input: LaTeX <code>\langle A\cup B,6\rangle</code>, typeset $\langle A\cup B,6\rangle$</li>
+<li>output: putdown <code>null</code></li>
+</ul>
+</li>
+</ul>
 <h3>can convert simple set memberships and subsets</h3>
 <ul>
 <li>Test 1
@@ -3743,6 +4205,18 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: LaTeX <code>q \in \bar U \cup V \times W</code>, typeset $q \in \bar U \cup V \times W$</li>
 <li>output: putdown <code>(in q (setuni (setcomp U) (setprod V W)))</code></li>
+</ul>
+</li>
+<li>Test 10
+<ul>
+<li>input: LaTeX <code>( a , b ) \in A \times B</code>, typeset $( a , b ) \in A \times B$</li>
+<li>output: putdown <code>(in (tuple (elts a (elts b))) (setprod A B))</code></li>
+</ul>
+</li>
+<li>Test 11
+<ul>
+<li>input: LaTeX <code>\langle a , b \rangle \in A \times B</code>, typeset $\langle a , b \rangle \in A \times B$</li>
+<li>output: putdown <code>(in (vector (elts a (elts b))) (setprod A B))</code></li>
 </ul>
 </li>
 </ul>
