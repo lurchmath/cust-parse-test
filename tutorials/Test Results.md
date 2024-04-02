@@ -1,6 +1,6 @@
 
 The following page lists all tests run using the example converter in this
-repository, which was build to verify that the language-building and conversion
+repository, which was built to verify that the language-building and conversion
 tools in this repository work.  It can convert among LaTeX, putdown, and JSON
 formats (as of this writing).  The specific conversions it performed (to
 satisfy the requirements of the test suite) are shown below.
@@ -337,6 +337,12 @@ satisfy the requirements of the test suite) are shown below.
 - Test 7
    - input: putdown `(subseteq (finiteset (elts 1)) (setuni (finiteset (elts 1)) (finiteset (elts 2))))`
    - output: JSON `["subseteq",["finiteset",["onenumseq",["number","1"]]],["union",["finiteset",["onenumseq",["number","1"]]],["finiteset",["onenumseq",["number","2"]]]]]`
+- Test 8
+   - input: putdown `(in p (setprod U V))`
+   - output: JSON `["numberisin",["numbervariable","p"],["setproduct",["setvariable","U"],["setvariable","V"]]]`
+- Test 9
+   - input: putdown `(in q (setuni (setcomp U) (setprod V W)))`
+   - output: JSON `["numberisin",["numbervariable","q"],["union",["complement",["setvariable","U"]],["setproduct",["setvariable","V"],["setvariable","W"]]]]`
 
 
 ### does not undo the canonical form for "notin" notation
@@ -696,6 +702,12 @@ satisfy the requirements of the test suite) are shown below.
 - Test 7
    - input: JSON `["subseteq",["finiteset",["onenumseq",["number","1"]]],["union",["finiteset",["onenumseq",["number","1"]]],["finiteset",["onenumseq",["number","2"]]]]]`
    - output: putdown `(subseteq (finiteset (elts 1)) (setuni (finiteset (elts 1)) (finiteset (elts 2))))`
+- Test 8
+   - input: JSON `["numberisin",["numbervariable","p"],["setproduct",["setvariable","U"],["setvariable","V"]]]`
+   - output: putdown `(in p (setprod U V))`
+- Test 9
+   - input: JSON `["numberisin",["numbervariable","q"],["union",["complement",["setvariable","U"]],["setproduct",["setvariable","V"],["setvariable","W"]]]]`
+   - output: putdown `(in q (setuni (setcomp U) (setprod V W)))`
 
 
 ### creates the canonical form for "notin" notation
@@ -1073,6 +1085,12 @@ satisfy the requirements of the test suite) are shown below.
 - Test 8
    - input: LaTeX `\{1\}\subseteq\{1\}\cup\{2\}`, typeset $\{1\}\subseteq\{1\}\cup\{2\}$
    - output: JSON `["subseteq",["finiteset",["onenumseq",["number","1"]]],["union",["finiteset",["onenumseq",["number","1"]]],["finiteset",["onenumseq",["number","2"]]]]]`
+- Test 9
+   - input: LaTeX `p\in U\times V`, typeset $p\in U\times V$
+   - output: JSON `["numberisin",["numbervariable","p"],["setproduct",["setvariable","U"],["setvariable","V"]]]`
+- Test 10
+   - input: LaTeX `q \in U'\cup V\times W`, typeset $q \in U'\cup V\times W$
+   - output: JSON `["numberisin",["numbervariable","q"],["union",["complement",["setvariable","U"]],["setproduct",["setvariable","V"],["setvariable","W"]]]]`
 
 
 ### converts "notin" notation to its placeholder concept
@@ -1429,6 +1447,12 @@ satisfy the requirements of the test suite) are shown below.
 - Test 7
    - input: JSON `["subseteq",["finiteset",["onenumseq",["number","1"]]],["union",["finiteset",["onenumseq",["number","1"]]],["finiteset",["onenumseq",["number","2"]]]]]`
    - output: LaTeX `\{ 1 \} \subseteq \{ 1 \} \cup \{ 2 \}`, typeset $\{ 1 \} \subseteq \{ 1 \} \cup \{ 2 \}$
+- Test 8
+   - input: JSON `["numberisin",["numbervariable","p"],["setproduct",["setvariable","U"],["setvariable","V"]]]`
+   - output: LaTeX `p \in U \times V`, typeset $p \in U \times V$
+- Test 9
+   - input: JSON `["numberisin",["numbervariable","q"],["union",["complement",["setvariable","U"]],["setproduct",["setvariable","V"],["setvariable","W"]]]]`
+   - output: LaTeX `q \in \bar U \cup V \times W`, typeset $q \in \bar U \cup V \times W$
 
 
 ### can represent "notin" notation if JSON explicitly requests it
@@ -1770,6 +1794,12 @@ satisfy the requirements of the test suite) are shown below.
 - Test 7
    - input: putdown `(subseteq (finiteset (elts 1)) (setuni (finiteset (elts 1)) (finiteset (elts 2))))`
    - output: LaTeX `\{ 1 \} \subseteq \{ 1 \} \cup \{ 2 \}`, typeset $\{ 1 \} \subseteq \{ 1 \} \cup \{ 2 \}$
+- Test 8
+   - input: putdown `(in p (setprod U V))`
+   - output: LaTeX `p \in U \times V`, typeset $p \in U \times V$
+- Test 9
+   - input: putdown `(in q (setuni (setcomp U) (setprod V W)))`
+   - output: LaTeX `q \in \bar U \cup V \times W`, typeset $q \in \bar U \cup V \times W$
 
 
 ### does not undo the canonical form for "notin" notation
@@ -2135,6 +2165,12 @@ satisfy the requirements of the test suite) are shown below.
 - Test 7
    - input: LaTeX `\{1\}\subseteq\{1\}\cup\{2\}`, typeset $\{1\}\subseteq\{1\}\cup\{2\}$
    - output: putdown `(subseteq (finiteset (elts 1)) (setuni (finiteset (elts 1)) (finiteset (elts 2))))`
+- Test 8
+   - input: LaTeX `p \in U \times V`, typeset $p \in U \times V$
+   - output: putdown `(in p (setprod U V))`
+- Test 9
+   - input: LaTeX `q \in \bar U \cup V \times W`, typeset $q \in \bar U \cup V \times W$
+   - output: putdown `(in q (setuni (setcomp U) (setprod V W)))`
 
 
 ### expands "notin" notation into canonical form

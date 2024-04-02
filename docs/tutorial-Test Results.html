@@ -55,7 +55,7 @@
 
 <article>
     <p>The following page lists all tests run using the example converter in this
-repository, which was build to verify that the language-building and conversion
+repository, which was built to verify that the language-building and conversion
 tools in this repository work.  It can convert among LaTeX, putdown, and JSON
 formats (as of this writing).  The specific conversions it performed (to
 satisfy the requirements of the test suite) are shown below.</p>
@@ -615,6 +615,18 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: putdown <code>(subseteq (finiteset (elts 1)) (setuni (finiteset (elts 1)) (finiteset (elts 2))))</code></li>
 <li>output: JSON <code>[&quot;subseteq&quot;,[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;1&quot;]]],[&quot;union&quot;,[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;1&quot;]]],[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]]</code></li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: putdown <code>(in p (setprod U V))</code></li>
+<li>output: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;p&quot;],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;U&quot;],[&quot;setvariable&quot;,&quot;V&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 9
+<ul>
+<li>input: putdown <code>(in q (setuni (setcomp U) (setprod V W)))</code></li>
+<li>output: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;q&quot;],[&quot;union&quot;,[&quot;complement&quot;,[&quot;setvariable&quot;,&quot;U&quot;]],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;V&quot;],[&quot;setvariable&quot;,&quot;W&quot;]]]]</code></li>
 </ul>
 </li>
 </ul>
@@ -1225,6 +1237,18 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: JSON <code>[&quot;subseteq&quot;,[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;1&quot;]]],[&quot;union&quot;,[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;1&quot;]]],[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]]</code></li>
 <li>output: putdown <code>(subseteq (finiteset (elts 1)) (setuni (finiteset (elts 1)) (finiteset (elts 2))))</code></li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;p&quot;],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;U&quot;],[&quot;setvariable&quot;,&quot;V&quot;]]]</code></li>
+<li>output: putdown <code>(in p (setprod U V))</code></li>
+</ul>
+</li>
+<li>Test 9
+<ul>
+<li>input: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;q&quot;],[&quot;union&quot;,[&quot;complement&quot;,[&quot;setvariable&quot;,&quot;U&quot;]],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;V&quot;],[&quot;setvariable&quot;,&quot;W&quot;]]]]</code></li>
+<li>output: putdown <code>(in q (setuni (setcomp U) (setprod V W)))</code></li>
 </ul>
 </li>
 </ul>
@@ -1873,6 +1897,18 @@ satisfy the requirements of the test suite) are shown below.</p>
 <li>output: JSON <code>[&quot;subseteq&quot;,[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;1&quot;]]],[&quot;union&quot;,[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;1&quot;]]],[&quot;finiteset&quot;,[&quot;onenumseq&quot;,[&quot;number&quot;,&quot;2&quot;]]]]]</code></li>
 </ul>
 </li>
+<li>Test 9
+<ul>
+<li>input: LaTeX <code>p\in U\times V</code>, typeset $p\in U\times V$</li>
+<li>output: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;p&quot;],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;U&quot;],[&quot;setvariable&quot;,&quot;V&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 10
+<ul>
+<li>input: LaTeX <code>q \in U'\cup V\times W</code>, typeset $q \in U'\cup V\times W$</li>
+<li>output: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;q&quot;],[&quot;union&quot;,[&quot;complement&quot;,[&quot;setvariable&quot;,&quot;U&quot;]],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;V&quot;],[&quot;setvariable&quot;,&quot;W&quot;]]]]</code></li>
+</ul>
+</li>
 </ul>
 <h3>converts &quot;notin&quot; notation to its placeholder concept</h3>
 <ul>
@@ -2477,6 +2513,18 @@ satisfy the requirements of the test suite) are shown below.</p>
 <li>output: LaTeX <code>\{ 1 \} \subseteq \{ 1 \} \cup \{ 2 \}</code>, typeset ${ 1 } \subseteq { 1 } \cup { 2 }$</li>
 </ul>
 </li>
+<li>Test 8
+<ul>
+<li>input: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;p&quot;],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;U&quot;],[&quot;setvariable&quot;,&quot;V&quot;]]]</code></li>
+<li>output: LaTeX <code>p \in U \times V</code>, typeset $p \in U \times V$</li>
+</ul>
+</li>
+<li>Test 9
+<ul>
+<li>input: JSON <code>[&quot;numberisin&quot;,[&quot;numbervariable&quot;,&quot;q&quot;],[&quot;union&quot;,[&quot;complement&quot;,[&quot;setvariable&quot;,&quot;U&quot;]],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;V&quot;],[&quot;setvariable&quot;,&quot;W&quot;]]]]</code></li>
+<li>output: LaTeX <code>q \in \bar U \cup V \times W</code>, typeset $q \in \bar U \cup V \times W$</li>
+</ul>
+</li>
 </ul>
 <h3>can represent &quot;notin&quot; notation if JSON explicitly requests it</h3>
 <ul>
@@ -3049,6 +3097,18 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: putdown <code>(subseteq (finiteset (elts 1)) (setuni (finiteset (elts 1)) (finiteset (elts 2))))</code></li>
 <li>output: LaTeX <code>\{ 1 \} \subseteq \{ 1 \} \cup \{ 2 \}</code>, typeset ${ 1 } \subseteq { 1 } \cup { 2 }$</li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: putdown <code>(in p (setprod U V))</code></li>
+<li>output: LaTeX <code>p \in U \times V</code>, typeset $p \in U \times V$</li>
+</ul>
+</li>
+<li>Test 9
+<ul>
+<li>input: putdown <code>(in q (setuni (setcomp U) (setprod V W)))</code></li>
+<li>output: LaTeX <code>q \in \bar U \cup V \times W</code>, typeset $q \in \bar U \cup V \times W$</li>
 </ul>
 </li>
 </ul>
@@ -3671,6 +3731,18 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: LaTeX <code>\{1\}\subseteq\{1\}\cup\{2\}</code>, typeset ${1}\subseteq{1}\cup{2}$</li>
 <li>output: putdown <code>(subseteq (finiteset (elts 1)) (setuni (finiteset (elts 1)) (finiteset (elts 2))))</code></li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: LaTeX <code>p \in U \times V</code>, typeset $p \in U \times V$</li>
+<li>output: putdown <code>(in p (setprod U V))</code></li>
+</ul>
+</li>
+<li>Test 9
+<ul>
+<li>input: LaTeX <code>q \in \bar U \cup V \times W</code>, typeset $q \in \bar U \cup V \times W$</li>
+<li>output: putdown <code>(in q (setuni (setcomp U) (setprod V W)))</code></li>
 </ul>
 </li>
 </ul>
