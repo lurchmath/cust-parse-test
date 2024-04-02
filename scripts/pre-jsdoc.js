@@ -61,7 +61,7 @@ logJSON.forEach( suite => {
 console.log( `Writing test summary to file: ${outfile}...` )
 fs.writeFileSync( outfile, `
 The following page lists all tests run using the example converter in this
-repository, which was build to verify that the language-building and conversion
+repository, which was built to verify that the language-building and conversion
 tools in this repository work.  It can convert among LaTeX, putdown, and JSON
 formats (as of this writing).  The specific conversions it performed (to
 satisfy the requirements of the test suite) are shown below.
