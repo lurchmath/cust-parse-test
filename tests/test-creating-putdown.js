@@ -584,6 +584,18 @@ describe( 'Rendering JSON into putdown', () => {
                     [ 'finiteset', [ 'onenumseq', [ 'number', '2' ] ] ] ] ],
             '(subseteq (finiteset (elts 1)) (setuni (finiteset (elts 1)) (finiteset (elts 2))))'
         )
+        checkJsonPutdown(
+            [ 'numberisin', [ 'numbervariable', 'p' ],
+                [ 'setproduct', [ 'setvariable', 'U' ], [ 'setvariable', 'V' ] ] ],
+            '(in p (setprod U V))'
+        )
+        checkJsonPutdown(
+            [ 'numberisin', [ 'numbervariable', 'q' ],
+                [ 'union',
+                    [ 'complement', [ 'setvariable', 'U' ] ],
+                    [ 'setproduct', [ 'setvariable', 'V' ], [ 'setvariable', 'W' ] ] ] ],
+            '(in q (setuni (setcomp U) (setprod V W)))'
+        )
     } )
 
     it( 'creates the canonical form for "notin" notation', () => {

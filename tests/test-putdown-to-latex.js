@@ -209,6 +209,11 @@ describe( 'Converting putdown to LaTeX', () => {
             '(subseteq (finiteset (elts 1)) (setuni (finiteset (elts 1)) (finiteset (elts 2))))',
             '\\{ 1 \\} \\subseteq \\{ 1 \\} \\cup \\{ 2 \\}'
         )
+        checkPutdownLatex( '(in p (setprod U V))', 'p \\in U \\times V' )
+        checkPutdownLatex(
+            '(in q (setuni (setcomp U) (setprod V W)))',
+            'q \\in \\bar U \\cup V \\times W'
+        )
     } )
 
     it( 'does not undo the canonical form for "notin" notation', () => {

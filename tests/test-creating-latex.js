@@ -589,6 +589,18 @@ describe( 'Rendering JSON into LaTeX', () => {
                     [ 'finiteset', [ 'onenumseq', [ 'number', '2' ] ] ] ] ],
             '\\{ 1 \\} \\subseteq \\{ 1 \\} \\cup \\{ 2 \\}'
         )
+        checkJsonLatex(
+            [ 'numberisin', [ 'numbervariable', 'p' ],
+                [ 'setproduct', [ 'setvariable', 'U' ], [ 'setvariable', 'V' ] ] ],
+            'p \\in U \\times V'
+        )
+        checkJsonLatex(
+            [ 'numberisin', [ 'numbervariable', 'q' ],
+                [ 'union',
+                    [ 'complement', [ 'setvariable', 'U' ] ],
+                    [ 'setproduct', [ 'setvariable', 'V' ], [ 'setvariable', 'W' ] ] ] ],
+            'q \\in \\bar U \\cup V \\times W'
+        )
     } )
 
     it( 'can represent "notin" notation if JSON explicitly requests it', () => {

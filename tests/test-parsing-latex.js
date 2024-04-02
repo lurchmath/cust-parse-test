@@ -630,6 +630,18 @@ describe( 'Parsing LaTeX', () => {
                     [ 'finiteset', [ 'onenumseq', [ 'number', '1' ] ] ],
                     [ 'finiteset', [ 'onenumseq', [ 'number', '2' ] ] ] ] ]
         )
+        checkLatexJson(
+            'p\\in U\\times V',
+            [ 'numberisin', [ 'numbervariable', 'p' ],
+                [ 'setproduct', [ 'setvariable', 'U' ], [ 'setvariable', 'V' ] ] ]
+        )
+        checkLatexJson(
+            'q \\in U\'\\cup V\\times W',
+            [ 'numberisin', [ 'numbervariable', 'q' ],
+                [ 'union',
+                    [ 'complement', [ 'setvariable', 'U' ] ],
+                    [ 'setproduct', [ 'setvariable', 'V' ], [ 'setvariable', 'W' ] ] ] ]
+        )
     } )
 
     it( 'converts "notin" notation to its placeholder concept', () => {
