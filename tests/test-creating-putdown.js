@@ -489,77 +489,112 @@ describe( 'Rendering JSON into putdown', () => {
         checkJsonPutdown( [ 'emptyset' ], 'emptyset' )
         // { 1 }
         checkJsonPutdown(
-            [ 'finiteset', [ 'onenumseq', [ 'number', '1' ] ] ],
+            [ 'finiteset', [ 'oneeltseq', [ 'number', '1' ] ] ],
             '(finiteset (elts 1))'
         )
         // { 1, 2 }
         checkJsonPutdown(
-            [ 'finiteset', [ 'numthenseq', [ 'number', '1' ],
-                [ 'onenumseq', [ 'number', '2' ] ] ] ],
+            [ 'finiteset', [ 'eltthenseq', [ 'number', '1' ],
+                [ 'oneeltseq', [ 'number', '2' ] ] ] ],
             '(finiteset (elts 1 (elts 2)))'
         )
         // { 1, 2, 3 }
         checkJsonPutdown(
-            [ 'finiteset', [ 'numthenseq', [ 'number', '1' ],
-                [ 'numthenseq', [ 'number', '2' ],
-                    [ 'onenumseq', [ 'number', '3' ] ] ] ] ],
+            [ 'finiteset', [ 'eltthenseq', [ 'number', '1' ],
+                [ 'eltthenseq', [ 'number', '2' ],
+                    [ 'oneeltseq', [ 'number', '3' ] ] ] ] ],
             '(finiteset (elts 1 (elts 2 (elts 3))))'
         )
         // { { }, { } }
         checkJsonPutdown(
-            [ 'finiteset', [ 'setthenseq', [ 'emptyset' ],
-                [ 'onesetseq', [ 'emptyset' ] ] ] ],
+            [ 'finiteset', [ 'eltthenseq', [ 'emptyset' ],
+                [ 'oneeltseq', [ 'emptyset' ] ] ] ],
             '(finiteset (elts emptyset (elts emptyset)))'
         )
         // { { { } } }
         checkJsonPutdown(
-            [ 'finiteset', [ 'onesetseq',
-                [ 'finiteset', [ 'onesetseq', [ 'emptyset' ] ] ] ] ],
+            [ 'finiteset', [ 'oneeltseq',
+                [ 'finiteset', [ 'oneeltseq', [ 'emptyset' ] ] ] ] ],
             '(finiteset (elts (finiteset (elts emptyset))))'
         )
         // { 3, x }
         checkJsonPutdown(
-            [ 'finiteset', [ 'numthenseq', [ 'number', '3' ],
-                [ 'onenumseq', [ 'numbervariable', 'x' ] ] ] ],
+            [ 'finiteset', [ 'eltthenseq', [ 'number', '3' ],
+                [ 'oneeltseq', [ 'numbervariable', 'x' ] ] ] ],
             '(finiteset (elts 3 (elts x)))'
         )
         // { A cup B, A cap B }
         checkJsonPutdown(
-            [ 'finiteset', [ 'setthenseq',
+            [ 'finiteset', [ 'eltthenseq',
                 [ 'union', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
-                [ 'onesetseq',
+                [ 'oneeltseq',
                     [ 'intersection', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ] ] ] ],
             '(finiteset (elts (setuni A B) (elts (setint A B))))'
         )
         // { 1, 2, emptyset, K, P }
         checkJsonPutdown(
-            [ 'finiteset', [ 'numthenseq', [ 'number', '1' ],
-                [ 'numthenseq', [ 'number', '2' ],
-                    [ 'setthenseq', [ 'emptyset' ],
-                        [ 'numthenseq', [ 'numbervariable', 'K' ],
-                            [ 'onenumseq', [ 'numbervariable', 'P' ] ] ] ] ] ] ],
+            [ 'finiteset', [ 'eltthenseq', [ 'number', '1' ],
+                [ 'eltthenseq', [ 'number', '2' ],
+                    [ 'eltthenseq', [ 'emptyset' ],
+                        [ 'eltthenseq', [ 'numbervariable', 'K' ],
+                            [ 'oneeltseq', [ 'numbervariable', 'P' ] ] ] ] ] ] ],
             '(finiteset (elts 1 (elts 2 (elts emptyset (elts K (elts P))))))'
+        )
+    } )
+
+    it( 'can convert tuples and vectors to putdown', () => {
+        // tuples containing at least two elements are valid
+        checkJsonPutdown(
+            [ 'tuple', [ 'eltthenseq', [ 'number', '5' ],
+                [ 'oneeltseq', [ 'number', '6' ] ] ] ],
+            '(tuple (elts 5 (elts 6)))'
+        )
+        checkJsonPutdown(
+            [ 'tuple', [ 'eltthenseq', [ 'number', '5' ], [ 'eltthenseq',
+                [ 'union', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
+                [ 'oneeltseq', [ 'numbervariable', 'k' ] ] ] ] ],
+            '(tuple (elts 5 (elts (setuni A B) (elts k))))'
+        )
+        // vectors containing at least two numbers are valid
+        checkJsonPutdown(
+            [ 'vector', [ 'numthenseq', [ 'number', '5' ],
+                [ 'onenumseq', [ 'number', '6' ] ] ] ],
+            '(vector (elts 5 (elts 6)))'
+        )
+        checkJsonPutdown(
+            [ 'vector', [ 'numthenseq', [ 'number', '5' ], [ 'numthenseq',
+                [ 'numbernegation', [ 'number', '7' ] ],
+                [ 'onenumseq', [ 'numbervariable', 'k' ] ] ] ] ],
+            '(vector (elts 5 (elts (- 7) (elts k))))'
+        )
+        // tuples can contain other tuples
+        checkJsonPutdown(
+            [ 'tuple', [ 'eltthenseq',
+                [ 'tuple', [ 'eltthenseq', [ 'number', '1' ],
+                    [ 'oneeltseq', [ 'number', '2' ] ] ] ],
+                [ 'oneeltseq', [ 'number', '6' ] ] ] ],
+            '(tuple (elts (tuple (elts 1 (elts 2))) (elts 6)))'
         )
     } )
 
     it( 'can convert simple set memberships and subsets to putdown', () => {
         checkJsonPutdown(
-            [ 'numberisin', [ 'numbervariable', 'b' ], [ 'setvariable', 'B' ] ],
+            [ 'nounisin', [ 'numbervariable', 'b' ], [ 'setvariable', 'B' ] ],
             '(in b B)'
         )
         checkJsonPutdown(
-            [ 'numberisin', [ 'number', '2' ],
-                [ 'finiteset', [ 'numthenseq', [ 'number', '1' ],
-                    [ 'onenumseq', [ 'number', '2' ] ] ] ] ],
+            [ 'nounisin', [ 'number', '2' ],
+                [ 'finiteset', [ 'eltthenseq', [ 'number', '1' ],
+                    [ 'oneeltseq', [ 'number', '2' ] ] ] ] ],
             '(in 2 (finiteset (elts 1 (elts 2))))'
         )
         checkJsonPutdown(
-            [ 'numberisin', [ 'numbervariable', 'X' ],
+            [ 'nounisin', [ 'numbervariable', 'X' ],
                 [ 'union', [ 'setvariable', 'a' ], [ 'setvariable', 'b' ] ] ],
             '(in X (setuni a b))'
         )
         checkJsonPutdown(
-            [ 'setisin',
+            [ 'nounisin',
                 [ 'union', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
                 [ 'union', [ 'setvariable', 'X' ], [ 'setvariable', 'Y' ] ] ],
             '(in (setuni A B) (setuni X Y))'
@@ -578,37 +613,55 @@ describe( 'Rendering JSON into putdown', () => {
         )
         checkJsonPutdown(
             [ 'subseteq',
-                [ 'finiteset', [ 'onenumseq', [ 'number', '1' ] ] ],
+                [ 'finiteset', [ 'oneeltseq', [ 'number', '1' ] ] ],
                 [ 'union',
-                    [ 'finiteset', [ 'onenumseq', [ 'number', '1' ] ] ],
-                    [ 'finiteset', [ 'onenumseq', [ 'number', '2' ] ] ] ] ],
+                    [ 'finiteset', [ 'oneeltseq', [ 'number', '1' ] ] ],
+                    [ 'finiteset', [ 'oneeltseq', [ 'number', '2' ] ] ] ] ],
             '(subseteq (finiteset (elts 1)) (setuni (finiteset (elts 1)) (finiteset (elts 2))))'
         )
         checkJsonPutdown(
-            [ 'numberisin', [ 'numbervariable', 'p' ],
+            [ 'nounisin', [ 'numbervariable', 'p' ],
                 [ 'setproduct', [ 'setvariable', 'U' ], [ 'setvariable', 'V' ] ] ],
             '(in p (setprod U V))'
         )
         checkJsonPutdown(
-            [ 'numberisin', [ 'numbervariable', 'q' ],
+            [ 'nounisin', [ 'numbervariable', 'q' ],
                 [ 'union',
                     [ 'complement', [ 'setvariable', 'U' ] ],
                     [ 'setproduct', [ 'setvariable', 'V' ], [ 'setvariable', 'W' ] ] ] ],
             '(in q (setuni (setcomp U) (setprod V W)))'
         )
+        checkJsonPutdown(
+            [ 'nounisin',
+                [ 'tuple',
+                    [ 'eltthenseq',
+                        [ 'numbervariable', 'a' ],
+                        [ 'oneeltseq', [ 'numbervariable', 'b' ] ] ] ],
+                    [ 'setproduct', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ] ],
+            '(in (tuple (elts a (elts b))) (setprod A B))'
+        )
+        checkJsonPutdown(
+            [ 'nounisin',
+                [ 'vector',
+                    [ 'numthenseq',
+                        [ 'numbervariable', 'a' ],
+                        [ 'onenumseq', [ 'numbervariable', 'b' ] ] ] ],
+                    [ 'setproduct', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ] ],
+            '(in (vector (elts a (elts b))) (setprod A B))'
+        )
     } )
 
     it( 'creates the canonical form for "notin" notation', () => {
         checkJsonPutdown(
-            [ 'numberisnotin', [ 'numbervariable', 'a' ], [ 'setvariable', 'A' ] ],
+            [ 'nounisnotin', [ 'numbervariable', 'a' ], [ 'setvariable', 'A' ] ],
             '(not (in a A))'
         )
         checkJsonPutdown(
-            [ 'logicnegation', [ 'setisin', [ 'emptyset' ], [ 'emptyset' ] ] ],
+            [ 'logicnegation', [ 'nounisin', [ 'emptyset' ], [ 'emptyset' ] ] ],
             '(not (in emptyset emptyset))'
         )
         checkJsonPutdown(
-            [ 'numberisnotin',
+            [ 'nounisnotin',
                 [ 'subtraction', [ 'number', '3' ], [ 'number', '5' ] ],
                 [ 'intersection', [ 'setvariable', 'K' ], [ 'setvariable', 'P' ] ]
             ],
@@ -620,14 +673,14 @@ describe( 'Rendering JSON into putdown', () => {
         checkJsonPutdown(
             [ 'disjunction',
                 [ 'logicvariable', 'P' ],
-                [ 'numberisin',
+                [ 'nounisin',
                     [ 'numbervariable', 'b' ], [ 'setvariable', 'B' ] ] ],
             '(or P (in b B))'
         )
         checkJsonPutdown(
             [ 'universal',
                 [ 'numbervariable', 'x' ],
-                [ 'numberisin',
+                [ 'nounisin',
                     [ 'numbervariable', 'x' ], [ 'setvariable', 'X' ] ] ],
             '(forall (x , (in x X)))'
         )

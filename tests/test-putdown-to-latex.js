@@ -187,6 +187,37 @@ describe( 'Converting putdown to LaTeX', () => {
         )
     } )
 
+    it( 'correctly converts tuples and vectors', () => {
+        // tuples containing at least two elements are valid
+        checkPutdownLatex( '(tuple (elts 5 (elts 6)))', '( 5 , 6 )' )
+        checkPutdownLatex(
+            '(tuple (elts 5 (elts (setuni A B) (elts k))))',
+            '( 5 , A \\cup B , k )'
+        )
+        // vectors containing at least two numbers are valid
+        checkPutdownLatex( '(vector (elts 5 (elts 6)))', '\\langle 5 , 6 \\rangle' )
+        checkPutdownLatex(
+            '(vector (elts 5 (elts (- 7) (elts k))))',
+            '\\langle 5 , - 7 , k \\rangle'
+        )
+        // tuples and vectors containing zero or one element are not valid
+        checkPutdownLatexFail( '(tuple)' )
+        checkPutdownLatexFail( '(tuple (elts))' )
+        checkPutdownLatexFail( '(tuple (elts 3))' )
+        checkPutdownLatexFail( '(vector)' )
+        checkPutdownLatexFail( '(vector (elts))' )
+        checkPutdownLatexFail( '(vector (elts 3))' )
+        // tuples can contain other tuples
+        checkPutdownLatex(
+            '(tuple (elts (tuple (elts 1 (elts 2))) (elts 6)))',
+            '( ( 1 , 2 ) , 6 )'
+        )
+        // vectors can contain only numbers
+        checkPutdownLatexFail( '(vector (elts (tuple (elts 1 (elts 2))) (elts 6)))' )
+        checkPutdownLatexFail( '(vector (elts (vector (elts 1 (elts 2))) (elts 6)))' )
+        checkPutdownLatexFail( '(vector (elts (setuni A B) (elts 6)))' )
+    } )
+
     it( 'can convert simple set memberships and subsets', () => {
         // As before, when a variable could be any type, the alphabetically
         // least type is numbervariable
@@ -213,6 +244,14 @@ describe( 'Converting putdown to LaTeX', () => {
         checkPutdownLatex(
             '(in q (setuni (setcomp U) (setprod V W)))',
             'q \\in \\bar U \\cup V \\times W'
+        )
+        checkPutdownLatex(
+            '(in (tuple (elts a (elts b))) (setprod A B))',
+            '( a , b ) \\in A \\times B'
+        )
+        checkPutdownLatex(
+            '(in (vector (elts a (elts b))) (setprod A B))',
+            '\\langle a , b \\rangle \\in A \\times B'
         )
     } )
 

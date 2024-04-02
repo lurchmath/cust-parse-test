@@ -198,6 +198,36 @@ describe( 'Converting LaTeX to putdown', () => {
         )
     } )
 
+    it( 'correctly converts tuples and vectors', () => {
+        // tuples containing at least two elements are valid
+        checkLatexPutdown( '( 5 , 6 )', '(tuple (elts 5 (elts 6)))' )
+        checkLatexPutdown(
+            '( 5 , A \\cup B , k )',
+            '(tuple (elts 5 (elts (setuni A B) (elts k))))'
+        )
+        // vectors containing at least two numbers are valid
+        checkLatexPutdown( '\\langle 5 , 6 \\rangle', '(vector (elts 5 (elts 6)))' )
+        checkLatexPutdown(
+            '\\langle 5 , - 7 , k \\rangle',
+            '(vector (elts 5 (elts (- 7) (elts k))))'
+        )
+        // tuples and vectors containing zero or one element are not valid
+        checkLatexPutdownFail( '()' )
+        checkLatexPutdownFail( '(())' )
+        checkLatexPutdown( '(3)', '3' ) // okay, this is valid, but not as a tuple
+        checkLatexPutdownFail( '\\langle\\rangle' )
+        checkLatexPutdownFail( '\\langle3\\rangle' )
+        // tuples can contain other tuples
+        checkLatexPutdown(
+            '( ( 1 , 2 ) , 6 )',
+            '(tuple (elts (tuple (elts 1 (elts 2))) (elts 6)))'
+        )
+        // vectors can contain only numbers
+        checkLatexPutdownFail( '\\langle(1,2),6\\rangle' )
+        checkLatexPutdownFail( '\\langle\\langle1,2\\rangle,6\\rangle' )
+        checkLatexPutdownFail( '\\langle A\\cup B,6\\rangle' )
+    } )
+
     it( 'can convert simple set memberships and subsets', () => {
         // As before, when a variable could be any type, the alphabetically
         // least type is numbervariable
@@ -224,6 +254,14 @@ describe( 'Converting LaTeX to putdown', () => {
         checkLatexPutdown(
             'q \\in \\bar U \\cup V \\times W',
             '(in q (setuni (setcomp U) (setprod V W)))'
+        )
+        checkLatexPutdown(
+            '( a , b ) \\in A \\times B',
+            '(in (tuple (elts a (elts b))) (setprod A B))'
+        )
+        checkLatexPutdown(
+            '\\langle a , b \\rangle \\in A \\times B',
+            '(in (vector (elts a (elts b))) (setprod A B))'
         )
     } )
 

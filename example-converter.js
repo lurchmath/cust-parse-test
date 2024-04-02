@@ -35,10 +35,8 @@ converter.addConcept( 'existsunique',   'sentenceexpr',     '(existsunique (numb
 
 converter.addConcept( 'setvariable',    'atomicsetexpr',    Language.regularExpressions.oneLetterVariable )
 
-converter.addConcept( 'onenumseq',      'sequenceexpr',     '(elts numberexpr)' )
-converter.addConcept( 'numthenseq',     'sequenceexpr',     '(elts numberexpr sequenceexpr)' )
-converter.addConcept( 'onesetseq',      'sequenceexpr',     '(elts setexpr)' )
-converter.addConcept( 'setthenseq',     'sequenceexpr',     '(elts setexpr sequenceexpr)' )
+converter.addConcept( 'oneeltseq',      'sequenceexpr',     '(elts nounexpr)' )
+converter.addConcept( 'eltthenseq',     'sequenceexpr',     '(elts nounexpr sequenceexpr)' )
 converter.addConcept( 'finiteset',      'atomicsetexpr',    '(finiteset sequenceexpr)' )
 converter.addConcept( 'emptyset',       'atomicsetexpr',    'emptyset' )
 
@@ -50,12 +48,15 @@ converter.addConcept( 'setproduct',     'intersectionexpr', '(setprod atomicsete
 
 converter.addConcept( 'subset',         'atomicpropexpr',   '(subset setexpr setexpr)' )
 converter.addConcept( 'subseteq',       'atomicpropexpr',   '(subseteq setexpr setexpr)' )
-converter.addConcept( 'numberisin',     'atomicpropexpr',   '(in numberexpr setexpr)' )
+converter.addConcept( 'nounisin',       'atomicpropexpr',   '(in nounexpr setexpr)' )
 converter.addConcept( 'propisin',       'atomicpropexpr',   '(in atomicpropexpr setexpr)' )
-converter.addConcept( 'setisin',        'atomicpropexpr',   '(in setexpr setexpr)' )
-converter.addConcept( 'numberisnotin',  'atomicpropexpr',   '(not (in numberexpr setexpr))', { primitive : false } )
+converter.addConcept( 'nounisnotin',    'atomicpropexpr',   '(not (in nounexpr setexpr))', { primitive : false } )
 converter.addConcept( 'propisnotin',    'atomicpropexpr',   '(not (in condexpr setexpr))', { primitive : false } )
-converter.addConcept( 'setisnotin',     'atomicpropexpr',   '(not (in setexpr setexpr))', { primitive : false } )
+
+converter.addConcept( 'tuple',          'tupleexpr',        '(tuple eltthenseq)' )
+converter.addConcept( 'onenumseq',      'numsequenceexpr',  '(elts numberexpr)' )
+converter.addConcept( 'numthenseq',     'numsequenceexpr',  '(elts numberexpr numsequenceexpr)' )
+converter.addConcept( 'vector',         'tupleexpr',        '(vector numthenseq)' )
 
 const latex = new Language( 'latex', converter, [ '{', '}', '(', ')' ] )
 
@@ -93,11 +94,11 @@ latex.addNotation( 'existsunique',   '\\exists ! A, B' )
 
 latex.addNotation( 'emptyset',       '\\emptyset' )
 latex.addNotation( 'emptyset',       '\\{ \\}' )
-latex.addNotation( 'finiteset',      '\\{A\\}')
+latex.addNotation( 'finiteset',      '\\{A\\}' )
+latex.addNotation( 'oneeltseq',      'A' )
+latex.addNotation( 'eltthenseq',     'A,B' )
 latex.addNotation( 'onenumseq',      'A' )
 latex.addNotation( 'numthenseq',     'A,B' )
-latex.addNotation( 'onesetseq',      'A' )
-latex.addNotation( 'setthenseq',     'A,B' )
 
 latex.addNotation( 'union',          'A\\cup B' )
 latex.addNotation( 'intersection',   'A\\cap B' )
@@ -109,9 +110,10 @@ latex.addNotation( 'setproduct',     'A\\times B' )
 
 latex.addNotation( 'subset',         'A\\subset B' )
 latex.addNotation( 'subseteq',       'A\\subseteq B' )
-latex.addNotation( 'numberisin',     'A\\in B' )
+latex.addNotation( 'nounisin',       'A\\in B' )
 latex.addNotation( 'propisin',       'A\\in B' )
-latex.addNotation( 'setisin',        'A\\in B' )
-latex.addNotation( 'numberisnotin',  'A\\notin B' )
+latex.addNotation( 'nounisnotin',    'A\\notin B' )
 latex.addNotation( 'propisnotin',    'A\\notin B' )
-latex.addNotation( 'setisnotin',     'A\\notin B' )
+
+latex.addNotation( 'tuple',          '(A)' )
+latex.addNotation( 'vector',         '\\langle A\\rangle' )

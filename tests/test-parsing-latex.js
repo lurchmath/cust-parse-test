@@ -528,56 +528,104 @@ describe( 'Parsing LaTeX', () => {
         // { 1 }
         checkLatexJson(
             '\\{ 1 \\}',
-            [ 'finiteset', [ 'onenumseq', [ 'number', '1' ] ] ]
+            [ 'finiteset', [ 'oneeltseq', [ 'number', '1' ] ] ]
         )
         // { 1, 2 }
         checkLatexJson(
             '\\{1,2\\}',
-            [ 'finiteset', [ 'numthenseq', [ 'number', '1' ],
-                [ 'onenumseq', [ 'number', '2' ] ] ] ]
+            [ 'finiteset', [ 'eltthenseq', [ 'number', '1' ],
+                [ 'oneeltseq', [ 'number', '2' ] ] ] ]
         )
         // { 1, 2, 3 }
         checkLatexJson(
             '\\{1, 2,   3 \\}',
-            [ 'finiteset', [ 'numthenseq', [ 'number', '1' ],
-                [ 'numthenseq', [ 'number', '2' ],
-                    [ 'onenumseq', [ 'number', '3' ] ] ] ] ]
+            [ 'finiteset', [ 'eltthenseq', [ 'number', '1' ],
+                [ 'eltthenseq', [ 'number', '2' ],
+                    [ 'oneeltseq', [ 'number', '3' ] ] ] ] ]
         )
         // { { }, { } }
         checkLatexJson(
             '\\{\\{\\},\\emptyset\\}',
-            [ 'finiteset', [ 'setthenseq', [ 'emptyset' ],
-                [ 'onesetseq', [ 'emptyset' ] ] ] ]
+            [ 'finiteset', [ 'eltthenseq', [ 'emptyset' ],
+                [ 'oneeltseq', [ 'emptyset' ] ] ] ]
         )
         // { { { } } }
         checkLatexJson(
             '\\{\\{\\emptyset\\}\\}',
-            [ 'finiteset', [ 'onesetseq',
-                [ 'finiteset', [ 'onesetseq', [ 'emptyset' ] ] ] ] ]
+            [ 'finiteset', [ 'oneeltseq',
+                [ 'finiteset', [ 'oneeltseq', [ 'emptyset' ] ] ] ] ]
         )
         // { 3, x }
         checkLatexJson(
             '\\{ 3,x \\}',
-            [ 'finiteset', [ 'numthenseq', [ 'number', '3' ],
-                [ 'onenumseq', [ 'numbervariable', 'x' ] ] ] ]
+            [ 'finiteset', [ 'eltthenseq', [ 'number', '3' ],
+                [ 'oneeltseq', [ 'numbervariable', 'x' ] ] ] ]
         )
         // { A cup B, A cap B }
         checkLatexJson(
             '\\{ A\\cup B, A\\cap B \\}',
-            [ 'finiteset', [ 'setthenseq',
+            [ 'finiteset', [ 'eltthenseq',
                 [ 'union', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
-                [ 'onesetseq',
+                [ 'oneeltseq',
                     [ 'intersection', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ] ] ] ]
         )
         // { 1, 2, emptyset, K, P }
         checkLatexJson(
             '\\{ 1, 2, \\emptyset, K, P \\}',
-            [ 'finiteset', [ 'numthenseq', [ 'number', '1' ],
-                [ 'numthenseq', [ 'number', '2' ],
-                    [ 'setthenseq', [ 'emptyset' ],
-                        [ 'numthenseq', [ 'numbervariable', 'K' ],
-                            [ 'onenumseq', [ 'numbervariable', 'P' ] ] ] ] ] ] ]
+            [ 'finiteset', [ 'eltthenseq', [ 'number', '1' ],
+                [ 'eltthenseq', [ 'number', '2' ],
+                    [ 'eltthenseq', [ 'emptyset' ],
+                        [ 'eltthenseq', [ 'numbervariable', 'K' ],
+                            [ 'oneeltseq', [ 'numbervariable', 'P' ] ] ] ] ] ] ]
         )
+    } )
+
+    it( 'can convert tuples and vectors to JSON', () => {
+        // tuples containing at least two elements are valid
+        checkLatexJson(
+            '(5,6)',
+            [ 'tuple', [ 'eltthenseq', [ 'number', '5' ],
+                [ 'oneeltseq', [ 'number', '6' ] ] ] ]
+        )
+        checkLatexJson(
+            '(5,A\\cup B,k)',
+            [ 'tuple', [ 'eltthenseq', [ 'number', '5' ], [ 'eltthenseq',
+                [ 'union', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
+                [ 'oneeltseq', [ 'numbervariable', 'k' ] ] ] ] ]
+        )
+        // vectors containing at least two numbers are valid
+        checkLatexJson(
+            '\\langle5,6\\rangle',
+            [ 'vector', [ 'numthenseq', [ 'number', '5' ],
+                [ 'onenumseq', [ 'number', '6' ] ] ] ]
+        )
+        checkLatexJson(
+            '\\langle5,-7,k\\rangle',
+            [ 'vector', [ 'numthenseq', [ 'number', '5' ], [ 'numthenseq',
+                [ 'numbernegation', [ 'number', '7' ] ],
+                [ 'onenumseq', [ 'numbervariable', 'k' ] ] ] ] ]
+        )
+        // tuples and vectors containing zero or one element are not valid
+        checkLatexJsonFail( '()' )
+        checkLatexJsonFail( '(())' )
+        checkLatexJson(
+            '(3)', // okay, this is valid, but not as a tuple
+            [ 'number', '3' ]
+        )
+        checkLatexJsonFail( '\\langle\\rangle' )
+        checkLatexJsonFail( '\\langle3\\rangle' )
+        // tuples can contain other tuples
+        checkLatexJson(
+            '((1,2),6)',
+            [ 'tuple', [ 'eltthenseq',
+                [ 'tuple', [ 'eltthenseq', [ 'number', '1' ],
+                    [ 'oneeltseq', [ 'number', '2' ] ] ] ],
+                [ 'oneeltseq', [ 'number', '6' ] ] ] ]
+        )
+        // vectors can contain only numbers
+        checkLatexJsonFail( '\\langle(1,2),6\\rangle' )
+        checkLatexJsonFail( '\\langle\\langle1,2\\rangle,6\\rangle' )
+        checkLatexJsonFail( '\\langle A\\cup B,6\\rangle' )
     } )
 
     it( 'can convert simple set memberships and subsets to JSON', () => {
@@ -585,22 +633,22 @@ describe( 'Parsing LaTeX', () => {
         // least type is numbervariable
         checkLatexJson(
             'b\\in B',
-            [ 'numberisin', [ 'numbervariable', 'b' ], [ 'setvariable', 'B' ] ]
+            [ 'nounisin', [ 'numbervariable', 'b' ], [ 'setvariable', 'B' ] ]
         )
         checkLatexJson(
             '2\\in\\{1,2\\}',
-            [ 'numberisin', [ 'number', '2' ],
-                [ 'finiteset', [ 'numthenseq', [ 'number', '1' ],
-                    [ 'onenumseq', [ 'number', '2' ] ] ] ] ]
+            [ 'nounisin', [ 'number', '2' ],
+                [ 'finiteset', [ 'eltthenseq', [ 'number', '1' ],
+                    [ 'oneeltseq', [ 'number', '2' ] ] ] ] ]
         )
         checkLatexJson(
             'X\\in a\\cup b',
-            [ 'numberisin', [ 'numbervariable', 'X' ],
+            [ 'nounisin', [ 'numbervariable', 'X' ],
                 [ 'union', [ 'setvariable', 'a' ], [ 'setvariable', 'b' ] ] ]
         )
         checkLatexJson(
             'A\\cup B\\in X\\cup Y',
-            [ 'setisin',
+            [ 'nounisin',
                 [ 'union', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
                 [ 'union', [ 'setvariable', 'X' ], [ 'setvariable', 'Y' ] ] ]
         )
@@ -625,37 +673,55 @@ describe( 'Parsing LaTeX', () => {
         checkLatexJson(
             '\\{1\\}\\subseteq\\{1\\}\\cup\\{2\\}',
             [ 'subseteq',
-                [ 'finiteset', [ 'onenumseq', [ 'number', '1' ] ] ],
+                [ 'finiteset', [ 'oneeltseq', [ 'number', '1' ] ] ],
                 [ 'union',
-                    [ 'finiteset', [ 'onenumseq', [ 'number', '1' ] ] ],
-                    [ 'finiteset', [ 'onenumseq', [ 'number', '2' ] ] ] ] ]
+                    [ 'finiteset', [ 'oneeltseq', [ 'number', '1' ] ] ],
+                    [ 'finiteset', [ 'oneeltseq', [ 'number', '2' ] ] ] ] ]
         )
         checkLatexJson(
             'p\\in U\\times V',
-            [ 'numberisin', [ 'numbervariable', 'p' ],
+            [ 'nounisin', [ 'numbervariable', 'p' ],
                 [ 'setproduct', [ 'setvariable', 'U' ], [ 'setvariable', 'V' ] ] ]
         )
         checkLatexJson(
             'q \\in U\'\\cup V\\times W',
-            [ 'numberisin', [ 'numbervariable', 'q' ],
+            [ 'nounisin', [ 'numbervariable', 'q' ],
                 [ 'union',
                     [ 'complement', [ 'setvariable', 'U' ] ],
                     [ 'setproduct', [ 'setvariable', 'V' ], [ 'setvariable', 'W' ] ] ] ]
+        )
+        checkLatexJson(
+            '(a,b)\\in A\\times B',
+            [ 'nounisin',
+                [ 'tuple',
+                    [ 'eltthenseq',
+                        [ 'numbervariable', 'a' ],
+                        [ 'oneeltseq', [ 'numbervariable', 'b' ] ] ] ],
+                    [ 'setproduct', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ] ]
+        )
+        checkLatexJson(
+            '\\langle a,b\\rangle\\in A\\times B',
+            [ 'nounisin',
+                [ 'vector',
+                    [ 'numthenseq',
+                        [ 'numbervariable', 'a' ],
+                        [ 'onenumseq', [ 'numbervariable', 'b' ] ] ] ],
+                    [ 'setproduct', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ] ]
         )
     } )
 
     it( 'converts "notin" notation to its placeholder concept', () => {
         checkLatexJson(
             'a\\notin A',
-            [ 'numberisnotin', [ 'numbervariable', 'a' ], [ 'setvariable', 'A' ] ]
+            [ 'nounisnotin', [ 'numbervariable', 'a' ], [ 'setvariable', 'A' ] ]
         )
         checkLatexJson(
             '\\emptyset\\notin\\emptyset',
-            [ 'setisnotin', [ 'emptyset' ], [ 'emptyset' ] ]
+            [ 'nounisnotin', [ 'emptyset' ], [ 'emptyset' ] ]
         )
         checkLatexJson(
             '3-5 \\notin K\\cap P',
-            [ 'numberisnotin',
+            [ 'nounisnotin',
                 [ 'subtraction', [ 'number', '3' ], [ 'number', '5' ] ],
                 [ 'intersection', [ 'setvariable', 'K' ], [ 'setvariable', 'P' ] ]
             ]
@@ -667,7 +733,7 @@ describe( 'Parsing LaTeX', () => {
             'P\\vee b\\in B',
             [ 'disjunction',
                 [ 'logicvariable', 'P' ],
-                [ 'numberisin',
+                [ 'nounisin',
                     [ 'numbervariable', 'b' ], [ 'setvariable', 'B' ] ] ]
         )
         checkLatexJson(
@@ -681,7 +747,7 @@ describe( 'Parsing LaTeX', () => {
             '\\forall x, x\\in X',
             [ 'universal',
                 [ 'numbervariable', 'x' ],
-                [ 'numberisin',
+                [ 'nounisin',
                     [ 'numbervariable', 'x' ], [ 'setvariable', 'X' ] ] ]
         )
         checkLatexJson(

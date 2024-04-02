@@ -60,6 +60,7 @@
 export const hierarchies = [
     [
         'expr',
+        'nounexpr',
         'numberexpr',
         'sumexpr',
         'prodexpr',
@@ -76,6 +77,7 @@ export const hierarchies = [
     ],
     [
         'expr',
+        'nounexpr',
         'setexpr',
         'unionexpr',
         'intersectionexpr',
@@ -83,6 +85,15 @@ export const hierarchies = [
     ],
     [
         'sequenceexpr'
+    ],
+    [
+        'numsequenceexpr' // not a subtype of sequenceexpr,
+        // or else putdown will let all sequenceexprs be numsequenceexprs
+    ],
+    [
+        'expr',
+        'nounexpr',
+        'tupleexpr'
     ]
 ]
 
