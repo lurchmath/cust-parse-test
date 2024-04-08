@@ -134,4 +134,4 @@ latex.addNotation( 'numfuncapp',     'A(B)' )
 latex.addNotation( 'propfuncapp',    'A(B)' )
 latex.addNotation( 'setfuncapp',     'A(B)' )
 latex.addNotation( 'funccomp',       'A\\circ B' )
-latex.addNotation( 'funcinverse',    'A ^ {-1}' ) // can't do { - 1 } or it tokenizes all 1s
+latex.addNotation( 'funcinverse',    'A ^ { - 1 }' )

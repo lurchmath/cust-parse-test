@@ -290,7 +290,7 @@ describe( 'Converting putdown to LaTeX', () => {
         checkPutdownLatex( '(apply f x)', 'f ( x )' )
         checkPutdownLatex(
             '(apply (inverse f) (apply (inverse g) 10))',
-            'f ^ {-1} ( g ^ {-1} ( 10 ) )'
+            'f ^ { - 1 } ( g ^ { - 1 } ( 10 ) )'
         )
         checkPutdownLatex( '(apply E (setcomp L))', 'E ( \\bar L )' )
         checkPutdownLatex(

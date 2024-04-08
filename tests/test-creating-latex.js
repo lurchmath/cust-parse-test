@@ -735,7 +735,7 @@ describe( 'Rendering JSON into LaTeX', () => {
                 [ 'funcinverse', [ 'funcvariable', 'f' ] ],
                 [ 'numfuncapp',
                     [ 'funcinverse', [ 'funcvariable', 'g' ] ], [ 'number', '10' ] ] ],
-            'f ^ {-1} ( g ^ {-1} ( 10 ) )'
+            'f ^ { - 1 } ( g ^ { - 1 } ( 10 ) )'
         )
         checkJsonLatex(
             [ 'numfuncapp', // this is the output type, not the input type
