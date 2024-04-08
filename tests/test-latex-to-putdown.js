@@ -298,7 +298,15 @@ describe( 'Converting LaTeX to putdown', () => {
             '\\neg F\\colon X\\cup Y\\to Z',
             '(not (function F (setuni X Y) Z))'
         )
+        checkLatexPutdown(
+            'f \\circ g : A \\to C',
+            '(function (compose f g) A C)'
+        )
         checkLatexPutdown( 'f(x)', '(apply f x)' )
+        checkLatexPutdown(
+            'f ^ {-1} ( g ^ {-1} ( 10 ) )',
+            '(apply (inverse f) (apply (inverse g) 10))'
+        )
         checkLatexPutdown( 'E(\\bar L)', '(apply E (setcomp L))' )
         checkLatexPutdown(
             '\\emptyset\\cap f(2)',

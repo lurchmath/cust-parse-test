@@ -786,8 +786,21 @@ describe( 'Parsing LaTeX', () => {
                     [ 'setvariable', 'Z' ] ] ]
         )
         checkLatexJson(
+            'f\\circ g:A\\to C',
+            [ 'funcsignature',
+                [ 'funccomp', [ 'funcvariable', 'f' ], [ 'funcvariable', 'g' ] ],
+                [ 'setvariable', 'A' ], [ 'setvariable', 'C' ] ]
+        )
+        checkLatexJson(
             'f(x)',
             [ 'numfuncapp', [ 'funcvariable', 'f' ], [ 'numbervariable', 'x' ] ]
+        )
+        checkLatexJson(
+            'f^{-1}(g^{-1}(10))',
+            [ 'numfuncapp',
+                [ 'funcinverse', [ 'funcvariable', 'f' ] ],
+                [ 'numfuncapp',
+                    [ 'funcinverse', [ 'funcvariable', 'g' ] ], [ 'number', '10' ] ] ]
         )
         checkLatexJson(
             'E(L\')',

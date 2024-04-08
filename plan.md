@@ -33,7 +33,6 @@ General to dos:
  - expand set of tests for many new mathematical expressions in many languages,
    including expressions that bind variables.  Use the grammar here as an
    inspiration: https://github.com/lurchmath/earley-parser/blob/master/earley-tests.js#L225
-    - function composition, and inverses
     - `<`, `>`, `<=`, `>=`, `=`, `neq`
     - `|`, congruence mod m, generic relation `~`, equivalence class (for a
       relation)
@@ -67,6 +66,13 @@ Bug fixes:
    flattened, but it fails in that those ASTs will then be unable to convert to
    putdown because they have the wrong number of arguments for the putdown form
    as originally defined.  Redesign?
+ - Current design doesn't let you define LaTeX function inverse notation as
+   `'A ^ { - 1 }'` because then `'1'` becomes its own token, borking numbers
+   like `'1.5'` by breaking them into two tokens.  Need some redesign to solve
+   this.  One option that seems good:  If you're about to add a token that's a
+   plain string, before converting it into a regexp, first check to see if the
+   string itself matches any existing token regexp.  If it does, there's no need
+   to add a new token for it.
 
 Information we may need later:
  - infinity      = '\u221e' = ∞

@@ -706,8 +706,21 @@ describe( 'Rendering JSON into putdown', () => {
             '(not (function F (setuni X Y) Z))'
         )
         checkJsonPutdown(
+            [ 'funcsignature',
+                [ 'funccomp', [ 'funcvariable', 'f' ], [ 'funcvariable', 'g' ] ],
+                [ 'setvariable', 'A' ], [ 'setvariable', 'C' ] ],
+            '(function (compose f g) A C)'
+        )
+        checkJsonPutdown(
             [ 'numfuncapp', [ 'funcvariable', 'f' ], [ 'numbervariable', 'x' ] ],
             '(apply f x)'
+        )
+        checkJsonPutdown(
+            [ 'numfuncapp',
+                [ 'funcinverse', [ 'funcvariable', 'f' ] ],
+                [ 'numfuncapp',
+                    [ 'funcinverse', [ 'funcvariable', 'g' ] ], [ 'number', '10' ] ] ],
+            '(apply (inverse f) (apply (inverse g) 10))'
         )
         checkJsonPutdown(
             [ 'numfuncapp', // this is the output type, not the input type

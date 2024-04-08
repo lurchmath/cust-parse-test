@@ -721,8 +721,21 @@ describe( 'Rendering JSON into LaTeX', () => {
             '\\neg F : X \\cup Y \\to Z'
         )
         checkJsonLatex(
+            [ 'funcsignature',
+                [ 'funccomp', [ 'funcvariable', 'f' ], [ 'funcvariable', 'g' ] ],
+                [ 'setvariable', 'A' ], [ 'setvariable', 'C' ] ],
+            'f \\circ g : A \\to C'
+        )
+        checkJsonLatex(
             [ 'numfuncapp', [ 'funcvariable', 'f' ], [ 'numbervariable', 'x' ] ],
             'f ( x )'
+        )
+        checkJsonLatex(
+            [ 'numfuncapp',
+                [ 'funcinverse', [ 'funcvariable', 'f' ] ],
+                [ 'numfuncapp',
+                    [ 'funcinverse', [ 'funcvariable', 'g' ] ], [ 'number', '10' ] ] ],
+            'f ^ {-1} ( g ^ {-1} ( 10 ) )'
         )
         checkJsonLatex(
             [ 'numfuncapp', // this is the output type, not the input type

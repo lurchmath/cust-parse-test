@@ -63,6 +63,8 @@ converter.addConcept( 'funcsignature',  'atomicpropexpr',   '(function funcexpr 
 converter.addConcept( 'numfuncapp',     'factorexpr',       '(apply funcexpr nounexpr)' )
 converter.addConcept( 'propfuncapp',    'atomicpropexpr',   '(apply funcexpr nounexpr)' )
 converter.addConcept( 'setfuncapp',     'atomicsetexpr',    '(apply funcexpr nounexpr)' )
+converter.addConcept( 'funccomp',       'funcexpr',         '(compose funcexpr funcexpr)' )
+converter.addConcept( 'funcinverse',    'funcexpr',         '(inverse funcexpr)' )
 
 const latex = new Language( 'latex', converter, [ '{', '}', '(', ')' ] )
 
@@ -131,3 +133,5 @@ latex.addNotation( 'funcsignature',  'A\\colon B\\rightarrow C' )
 latex.addNotation( 'numfuncapp',     'A(B)' )
 latex.addNotation( 'propfuncapp',    'A(B)' )
 latex.addNotation( 'setfuncapp',     'A(B)' )
+latex.addNotation( 'funccomp',       'A\\circ B' )
+latex.addNotation( 'funcinverse',    'A ^ {-1}' ) // can't do { - 1 } or it tokenizes all 1s

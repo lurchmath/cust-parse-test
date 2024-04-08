@@ -699,8 +699,21 @@ describe( 'Parsing putdown', () => {
                     [ 'setvariable', 'Z' ] ] ]
         )
         checkPutdownJson(
+            '(function (compose f g) A C)',
+            [ 'funcsignature',
+                [ 'funccomp', [ 'funcvariable', 'f' ], [ 'funcvariable', 'g' ] ],
+                [ 'setvariable', 'A' ], [ 'setvariable', 'C' ] ]
+        )
+        checkPutdownJson(
             '(apply f x)',
             [ 'numfuncapp', [ 'funcvariable', 'f' ], [ 'numbervariable', 'x' ] ]
+        )
+        checkPutdownJson(
+            '(apply (inverse f) (apply (inverse g) 10))',
+            [ 'numfuncapp',
+                [ 'funcinverse', [ 'funcvariable', 'f' ] ],
+                [ 'numfuncapp',
+                    [ 'funcinverse', [ 'funcvariable', 'g' ] ], [ 'number', '10' ] ] ]
         )
         checkPutdownJson(
             '(apply E (setcomp L))',
