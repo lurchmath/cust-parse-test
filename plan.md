@@ -42,27 +42,19 @@ General to dos:
       in each doc just by listing concept.putdown for each concept)
     - EFAs
     - naked binding?
+    - common constants: pi, e, trig functions
  - expand all languages to support many new mathematical features, tests for each
    (note that set theory notation will need analogs to sum, product, ...)
  - define new language of Lurch notation and verify all (or almost all) of its
    features can be supported
  - test whether all MathLive output can be parsed by this LaTeX parser
- - Eventually make overview documentation for the main docs index page.
+ - Eventually make overview documentation for the main docs index page.  It should
+   include all the assumptions abked into this implementation, such as the fact
+   that whitespace is not meaningful, and others.
  - Eventually make a nice diagram of the syntactic types hierarchy and add it to
    the documentation for the syntactic-types module.
 
 Bug fixes:
- - Right now you're using the `->` notation to ensure that shorthand concepts
-   (those that convert to putdown but are not themselves a canonical form) don't
-   get parsed back from putdown into JSON with that concepts as the head.  This
-   is not guaranteed to work if some notation involving `->` is defined.
-   Instead, pass an optional final argument to `addConcept()` that marks the
-   concept as "complex," that is, its meaning is built up from the meanings of
-   other concepts, rather than as its own primitive.  Then store such complex
-   concepts in their own lists in the Converter, rather than in the Grammars, so
-   that they cannot be parsed, and then when rendering to a language, search not
-   only the rhss of grammar rules, but also the rhss of complex concepts.
-   Then document the concept of canonical form.
  - Returning the alphabetically least JSON parsing result from all ambiguous
    results leads to right association in most cases.  This is actually a good
    thing and should be documented somewhere, because for operators that are
