@@ -287,4 +287,27 @@ describe( 'Converting LaTeX to putdown', () => {
         )
     } )
 
+    it( 'can convert notation related to functions', () => {
+        checkLatexPutdown( 'f:A\\to B', '(function f A B)' )
+        checkLatexPutdown( 'f\\colon A\\to B', '(function f A B)' )
+        checkLatexPutdown(
+            '\\neg F:X\\cup Y\\to Z',
+            '(not (function F (setuni X Y) Z))'
+        )
+        checkLatexPutdown(
+            '\\neg F\\colon X\\cup Y\\to Z',
+            '(not (function F (setuni X Y) Z))'
+        )
+        checkLatexPutdown( 'f(x)', '(apply f x)' )
+        checkLatexPutdown( 'E(\\bar L)', '(apply E (setcomp L))' )
+        checkLatexPutdown(
+            '\\emptyset\\cap f(2)',
+            '(setint emptyset (apply f 2))'
+        )
+        checkLatexPutdown(
+            'P(e)\\wedge Q(3+b)',
+            '(and (apply P e) (apply Q (+ 3 b)))'
+        )
+    } )
+
 } )

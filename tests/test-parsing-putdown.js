@@ -73,19 +73,19 @@ describe( 'Parsing putdown', () => {
 
     it( 'can convert any size variable name to JSON', () => {
         // one-letter names work, and the least possible parsing of them (for
-        // many possible parsings, using alphabetical ordering) is as number
+        // many possible parsings, using alphabetical ordering) is as function
         // variables:
         checkPutdownJson(
             'x',
-            [ 'numbervariable', 'x' ]
+            [ 'funcvariable', 'x' ]
         )
         checkPutdownJson(
             'E',
-            [ 'numbervariable', 'E' ]
+            [ 'funcvariable', 'E' ]
         )
         checkPutdownJson(
             'q',
-            [ 'numbervariable', 'q' ]
+            [ 'funcvariable', 'q' ]
         )
         // multi-letter names don't work; it just does nothing with them
         // because it can't find any concept to which they belong
@@ -682,6 +682,44 @@ describe( 'Parsing putdown', () => {
             [ 'conjunction',
                 [ 'subseteq', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
                 [ 'subseteq', [ 'setvariable', 'B' ], [ 'setvariable', 'A' ] ] ]
+        )
+    } )
+
+    it( 'can parse notation related to functions', () => {
+        checkPutdownJson(
+            '(function f A B)',
+            [ 'funcsignature', [ 'funcvariable', 'f' ],
+                [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ]
+        )
+        checkPutdownJson(
+            '(not (function F (setuni X Y) Z))',
+            [ 'logicnegation',
+                [ 'funcsignature', [ 'funcvariable', 'F' ],
+                    [ 'union', [ 'setvariable', 'X' ], [ 'setvariable', 'Y' ] ],
+                    [ 'setvariable', 'Z' ] ] ]
+        )
+        checkPutdownJson(
+            '(apply f x)',
+            [ 'numfuncapp', [ 'funcvariable', 'f' ], [ 'numbervariable', 'x' ] ]
+        )
+        checkPutdownJson(
+            '(apply E (setcomp L))',
+            [ 'numfuncapp', // this is the output type, not the input type
+                [ 'funcvariable', 'E' ],
+                [ 'complement', [ 'setvariable', 'L' ] ] ]
+        )
+        checkPutdownJson(
+            '(setint emptyset (apply f 2))',
+            [ 'intersection',
+                [ 'emptyset' ],
+                [ 'setfuncapp', [ 'funcvariable', 'f' ], [ 'number', '2' ] ] ]
+        )
+        checkPutdownJson(
+            '(and (apply P e) (apply Q (+ 3 b)))',
+            [ 'conjunction',
+                [ 'propfuncapp', [ 'funcvariable', 'P' ], [ 'numbervariable', 'e' ] ],
+                [ 'propfuncapp', [ 'funcvariable', 'Q' ],
+                    [ 'addition', [ 'number', '3' ], [ 'numbervariable', 'b' ] ] ] ]
         )
     } )
 

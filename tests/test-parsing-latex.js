@@ -72,18 +72,20 @@ describe( 'Parsing LaTeX', () => {
     } )
 
     it( 'can parse one-letter variable names to JSON', () => {
-        // one-letter names work
+        // one-letter names work, and the least possible parsing of them (for
+        // many possible parsings, using alphabetical ordering) is as function
+        // variables:
         checkLatexJson(
             'x',
-            [ 'numbervariable', 'x' ]
+            [ 'funcvariable', 'x' ]
         )
         checkLatexJson(
             'E',
-            [ 'numbervariable', 'E' ]
+            [ 'funcvariable', 'E' ]
         )
         checkLatexJson(
             'q',
-            [ 'numbervariable', 'q' ]
+            [ 'funcvariable', 'q' ]
         )
         // multi-letter names do not work
         checkLatexJsonFail( 'foo' )
@@ -755,6 +757,56 @@ describe( 'Parsing LaTeX', () => {
             [ 'conjunction',
                 [ 'subseteq', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
                 [ 'subseteq', [ 'setvariable', 'B' ], [ 'setvariable', 'A' ] ] ]
+        )
+    } )
+
+    it( 'can parse notation related to functions', () => {
+        checkLatexJson(
+            'f:A\\to B',
+            [ 'funcsignature', [ 'funcvariable', 'f' ],
+                [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ]
+        )
+        checkLatexJson(
+            'f\\colon A\\to B',
+            [ 'funcsignature', [ 'funcvariable', 'f' ],
+                [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ]
+        )
+        checkLatexJson(
+            '\\neg F:X\\cup Y\\rightarrow Z',
+            [ 'logicnegation',
+                [ 'funcsignature', [ 'funcvariable', 'F' ],
+                    [ 'union', [ 'setvariable', 'X' ], [ 'setvariable', 'Y' ] ],
+                    [ 'setvariable', 'Z' ] ] ]
+        )
+        checkLatexJson(
+            '\\neg F\\colon X\\cup Y\\rightarrow Z',
+            [ 'logicnegation',
+                [ 'funcsignature', [ 'funcvariable', 'F' ],
+                    [ 'union', [ 'setvariable', 'X' ], [ 'setvariable', 'Y' ] ],
+                    [ 'setvariable', 'Z' ] ] ]
+        )
+        checkLatexJson(
+            'f(x)',
+            [ 'numfuncapp', [ 'funcvariable', 'f' ], [ 'numbervariable', 'x' ] ]
+        )
+        checkLatexJson(
+            'E(L\')',
+            [ 'numfuncapp', // this is the output type, not the input type
+                [ 'funcvariable', 'E' ],
+                [ 'complement', [ 'setvariable', 'L' ] ] ]
+        )
+        checkLatexJson(
+            '\\emptyset\\cap f(2)',
+            [ 'intersection',
+                [ 'emptyset' ],
+                [ 'setfuncapp', [ 'funcvariable', 'f' ], [ 'number', '2' ] ] ]
+        )
+        checkLatexJson(
+            'P(e)\\wedge Q(3+b)',
+            [ 'conjunction',
+                [ 'propfuncapp', [ 'funcvariable', 'P' ], [ 'numbervariable', 'e' ] ],
+                [ 'propfuncapp', [ 'funcvariable', 'Q' ],
+                    [ 'addition', [ 'number', '3' ], [ 'numbervariable', 'b' ] ] ] ]
         )
     } )
 

@@ -94,6 +94,11 @@ export const hierarchies = [
         'expr',
         'nounexpr',
         'tupleexpr'
+    ],
+    [
+        'expr',
+        'funcexpr',
+        'atomicfuncexpr'
     ]
 ]
 

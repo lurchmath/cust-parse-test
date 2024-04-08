@@ -277,4 +277,22 @@ describe( 'Converting putdown to LaTeX', () => {
         )
     } )
 
+    it( 'can convert notation related to functions', () => {
+        checkPutdownLatex( '(function f A B)', 'f : A \\to B' )
+        checkPutdownLatex(
+            '(not (function F (setuni X Y) Z))',
+            '\\neg F : X \\cup Y \\to Z'
+        )
+        checkPutdownLatex( '(apply f x)', 'f ( x )' )
+        checkPutdownLatex( '(apply E (setcomp L))', 'E ( \\bar L )' )
+        checkPutdownLatex(
+            '(setint emptyset (apply f 2))',
+            '\\emptyset \\cap f ( 2 )'
+        )
+        checkPutdownLatex(
+            '(and (apply P e) (apply Q (+ 3 b)))',
+            'P ( e ) \\wedge Q ( 3 + b )'
+        )
+    } )
+
 } )

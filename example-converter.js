@@ -58,6 +58,12 @@ converter.addConcept( 'onenumseq',      'numsequenceexpr',  '(elts numberexpr)' 
 converter.addConcept( 'numthenseq',     'numsequenceexpr',  '(elts numberexpr numsequenceexpr)' )
 converter.addConcept( 'vector',         'tupleexpr',        '(vector numthenseq)' )
 
+converter.addConcept( 'funcvariable',   'atomicfuncexpr',   Language.regularExpressions.oneLetterVariable )
+converter.addConcept( 'funcsignature',  'atomicpropexpr',   '(function funcexpr setexpr setexpr)' )
+converter.addConcept( 'numfuncapp',     'factorexpr',       '(apply funcexpr nounexpr)' )
+converter.addConcept( 'propfuncapp',    'atomicpropexpr',   '(apply funcexpr nounexpr)' )
+converter.addConcept( 'setfuncapp',     'atomicsetexpr',    '(apply funcexpr nounexpr)' )
+
 const latex = new Language( 'latex', converter, [ '{', '}', '(', ')' ] )
 
 latex.addNotation( 'infinity',       '\\infty' )
@@ -117,3 +123,11 @@ latex.addNotation( 'propisnotin',    'A\\notin B' )
 
 latex.addNotation( 'tuple',          '(A)' )
 latex.addNotation( 'vector',         '\\langle A\\rangle' )
+
+latex.addNotation( 'funcsignature',  'A:B\\to C' )
+latex.addNotation( 'funcsignature',  'A:B\\rightarrow C' )
+latex.addNotation( 'funcsignature',  'A\\colon B\\to C' )
+latex.addNotation( 'funcsignature',  'A\\colon B\\rightarrow C' )
+latex.addNotation( 'numfuncapp',     'A(B)' )
+latex.addNotation( 'propfuncapp',    'A(B)' )
+latex.addNotation( 'setfuncapp',     'A(B)' )

@@ -707,4 +707,42 @@ describe( 'Rendering JSON into LaTeX', () => {
         )
     } )
 
+    it( 'can create LaTeX notation related to functions', () => {
+        checkJsonLatex(
+            [ 'funcsignature', [ 'funcvariable', 'f' ],
+                [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
+            'f : A \\to B'
+        )
+        checkJsonLatex(
+            [ 'logicnegation',
+                [ 'funcsignature', [ 'funcvariable', 'F' ],
+                    [ 'union', [ 'setvariable', 'X' ], [ 'setvariable', 'Y' ] ],
+                    [ 'setvariable', 'Z' ] ] ],
+            '\\neg F : X \\cup Y \\to Z'
+        )
+        checkJsonLatex(
+            [ 'numfuncapp', [ 'funcvariable', 'f' ], [ 'numbervariable', 'x' ] ],
+            'f ( x )'
+        )
+        checkJsonLatex(
+            [ 'numfuncapp', // this is the output type, not the input type
+                [ 'funcvariable', 'E' ],
+                [ 'complement', [ 'setvariable', 'L' ] ] ],
+            'E ( \\bar L )'
+        )
+        checkJsonLatex(
+            [ 'intersection',
+                [ 'emptyset' ],
+                [ 'setfuncapp', [ 'funcvariable', 'f' ], [ 'number', '2' ] ] ],
+            '\\emptyset \\cap f ( 2 )'
+        )
+        checkJsonLatex(
+            [ 'conjunction',
+                [ 'propfuncapp', [ 'funcvariable', 'P' ], [ 'numbervariable', 'e' ] ],
+                [ 'propfuncapp', [ 'funcvariable', 'Q' ],
+                    [ 'addition', [ 'number', '3' ], [ 'numbervariable', 'b' ] ] ] ],
+            'P ( e ) \\wedge Q ( 3 + b )'
+        )
+    } )
+
 } )

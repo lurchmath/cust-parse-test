@@ -692,4 +692,42 @@ describe( 'Rendering JSON into putdown', () => {
         )
     } )
 
+    it( 'can create putdown notation related to functions', () => {
+        checkJsonPutdown(
+            [ 'funcsignature', [ 'funcvariable', 'f' ],
+                [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
+            '(function f A B)'
+        )
+        checkJsonPutdown(
+            [ 'logicnegation',
+                [ 'funcsignature', [ 'funcvariable', 'F' ],
+                    [ 'union', [ 'setvariable', 'X' ], [ 'setvariable', 'Y' ] ],
+                    [ 'setvariable', 'Z' ] ] ],
+            '(not (function F (setuni X Y) Z))'
+        )
+        checkJsonPutdown(
+            [ 'numfuncapp', [ 'funcvariable', 'f' ], [ 'numbervariable', 'x' ] ],
+            '(apply f x)'
+        )
+        checkJsonPutdown(
+            [ 'numfuncapp', // this is the output type, not the input type
+                [ 'funcvariable', 'E' ],
+                [ 'complement', [ 'setvariable', 'L' ] ] ],
+            '(apply E (setcomp L))'
+        )
+        checkJsonPutdown(
+            [ 'intersection',
+                [ 'emptyset' ],
+                [ 'setfuncapp', [ 'funcvariable', 'f' ], [ 'number', '2' ] ] ],
+            '(setint emptyset (apply f 2))'
+        )
+        checkJsonPutdown(
+            [ 'conjunction',
+                [ 'propfuncapp', [ 'funcvariable', 'P' ], [ 'numbervariable', 'e' ] ],
+                [ 'propfuncapp', [ 'funcvariable', 'Q' ],
+                    [ 'addition', [ 'number', '3' ], [ 'numbervariable', 'b' ] ] ] ],
+            '(and (apply P e) (apply Q (+ 3 b)))'
+        )
+    } )
+
 } )
