@@ -61,13 +61,13 @@ satisfy the requirements of the test suite) are shown below.
 
 - Test 1
    - input: putdown `x`
-   - output: JSON `["numbervariable","x"]`
+   - output: JSON `["funcvariable","x"]`
 - Test 2
    - input: putdown `E`
-   - output: JSON `["numbervariable","E"]`
+   - output: JSON `["funcvariable","E"]`
 - Test 3
    - input: putdown `q`
-   - output: JSON `["numbervariable","q"]`
+   - output: JSON `["funcvariable","q"]`
 - Test 4
    - input: putdown `foo`
    - output: JSON `null`
@@ -421,6 +421,34 @@ satisfy the requirements of the test suite) are shown below.
 - Test 3
    - input: putdown `(and (subseteq A B) (subseteq B A))`
    - output: JSON `["conjunction",["subseteq",["setvariable","A"],["setvariable","B"]],["subseteq",["setvariable","B"],["setvariable","A"]]]`
+
+
+### can parse notation related to functions
+
+- Test 1
+   - input: putdown `(function f A B)`
+   - output: JSON `["funcsignature",["funcvariable","f"],["setvariable","A"],["setvariable","B"]]`
+- Test 2
+   - input: putdown `(not (function F (setuni X Y) Z))`
+   - output: JSON `["logicnegation",["funcsignature",["funcvariable","F"],["union",["setvariable","X"],["setvariable","Y"]],["setvariable","Z"]]]`
+- Test 3
+   - input: putdown `(function (compose f g) A C)`
+   - output: JSON `["funcsignature",["funccomp",["funcvariable","f"],["funcvariable","g"]],["setvariable","A"],["setvariable","C"]]`
+- Test 4
+   - input: putdown `(apply f x)`
+   - output: JSON `["numfuncapp",["funcvariable","f"],["numbervariable","x"]]`
+- Test 5
+   - input: putdown `(apply (inverse f) (apply (inverse g) 10))`
+   - output: JSON `["numfuncapp",["funcinverse",["funcvariable","f"]],["numfuncapp",["funcinverse",["funcvariable","g"]],["number","10"]]]`
+- Test 6
+   - input: putdown `(apply E (setcomp L))`
+   - output: JSON `["numfuncapp",["funcvariable","E"],["complement",["setvariable","L"]]]`
+- Test 7
+   - input: putdown `(setint emptyset (apply f 2))`
+   - output: JSON `["intersection",["emptyset"],["setfuncapp",["funcvariable","f"],["number","2"]]]`
+- Test 8
+   - input: putdown `(and (apply P e) (apply Q (+ 3 b)))`
+   - output: JSON `["conjunction",["propfuncapp",["funcvariable","P"],["numbervariable","e"]],["propfuncapp",["funcvariable","Q"],["addition",["number","3"],["numbervariable","b"]]]]`
 
 
 ## <a name="Rendering-JSON-into-putdown">Rendering JSON into putdown</a>
@@ -813,6 +841,34 @@ satisfy the requirements of the test suite) are shown below.
    - output: putdown `(and (subseteq A B) (subseteq B A))`
 
 
+### can create putdown notation related to functions
+
+- Test 1
+   - input: JSON `["funcsignature",["funcvariable","f"],["setvariable","A"],["setvariable","B"]]`
+   - output: putdown `(function f A B)`
+- Test 2
+   - input: JSON `["logicnegation",["funcsignature",["funcvariable","F"],["union",["setvariable","X"],["setvariable","Y"]],["setvariable","Z"]]]`
+   - output: putdown `(not (function F (setuni X Y) Z))`
+- Test 3
+   - input: JSON `["funcsignature",["funccomp",["funcvariable","f"],["funcvariable","g"]],["setvariable","A"],["setvariable","C"]]`
+   - output: putdown `(function (compose f g) A C)`
+- Test 4
+   - input: JSON `["numfuncapp",["funcvariable","f"],["numbervariable","x"]]`
+   - output: putdown `(apply f x)`
+- Test 5
+   - input: JSON `["numfuncapp",["funcinverse",["funcvariable","f"]],["numfuncapp",["funcinverse",["funcvariable","g"]],["number","10"]]]`
+   - output: putdown `(apply (inverse f) (apply (inverse g) 10))`
+- Test 6
+   - input: JSON `["numfuncapp",["funcvariable","E"],["complement",["setvariable","L"]]]`
+   - output: putdown `(apply E (setcomp L))`
+- Test 7
+   - input: JSON `["intersection",["emptyset"],["setfuncapp",["funcvariable","f"],["number","2"]]]`
+   - output: putdown `(setint emptyset (apply f 2))`
+- Test 8
+   - input: JSON `["conjunction",["propfuncapp",["funcvariable","P"],["numbervariable","e"]],["propfuncapp",["funcvariable","Q"],["addition",["number","3"],["numbervariable","b"]]]]`
+   - output: putdown `(and (apply P e) (apply Q (+ 3 b)))`
+
+
 ## <a name="Parsing-LaTeX">Parsing LaTeX</a>
 
 ### can parse many kinds of numbers to JSON
@@ -859,13 +915,13 @@ satisfy the requirements of the test suite) are shown below.
 
 - Test 1
    - input: LaTeX `x`, typeset $x$
-   - output: JSON `["numbervariable","x"]`
+   - output: JSON `["funcvariable","x"]`
 - Test 2
    - input: LaTeX `E`, typeset $E$
-   - output: JSON `["numbervariable","E"]`
+   - output: JSON `["funcvariable","E"]`
 - Test 3
    - input: LaTeX `q`, typeset $q$
-   - output: JSON `["numbervariable","q"]`
+   - output: JSON `["funcvariable","q"]`
 - Test 4
    - input: LaTeX `foo`, typeset $foo$
    - output: JSON `null`
@@ -1246,6 +1302,40 @@ satisfy the requirements of the test suite) are shown below.
 - Test 4
    - input: LaTeX `A\subseteq B\wedge B\subseteq A`, typeset $A\subseteq B\wedge B\subseteq A$
    - output: JSON `["conjunction",["subseteq",["setvariable","A"],["setvariable","B"]],["subseteq",["setvariable","B"],["setvariable","A"]]]`
+
+
+### can parse notation related to functions
+
+- Test 1
+   - input: LaTeX `f:A\to B`, typeset $f:A\to B$
+   - output: JSON `["funcsignature",["funcvariable","f"],["setvariable","A"],["setvariable","B"]]`
+- Test 2
+   - input: LaTeX `f\colon A\to B`, typeset $f\colon A\to B$
+   - output: JSON `["funcsignature",["funcvariable","f"],["setvariable","A"],["setvariable","B"]]`
+- Test 3
+   - input: LaTeX `\neg F:X\cup Y\rightarrow Z`, typeset $\neg F:X\cup Y\rightarrow Z$
+   - output: JSON `["logicnegation",["funcsignature",["funcvariable","F"],["union",["setvariable","X"],["setvariable","Y"]],["setvariable","Z"]]]`
+- Test 4
+   - input: LaTeX `\neg F\colon X\cup Y\rightarrow Z`, typeset $\neg F\colon X\cup Y\rightarrow Z$
+   - output: JSON `["logicnegation",["funcsignature",["funcvariable","F"],["union",["setvariable","X"],["setvariable","Y"]],["setvariable","Z"]]]`
+- Test 5
+   - input: LaTeX `f\circ g:A\to C`, typeset $f\circ g:A\to C$
+   - output: JSON `["funcsignature",["funccomp",["funcvariable","f"],["funcvariable","g"]],["setvariable","A"],["setvariable","C"]]`
+- Test 6
+   - input: LaTeX `f(x)`, typeset $f(x)$
+   - output: JSON `["numfuncapp",["funcvariable","f"],["numbervariable","x"]]`
+- Test 7
+   - input: LaTeX `f^{-1}(g^{-1}(10))`, typeset $f^{-1}(g^{-1}(10))$
+   - output: JSON `["numfuncapp",["funcinverse",["funcvariable","f"]],["numfuncapp",["funcinverse",["funcvariable","g"]],["number","10"]]]`
+- Test 8
+   - input: LaTeX `E(L')`, typeset $E(L')$
+   - output: JSON `["numfuncapp",["funcvariable","E"],["complement",["setvariable","L"]]]`
+- Test 9
+   - input: LaTeX `\emptyset\cap f(2)`, typeset $\emptyset\cap f(2)$
+   - output: JSON `["intersection",["emptyset"],["setfuncapp",["funcvariable","f"],["number","2"]]]`
+- Test 10
+   - input: LaTeX `P(e)\wedge Q(3+b)`, typeset $P(e)\wedge Q(3+b)$
+   - output: JSON `["conjunction",["propfuncapp",["funcvariable","P"],["numbervariable","e"]],["propfuncapp",["funcvariable","Q"],["addition",["number","3"],["numbervariable","b"]]]]`
 
 
 ## <a name="Rendering-JSON-into-LaTeX">Rendering JSON into LaTeX</a>
@@ -1633,6 +1723,34 @@ satisfy the requirements of the test suite) are shown below.
 - Test 4
    - input: JSON `["conjunction",["subseteq",["setvariable","A"],["setvariable","B"]],["subseteq",["setvariable","B"],["setvariable","A"]]]`
    - output: LaTeX `A \subseteq B \wedge B \subseteq A`, typeset $A \subseteq B \wedge B \subseteq A$
+
+
+### can create LaTeX notation related to functions
+
+- Test 1
+   - input: JSON `["funcsignature",["funcvariable","f"],["setvariable","A"],["setvariable","B"]]`
+   - output: LaTeX `f : A \to B`, typeset $f : A \to B$
+- Test 2
+   - input: JSON `["logicnegation",["funcsignature",["funcvariable","F"],["union",["setvariable","X"],["setvariable","Y"]],["setvariable","Z"]]]`
+   - output: LaTeX `\neg F : X \cup Y \to Z`, typeset $\neg F : X \cup Y \to Z$
+- Test 3
+   - input: JSON `["funcsignature",["funccomp",["funcvariable","f"],["funcvariable","g"]],["setvariable","A"],["setvariable","C"]]`
+   - output: LaTeX `f \circ g : A \to C`, typeset $f \circ g : A \to C$
+- Test 4
+   - input: JSON `["numfuncapp",["funcvariable","f"],["numbervariable","x"]]`
+   - output: LaTeX `f ( x )`, typeset $f ( x )$
+- Test 5
+   - input: JSON `["numfuncapp",["funcinverse",["funcvariable","f"]],["numfuncapp",["funcinverse",["funcvariable","g"]],["number","10"]]]`
+   - output: LaTeX `f ^ { - 1 } ( g ^ { - 1 } ( 10 ) )`, typeset $f ^ { - 1 } ( g ^ { - 1 } ( 10 ) )$
+- Test 6
+   - input: JSON `["numfuncapp",["funcvariable","E"],["complement",["setvariable","L"]]]`
+   - output: LaTeX `E ( \bar L )`, typeset $E ( \bar L )$
+- Test 7
+   - input: JSON `["intersection",["emptyset"],["setfuncapp",["funcvariable","f"],["number","2"]]]`
+   - output: LaTeX `\emptyset \cap f ( 2 )`, typeset $\emptyset \cap f ( 2 )$
+- Test 8
+   - input: JSON `["conjunction",["propfuncapp",["funcvariable","P"],["numbervariable","e"]],["propfuncapp",["funcvariable","Q"],["addition",["number","3"],["numbervariable","b"]]]]`
+   - output: LaTeX `P ( e ) \wedge Q ( 3 + b )`, typeset $P ( e ) \wedge Q ( 3 + b )$
 
 
 ## <a name="Converting-putdown-to-LaTeX">Converting putdown to LaTeX</a>
@@ -2032,6 +2150,34 @@ satisfy the requirements of the test suite) are shown below.
 - Test 4
    - input: putdown `(and (subseteq A B) (subseteq B A))`
    - output: LaTeX `A \subseteq B \wedge B \subseteq A`, typeset $A \subseteq B \wedge B \subseteq A$
+
+
+### can convert notation related to functions
+
+- Test 1
+   - input: putdown `(function f A B)`
+   - output: LaTeX `f : A \to B`, typeset $f : A \to B$
+- Test 2
+   - input: putdown `(not (function F (setuni X Y) Z))`
+   - output: LaTeX `\neg F : X \cup Y \to Z`, typeset $\neg F : X \cup Y \to Z$
+- Test 3
+   - input: putdown `(function (compose f g) A C)`
+   - output: LaTeX `f \circ g : A \to C`, typeset $f \circ g : A \to C$
+- Test 4
+   - input: putdown `(apply f x)`
+   - output: LaTeX `f ( x )`, typeset $f ( x )$
+- Test 5
+   - input: putdown `(apply (inverse f) (apply (inverse g) 10))`
+   - output: LaTeX `f ^ { - 1 } ( g ^ { - 1 } ( 10 ) )`, typeset $f ^ { - 1 } ( g ^ { - 1 } ( 10 ) )$
+- Test 6
+   - input: putdown `(apply E (setcomp L))`
+   - output: LaTeX `E ( \bar L )`, typeset $E ( \bar L )$
+- Test 7
+   - input: putdown `(setint emptyset (apply f 2))`
+   - output: LaTeX `\emptyset \cap f ( 2 )`, typeset $\emptyset \cap f ( 2 )$
+- Test 8
+   - input: putdown `(and (apply P e) (apply Q (+ 3 b)))`
+   - output: LaTeX `P ( e ) \wedge Q ( 3 + b )`, typeset $P ( e ) \wedge Q ( 3 + b )$
 
 
 ## <a name="Converting-LaTeX-to-putdown">Converting LaTeX to putdown</a>
@@ -2452,5 +2598,39 @@ satisfy the requirements of the test suite) are shown below.
 - Test 4
    - input: LaTeX `A \subseteq B \wedge B \subseteq A`, typeset $A \subseteq B \wedge B \subseteq A$
    - output: putdown `(and (subseteq A B) (subseteq B A))`
+
+
+### can convert notation related to functions
+
+- Test 1
+   - input: LaTeX `f:A\to B`, typeset $f:A\to B$
+   - output: putdown `(function f A B)`
+- Test 2
+   - input: LaTeX `f\colon A\to B`, typeset $f\colon A\to B$
+   - output: putdown `(function f A B)`
+- Test 3
+   - input: LaTeX `\neg F:X\cup Y\to Z`, typeset $\neg F:X\cup Y\to Z$
+   - output: putdown `(not (function F (setuni X Y) Z))`
+- Test 4
+   - input: LaTeX `\neg F\colon X\cup Y\to Z`, typeset $\neg F\colon X\cup Y\to Z$
+   - output: putdown `(not (function F (setuni X Y) Z))`
+- Test 5
+   - input: LaTeX `f \circ g : A \to C`, typeset $f \circ g : A \to C$
+   - output: putdown `(function (compose f g) A C)`
+- Test 6
+   - input: LaTeX `f(x)`, typeset $f(x)$
+   - output: putdown `(apply f x)`
+- Test 7
+   - input: LaTeX `f ^ {-1} ( g ^ {-1} ( 10 ) )`, typeset $f ^ {-1} ( g ^ {-1} ( 10 ) )$
+   - output: putdown `(apply (inverse f) (apply (inverse g) 10))`
+- Test 8
+   - input: LaTeX `E(\bar L)`, typeset $E(\bar L)$
+   - output: putdown `(apply E (setcomp L))`
+- Test 9
+   - input: LaTeX `\emptyset\cap f(2)`, typeset $\emptyset\cap f(2)$
+   - output: putdown `(setint emptyset (apply f 2))`
+- Test 10
+   - input: LaTeX `P(e)\wedge Q(3+b)`, typeset $P(e)\wedge Q(3+b)$
+   - output: putdown `(and (apply P e) (apply Q (+ 3 b)))`
 
 

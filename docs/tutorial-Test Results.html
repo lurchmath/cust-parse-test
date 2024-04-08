@@ -149,19 +149,19 @@ satisfy the requirements of the test suite) are shown below.</p>
 <li>Test 1
 <ul>
 <li>input: putdown <code>x</code></li>
-<li>output: JSON <code>[&quot;numbervariable&quot;,&quot;x&quot;]</code></li>
+<li>output: JSON <code>[&quot;funcvariable&quot;,&quot;x&quot;]</code></li>
 </ul>
 </li>
 <li>Test 2
 <ul>
 <li>input: putdown <code>E</code></li>
-<li>output: JSON <code>[&quot;numbervariable&quot;,&quot;E&quot;]</code></li>
+<li>output: JSON <code>[&quot;funcvariable&quot;,&quot;E&quot;]</code></li>
 </ul>
 </li>
 <li>Test 3
 <ul>
 <li>input: putdown <code>q</code></li>
-<li>output: JSON <code>[&quot;numbervariable&quot;,&quot;q&quot;]</code></li>
+<li>output: JSON <code>[&quot;funcvariable&quot;,&quot;q&quot;]</code></li>
 </ul>
 </li>
 <li>Test 4
@@ -768,6 +768,57 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: putdown <code>(and (subseteq A B) (subseteq B A))</code></li>
 <li>output: JSON <code>[&quot;conjunction&quot;,[&quot;subseteq&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;subseteq&quot;,[&quot;setvariable&quot;,&quot;B&quot;],[&quot;setvariable&quot;,&quot;A&quot;]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can parse notation related to functions</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(function f A B)</code></li>
+<li>output: JSON <code>[&quot;funcsignature&quot;,[&quot;funcvariable&quot;,&quot;f&quot;],[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(not (function F (setuni X Y) Z))</code></li>
+<li>output: JSON <code>[&quot;logicnegation&quot;,[&quot;funcsignature&quot;,[&quot;funcvariable&quot;,&quot;F&quot;],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;X&quot;],[&quot;setvariable&quot;,&quot;Y&quot;]],[&quot;setvariable&quot;,&quot;Z&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(function (compose f g) A C)</code></li>
+<li>output: JSON <code>[&quot;funcsignature&quot;,[&quot;funccomp&quot;,[&quot;funcvariable&quot;,&quot;f&quot;],[&quot;funcvariable&quot;,&quot;g&quot;]],[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;C&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: putdown <code>(apply f x)</code></li>
+<li>output: JSON <code>[&quot;numfuncapp&quot;,[&quot;funcvariable&quot;,&quot;f&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: putdown <code>(apply (inverse f) (apply (inverse g) 10))</code></li>
+<li>output: JSON <code>[&quot;numfuncapp&quot;,[&quot;funcinverse&quot;,[&quot;funcvariable&quot;,&quot;f&quot;]],[&quot;numfuncapp&quot;,[&quot;funcinverse&quot;,[&quot;funcvariable&quot;,&quot;g&quot;]],[&quot;number&quot;,&quot;10&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: putdown <code>(apply E (setcomp L))</code></li>
+<li>output: JSON <code>[&quot;numfuncapp&quot;,[&quot;funcvariable&quot;,&quot;E&quot;],[&quot;complement&quot;,[&quot;setvariable&quot;,&quot;L&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: putdown <code>(setint emptyset (apply f 2))</code></li>
+<li>output: JSON <code>[&quot;intersection&quot;,[&quot;emptyset&quot;],[&quot;setfuncapp&quot;,[&quot;funcvariable&quot;,&quot;f&quot;],[&quot;number&quot;,&quot;2&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: putdown <code>(and (apply P e) (apply Q (+ 3 b)))</code></li>
+<li>output: JSON <code>[&quot;conjunction&quot;,[&quot;propfuncapp&quot;,[&quot;funcvariable&quot;,&quot;P&quot;],[&quot;numbervariable&quot;,&quot;e&quot;]],[&quot;propfuncapp&quot;,[&quot;funcvariable&quot;,&quot;Q&quot;],[&quot;addition&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;numbervariable&quot;,&quot;b&quot;]]]]</code></li>
 </ul>
 </li>
 </ul>
@@ -1438,6 +1489,57 @@ satisfy the requirements of the test suite) are shown below.</p>
 </ul>
 </li>
 </ul>
+<h3>can create putdown notation related to functions</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;funcsignature&quot;,[&quot;funcvariable&quot;,&quot;f&quot;],[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]</code></li>
+<li>output: putdown <code>(function f A B)</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;logicnegation&quot;,[&quot;funcsignature&quot;,[&quot;funcvariable&quot;,&quot;F&quot;],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;X&quot;],[&quot;setvariable&quot;,&quot;Y&quot;]],[&quot;setvariable&quot;,&quot;Z&quot;]]]</code></li>
+<li>output: putdown <code>(not (function F (setuni X Y) Z))</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;funcsignature&quot;,[&quot;funccomp&quot;,[&quot;funcvariable&quot;,&quot;f&quot;],[&quot;funcvariable&quot;,&quot;g&quot;]],[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;C&quot;]]</code></li>
+<li>output: putdown <code>(function (compose f g) A C)</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;numfuncapp&quot;,[&quot;funcvariable&quot;,&quot;f&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]</code></li>
+<li>output: putdown <code>(apply f x)</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: JSON <code>[&quot;numfuncapp&quot;,[&quot;funcinverse&quot;,[&quot;funcvariable&quot;,&quot;f&quot;]],[&quot;numfuncapp&quot;,[&quot;funcinverse&quot;,[&quot;funcvariable&quot;,&quot;g&quot;]],[&quot;number&quot;,&quot;10&quot;]]]</code></li>
+<li>output: putdown <code>(apply (inverse f) (apply (inverse g) 10))</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: JSON <code>[&quot;numfuncapp&quot;,[&quot;funcvariable&quot;,&quot;E&quot;],[&quot;complement&quot;,[&quot;setvariable&quot;,&quot;L&quot;]]]</code></li>
+<li>output: putdown <code>(apply E (setcomp L))</code></li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: JSON <code>[&quot;intersection&quot;,[&quot;emptyset&quot;],[&quot;setfuncapp&quot;,[&quot;funcvariable&quot;,&quot;f&quot;],[&quot;number&quot;,&quot;2&quot;]]]</code></li>
+<li>output: putdown <code>(setint emptyset (apply f 2))</code></li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: JSON <code>[&quot;conjunction&quot;,[&quot;propfuncapp&quot;,[&quot;funcvariable&quot;,&quot;P&quot;],[&quot;numbervariable&quot;,&quot;e&quot;]],[&quot;propfuncapp&quot;,[&quot;funcvariable&quot;,&quot;Q&quot;],[&quot;addition&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;numbervariable&quot;,&quot;b&quot;]]]]</code></li>
+<li>output: putdown <code>(and (apply P e) (apply Q (+ 3 b)))</code></li>
+</ul>
+</li>
+</ul>
 <h2><a name="Parsing-LaTeX">Parsing LaTeX</a></h2>
 <h3>can parse many kinds of numbers to JSON</h3>
 <ul>
@@ -1519,19 +1621,19 @@ satisfy the requirements of the test suite) are shown below.</p>
 <li>Test 1
 <ul>
 <li>input: LaTeX <code>x</code>, typeset $x$</li>
-<li>output: JSON <code>[&quot;numbervariable&quot;,&quot;x&quot;]</code></li>
+<li>output: JSON <code>[&quot;funcvariable&quot;,&quot;x&quot;]</code></li>
 </ul>
 </li>
 <li>Test 2
 <ul>
 <li>input: LaTeX <code>E</code>, typeset $E$</li>
-<li>output: JSON <code>[&quot;numbervariable&quot;,&quot;E&quot;]</code></li>
+<li>output: JSON <code>[&quot;funcvariable&quot;,&quot;E&quot;]</code></li>
 </ul>
 </li>
 <li>Test 3
 <ul>
 <li>input: LaTeX <code>q</code>, typeset $q$</li>
-<li>output: JSON <code>[&quot;numbervariable&quot;,&quot;q&quot;]</code></li>
+<li>output: JSON <code>[&quot;funcvariable&quot;,&quot;q&quot;]</code></li>
 </ul>
 </li>
 <li>Test 4
@@ -2195,6 +2297,69 @@ satisfy the requirements of the test suite) are shown below.</p>
 </ul>
 </li>
 </ul>
+<h3>can parse notation related to functions</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>f:A\to B</code>, typeset $f:A\to B$</li>
+<li>output: JSON <code>[&quot;funcsignature&quot;,[&quot;funcvariable&quot;,&quot;f&quot;],[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>f\colon A\to B</code>, typeset $f\colon A\to B$</li>
+<li>output: JSON <code>[&quot;funcsignature&quot;,[&quot;funcvariable&quot;,&quot;f&quot;],[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>\neg F:X\cup Y\rightarrow Z</code>, typeset $\neg F:X\cup Y\rightarrow Z$</li>
+<li>output: JSON <code>[&quot;logicnegation&quot;,[&quot;funcsignature&quot;,[&quot;funcvariable&quot;,&quot;F&quot;],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;X&quot;],[&quot;setvariable&quot;,&quot;Y&quot;]],[&quot;setvariable&quot;,&quot;Z&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: LaTeX <code>\neg F\colon X\cup Y\rightarrow Z</code>, typeset $\neg F\colon X\cup Y\rightarrow Z$</li>
+<li>output: JSON <code>[&quot;logicnegation&quot;,[&quot;funcsignature&quot;,[&quot;funcvariable&quot;,&quot;F&quot;],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;X&quot;],[&quot;setvariable&quot;,&quot;Y&quot;]],[&quot;setvariable&quot;,&quot;Z&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: LaTeX <code>f\circ g:A\to C</code>, typeset $f\circ g:A\to C$</li>
+<li>output: JSON <code>[&quot;funcsignature&quot;,[&quot;funccomp&quot;,[&quot;funcvariable&quot;,&quot;f&quot;],[&quot;funcvariable&quot;,&quot;g&quot;]],[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;C&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: LaTeX <code>f(x)</code>, typeset $f(x)$</li>
+<li>output: JSON <code>[&quot;numfuncapp&quot;,[&quot;funcvariable&quot;,&quot;f&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: LaTeX <code>f^{-1}(g^{-1}(10))</code>, typeset $f^{-1}(g^{-1}(10))$</li>
+<li>output: JSON <code>[&quot;numfuncapp&quot;,[&quot;funcinverse&quot;,[&quot;funcvariable&quot;,&quot;f&quot;]],[&quot;numfuncapp&quot;,[&quot;funcinverse&quot;,[&quot;funcvariable&quot;,&quot;g&quot;]],[&quot;number&quot;,&quot;10&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: LaTeX <code>E(L')</code>, typeset $E(L')$</li>
+<li>output: JSON <code>[&quot;numfuncapp&quot;,[&quot;funcvariable&quot;,&quot;E&quot;],[&quot;complement&quot;,[&quot;setvariable&quot;,&quot;L&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 9
+<ul>
+<li>input: LaTeX <code>\emptyset\cap f(2)</code>, typeset $\emptyset\cap f(2)$</li>
+<li>output: JSON <code>[&quot;intersection&quot;,[&quot;emptyset&quot;],[&quot;setfuncapp&quot;,[&quot;funcvariable&quot;,&quot;f&quot;],[&quot;number&quot;,&quot;2&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 10
+<ul>
+<li>input: LaTeX <code>P(e)\wedge Q(3+b)</code>, typeset $P(e)\wedge Q(3+b)$</li>
+<li>output: JSON <code>[&quot;conjunction&quot;,[&quot;propfuncapp&quot;,[&quot;funcvariable&quot;,&quot;P&quot;],[&quot;numbervariable&quot;,&quot;e&quot;]],[&quot;propfuncapp&quot;,[&quot;funcvariable&quot;,&quot;Q&quot;],[&quot;addition&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;numbervariable&quot;,&quot;b&quot;]]]]</code></li>
+</ul>
+</li>
+</ul>
 <h2><a name="Rendering-JSON-into-LaTeX">Rendering JSON into LaTeX</a></h2>
 <h3>can convert JSON numbers to LaTeX</h3>
 <ul>
@@ -2853,6 +3018,57 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: JSON <code>[&quot;conjunction&quot;,[&quot;subseteq&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;subseteq&quot;,[&quot;setvariable&quot;,&quot;B&quot;],[&quot;setvariable&quot;,&quot;A&quot;]]]</code></li>
 <li>output: LaTeX <code>A \subseteq B \wedge B \subseteq A</code>, typeset $A \subseteq B \wedge B \subseteq A$</li>
+</ul>
+</li>
+</ul>
+<h3>can create LaTeX notation related to functions</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;funcsignature&quot;,[&quot;funcvariable&quot;,&quot;f&quot;],[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]</code></li>
+<li>output: LaTeX <code>f : A \to B</code>, typeset $f : A \to B$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;logicnegation&quot;,[&quot;funcsignature&quot;,[&quot;funcvariable&quot;,&quot;F&quot;],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;X&quot;],[&quot;setvariable&quot;,&quot;Y&quot;]],[&quot;setvariable&quot;,&quot;Z&quot;]]]</code></li>
+<li>output: LaTeX <code>\neg F : X \cup Y \to Z</code>, typeset $\neg F : X \cup Y \to Z$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;funcsignature&quot;,[&quot;funccomp&quot;,[&quot;funcvariable&quot;,&quot;f&quot;],[&quot;funcvariable&quot;,&quot;g&quot;]],[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;C&quot;]]</code></li>
+<li>output: LaTeX <code>f \circ g : A \to C</code>, typeset $f \circ g : A \to C$</li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;numfuncapp&quot;,[&quot;funcvariable&quot;,&quot;f&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]</code></li>
+<li>output: LaTeX <code>f ( x )</code>, typeset $f ( x )$</li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: JSON <code>[&quot;numfuncapp&quot;,[&quot;funcinverse&quot;,[&quot;funcvariable&quot;,&quot;f&quot;]],[&quot;numfuncapp&quot;,[&quot;funcinverse&quot;,[&quot;funcvariable&quot;,&quot;g&quot;]],[&quot;number&quot;,&quot;10&quot;]]]</code></li>
+<li>output: LaTeX <code>f ^ { - 1 } ( g ^ { - 1 } ( 10 ) )</code>, typeset $f ^ { - 1 } ( g ^ { - 1 } ( 10 ) )$</li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: JSON <code>[&quot;numfuncapp&quot;,[&quot;funcvariable&quot;,&quot;E&quot;],[&quot;complement&quot;,[&quot;setvariable&quot;,&quot;L&quot;]]]</code></li>
+<li>output: LaTeX <code>E ( \bar L )</code>, typeset $E ( \bar L )$</li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: JSON <code>[&quot;intersection&quot;,[&quot;emptyset&quot;],[&quot;setfuncapp&quot;,[&quot;funcvariable&quot;,&quot;f&quot;],[&quot;number&quot;,&quot;2&quot;]]]</code></li>
+<li>output: LaTeX <code>\emptyset \cap f ( 2 )</code>, typeset $\emptyset \cap f ( 2 )$</li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: JSON <code>[&quot;conjunction&quot;,[&quot;propfuncapp&quot;,[&quot;funcvariable&quot;,&quot;P&quot;],[&quot;numbervariable&quot;,&quot;e&quot;]],[&quot;propfuncapp&quot;,[&quot;funcvariable&quot;,&quot;Q&quot;],[&quot;addition&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;numbervariable&quot;,&quot;b&quot;]]]]</code></li>
+<li>output: LaTeX <code>P ( e ) \wedge Q ( 3 + b )</code>, typeset $P ( e ) \wedge Q ( 3 + b )$</li>
 </ul>
 </li>
 </ul>
@@ -3538,6 +3754,57 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: putdown <code>(and (subseteq A B) (subseteq B A))</code></li>
 <li>output: LaTeX <code>A \subseteq B \wedge B \subseteq A</code>, typeset $A \subseteq B \wedge B \subseteq A$</li>
+</ul>
+</li>
+</ul>
+<h3>can convert notation related to functions</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(function f A B)</code></li>
+<li>output: LaTeX <code>f : A \to B</code>, typeset $f : A \to B$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(not (function F (setuni X Y) Z))</code></li>
+<li>output: LaTeX <code>\neg F : X \cup Y \to Z</code>, typeset $\neg F : X \cup Y \to Z$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(function (compose f g) A C)</code></li>
+<li>output: LaTeX <code>f \circ g : A \to C</code>, typeset $f \circ g : A \to C$</li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: putdown <code>(apply f x)</code></li>
+<li>output: LaTeX <code>f ( x )</code>, typeset $f ( x )$</li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: putdown <code>(apply (inverse f) (apply (inverse g) 10))</code></li>
+<li>output: LaTeX <code>f ^ { - 1 } ( g ^ { - 1 } ( 10 ) )</code>, typeset $f ^ { - 1 } ( g ^ { - 1 } ( 10 ) )$</li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: putdown <code>(apply E (setcomp L))</code></li>
+<li>output: LaTeX <code>E ( \bar L )</code>, typeset $E ( \bar L )$</li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: putdown <code>(setint emptyset (apply f 2))</code></li>
+<li>output: LaTeX <code>\emptyset \cap f ( 2 )</code>, typeset $\emptyset \cap f ( 2 )$</li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: putdown <code>(and (apply P e) (apply Q (+ 3 b)))</code></li>
+<li>output: LaTeX <code>P ( e ) \wedge Q ( 3 + b )</code>, typeset $P ( e ) \wedge Q ( 3 + b )$</li>
 </ul>
 </li>
 </ul>
@@ -4265,6 +4532,69 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: LaTeX <code>A \subseteq B \wedge B \subseteq A</code>, typeset $A \subseteq B \wedge B \subseteq A$</li>
 <li>output: putdown <code>(and (subseteq A B) (subseteq B A))</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert notation related to functions</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>f:A\to B</code>, typeset $f:A\to B$</li>
+<li>output: putdown <code>(function f A B)</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>f\colon A\to B</code>, typeset $f\colon A\to B$</li>
+<li>output: putdown <code>(function f A B)</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>\neg F:X\cup Y\to Z</code>, typeset $\neg F:X\cup Y\to Z$</li>
+<li>output: putdown <code>(not (function F (setuni X Y) Z))</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: LaTeX <code>\neg F\colon X\cup Y\to Z</code>, typeset $\neg F\colon X\cup Y\to Z$</li>
+<li>output: putdown <code>(not (function F (setuni X Y) Z))</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: LaTeX <code>f \circ g : A \to C</code>, typeset $f \circ g : A \to C$</li>
+<li>output: putdown <code>(function (compose f g) A C)</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: LaTeX <code>f(x)</code>, typeset $f(x)$</li>
+<li>output: putdown <code>(apply f x)</code></li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: LaTeX <code>f ^ {-1} ( g ^ {-1} ( 10 ) )</code>, typeset $f ^ {-1} ( g ^ {-1} ( 10 ) )$</li>
+<li>output: putdown <code>(apply (inverse f) (apply (inverse g) 10))</code></li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: LaTeX <code>E(\bar L)</code>, typeset $E(\bar L)$</li>
+<li>output: putdown <code>(apply E (setcomp L))</code></li>
+</ul>
+</li>
+<li>Test 9
+<ul>
+<li>input: LaTeX <code>\emptyset\cap f(2)</code>, typeset $\emptyset\cap f(2)$</li>
+<li>output: putdown <code>(setint emptyset (apply f 2))</code></li>
+</ul>
+</li>
+<li>Test 10
+<ul>
+<li>input: LaTeX <code>P(e)\wedge Q(3+b)</code>, typeset $P(e)\wedge Q(3+b)$</li>
+<li>output: putdown <code>(and (apply P e) (apply Q (+ 3 b)))</code></li>
 </ul>
 </li>
 </ul>

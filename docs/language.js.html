@@ -364,14 +364,32 @@ export class Language {
     }
 
     // Internal use only
+    // Does this language have a token in its tokenizer that is a regular
+    // expression matching the given string?  (Note that we add a $ to test for
+    // a full-string match.)
+    hasTokenMatching ( string ) {
+        return this.tokenizer.tokenTypes.find( tokenType =>
+            new RegExp( tokenType.regexp.source + '$' ).test( string ) )
+    }
+
+    // Internal use only
     // Add a given regular expression to our tokenizer, iff such a token is not
     // already present, and then sort the list of tokens in a way that
     // prioritizes built-in regular expressions lower (because they are infinite
     // sets) and that prioritizes other regular expressions by reverse
     // alphabetical order (so that subwords can't be prioritized over full words
     // that contain them).
+    // Note that if the regexp has a property called "originalString", which
+    // will have been put there by notationStringToArray(), then the regexp was
+    // designed to match exactly one string.  In that case, if any existing
+    // token matches that same string, then the new token will not be added.
+    // This prevents bugs like the following:  If you define function inverse to
+    // be f^{-1}, then the "1" doesn't become its own token, borking ordinary
+    // decimal numbers like 1.5.
     addTokenType ( regexp ) {
         if ( this.hasTokenType( regexp ) ) return
+        if ( regexp.hasOwnProperty( 'originalString' )
+          &amp;&amp; this.hasTokenMatching( regexp.originalString ) ) return
         this.tokenizer.addType( regexp )
         const lowPriority = Object.keys( Language.regularExpressions )
             .map( key => `^(?:${Language.regularExpressions[key].source})` )

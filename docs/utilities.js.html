@@ -138,9 +138,12 @@ export const notationStringToArray = ( str, variables ) => {
         mayNotContinueString = false
         str = str.substring( 1 )
     }
-    return result.map( piece =>
-        variables.includes( piece ) ? piece :
-            new RegExp( escapeRegExp( piece ) ) )
+    return result.map( piece => {
+        if ( variables.includes( piece ) ) return piece
+        const result = new RegExp( escapeRegExp( piece ) )
+        result.originalString = piece
+        return result
+    } )
 }
 </code></pre>
     </article>
