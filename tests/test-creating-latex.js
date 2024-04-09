@@ -675,6 +675,21 @@ describe( 'Rendering JSON into LaTeX', () => {
             ],
             '\\neg 3 - 5 \\in K \\cap P'
         )
+        checkJsonLatex(
+            [ 'nounisnotin', [ 'numbervariable', 'a' ], [ 'setvariable', 'A' ] ],
+            'a \\notin A'
+        )
+        checkJsonLatex(
+            [ 'nounisnotin', [ 'emptyset' ], [ 'emptyset' ] ],
+            '\\emptyset \\notin \\emptyset'
+        )
+        checkJsonLatex(
+            [ 'nounisnotin',
+                [ 'subtraction', [ 'number', '3' ], [ 'number', '5' ] ],
+                [ 'intersection', [ 'setvariable', 'K' ], [ 'setvariable', 'P' ] ]
+            ],
+            '3 - 5 \\notin K \\cap P'
+        )
     } )
 
     it( 'can convert to LaTeX sentences built from set operators', () => {
