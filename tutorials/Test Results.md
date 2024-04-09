@@ -204,6 +204,29 @@ satisfy the requirements of the test suite) are shown below.
    - output: JSON `["exponentiation",["numbernegation",["number","3"]],["addition",["number","1"],["number","2"]]]`
 
 
+### can convert relations of numeric expressions to JSON
+
+- Test 1
+   - input: putdown `(> 1 2)`
+   - output: JSON `["greaterthan",["number","1"],["number","2"]]`
+- Test 2
+   - input: putdown `(< (- 1 2) (+ 1 2))`
+   - output: JSON `["lessthan",["subtraction",["number","1"],["number","2"]],["addition",["number","1"],["number","2"]]]`
+- Test 3
+   - input: putdown `(not (= 1 2))`
+   - output: JSON `["logicnegation",["equality",["number","1"],["number","2"]]]`
+- Test 4
+   - input: putdown `(and (>= 2 1) (<= 2 3))`
+   - output: JSON `["conjunction",["greaterthanoreq",["number","2"],["number","1"]],["lessthanoreq",["number","2"],["number","3"]]]`
+
+
+### does not undo the canonical form for inequality
+
+- Test 1
+   - input: putdown `(not (= x y))`
+   - output: JSON `["logicnegation",["equality",["numbervariable","x"],["numbervariable","y"]]]`
+
+
 ### can convert propositional logic atomics to JSON
 
 - Test 1
@@ -421,6 +444,9 @@ satisfy the requirements of the test suite) are shown below.
 - Test 3
    - input: putdown `(and (subseteq A B) (subseteq B A))`
    - output: JSON `["conjunction",["subseteq",["setvariable","A"],["setvariable","B"]],["subseteq",["setvariable","B"],["setvariable","A"]]]`
+- Test 4
+   - input: putdown `(= R (setprod A B))`
+   - output: JSON `["equality",["numbervariable","R"],["setproduct",["setvariable","A"],["setvariable","B"]]]`
 
 
 ### can parse notation related to functions
@@ -449,6 +475,12 @@ satisfy the requirements of the test suite) are shown below.
 - Test 8
    - input: putdown `(and (apply P e) (apply Q (+ 3 b)))`
    - output: JSON `["conjunction",["propfuncapp",["funcvariable","P"],["numbervariable","e"]],["propfuncapp",["funcvariable","Q"],["addition",["number","3"],["numbervariable","b"]]]]`
+- Test 9
+   - input: putdown `(= (apply f x) 3)`
+   - output: JSON `["equality",["numfuncapp",["funcvariable","f"],["numbervariable","x"]],["number","3"]]`
+- Test 10
+   - input: putdown `(= F (compose G (inverse H)))`
+   - output: JSON `["funcequality",["funcvariable","F"],["funccomp",["funcvariable","G"],["funcinverse",["funcvariable","H"]]]]`
 
 
 ## <a name="Rendering-JSON-into-putdown">Rendering JSON into putdown</a>
@@ -638,6 +670,29 @@ satisfy the requirements of the test suite) are shown below.
 - Test 4
    - input: JSON `["exponentiation",["numbernegation",["number","3"]],["addition",["number","1"],["number","2"]]]`
    - output: putdown `(^ (- 3) (+ 1 2))`
+
+
+### can convert relations of numeric expressions to putdown
+
+- Test 1
+   - input: JSON `["greaterthan",["number","1"],["number","2"]]`
+   - output: putdown `(> 1 2)`
+- Test 2
+   - input: JSON `["lessthan",["subtraction",["number","1"],["number","2"]],["addition",["number","1"],["number","2"]]]`
+   - output: putdown `(< (- 1 2) (+ 1 2))`
+- Test 3
+   - input: JSON `["logicnegation",["equality",["number","1"],["number","2"]]]`
+   - output: putdown `(not (= 1 2))`
+- Test 4
+   - input: JSON `["conjunction",["greaterthanoreq",["number","2"],["number","1"]],["lessthanoreq",["number","2"],["number","3"]]]`
+   - output: putdown `(and (>= 2 1) (<= 2 3))`
+
+
+### creates the canonical form for inequality
+
+- Test 1
+   - input: JSON `["inequality",["funcvariable","f"],["funcvariable","g"]]`
+   - output: putdown `(not (= f g))`
 
 
 ### can convert propositional logic atomics to putdown
@@ -839,6 +894,9 @@ satisfy the requirements of the test suite) are shown below.
 - Test 3
    - input: JSON `["conjunction",["subseteq",["setvariable","A"],["setvariable","B"]],["subseteq",["setvariable","B"],["setvariable","A"]]]`
    - output: putdown `(and (subseteq A B) (subseteq B A))`
+- Test 4
+   - input: JSON `["equality",["numbervariable","R"],["setproduct",["setvariable","A"],["setvariable","B"]]]`
+   - output: putdown `(= R (setprod A B))`
 
 
 ### can create putdown notation related to functions
@@ -867,6 +925,9 @@ satisfy the requirements of the test suite) are shown below.
 - Test 8
    - input: JSON `["conjunction",["propfuncapp",["funcvariable","P"],["numbervariable","e"]],["propfuncapp",["funcvariable","Q"],["addition",["number","3"],["numbervariable","b"]]]]`
    - output: putdown `(and (apply P e) (apply Q (+ 3 b)))`
+- Test 9
+   - input: JSON `["funcequality",["funcvariable","F"],["funccomp",["funcvariable","G"],["funcinverse",["funcvariable","H"]]]]`
+   - output: putdown `(= F (compose G (inverse H)))`
 
 
 ## <a name="Parsing-LaTeX">Parsing LaTeX</a>
@@ -1071,6 +1132,41 @@ satisfy the requirements of the test suite) are shown below.
 - Test 8
    - input: LaTeX `k^{1-y}\cdot(2+k)`, typeset $k^{1-y}\cdot(2+k)$
    - output: JSON `["multiplication",["exponentiation",["numbervariable","k"],["subtraction",["number","1"],["numbervariable","y"]]],["addition",["number","2"],["numbervariable","k"]]]`
+
+
+### can parse relations of numeric expressions to JSON
+
+- Test 1
+   - input: LaTeX `1>2`, typeset $1>2$
+   - output: JSON `["greaterthan",["number","1"],["number","2"]]`
+- Test 2
+   - input: LaTeX `1\gt2`, typeset $1\gt2$
+   - output: JSON `["greaterthan",["number","1"],["number","2"]]`
+- Test 3
+   - input: LaTeX `1-2<1+2`, typeset $1-2<1+2$
+   - output: JSON `["lessthan",["subtraction",["number","1"],["number","2"]],["addition",["number","1"],["number","2"]]]`
+- Test 4
+   - input: LaTeX `1-2\lt1+2`, typeset $1-2\lt1+2$
+   - output: JSON `["lessthan",["subtraction",["number","1"],["number","2"]],["addition",["number","1"],["number","2"]]]`
+- Test 5
+   - input: LaTeX `\neg 1=2`, typeset $\neg 1=2$
+   - output: JSON `["logicnegation",["equality",["number","1"],["number","2"]]]`
+- Test 6
+   - input: LaTeX `2\ge1\wedge2\le3`, typeset $2\ge1\wedge2\le3$
+   - output: JSON `["conjunction",["greaterthanoreq",["number","2"],["number","1"]],["lessthanoreq",["number","2"],["number","3"]]]`
+- Test 7
+   - input: LaTeX `2\geq1\wedge2\leq3`, typeset $2\geq1\wedge2\leq3$
+   - output: JSON `["conjunction",["greaterthanoreq",["number","2"],["number","1"]],["lessthanoreq",["number","2"],["number","3"]]]`
+
+
+### converts inequality to its placeholder concept
+
+- Test 1
+   - input: LaTeX `1\ne2`, typeset $1\ne2$
+   - output: JSON `["inequality",["number","1"],["number","2"]]`
+- Test 2
+   - input: LaTeX `1\neq2`, typeset $1\neq2$
+   - output: JSON `["inequality",["number","1"],["number","2"]]`
 
 
 ### can parse propositional logic atomics to JSON
@@ -1302,6 +1398,9 @@ satisfy the requirements of the test suite) are shown below.
 - Test 4
    - input: LaTeX `A\subseteq B\wedge B\subseteq A`, typeset $A\subseteq B\wedge B\subseteq A$
    - output: JSON `["conjunction",["subseteq",["setvariable","A"],["setvariable","B"]],["subseteq",["setvariable","B"],["setvariable","A"]]]`
+- Test 5
+   - input: LaTeX `R = A\cup B`, typeset $R = A\cup B$
+   - output: JSON `["equality",["numbervariable","R"],["union",["setvariable","A"],["setvariable","B"]]]`
 
 
 ### can parse notation related to functions
@@ -1336,6 +1435,9 @@ satisfy the requirements of the test suite) are shown below.
 - Test 10
    - input: LaTeX `P(e)\wedge Q(3+b)`, typeset $P(e)\wedge Q(3+b)$
    - output: JSON `["conjunction",["propfuncapp",["funcvariable","P"],["numbervariable","e"]],["propfuncapp",["funcvariable","Q"],["addition",["number","3"],["numbervariable","b"]]]]`
+- Test 11
+   - input: LaTeX `F=G\circ H^{-1}`, typeset $F=G\circ H^{-1}$
+   - output: JSON `["funcequality",["funcvariable","F"],["funccomp",["funcvariable","G"],["funcinverse",["funcvariable","H"]]]]`
 
 
 ## <a name="Rendering-JSON-into-LaTeX">Rendering JSON into LaTeX</a>
@@ -1530,6 +1632,29 @@ satisfy the requirements of the test suite) are shown below.
    - output: LaTeX `k ^ {1 - y} \times {2 + k}`, typeset $k ^ {1 - y} \times {2 + k}$
 
 
+### can parse relations of numeric expressions from JSON to LaTeX
+
+- Test 1
+   - input: JSON `["greaterthan",["number","1"],["number","2"]]`
+   - output: LaTeX `1 > 2`, typeset $1 > 2$
+- Test 2
+   - input: JSON `["lessthan",["subtraction",["number","1"],["number","2"]],["addition",["number","1"],["number","2"]]]`
+   - output: LaTeX `1 - 2 < 1 + 2`, typeset $1 - 2 < 1 + 2$
+- Test 3
+   - input: JSON `["conjunction",["greaterthanoreq",["number","2"],["number","1"]],["lessthanoreq",["number","2"],["number","3"]]]`
+   - output: LaTeX `2 \ge 1 \wedge 2 \le 3`, typeset $2 \ge 1 \wedge 2 \le 3$
+
+
+### can represent inequality if JSON explicitly requests it
+
+- Test 1
+   - input: JSON `["inequality",["number","1"],["number","2"]]`
+   - output: LaTeX `1 \ne 2`, typeset $1 \ne 2$
+- Test 2
+   - input: JSON `["logicnegation",["equality",["number","1"],["number","2"]]]`
+   - output: LaTeX `\neg 1 = 2`, typeset $\neg 1 = 2$
+
+
 ### can convert propositional logic atomics from JSON to LaTeX
 
 - Test 1
@@ -1707,6 +1832,15 @@ satisfy the requirements of the test suite) are shown below.
 - Test 3
    - input: JSON `["logicnegation",["nounisin",["subtraction",["number","3"],["number","5"]],["intersection",["setvariable","K"],["setvariable","P"]]]]`
    - output: LaTeX `\neg 3 - 5 \in K \cap P`, typeset $\neg 3 - 5 \in K \cap P$
+- Test 4
+   - input: JSON `["nounisnotin",["numbervariable","a"],["setvariable","A"]]`
+   - output: LaTeX `a \notin A`, typeset $a \notin A$
+- Test 5
+   - input: JSON `["nounisnotin",["emptyset"],["emptyset"]]`
+   - output: LaTeX `\emptyset \notin \emptyset`, typeset $\emptyset \notin \emptyset$
+- Test 6
+   - input: JSON `["nounisnotin",["subtraction",["number","3"],["number","5"]],["intersection",["setvariable","K"],["setvariable","P"]]]`
+   - output: LaTeX `3 - 5 \notin K \cap P`, typeset $3 - 5 \notin K \cap P$
 
 
 ### can convert to LaTeX sentences built from set operators
@@ -1723,6 +1857,9 @@ satisfy the requirements of the test suite) are shown below.
 - Test 4
    - input: JSON `["conjunction",["subseteq",["setvariable","A"],["setvariable","B"]],["subseteq",["setvariable","B"],["setvariable","A"]]]`
    - output: LaTeX `A \subseteq B \wedge B \subseteq A`, typeset $A \subseteq B \wedge B \subseteq A$
+- Test 5
+   - input: JSON `["equality",["setvariable","R"],["setproduct",["setvariable","A"],["setvariable","B"]]]`
+   - output: LaTeX `R = A \times B`, typeset $R = A \times B$
 
 
 ### can create LaTeX notation related to functions
@@ -1751,6 +1888,9 @@ satisfy the requirements of the test suite) are shown below.
 - Test 8
    - input: JSON `["conjunction",["propfuncapp",["funcvariable","P"],["numbervariable","e"]],["propfuncapp",["funcvariable","Q"],["addition",["number","3"],["numbervariable","b"]]]]`
    - output: LaTeX `P ( e ) \wedge Q ( 3 + b )`, typeset $P ( e ) \wedge Q ( 3 + b )$
+- Test 9
+   - input: JSON `["funcequality",["funcvariable","F"],["funccomp",["funcvariable","G"],["funcinverse",["funcvariable","H"]]]]`
+   - output: LaTeX `F = G \circ H ^ { - 1 }`, typeset $F = G \circ H ^ { - 1 }$
 
 
 ## <a name="Converting-putdown-to-LaTeX">Converting putdown to LaTeX</a>
@@ -1928,6 +2068,29 @@ satisfy the requirements of the test suite) are shown below.
 - Test 4
    - input: putdown `(^ (- 3) (+ 1 2))`
    - output: LaTeX `{- 3} ^ {1 + 2}`, typeset ${- 3} ^ {1 + 2}$
+
+
+### can convert relations of numeric expressions
+
+- Test 1
+   - input: putdown `(> 1 2)`
+   - output: LaTeX `1 > 2`, typeset $1 > 2$
+- Test 2
+   - input: putdown `(< (- 1 2) (+ 1 2))`
+   - output: LaTeX `1 - 2 < 1 + 2`, typeset $1 - 2 < 1 + 2$
+- Test 3
+   - input: putdown `(not (= 1 2))`
+   - output: LaTeX `\neg 1 = 2`, typeset $\neg 1 = 2$
+- Test 4
+   - input: putdown `(and (>= 2 1) (<= 2 3))`
+   - output: LaTeX `2 \ge 1 \wedge 2 \le 3`, typeset $2 \ge 1 \wedge 2 \le 3$
+
+
+### does not undo the canonical form for inequality
+
+- Test 1
+   - input: putdown `(not (= x y))`
+   - output: LaTeX `\neg x = y`, typeset $\neg x = y$
 
 
 ### correctly converts propositional logic atomics
@@ -2150,6 +2313,9 @@ satisfy the requirements of the test suite) are shown below.
 - Test 4
    - input: putdown `(and (subseteq A B) (subseteq B A))`
    - output: LaTeX `A \subseteq B \wedge B \subseteq A`, typeset $A \subseteq B \wedge B \subseteq A$
+- Test 5
+   - input: putdown `(= R (setprod A B))`
+   - output: LaTeX `R = A \times B`, typeset $R = A \times B$
 
 
 ### can convert notation related to functions
@@ -2178,6 +2344,9 @@ satisfy the requirements of the test suite) are shown below.
 - Test 8
    - input: putdown `(and (apply P e) (apply Q (+ 3 b)))`
    - output: LaTeX `P ( e ) \wedge Q ( 3 + b )`, typeset $P ( e ) \wedge Q ( 3 + b )$
+- Test 9
+   - input: putdown `(= F (compose G (inverse H)))`
+   - output: LaTeX `F = G \circ H ^ { - 1 }`, typeset $F = G \circ H ^ { - 1 }$
 
 
 ## <a name="Converting-LaTeX-to-putdown">Converting LaTeX to putdown</a>
@@ -2376,6 +2545,44 @@ satisfy the requirements of the test suite) are shown below.
 - Test 9
    - input: LaTeX `k^{1-y}\cdot(2+k)`, typeset $k^{1-y}\cdot(2+k)$
    - output: putdown `(* (^ k (- 1 y)) (+ 2 k))`
+
+
+### can convert relations of numeric expressions
+
+- Test 1
+   - input: LaTeX `1 > 2`, typeset $1 > 2$
+   - output: putdown `(> 1 2)`
+- Test 2
+   - input: LaTeX `1 \gt 2`, typeset $1 \gt 2$
+   - output: putdown `(> 1 2)`
+- Test 3
+   - input: LaTeX `1 - 2 < 1 + 2`, typeset $1 - 2 < 1 + 2$
+   - output: putdown `(< (- 1 2) (+ 1 2))`
+- Test 4
+   - input: LaTeX `1 - 2 \lt 1 + 2`, typeset $1 - 2 \lt 1 + 2$
+   - output: putdown `(< (- 1 2) (+ 1 2))`
+- Test 5
+   - input: LaTeX `\neg 1 = 2`, typeset $\neg 1 = 2$
+   - output: putdown `(not (= 1 2))`
+- Test 6
+   - input: LaTeX `2 \ge 1 \wedge 2 \le 3`, typeset $2 \ge 1 \wedge 2 \le 3$
+   - output: putdown `(and (>= 2 1) (<= 2 3))`
+- Test 7
+   - input: LaTeX `2\geq1\wedge2\leq3`, typeset $2\geq1\wedge2\leq3$
+   - output: putdown `(and (>= 2 1) (<= 2 3))`
+
+
+### creates the canonical form for inequality
+
+- Test 1
+   - input: LaTeX `x \ne y`, typeset $x \ne y$
+   - output: putdown `(not (= x y))`
+- Test 2
+   - input: LaTeX `x \neq y`, typeset $x \neq y$
+   - output: putdown `(not (= x y))`
+- Test 3
+   - input: LaTeX `\neg x = y`, typeset $\neg x = y$
+   - output: putdown `(not (= x y))`
 
 
 ### correctly converts propositional logic atomics
@@ -2598,6 +2805,12 @@ satisfy the requirements of the test suite) are shown below.
 - Test 4
    - input: LaTeX `A \subseteq B \wedge B \subseteq A`, typeset $A \subseteq B \wedge B \subseteq A$
    - output: putdown `(and (subseteq A B) (subseteq B A))`
+- Test 5
+   - input: LaTeX `R = A \times B`, typeset $R = A \times B$
+   - output: putdown `(= R (* A B))`
+- Test 6
+   - input: LaTeX `R = A \cup B`, typeset $R = A \cup B$
+   - output: putdown `(= R (setuni A B))`
 
 
 ### can convert notation related to functions
@@ -2632,5 +2845,8 @@ satisfy the requirements of the test suite) are shown below.
 - Test 10
    - input: LaTeX `P(e)\wedge Q(3+b)`, typeset $P(e)\wedge Q(3+b)$
    - output: putdown `(and (apply P e) (apply Q (+ 3 b)))`
+- Test 11
+   - input: LaTeX `F=G\circ H^{-1}`, typeset $F=G\circ H^{-1}$
+   - output: putdown `(= F (compose G (inverse H)))`
 
 

@@ -393,6 +393,42 @@ satisfy the requirements of the test suite) are shown below.</p>
 </ul>
 </li>
 </ul>
+<h3>can convert relations of numeric expressions to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(&gt; 1 2)</code></li>
+<li>output: JSON <code>[&quot;greaterthan&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(&lt; (- 1 2) (+ 1 2))</code></li>
+<li>output: JSON <code>[&quot;lessthan&quot;,[&quot;subtraction&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]],[&quot;addition&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(not (= 1 2))</code></li>
+<li>output: JSON <code>[&quot;logicnegation&quot;,[&quot;equality&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: putdown <code>(and (&gt;= 2 1) (&lt;= 2 3))</code></li>
+<li>output: JSON <code>[&quot;conjunction&quot;,[&quot;greaterthanoreq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;number&quot;,&quot;1&quot;]],[&quot;lessthanoreq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;number&quot;,&quot;3&quot;]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>does not undo the canonical form for inequality</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(not (= x y))</code></li>
+<li>output: JSON <code>[&quot;logicnegation&quot;,[&quot;equality&quot;,[&quot;numbervariable&quot;,&quot;x&quot;],[&quot;numbervariable&quot;,&quot;y&quot;]]]</code></li>
+</ul>
+</li>
+</ul>
 <h3>can convert propositional logic atomics to JSON</h3>
 <ul>
 <li>Test 1
@@ -770,6 +806,12 @@ satisfy the requirements of the test suite) are shown below.</p>
 <li>output: JSON <code>[&quot;conjunction&quot;,[&quot;subseteq&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;subseteq&quot;,[&quot;setvariable&quot;,&quot;B&quot;],[&quot;setvariable&quot;,&quot;A&quot;]]]</code></li>
 </ul>
 </li>
+<li>Test 4
+<ul>
+<li>input: putdown <code>(= R (setprod A B))</code></li>
+<li>output: JSON <code>[&quot;equality&quot;,[&quot;numbervariable&quot;,&quot;R&quot;],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
+</ul>
+</li>
 </ul>
 <h3>can parse notation related to functions</h3>
 <ul>
@@ -819,6 +861,18 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: putdown <code>(and (apply P e) (apply Q (+ 3 b)))</code></li>
 <li>output: JSON <code>[&quot;conjunction&quot;,[&quot;propfuncapp&quot;,[&quot;funcvariable&quot;,&quot;P&quot;],[&quot;numbervariable&quot;,&quot;e&quot;]],[&quot;propfuncapp&quot;,[&quot;funcvariable&quot;,&quot;Q&quot;],[&quot;addition&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;numbervariable&quot;,&quot;b&quot;]]]]</code></li>
+</ul>
+</li>
+<li>Test 9
+<ul>
+<li>input: putdown <code>(= (apply f x) 3)</code></li>
+<li>output: JSON <code>[&quot;equality&quot;,[&quot;numfuncapp&quot;,[&quot;funcvariable&quot;,&quot;f&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]],[&quot;number&quot;,&quot;3&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 10
+<ul>
+<li>input: putdown <code>(= F (compose G (inverse H)))</code></li>
+<li>output: JSON <code>[&quot;funcequality&quot;,[&quot;funcvariable&quot;,&quot;F&quot;],[&quot;funccomp&quot;,[&quot;funcvariable&quot;,&quot;G&quot;],[&quot;funcinverse&quot;,[&quot;funcvariable&quot;,&quot;H&quot;]]]]</code></li>
 </ul>
 </li>
 </ul>
@@ -1144,6 +1198,42 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: JSON <code>[&quot;exponentiation&quot;,[&quot;numbernegation&quot;,[&quot;number&quot;,&quot;3&quot;]],[&quot;addition&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]]</code></li>
 <li>output: putdown <code>(^ (- 3) (+ 1 2))</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert relations of numeric expressions to putdown</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;greaterthan&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]</code></li>
+<li>output: putdown <code>(&gt; 1 2)</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;lessthan&quot;,[&quot;subtraction&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]],[&quot;addition&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]]</code></li>
+<li>output: putdown <code>(&lt; (- 1 2) (+ 1 2))</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;logicnegation&quot;,[&quot;equality&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]]</code></li>
+<li>output: putdown <code>(not (= 1 2))</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;conjunction&quot;,[&quot;greaterthanoreq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;number&quot;,&quot;1&quot;]],[&quot;lessthanoreq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;number&quot;,&quot;3&quot;]]]</code></li>
+<li>output: putdown <code>(and (&gt;= 2 1) (&lt;= 2 3))</code></li>
+</ul>
+</li>
+</ul>
+<h3>creates the canonical form for inequality</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;inequality&quot;,[&quot;funcvariable&quot;,&quot;f&quot;],[&quot;funcvariable&quot;,&quot;g&quot;]]</code></li>
+<li>output: putdown <code>(not (= f g))</code></li>
 </ul>
 </li>
 </ul>
@@ -1488,6 +1578,12 @@ satisfy the requirements of the test suite) are shown below.</p>
 <li>output: putdown <code>(and (subseteq A B) (subseteq B A))</code></li>
 </ul>
 </li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;equality&quot;,[&quot;numbervariable&quot;,&quot;R&quot;],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
+<li>output: putdown <code>(= R (setprod A B))</code></li>
+</ul>
+</li>
 </ul>
 <h3>can create putdown notation related to functions</h3>
 <ul>
@@ -1537,6 +1633,12 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: JSON <code>[&quot;conjunction&quot;,[&quot;propfuncapp&quot;,[&quot;funcvariable&quot;,&quot;P&quot;],[&quot;numbervariable&quot;,&quot;e&quot;]],[&quot;propfuncapp&quot;,[&quot;funcvariable&quot;,&quot;Q&quot;],[&quot;addition&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;numbervariable&quot;,&quot;b&quot;]]]]</code></li>
 <li>output: putdown <code>(and (apply P e) (apply Q (+ 3 b)))</code></li>
+</ul>
+</li>
+<li>Test 9
+<ul>
+<li>input: JSON <code>[&quot;funcequality&quot;,[&quot;funcvariable&quot;,&quot;F&quot;],[&quot;funccomp&quot;,[&quot;funcvariable&quot;,&quot;G&quot;],[&quot;funcinverse&quot;,[&quot;funcvariable&quot;,&quot;H&quot;]]]]</code></li>
+<li>output: putdown <code>(= F (compose G (inverse H)))</code></li>
 </ul>
 </li>
 </ul>
@@ -1892,6 +1994,66 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: LaTeX <code>k^{1-y}\cdot(2+k)</code>, typeset $k^{1-y}\cdot(2+k)$</li>
 <li>output: JSON <code>[&quot;multiplication&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;k&quot;],[&quot;subtraction&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numbervariable&quot;,&quot;y&quot;]]],[&quot;addition&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;numbervariable&quot;,&quot;k&quot;]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can parse relations of numeric expressions to JSON</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>1&gt;2</code>, typeset $1&gt;2$</li>
+<li>output: JSON <code>[&quot;greaterthan&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>1\gt2</code>, typeset $1\gt2$</li>
+<li>output: JSON <code>[&quot;greaterthan&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>1-2&lt;1+2</code>, typeset $1-2&lt;1+2$</li>
+<li>output: JSON <code>[&quot;lessthan&quot;,[&quot;subtraction&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]],[&quot;addition&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: LaTeX <code>1-2\lt1+2</code>, typeset $1-2\lt1+2$</li>
+<li>output: JSON <code>[&quot;lessthan&quot;,[&quot;subtraction&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]],[&quot;addition&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: LaTeX <code>\neg 1=2</code>, typeset $\neg 1=2$</li>
+<li>output: JSON <code>[&quot;logicnegation&quot;,[&quot;equality&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: LaTeX <code>2\ge1\wedge2\le3</code>, typeset $2\ge1\wedge2\le3$</li>
+<li>output: JSON <code>[&quot;conjunction&quot;,[&quot;greaterthanoreq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;number&quot;,&quot;1&quot;]],[&quot;lessthanoreq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;number&quot;,&quot;3&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: LaTeX <code>2\geq1\wedge2\leq3</code>, typeset $2\geq1\wedge2\leq3$</li>
+<li>output: JSON <code>[&quot;conjunction&quot;,[&quot;greaterthanoreq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;number&quot;,&quot;1&quot;]],[&quot;lessthanoreq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;number&quot;,&quot;3&quot;]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>converts inequality to its placeholder concept</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>1\ne2</code>, typeset $1\ne2$</li>
+<li>output: JSON <code>[&quot;inequality&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>1\neq2</code>, typeset $1\neq2$</li>
+<li>output: JSON <code>[&quot;inequality&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]</code></li>
 </ul>
 </li>
 </ul>
@@ -2296,6 +2458,12 @@ satisfy the requirements of the test suite) are shown below.</p>
 <li>output: JSON <code>[&quot;conjunction&quot;,[&quot;subseteq&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;subseteq&quot;,[&quot;setvariable&quot;,&quot;B&quot;],[&quot;setvariable&quot;,&quot;A&quot;]]]</code></li>
 </ul>
 </li>
+<li>Test 5
+<ul>
+<li>input: LaTeX <code>R = A\cup B</code>, typeset $R = A\cup B$</li>
+<li>output: JSON <code>[&quot;equality&quot;,[&quot;numbervariable&quot;,&quot;R&quot;],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
+</ul>
+</li>
 </ul>
 <h3>can parse notation related to functions</h3>
 <ul>
@@ -2357,6 +2525,12 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: LaTeX <code>P(e)\wedge Q(3+b)</code>, typeset $P(e)\wedge Q(3+b)$</li>
 <li>output: JSON <code>[&quot;conjunction&quot;,[&quot;propfuncapp&quot;,[&quot;funcvariable&quot;,&quot;P&quot;],[&quot;numbervariable&quot;,&quot;e&quot;]],[&quot;propfuncapp&quot;,[&quot;funcvariable&quot;,&quot;Q&quot;],[&quot;addition&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;numbervariable&quot;,&quot;b&quot;]]]]</code></li>
+</ul>
+</li>
+<li>Test 11
+<ul>
+<li>input: LaTeX <code>F=G\circ H^{-1}</code>, typeset $F=G\circ H^{-1}$</li>
+<li>output: JSON <code>[&quot;funcequality&quot;,[&quot;funcvariable&quot;,&quot;F&quot;],[&quot;funccomp&quot;,[&quot;funcvariable&quot;,&quot;G&quot;],[&quot;funcinverse&quot;,[&quot;funcvariable&quot;,&quot;H&quot;]]]]</code></li>
 </ul>
 </li>
 </ul>
@@ -2691,6 +2865,42 @@ satisfy the requirements of the test suite) are shown below.</p>
 </ul>
 </li>
 </ul>
+<h3>can parse relations of numeric expressions from JSON to LaTeX</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;greaterthan&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]</code></li>
+<li>output: LaTeX <code>1 &gt; 2</code>, typeset $1 &gt; 2$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;lessthan&quot;,[&quot;subtraction&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]],[&quot;addition&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]]</code></li>
+<li>output: LaTeX <code>1 - 2 &lt; 1 + 2</code>, typeset $1 - 2 &lt; 1 + 2$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;conjunction&quot;,[&quot;greaterthanoreq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;number&quot;,&quot;1&quot;]],[&quot;lessthanoreq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;number&quot;,&quot;3&quot;]]]</code></li>
+<li>output: LaTeX <code>2 \ge 1 \wedge 2 \le 3</code>, typeset $2 \ge 1 \wedge 2 \le 3$</li>
+</ul>
+</li>
+</ul>
+<h3>can represent inequality if JSON explicitly requests it</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;inequality&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]</code></li>
+<li>output: LaTeX <code>1 \ne 2</code>, typeset $1 \ne 2$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;logicnegation&quot;,[&quot;equality&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;number&quot;,&quot;2&quot;]]]</code></li>
+<li>output: LaTeX <code>\neg 1 = 2</code>, typeset $\neg 1 = 2$</li>
+</ul>
+</li>
+</ul>
 <h3>can convert propositional logic atomics from JSON to LaTeX</h3>
 <ul>
 <li>Test 1
@@ -2993,6 +3203,24 @@ satisfy the requirements of the test suite) are shown below.</p>
 <li>output: LaTeX <code>\neg 3 - 5 \in K \cap P</code>, typeset $\neg 3 - 5 \in K \cap P$</li>
 </ul>
 </li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;nounisnotin&quot;,[&quot;numbervariable&quot;,&quot;a&quot;],[&quot;setvariable&quot;,&quot;A&quot;]]</code></li>
+<li>output: LaTeX <code>a \notin A</code>, typeset $a \notin A$</li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: JSON <code>[&quot;nounisnotin&quot;,[&quot;emptyset&quot;],[&quot;emptyset&quot;]]</code></li>
+<li>output: LaTeX <code>\emptyset \notin \emptyset</code>, typeset $\emptyset \notin \emptyset$</li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: JSON <code>[&quot;nounisnotin&quot;,[&quot;subtraction&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;number&quot;,&quot;5&quot;]],[&quot;intersection&quot;,[&quot;setvariable&quot;,&quot;K&quot;],[&quot;setvariable&quot;,&quot;P&quot;]]]</code></li>
+<li>output: LaTeX <code>3 - 5 \notin K \cap P</code>, typeset $3 - 5 \notin K \cap P$</li>
+</ul>
+</li>
 </ul>
 <h3>can convert to LaTeX sentences built from set operators</h3>
 <ul>
@@ -3018,6 +3246,12 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: JSON <code>[&quot;conjunction&quot;,[&quot;subseteq&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]],[&quot;subseteq&quot;,[&quot;setvariable&quot;,&quot;B&quot;],[&quot;setvariable&quot;,&quot;A&quot;]]]</code></li>
 <li>output: LaTeX <code>A \subseteq B \wedge B \subseteq A</code>, typeset $A \subseteq B \wedge B \subseteq A$</li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: JSON <code>[&quot;equality&quot;,[&quot;setvariable&quot;,&quot;R&quot;],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
+<li>output: LaTeX <code>R = A \times B</code>, typeset $R = A \times B$</li>
 </ul>
 </li>
 </ul>
@@ -3069,6 +3303,12 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: JSON <code>[&quot;conjunction&quot;,[&quot;propfuncapp&quot;,[&quot;funcvariable&quot;,&quot;P&quot;],[&quot;numbervariable&quot;,&quot;e&quot;]],[&quot;propfuncapp&quot;,[&quot;funcvariable&quot;,&quot;Q&quot;],[&quot;addition&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;numbervariable&quot;,&quot;b&quot;]]]]</code></li>
 <li>output: LaTeX <code>P ( e ) \wedge Q ( 3 + b )</code>, typeset $P ( e ) \wedge Q ( 3 + b )$</li>
+</ul>
+</li>
+<li>Test 9
+<ul>
+<li>input: JSON <code>[&quot;funcequality&quot;,[&quot;funcvariable&quot;,&quot;F&quot;],[&quot;funccomp&quot;,[&quot;funcvariable&quot;,&quot;G&quot;],[&quot;funcinverse&quot;,[&quot;funcvariable&quot;,&quot;H&quot;]]]]</code></li>
+<li>output: LaTeX <code>F = G \circ H ^ { - 1 }</code>, typeset $F = G \circ H ^ { - 1 }$</li>
 </ul>
 </li>
 </ul>
@@ -3370,6 +3610,42 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: putdown <code>(^ (- 3) (+ 1 2))</code></li>
 <li>output: LaTeX <code>{- 3} ^ {1 + 2}</code>, typeset ${- 3} ^ {1 + 2}$</li>
+</ul>
+</li>
+</ul>
+<h3>can convert relations of numeric expressions</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(&gt; 1 2)</code></li>
+<li>output: LaTeX <code>1 &gt; 2</code>, typeset $1 &gt; 2$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(&lt; (- 1 2) (+ 1 2))</code></li>
+<li>output: LaTeX <code>1 - 2 &lt; 1 + 2</code>, typeset $1 - 2 &lt; 1 + 2$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(not (= 1 2))</code></li>
+<li>output: LaTeX <code>\neg 1 = 2</code>, typeset $\neg 1 = 2$</li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: putdown <code>(and (&gt;= 2 1) (&lt;= 2 3))</code></li>
+<li>output: LaTeX <code>2 \ge 1 \wedge 2 \le 3</code>, typeset $2 \ge 1 \wedge 2 \le 3$</li>
+</ul>
+</li>
+</ul>
+<h3>does not undo the canonical form for inequality</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(not (= x y))</code></li>
+<li>output: LaTeX <code>\neg x = y</code>, typeset $\neg x = y$</li>
 </ul>
 </li>
 </ul>
@@ -3756,6 +4032,12 @@ satisfy the requirements of the test suite) are shown below.</p>
 <li>output: LaTeX <code>A \subseteq B \wedge B \subseteq A</code>, typeset $A \subseteq B \wedge B \subseteq A$</li>
 </ul>
 </li>
+<li>Test 5
+<ul>
+<li>input: putdown <code>(= R (setprod A B))</code></li>
+<li>output: LaTeX <code>R = A \times B</code>, typeset $R = A \times B$</li>
+</ul>
+</li>
 </ul>
 <h3>can convert notation related to functions</h3>
 <ul>
@@ -3805,6 +4087,12 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: putdown <code>(and (apply P e) (apply Q (+ 3 b)))</code></li>
 <li>output: LaTeX <code>P ( e ) \wedge Q ( 3 + b )</code>, typeset $P ( e ) \wedge Q ( 3 + b )$</li>
+</ul>
+</li>
+<li>Test 9
+<ul>
+<li>input: putdown <code>(= F (compose G (inverse H)))</code></li>
+<li>output: LaTeX <code>F = G \circ H ^ { - 1 }</code>, typeset $F = G \circ H ^ { - 1 }$</li>
 </ul>
 </li>
 </ul>
@@ -4148,6 +4436,72 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: LaTeX <code>k^{1-y}\cdot(2+k)</code>, typeset $k^{1-y}\cdot(2+k)$</li>
 <li>output: putdown <code>(* (^ k (- 1 y)) (+ 2 k))</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert relations of numeric expressions</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>1 &gt; 2</code>, typeset $1 &gt; 2$</li>
+<li>output: putdown <code>(&gt; 1 2)</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>1 \gt 2</code>, typeset $1 \gt 2$</li>
+<li>output: putdown <code>(&gt; 1 2)</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>1 - 2 &lt; 1 + 2</code>, typeset $1 - 2 &lt; 1 + 2$</li>
+<li>output: putdown <code>(&lt; (- 1 2) (+ 1 2))</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: LaTeX <code>1 - 2 \lt 1 + 2</code>, typeset $1 - 2 \lt 1 + 2$</li>
+<li>output: putdown <code>(&lt; (- 1 2) (+ 1 2))</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: LaTeX <code>\neg 1 = 2</code>, typeset $\neg 1 = 2$</li>
+<li>output: putdown <code>(not (= 1 2))</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: LaTeX <code>2 \ge 1 \wedge 2 \le 3</code>, typeset $2 \ge 1 \wedge 2 \le 3$</li>
+<li>output: putdown <code>(and (&gt;= 2 1) (&lt;= 2 3))</code></li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: LaTeX <code>2\geq1\wedge2\leq3</code>, typeset $2\geq1\wedge2\leq3$</li>
+<li>output: putdown <code>(and (&gt;= 2 1) (&lt;= 2 3))</code></li>
+</ul>
+</li>
+</ul>
+<h3>creates the canonical form for inequality</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>x \ne y</code>, typeset $x \ne y$</li>
+<li>output: putdown <code>(not (= x y))</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>x \neq y</code>, typeset $x \neq y$</li>
+<li>output: putdown <code>(not (= x y))</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>\neg x = y</code>, typeset $\neg x = y$</li>
+<li>output: putdown <code>(not (= x y))</code></li>
 </ul>
 </li>
 </ul>
@@ -4534,6 +4888,18 @@ satisfy the requirements of the test suite) are shown below.</p>
 <li>output: putdown <code>(and (subseteq A B) (subseteq B A))</code></li>
 </ul>
 </li>
+<li>Test 5
+<ul>
+<li>input: LaTeX <code>R = A \times B</code>, typeset $R = A \times B$</li>
+<li>output: putdown <code>(= R (* A B))</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: LaTeX <code>R = A \cup B</code>, typeset $R = A \cup B$</li>
+<li>output: putdown <code>(= R (setuni A B))</code></li>
+</ul>
+</li>
 </ul>
 <h3>can convert notation related to functions</h3>
 <ul>
@@ -4595,6 +4961,12 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: LaTeX <code>P(e)\wedge Q(3+b)</code>, typeset $P(e)\wedge Q(3+b)$</li>
 <li>output: putdown <code>(and (apply P e) (apply Q (+ 3 b)))</code></li>
+</ul>
+</li>
+<li>Test 11
+<ul>
+<li>input: LaTeX <code>F=G\circ H^{-1}</code>, typeset $F=G\circ H^{-1}$</li>
+<li>output: putdown <code>(= F (compose G (inverse H)))</code></li>
 </ul>
 </li>
 </ul>
