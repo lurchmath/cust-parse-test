@@ -33,13 +33,16 @@ General to dos:
  - expand set of tests for many new mathematical expressions in many languages,
    including expressions that bind variables.  Use the grammar here as an
    inspiration: https://github.com/lurchmath/earley-parser/blob/master/earley-tests.js#L225
-    - `|`, congruence mod m, generic relation `~`, equivalence class (for a
-      relation)
+    - divisibility relation `|`
+    - congruence mod m relation
+    - generic relation `~`
+    - equivalence class (for a relation)
     - `X is a[n] Y`, `X is a[n] Y of Z`, for a specific finite set of Ys
-    - assumptions and declarations (but no need for Declare--we can do that
-      in each doc just by listing concept.putdown for each concept)
+      (e.g., X is a set, or an equivalence relation, or a partial order, etc.)
+    - assumptions (given flags)
+    - Let-style declarations, with or without body
+    - ForSome-style declarations, always with body
     - EFAs
-    - naked binding?
     - common constants: pi, e, trig functions
  - expand all languages to support many new mathematical features, tests for each
    (note that set theory notation will need analogs to sum, product, ...)
