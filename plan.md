@@ -33,7 +33,6 @@ General to dos:
  - expand set of tests for many new mathematical expressions in many languages,
    including expressions that bind variables.  Use the grammar here as an
    inspiration: https://github.com/lurchmath/earley-parser/blob/master/earley-tests.js#L225
-    - `<`, `>`, `<=`, `>=`, `=`, `neq`
     - `|`, congruence mod m, generic relation `~`, equivalence class (for a
       relation)
     - `X is a[n] Y`, `X is a[n] Y of Z`, for a specific finite set of Ys

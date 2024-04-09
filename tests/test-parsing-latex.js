@@ -346,6 +346,65 @@ describe( 'Parsing LaTeX', () => {
         )
     } )
 
+    it( 'can parse relations of numeric expressions to JSON', () => {
+        checkLatexJson(
+            '1>2',
+            [ 'greaterthan',
+                [ 'number', '1' ],
+                [ 'number', '2' ]
+            ]
+        )
+        checkLatexJson(
+            '1\\gt2',
+            [ 'greaterthan',
+                [ 'number', '1' ],
+                [ 'number', '2' ]
+            ]
+        )
+        checkLatexJson(
+            '1-2<1+2',
+            [ 'lessthan',
+                [ 'subtraction', [ 'number', '1' ], [ 'number', '2' ] ],
+                [ 'addition', [ 'number', '1' ], [ 'number', '2' ] ]
+            ]
+        )
+        checkLatexJson(
+            '1-2\\lt1+2',
+            [ 'lessthan',
+                [ 'subtraction', [ 'number', '1' ], [ 'number', '2' ] ],
+                [ 'addition', [ 'number', '1' ], [ 'number', '2' ] ]
+            ]
+        )
+        checkLatexJson(
+            '\\neg 1=2',
+            [ 'logicnegation',
+                [ 'equality', [ 'number', '1' ], [ 'number', '2' ] ] ]
+        )
+        checkLatexJson(
+            '2\\ge1\\wedge2\\le3',
+            [ 'conjunction',
+                [ 'greaterthanoreq', [ 'number', '2' ], [ 'number', '1' ] ],
+                [ 'lessthanoreq', [ 'number', '2' ], [ 'number', '3' ] ] ]
+        )
+        checkLatexJson(
+            '2\\geq1\\wedge2\\leq3',
+            [ 'conjunction',
+                [ 'greaterthanoreq', [ 'number', '2' ], [ 'number', '1' ] ],
+                [ 'lessthanoreq', [ 'number', '2' ], [ 'number', '3' ] ] ]
+        )
+    } )
+
+    it( 'converts inequality to its placeholder concept', () => {
+        checkLatexJson(
+            '1\\ne2',
+            [ 'inequality', [ 'number', '1' ], [ 'number', '2' ] ]
+        )
+        checkLatexJson(
+            '1\\neq2',
+            [ 'inequality', [ 'number', '1' ], [ 'number', '2' ] ]
+        )
+    } )
+
     it( 'can parse propositional logic atomics to JSON', () => {
         checkLatexJson(
             '\\top',
@@ -758,6 +817,12 @@ describe( 'Parsing LaTeX', () => {
                 [ 'subseteq', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
                 [ 'subseteq', [ 'setvariable', 'B' ], [ 'setvariable', 'A' ] ] ]
         )
+        checkLatexJson(
+            'R = A\\cup B',
+            [ 'equality',
+                [ 'numbervariable', 'R' ], // it guesses wrong, oh well
+                [ 'union', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ] ]
+        )
     } )
 
     it( 'can parse notation related to functions', () => {
@@ -820,6 +885,14 @@ describe( 'Parsing LaTeX', () => {
                 [ 'propfuncapp', [ 'funcvariable', 'P' ], [ 'numbervariable', 'e' ] ],
                 [ 'propfuncapp', [ 'funcvariable', 'Q' ],
                     [ 'addition', [ 'number', '3' ], [ 'numbervariable', 'b' ] ] ] ]
+        )
+        checkLatexJson(
+            'F=G\\circ H^{-1}',
+            [ 'funcequality',
+                [ 'funcvariable', 'F' ],
+                [ 'funccomp',
+                    [ 'funcvariable', 'G' ],
+                    [ 'funcinverse', [ 'funcvariable', 'H' ] ] ] ]
         )
     } )
 

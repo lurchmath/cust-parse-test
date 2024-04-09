@@ -302,6 +302,43 @@ describe( 'Parsing putdown', () => {
         )
     } )
 
+    it( 'can convert relations of numeric expressions to JSON', () => {
+        checkPutdownJson(
+            '(> 1 2)',
+            [ 'greaterthan',
+                [ 'number', '1' ],
+                [ 'number', '2' ]
+            ]
+        )
+        checkPutdownJson(
+            '(< (- 1 2) (+ 1 2))',
+            [ 'lessthan',
+                [ 'subtraction', [ 'number', '1' ], [ 'number', '2' ] ],
+                [ 'addition', [ 'number', '1' ], [ 'number', '2' ] ]
+            ]
+        )
+        checkPutdownJson(
+            '(not (= 1 2))',
+            [ 'logicnegation',
+                [ 'equality', [ 'number', '1' ], [ 'number', '2' ] ] ]
+        )
+        checkPutdownJson(
+            '(and (>= 2 1) (<= 2 3))',
+            [ 'conjunction',
+                [ 'greaterthanoreq', [ 'number', '2' ], [ 'number', '1' ] ],
+                [ 'lessthanoreq', [ 'number', '2' ], [ 'number', '3' ] ] ]
+        )
+    } )
+
+    it( 'does not undo the canonical form for inequality', () => {
+        checkPutdownJson(
+            '(not (= x y))',
+            [ 'logicnegation',
+                [ 'equality',
+                    [ 'numbervariable', 'x' ], [ 'numbervariable', 'y' ] ] ]
+        )
+    } )
+
     it( 'can convert propositional logic atomics to JSON', () => {
         checkPutdownJson(
             'true',
@@ -683,6 +720,12 @@ describe( 'Parsing putdown', () => {
                 [ 'subseteq', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
                 [ 'subseteq', [ 'setvariable', 'B' ], [ 'setvariable', 'A' ] ] ]
         )
+        checkPutdownJson(
+            '(= R (setprod A B))',
+            [ 'equality',
+                [ 'numbervariable', 'R' ], // it guesses wrong, oh well
+                [ 'setproduct', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ] ]
+        )
     } )
 
     it( 'can parse notation related to functions', () => {
@@ -733,6 +776,20 @@ describe( 'Parsing putdown', () => {
                 [ 'propfuncapp', [ 'funcvariable', 'P' ], [ 'numbervariable', 'e' ] ],
                 [ 'propfuncapp', [ 'funcvariable', 'Q' ],
                     [ 'addition', [ 'number', '3' ], [ 'numbervariable', 'b' ] ] ] ]
+        )
+        checkPutdownJson(
+            '(= (apply f x) 3)',
+            [ 'equality',
+                [ 'numfuncapp', [ 'funcvariable', 'f' ], [ 'numbervariable', 'x' ] ],
+                [ 'number', '3' ] ]
+        )
+        checkPutdownJson(
+            '(= F (compose G (inverse H)))',
+            [ 'funcequality',
+                [ 'funcvariable', 'F' ],
+                [ 'funccomp',
+                    [ 'funcvariable', 'G' ],
+                    [ 'funcinverse', [ 'funcvariable', 'H' ] ] ] ]
         )
     } )
 

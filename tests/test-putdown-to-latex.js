@@ -94,6 +94,17 @@ describe( 'Converting putdown to LaTeX', () => {
         checkPutdownLatex( '(^ (- 3) (+ 1 2))', '{- 3} ^ {1 + 2}' )
     } )
 
+    it( 'can convert relations of numeric expressions', () => {
+        checkPutdownLatex( '(> 1 2)', '1 > 2' )
+        checkPutdownLatex( '(< (- 1 2) (+ 1 2))', '1 - 2 < 1 + 2' )
+        checkPutdownLatex( '(not (= 1 2))', '\\neg 1 = 2' )
+        checkPutdownLatex( '(and (>= 2 1) (<= 2 3))', '2 \\ge 1 \\wedge 2 \\le 3' )
+    } )
+
+    it( 'does not undo the canonical form for inequality', () => {
+        checkPutdownLatex( '(not (= x y))', '\\neg x = y' )
+    } )
+
     it( 'correctly converts propositional logic atomics', () => {
         checkPutdownLatex( 'true', '\\top' )
         checkPutdownLatex( 'false', '\\bot' )
@@ -275,6 +286,7 @@ describe( 'Converting putdown to LaTeX', () => {
             '(and (subseteq A B) (subseteq B A))',
             'A \\subseteq B \\wedge B \\subseteq A'
         )
+        checkPutdownLatex( '(= R (setprod A B))', 'R = A \\times B' )
     } )
 
     it( 'can convert notation related to functions', () => {
@@ -300,6 +312,10 @@ describe( 'Converting putdown to LaTeX', () => {
         checkPutdownLatex(
             '(and (apply P e) (apply Q (+ 3 b)))',
             'P ( e ) \\wedge Q ( 3 + b )'
+        )
+        checkPutdownLatex(
+            '(= F (compose G (inverse H)))',
+            'F = G \\circ H ^ { - 1 }'
         )
     } )
 

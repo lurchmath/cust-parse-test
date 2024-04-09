@@ -324,6 +324,41 @@ describe( 'Rendering JSON into LaTeX', () => {
         )
     } )
 
+    it( 'can parse relations of numeric expressions from JSON to LaTeX', () => {
+        checkJsonLatex(
+            [ 'greaterthan',
+                [ 'number', '1' ],
+                [ 'number', '2' ]
+            ],
+            '1 > 2'
+        )
+        checkJsonLatex(
+            [ 'lessthan',
+                [ 'subtraction', [ 'number', '1' ], [ 'number', '2' ] ],
+                [ 'addition', [ 'number', '1' ], [ 'number', '2' ] ]
+            ],
+            '1 - 2 < 1 + 2'
+        )
+        checkJsonLatex(
+            [ 'conjunction',
+                [ 'greaterthanoreq', [ 'number', '2' ], [ 'number', '1' ] ],
+                [ 'lessthanoreq', [ 'number', '2' ], [ 'number', '3' ] ] ],
+            '2 \\ge 1 \\wedge 2 \\le 3'
+        )
+    } )
+
+    it( 'can represent inequality if JSON explicitly requests it', () => {
+        checkJsonLatex(
+            [ 'inequality', [ 'number', '1' ], [ 'number', '2' ] ],
+            '1 \\ne 2'
+        )
+        checkJsonLatex(
+            [ 'logicnegation',
+                [ 'equality', [ 'number', '1' ], [ 'number', '2' ] ] ],
+            '\\neg 1 = 2'
+        )
+    } )
+
     it( 'can convert propositional logic atomics from JSON to LaTeX', () => {
         checkJsonLatex(
             [ 'logicaltrue' ],
@@ -720,6 +755,12 @@ describe( 'Rendering JSON into LaTeX', () => {
                 [ 'subseteq', [ 'setvariable', 'B' ], [ 'setvariable', 'A' ] ] ],
             'A \\subseteq B \\wedge B \\subseteq A'
         )
+        checkJsonLatex(
+            [ 'equality',
+                [ 'setvariable', 'R' ],
+                [ 'setproduct', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ] ],
+            'R = A \\times B'
+        )
     } )
 
     it( 'can create LaTeX notation related to functions', () => {
@@ -770,6 +811,14 @@ describe( 'Rendering JSON into LaTeX', () => {
                 [ 'propfuncapp', [ 'funcvariable', 'Q' ],
                     [ 'addition', [ 'number', '3' ], [ 'numbervariable', 'b' ] ] ] ],
             'P ( e ) \\wedge Q ( 3 + b )'
+        )
+        checkJsonLatex(
+            [ 'funcequality',
+                [ 'funcvariable', 'F' ],
+                [ 'funccomp',
+                    [ 'funcvariable', 'G' ],
+                    [ 'funcinverse', [ 'funcvariable', 'H' ] ] ] ],
+            'F = G \\circ H ^ { - 1 }'
         )
     } )
 

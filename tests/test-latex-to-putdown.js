@@ -103,6 +103,22 @@ describe( 'Converting LaTeX to putdown', () => {
         checkLatexPutdown( 'k^{1-y}\\cdot(2+k)', '(* (^ k (- 1 y)) (+ 2 k))' )
     } )
 
+    it( 'can convert relations of numeric expressions', () => {
+        checkLatexPutdown( '1 > 2', '(> 1 2)' )
+        checkLatexPutdown( '1 \\gt 2', '(> 1 2)' )
+        checkLatexPutdown( '1 - 2 < 1 + 2', '(< (- 1 2) (+ 1 2))' )
+        checkLatexPutdown( '1 - 2 \\lt 1 + 2', '(< (- 1 2) (+ 1 2))' )
+        checkLatexPutdown( '\\neg 1 = 2', '(not (= 1 2))' )
+        checkLatexPutdown( '2 \\ge 1 \\wedge 2 \\le 3', '(and (>= 2 1) (<= 2 3))' )
+        checkLatexPutdown( '2\\geq1\\wedge2\\leq3', '(and (>= 2 1) (<= 2 3))' )
+    } )
+
+    it( 'creates the canonical form for inequality', () => {
+        checkLatexPutdown( 'x \\ne y', '(not (= x y))' )
+        checkLatexPutdown( 'x \\neq y', '(not (= x y))' )
+        checkLatexPutdown( '\\neg x = y', '(not (= x y))' )
+    } )
+    
     it( 'correctly converts propositional logic atomics', () => {
         checkLatexPutdown( '\\top', 'true' )
         checkLatexPutdown( '\\bot', 'false' )
@@ -285,6 +301,10 @@ describe( 'Converting LaTeX to putdown', () => {
             'A \\subseteq B \\wedge B \\subseteq A',
             '(and (subseteq A B) (subseteq B A))'
         )
+        // humorously enough, the following is not treated as sets!  that's ok!
+        checkLatexPutdown( 'R = A \\times B', '(= R (* A B))' )
+        // so let's try one that has to be sets...
+        checkLatexPutdown( 'R = A \\cup B', '(= R (setuni A B))' )
     } )
 
     it( 'can convert notation related to functions', () => {
@@ -315,6 +335,10 @@ describe( 'Converting LaTeX to putdown', () => {
         checkLatexPutdown(
             'P(e)\\wedge Q(3+b)',
             '(and (apply P e) (apply Q (+ 3 b)))'
+        )
+        checkLatexPutdown(
+            'F=G\\circ H^{-1}',
+            '(= F (compose G (inverse H)))'
         )
     } )
 
