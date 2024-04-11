@@ -6,196 +6,190 @@ describe( 'Converting putdown to LaTeX', () => {
     
     const putdown = converter.languages.get( 'putdown' )
     const latex = converter.languages.get( 'latex' )
-    const checkPutdownLatex = ( putdownText, latexText ) => {
+    const check = ( putdownText, latexText ) => {
         expect( putdown.convertTo( putdownText, latex ) ).to.equal( latexText )
         global.log?.( 'putdown', putdownText, 'LaTeX', latexText )
     }
-    const checkPutdownLatexFail = ( putdownText ) => {
+    const checkFail = ( putdownText ) => {
         expect( putdown.convertTo( putdownText, latex ) ).to.be.undefined
         global.log?.( 'putdown', putdownText, 'LaTeX', null )
     }
 
     it( 'correctly converts many kinds of numbers but not malformed ones', () => {
-        checkPutdownLatex( '0', '0' )
-        checkPutdownLatex( '328975289', '328975289' )
-        checkPutdownLatex( '(- 9097285323)', '- 9097285323' )
-        checkPutdownLatex( '0.0', '0.0' )
-        checkPutdownLatex( '32897.5289', '32897.5289' )
-        checkPutdownLatex( '(- 1.9097285323)', '- 1.9097285323' )
-        checkPutdownLatexFail( '0.0.0' )
-        checkPutdownLatexFail( '0k0' )
+        check( '0', '0' )
+        check( '328975289', '328975289' )
+        check( '(- 9097285323)', '- 9097285323' )
+        check( '0.0', '0.0' )
+        check( '32897.5289', '32897.5289' )
+        check( '(- 1.9097285323)', '- 1.9097285323' )
+        checkFail( '0.0.0' )
+        checkFail( '0k0' )
     } )
 
     it( 'correctly converts one-letter variable names but not larger ones', () => {
-        checkPutdownLatex( 'x', 'x' )
-        checkPutdownLatex( 'U', 'U' )
-        checkPutdownLatex( 'Q', 'Q' )
-        checkPutdownLatex( 'm', 'm' )
-        checkPutdownLatexFail( 'foo', 'foo' )
-        checkPutdownLatexFail( 'Hi', 'Hi' )
+        check( 'x', 'x' )
+        check( 'U', 'U' )
+        check( 'Q', 'Q' )
+        check( 'm', 'm' )
+        checkFail( 'foo', 'foo' )
+        checkFail( 'Hi', 'Hi' )
     } )
 
     it( 'correctly converts the infinity symbol', () => {
-        checkPutdownLatex( 'infinity', '\\infty' )
+        check( 'infinity', '\\infty' )
     } )
 
     it( 'correctly converts exponentiation of atomics', () => {
-        checkPutdownLatex( '(^ 1 2)', '1 ^ 2' )
-        checkPutdownLatex( '(^ e x)', 'e ^ x' )
-        checkPutdownLatex( '(^ 1 infinity)', '1 ^ \\infty' )
+        check( '(^ 1 2)', '1 ^ 2' )
+        check( '(^ e x)', 'e ^ x' )
+        check( '(^ 1 infinity)', '1 ^ \\infty' )
     } )
 
     it( 'correctly converts atomic percentages and factorials', () => {
-        checkPutdownLatex( '(% 10)', '10 \\%' )
-        checkPutdownLatex( '(% t)', 't \\%' )
-        checkPutdownLatex( '(! 10)', '10 !' )
-        checkPutdownLatex( '(! t)', 't !' )
+        check( '(% 10)', '10 \\%' )
+        check( '(% t)', 't \\%' )
+        check( '(! 10)', '10 !' )
+        check( '(! t)', 't !' )
     } )
 
     it( 'correctly converts division of atomics or factors', () => {
         // division of atomics
-        checkPutdownLatex( '(/ 1 2)', '1 \\div 2' )
-        checkPutdownLatex( '(/ x y)', 'x \\div y' )
-        checkPutdownLatex( '(/ 0 infinity)', '0 \\div \\infty' )
+        check( '(/ 1 2)', '1 \\div 2' )
+        check( '(/ x y)', 'x \\div y' )
+        check( '(/ 0 infinity)', '0 \\div \\infty' )
         // division of factors
-        checkPutdownLatex( '(/ (^ x 2) 3)', 'x ^ 2 \\div 3' )
-        checkPutdownLatex( '(/ 1 (^ e x))', '1 \\div e ^ x' )
-        checkPutdownLatex( '(/ (% 10) (^ 2 100))', '10 \\% \\div 2 ^ 100' )
+        check( '(/ (^ x 2) 3)', 'x ^ 2 \\div 3' )
+        check( '(/ 1 (^ e x))', '1 \\div e ^ x' )
+        check( '(/ (% 10) (^ 2 100))', '10 \\% \\div 2 ^ 100' )
     } )
 
     it( 'correctly converts multiplication of atomics or factors', () => {
         // multiplication of atomics
-        checkPutdownLatex( '(* 1 2)', '1 \\times 2' )
-        checkPutdownLatex( '(* x y)', 'x \\times y' )
-        checkPutdownLatex( '(* 0 infinity)', '0 \\times \\infty' )
+        check( '(* 1 2)', '1 \\times 2' )
+        check( '(* x y)', 'x \\times y' )
+        check( '(* 0 infinity)', '0 \\times \\infty' )
         // multiplication of factors
-        checkPutdownLatex( '(* (^ x 2) 3)', 'x ^ 2 \\times 3' )
-        checkPutdownLatex( '(* 1 (^ e x))', '1 \\times e ^ x' )
-        checkPutdownLatex( '(* (% 10) (^ 2 100))', '10 \\% \\times 2 ^ 100' )
+        check( '(* (^ x 2) 3)', 'x ^ 2 \\times 3' )
+        check( '(* 1 (^ e x))', '1 \\times e ^ x' )
+        check( '(* (% 10) (^ 2 100))', '10 \\% \\times 2 ^ 100' )
     } )
 
     it( 'correctly converts negations of atomics or factors', () => {
-        checkPutdownLatex( '(* (- 1) 2)', '- 1 \\times 2' )
-        checkPutdownLatex( '(* x (- y))', 'x \\times - y' )
-        checkPutdownLatex( '(* (- (^ x 2)) (- 3))', '- x ^ 2 \\times - 3' )
-        checkPutdownLatex( '(- (- (- (- 1000))))', '- - - - 1000' )
+        check( '(* (- 1) 2)', '- 1 \\times 2' )
+        check( '(* x (- y))', 'x \\times - y' )
+        check( '(* (- (^ x 2)) (- 3))', '- x ^ 2 \\times - 3' )
+        check( '(- (- (- (- 1000))))', '- - - - 1000' )
     } )
 
     it( 'correctly converts additions and subtractions', () => {
-        checkPutdownLatex( '(+ x y)', 'x + y' )
-        checkPutdownLatex( '(- 1 (- 3))', '1 - - 3' )
-        checkPutdownLatex( '(+ (^ A B) (- C D))', 'A ^ B + C - D' )
+        check( '(+ x y)', 'x + y' )
+        check( '(- 1 (- 3))', '1 - - 3' )
+        check( '(+ (^ A B) (- C D))', 'A ^ B + C - D' )
     } )
     
     it( 'correctly converts number expressions with groupers', () => {
-        checkPutdownLatex( '(- (* 1 2))', '- 1 \\times 2' )
-        checkPutdownLatex( '(! (^ x 2))', '{x ^ 2} !' )
-        checkPutdownLatex( '(^ (- x) (* 2 (- 3)))', '{- x} ^ {2 \\times - 3}' )
-        checkPutdownLatex( '(^ (- 3) (+ 1 2))', '{- 3} ^ {1 + 2}' )
+        check( '(- (* 1 2))', '- 1 \\times 2' )
+        check( '(! (^ x 2))', '{x ^ 2} !' )
+        check( '(^ (- x) (* 2 (- 3)))', '{- x} ^ {2 \\times - 3}' )
+        check( '(^ (- 3) (+ 1 2))', '{- 3} ^ {1 + 2}' )
     } )
 
     it( 'can convert relations of numeric expressions', () => {
-        checkPutdownLatex( '(> 1 2)', '1 > 2' )
-        checkPutdownLatex( '(< (- 1 2) (+ 1 2))', '1 - 2 < 1 + 2' )
-        checkPutdownLatex( '(not (= 1 2))', '\\neg 1 = 2' )
-        checkPutdownLatex( '(and (>= 2 1) (<= 2 3))', '2 \\ge 1 \\wedge 2 \\le 3' )
-        checkPutdownLatex( '(divides 7 14)', '7 | 14' )
-        checkPutdownLatex( '(divides (apply A k) (! n))', 'A ( k ) | n !' )
-        checkPutdownLatex( '(~ (- 1 k) (+ 1 k))', '1 - k \\sim 1 + k' )
+        check( '(> 1 2)', '1 > 2' )
+        check( '(< (- 1 2) (+ 1 2))', '1 - 2 < 1 + 2' )
+        check( '(not (= 1 2))', '\\neg 1 = 2' )
+        check( '(and (>= 2 1) (<= 2 3))', '2 \\ge 1 \\wedge 2 \\le 3' )
+        check( '(divides 7 14)', '7 | 14' )
+        check( '(divides (apply A k) (! n))', 'A ( k ) | n !' )
+        check( '(~ (- 1 k) (+ 1 k))', '1 - k \\sim 1 + k' )
     } )
 
     it( 'does not undo the canonical form for inequality', () => {
-        checkPutdownLatex( '(not (= x y))', '\\neg x = y' )
+        check( '(not (= x y))', '\\neg x = y' )
     } )
 
     it( 'correctly converts propositional logic atomics', () => {
-        checkPutdownLatex( 'true', '\\top' )
-        checkPutdownLatex( 'false', '\\bot' )
-        checkPutdownLatex( 'contradiction', '\\rightarrow \\leftarrow' )
+        check( 'true', '\\top' )
+        check( 'false', '\\bot' )
+        check( 'contradiction', '\\rightarrow \\leftarrow' )
         // no need to check variables; they were tested earlier
     } )
 
     it( 'correctly converts propositional logic conjuncts', () => {
-        checkPutdownLatex( '(and true false)', '\\top \\wedge \\bot' )
-        checkPutdownLatex(
-            '(and (not P) (not true))',
-            '\\neg P \\wedge \\neg \\top'
-        )
-        checkPutdownLatex( '(and (and a b) c)', 'a \\wedge b \\wedge c' )
+        check( '(and true false)', '\\top \\wedge \\bot' )
+        check( '(and (not P) (not true))', '\\neg P \\wedge \\neg \\top' )
+        check( '(and (and a b) c)', 'a \\wedge b \\wedge c' )
     } )
 
     it( 'correctly converts propositional logic disjuncts', () => {
-        checkPutdownLatex( '(or true (not A))', '\\top \\vee \\neg A' )
-        checkPutdownLatex(
-            '(or (and P Q) (and Q P))',
-            'P \\wedge Q \\vee Q \\wedge P'
-        )
+        check( '(or true (not A))', '\\top \\vee \\neg A' )
+        check( '(or (and P Q) (and Q P))', 'P \\wedge Q \\vee Q \\wedge P' )
     } )
 
     it( 'correctly converts propositional logic conditionals', () => {
-        checkPutdownLatex(
+        check(
             '(implies A (and Q (not P)))',
             'A \\Rightarrow Q \\wedge \\neg P'
         )
-        checkPutdownLatex(
+        check(
             '(implies (implies (or P Q) (and Q P)) T)',
             'P \\vee Q \\Rightarrow Q \\wedge P \\Rightarrow T'
         )
     } )
 
     it( 'correctly converts propositional logic biconditionals', () => {
-        checkPutdownLatex(
+        check(
             '(iff A (and Q (not P)))',
             'A \\Leftrightarrow Q \\wedge \\neg P'
         )
-        checkPutdownLatex(
+        check(
             '(implies (iff (or P Q) (and Q P)) T)',
             'P \\vee Q \\Leftrightarrow Q \\wedge P \\Rightarrow T'
         )
     } )
 
     it( 'correctly converts propositional expressions with groupers', () => {
-        checkPutdownLatex(
+        check(
             '(or P (and (iff Q Q) P))',
             'P \\vee {Q \\Leftrightarrow Q} \\wedge P'
         )
-        checkPutdownLatex(
+        check(
             '(not (iff true false))',
             '\\neg {\\top \\Leftrightarrow \\bot}'
         )
     } )
 
     it( 'correctly converts simple predicate logic expressions', () => {
-        checkPutdownLatex( '(forall (x , P))', '\\forall x , P' )
-        checkPutdownLatex( '(exists (t , (not Q)))', '\\exists t , \\neg Q' )
-        checkPutdownLatex(
+        check( '(forall (x , P))', '\\forall x , P' )
+        check( '(exists (t , (not Q)))', '\\exists t , \\neg Q' )
+        check(
             '(existsunique (k , (implies m n)))',
             '\\exists ! k , m \\Rightarrow n'
         )
     } )
 
     it( 'can convert finite and empty sets', () => {
-        checkPutdownLatex( 'emptyset', '\\emptyset' )
-        checkPutdownLatex( '(finiteset (elts 1))', '\\{ 1 \\}' )
-        checkPutdownLatex( '(finiteset (elts 1 (elts 2)))', '\\{ 1 , 2 \\}' )
-        checkPutdownLatex(
+        check( 'emptyset', '\\emptyset' )
+        check( '(finiteset (elts 1))', '\\{ 1 \\}' )
+        check( '(finiteset (elts 1 (elts 2)))', '\\{ 1 , 2 \\}' )
+        check(
             '(finiteset (elts 1 (elts 2 (elts 3))))',
             '\\{ 1 , 2 , 3 \\}'
         )
-        checkPutdownLatex(
+        check(
             '(finiteset (elts emptyset (elts emptyset)))',
             '\\{ \\emptyset , \\emptyset \\}'
         )
-        checkPutdownLatex(
+        check(
             '(finiteset (elts (finiteset (elts emptyset))))',
             '\\{ \\{ \\emptyset \\} \\}'
         )
-        checkPutdownLatex( '(finiteset (elts 3 (elts x)))', '\\{ 3 , x \\}' )
-        checkPutdownLatex(
+        check( '(finiteset (elts 3 (elts x)))', '\\{ 3 , x \\}' )
+        check(
             '(finiteset (elts (setuni A B) (elts (setint A B))))',
             '\\{ A \\cup B , A \\cap B \\}'
         )
-        checkPutdownLatex(
+        check(
             '(finiteset (elts 1 (elts 2 (elts emptyset (elts K (elts P))))))',
             '\\{ 1 , 2 , \\emptyset , K , P \\}'
         )
@@ -203,131 +197,107 @@ describe( 'Converting putdown to LaTeX', () => {
 
     it( 'correctly converts tuples and vectors', () => {
         // tuples containing at least two elements are valid
-        checkPutdownLatex( '(tuple (elts 5 (elts 6)))', '( 5 , 6 )' )
-        checkPutdownLatex(
+        check( '(tuple (elts 5 (elts 6)))', '( 5 , 6 )' )
+        check(
             '(tuple (elts 5 (elts (setuni A B) (elts k))))',
             '( 5 , A \\cup B , k )'
         )
         // vectors containing at least two numbers are valid
-        checkPutdownLatex( '(vector (elts 5 (elts 6)))', '\\langle 5 , 6 \\rangle' )
-        checkPutdownLatex(
+        check( '(vector (elts 5 (elts 6)))', '\\langle 5 , 6 \\rangle' )
+        check(
             '(vector (elts 5 (elts (- 7) (elts k))))',
             '\\langle 5 , - 7 , k \\rangle'
         )
         // tuples and vectors containing zero or one element are not valid
-        checkPutdownLatexFail( '(tuple)' )
-        checkPutdownLatexFail( '(tuple (elts))' )
-        checkPutdownLatexFail( '(tuple (elts 3))' )
-        checkPutdownLatexFail( '(vector)' )
-        checkPutdownLatexFail( '(vector (elts))' )
-        checkPutdownLatexFail( '(vector (elts 3))' )
+        checkFail( '(tuple)' )
+        checkFail( '(tuple (elts))' )
+        checkFail( '(tuple (elts 3))' )
+        checkFail( '(vector)' )
+        checkFail( '(vector (elts))' )
+        checkFail( '(vector (elts 3))' )
         // tuples can contain other tuples
-        checkPutdownLatex(
+        check(
             '(tuple (elts (tuple (elts 1 (elts 2))) (elts 6)))',
             '( ( 1 , 2 ) , 6 )'
         )
         // vectors can contain only numbers
-        checkPutdownLatexFail( '(vector (elts (tuple (elts 1 (elts 2))) (elts 6)))' )
-        checkPutdownLatexFail( '(vector (elts (vector (elts 1 (elts 2))) (elts 6)))' )
-        checkPutdownLatexFail( '(vector (elts (setuni A B) (elts 6)))' )
+        checkFail( '(vector (elts (tuple (elts 1 (elts 2))) (elts 6)))' )
+        checkFail( '(vector (elts (vector (elts 1 (elts 2))) (elts 6)))' )
+        checkFail( '(vector (elts (setuni A B) (elts 6)))' )
     } )
 
     it( 'can convert simple set memberships and subsets', () => {
         // As before, when a variable could be any type, the alphabetically
         // least type is numbervariable
-        checkPutdownLatex( '(in b B)', 'b \\in B' )
-        checkPutdownLatex(
-            '(in 2 (finiteset (elts 1 (elts 2))))',
-            '2 \\in \\{ 1 , 2 \\}'
-        )
-        checkPutdownLatex( '(in X (setuni a b))', 'X \\in a \\cup b' )
-        checkPutdownLatex(
-            '(in (setuni A B) (setuni X Y))',
-            'A \\cup B \\in X \\cup Y'
-        )
-        checkPutdownLatex( '(subset A (setcomp B))', 'A \\subset \\bar B' )
-        checkPutdownLatex(
+        check( '(in b B)', 'b \\in B' )
+        check( '(in 2 (finiteset (elts 1 (elts 2))))', '2 \\in \\{ 1 , 2 \\}' )
+        check( '(in X (setuni a b))', 'X \\in a \\cup b' )
+        check( '(in (setuni A B) (setuni X Y))', 'A \\cup B \\in X \\cup Y' )
+        check( '(subset A (setcomp B))', 'A \\subset \\bar B' )
+        check(
             '(subseteq (setint u v) (setuni u v))',
             'u \\cap v \\subseteq u \\cup v'
         )
-        checkPutdownLatex(
+        check(
             '(subseteq (finiteset (elts 1)) (setuni (finiteset (elts 1)) (finiteset (elts 2))))',
             '\\{ 1 \\} \\subseteq \\{ 1 \\} \\cup \\{ 2 \\}'
         )
-        checkPutdownLatex( '(in p (setprod U V))', 'p \\in U \\times V' )
-        checkPutdownLatex(
+        check( '(in p (setprod U V))', 'p \\in U \\times V' )
+        check(
             '(in q (setuni (setcomp U) (setprod V W)))',
             'q \\in \\bar U \\cup V \\times W'
         )
-        checkPutdownLatex(
+        check(
             '(in (tuple (elts a (elts b))) (setprod A B))',
             '( a , b ) \\in A \\times B'
         )
-        checkPutdownLatex(
+        check(
             '(in (vector (elts a (elts b))) (setprod A B))',
             '\\langle a , b \\rangle \\in A \\times B'
         )
     } )
 
     it( 'does not undo the canonical form for "notin" notation', () => {
-        checkPutdownLatex( '(not (in a A))', '\\neg a \\in A' )
-        checkPutdownLatex(
+        check( '(not (in a A))', '\\neg a \\in A' )
+        check(
             '(not (in emptyset emptyset))',
             '\\neg \\emptyset \\in \\emptyset'
         )
-        checkPutdownLatex(
-            '(not (in (- 3 5) (setint K P)))',
-            '\\neg 3 - 5 \\in K \\cap P'
-        )
+        check( '(not (in (- 3 5) (setint K P)))', '\\neg 3 - 5 \\in K \\cap P' )
     } )
 
     it( 'can convert sentences built from set operators', () => {
-        checkPutdownLatex( '(or P (in b B))', 'P \\vee b \\in B' )
-        checkPutdownLatex( '(in (or P b) B)', '{P \\vee b} \\in B' )
-        checkPutdownLatex( '(forall (x , (in x X)))', '\\forall x , x \\in X' )
-        checkPutdownLatex(
+        check( '(or P (in b B))', 'P \\vee b \\in B' )
+        check( '(in (or P b) B)', '{P \\vee b} \\in B' )
+        check( '(forall (x , (in x X)))', '\\forall x , x \\in X' )
+        check(
             '(and (subseteq A B) (subseteq B A))',
             'A \\subseteq B \\wedge B \\subseteq A'
         )
-        checkPutdownLatex( '(= R (setprod A B))', 'R = A \\times B' )
-        checkPutdownLatex(
-            '(forall (n , (divides n (! n))))',
-            '\\forall n , n | n !'
-        )
-        checkPutdownLatex(
-            '(implies (~ a b) (~ b a))',
-            'a \\sim b \\Rightarrow b \\sim a'
-        )
+        check( '(= R (setprod A B))', 'R = A \\times B' )
+        check( '(forall (n , (divides n (! n))))', '\\forall n , n | n !' )
+        check( '(implies (~ a b) (~ b a))', 'a \\sim b \\Rightarrow b \\sim a' )
     } )
 
     it( 'can convert notation related to functions', () => {
-        checkPutdownLatex( '(function f A B)', 'f : A \\to B' )
-        checkPutdownLatex(
+        check( '(function f A B)', 'f : A \\to B' )
+        check(
             '(not (function F (setuni X Y) Z))',
             '\\neg F : X \\cup Y \\to Z'
         )
-        checkPutdownLatex(
-            '(function (compose f g) A C)',
-            'f \\circ g : A \\to C'
-        )
-        checkPutdownLatex( '(apply f x)', 'f ( x )' )
-        checkPutdownLatex(
+        check( '(function (compose f g) A C)', 'f \\circ g : A \\to C' )
+        check( '(apply f x)', 'f ( x )' )
+        check(
             '(apply (inverse f) (apply (inverse g) 10))',
             'f ^ { - 1 } ( g ^ { - 1 } ( 10 ) )'
         )
-        checkPutdownLatex( '(apply E (setcomp L))', 'E ( \\bar L )' )
-        checkPutdownLatex(
-            '(setint emptyset (apply f 2))',
-            '\\emptyset \\cap f ( 2 )'
-        )
-        checkPutdownLatex(
+        check( '(apply E (setcomp L))', 'E ( \\bar L )' )
+        check( '(setint emptyset (apply f 2))', '\\emptyset \\cap f ( 2 )' )
+        check(
             '(and (apply P e) (apply Q (+ 3 b)))',
             'P ( e ) \\wedge Q ( 3 + b )'
         )
-        checkPutdownLatex(
-            '(= F (compose G (inverse H)))',
-            'F = G \\circ H ^ { - 1 }'
-        )
+        check( '(= F (compose G (inverse H)))', 'F = G \\circ H ^ { - 1 }' )
     } )
 
 } )

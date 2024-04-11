@@ -6,7 +6,7 @@ const putdown = converter.languages.get( 'putdown' )
 
 describe( 'Parsing putdown', () => {
 
-    const checkPutdownJson = ( putdownText, json ) => {
+    const check = ( putdownText, json ) => {
         expect( putdown.parse( putdownText ).toJSON() ).to.eql( json )
         global.log?.( 'putdown', putdownText, 'JSON', json )
     }
@@ -17,55 +17,34 @@ describe( 'Parsing putdown', () => {
 
     it( 'can convert putdown numbers to JSON', () => {
         // non-negative integers
-        checkPutdownJson(
-            '0',
-            [ 'number', '0' ]
-        )
-        checkPutdownJson(
-            '453789',
-            [ 'number', '453789' ]
-        )
-        checkPutdownJson(
+        check( '0', [ 'number', '0' ] )
+        check( '453789', [ 'number', '453789' ] )
+        check(
             '99999999999999999999999999999999999999999',
             [ 'number', '99999999999999999999999999999999999999999' ]
         )
         // negative integers are parsed as the negation of positive integers
-        checkPutdownJson(
-            '(- 453789)',
-            [ 'numbernegation', [ 'number', '453789' ] ]
-        )
-        checkPutdownJson(
+        check( '(- 453789)', [ 'numbernegation', [ 'number', '453789' ] ] )
+        check(
             '(- 99999999999999999999999999999999999999999)',
             [ 'numbernegation',
                 [ 'number', '99999999999999999999999999999999999999999' ] ]
         )
         // non-negative decimals
-        checkPutdownJson(
-            '0.0',
-            [ 'number', '0.0' ]
-        )
-        checkPutdownJson(
-            '29835.6875940',
-            [ 'number', '29835.6875940' ]
-        )
-        checkPutdownJson(
-            '653280458689.',
-            [ 'number', '653280458689.' ]
-        )
-        checkPutdownJson(
-            '.000006327589',
-            [ 'number', '.000006327589' ]
-        )
+        check( '0.0', [ 'number', '0.0' ] )
+        check( '29835.6875940', [ 'number', '29835.6875940' ] )
+        check( '653280458689.', [ 'number', '653280458689.' ] )
+        check( '.000006327589', [ 'number', '.000006327589' ] )
         // negative decimals are the negation of positive decimals
-        checkPutdownJson(
+        check(
             '(- 29835.6875940)',
             [ 'numbernegation', [ 'number', '29835.6875940' ] ]
         )
-        checkPutdownJson(
+        check(
             '(- 653280458689.)',
             [ 'numbernegation', [ 'number', '653280458689.' ] ]
         )
-        checkPutdownJson(
+        check(
             '(- .000006327589)',
             [ 'numbernegation', [ 'number', '.000006327589' ] ]
         )
@@ -75,18 +54,9 @@ describe( 'Parsing putdown', () => {
         // one-letter names work, and the least possible parsing of them (for
         // many possible parsings, using alphabetical ordering) is as function
         // variables:
-        checkPutdownJson(
-            'x',
-            [ 'funcvariable', 'x' ]
-        )
-        checkPutdownJson(
-            'E',
-            [ 'funcvariable', 'E' ]
-        )
-        checkPutdownJson(
-            'q',
-            [ 'funcvariable', 'q' ]
-        )
+        check( 'x', [ 'funcvariable', 'x' ] )
+        check( 'E', [ 'funcvariable', 'E' ] )
+        check( 'q', [ 'funcvariable', 'q' ] )
         // multi-letter names don't work; it just does nothing with them
         // because it can't find any concept to which they belong
         checkPutdownJsonFail( 'foo' )
@@ -95,64 +65,46 @@ describe( 'Parsing putdown', () => {
     } )
 
     it( 'can convert infinity from putdown to JSON', () => {
-        checkPutdownJson(
-            'infinity',
-            [ 'infinity' ]
-        )
+        check( 'infinity', [ 'infinity' ] )
     } )
 
     it( 'can convert exponentiation of atomics to JSON', () => {
-        checkPutdownJson(
+        check(
             '(^ 1 2)',
             [ 'exponentiation', [ 'number', '1' ], [ 'number', '2' ] ]
         )
-        checkPutdownJson(
+        check(
             '(^ e x)',
             [ 'exponentiation',
                 [ 'numbervariable', 'e' ], [ 'numbervariable', 'x' ] ]
         )
-        checkPutdownJson(
+        check(
             '(^ 1 infinity)',
             [ 'exponentiation', [ 'number', '1' ], [ 'infinity' ] ]
         )
     } )
 
     it( 'can convert atomic percentages and factorials to JSON', () => {
-        checkPutdownJson(
-            '(% 10)',
-            [ 'percentage', [ 'number', '10' ] ]
-        )
-        checkPutdownJson(
-            '(% t)',
-            [ 'percentage', [ 'numbervariable', 't' ] ]
-        )
-        checkPutdownJson(
-            '(! 6)',
-            [ 'factorial', [ 'number', '6' ] ]
-        )
-        checkPutdownJson(
-            '(! n)',
-            [ 'factorial', [ 'numbervariable', 'n' ] ]
-        )
+        check( '(% 10)', [ 'percentage', [ 'number', '10' ] ] )
+        check( '(% t)', [ 'percentage', [ 'numbervariable', 't' ] ] )
+        check( '(! 6)', [ 'factorial', [ 'number', '6' ] ] )
+        check( '(! n)', [ 'factorial', [ 'numbervariable', 'n' ] ] )
     } )
 
     it( 'can convert division of atomics or factors to JSON', () => {
         // division of atomics
-        checkPutdownJson(
-            '(/ 1 2)',
-            [ 'division', [ 'number', '1' ], [ 'number', '2' ] ]
-        )
-        checkPutdownJson(
+        check( '(/ 1 2)', [ 'division', [ 'number', '1' ], [ 'number', '2' ] ] )
+        check(
             '(/ x y)',
             [ 'division',
                 [ 'numbervariable', 'x' ], [ 'numbervariable', 'y' ] ]
         )
-        checkPutdownJson(
+        check(
             '(/ 0 infinity)',
             [ 'division', [ 'number', '0' ], [ 'infinity' ] ]
         )
         // division of factors
-        checkPutdownJson(
+        check(
             '(/ (^ x 2) 3)',
             [ 'division',
                 [ 'exponentiation',
@@ -160,7 +112,7 @@ describe( 'Parsing putdown', () => {
                 [ 'number', '3' ]
             ]
         )
-        checkPutdownJson(
+        check(
             '(/ 1 (^ e x))',
             [ 'division',
                 [ 'number', '1' ],
@@ -168,7 +120,7 @@ describe( 'Parsing putdown', () => {
                     [ 'numbervariable', 'e' ], [ 'numbervariable', 'x' ] ]
             ]
         )
-        checkPutdownJson(
+        check(
             '(/ (% 10) (^ 2 100))',
             [ 'division',
                 [ 'percentage', [ 'number', '10' ] ],
@@ -179,28 +131,28 @@ describe( 'Parsing putdown', () => {
 
     it( 'can convert multiplication of atomics or factors to JSON', () => {
         // multiplication of atomics
-        checkPutdownJson(
+        check(
             '(* 1 2)',
             [ 'multiplication', [ 'number', '1' ], [ 'number', '2' ] ]
         )
-        checkPutdownJson(
+        check(
             '(* x y)',
             [ 'multiplication',
                 [ 'numbervariable', 'x' ], [ 'numbervariable', 'y' ] ]
         )
-        checkPutdownJson(
+        check(
             '(* 0 infinity)',
             [ 'multiplication', [ 'number', '0' ], [ 'infinity' ] ]
         )
         // multiplication of factors
-        checkPutdownJson(
+        check(
             '(* (^ x 2) 3)',
             [ 'multiplication',
                 [ 'exponentiation', [ 'numbervariable', 'x' ], [ 'number', '2' ] ],
                 [ 'number', '3' ]
             ]
         )
-        checkPutdownJson(
+        check(
             '(* 1 (^ e x))',
             [ 'multiplication',
                 [ 'number', '1' ],
@@ -208,7 +160,7 @@ describe( 'Parsing putdown', () => {
                     [ 'numbervariable', 'e' ], [ 'numbervariable', 'x' ] ]
             ]
         )
-        checkPutdownJson(
+        check(
             '(* (% 10) (^ 2 100))',
             [ 'multiplication',
                 [ 'percentage', [ 'number', '10' ] ],
@@ -218,21 +170,21 @@ describe( 'Parsing putdown', () => {
     } )
 
     it( 'can convert negations of atomics or factors to JSON', () => {
-        checkPutdownJson(
+        check(
             '(* (- 1) 2)',
             [ 'multiplication',
                 [ 'numbernegation', [ 'number', '1' ] ],
                 [ 'number', '2' ]
             ]
         )
-        checkPutdownJson(
+        check(
             '(* x (- y))',
             [ 'multiplication',
                 [ 'numbervariable', 'x' ],
                 [ 'numbernegation', [ 'numbervariable', 'y' ] ]
             ]
         )
-        checkPutdownJson(
+        check(
             '(* (- (^ x 2)) (- 3))',
             [ 'multiplication',
                 [ 'numbernegation',
@@ -241,7 +193,7 @@ describe( 'Parsing putdown', () => {
                 [ 'numbernegation', [ 'number', '3' ] ]
             ]
         )
-        checkPutdownJson(
+        check(
             '(- (- (- (- 1000))))',
             [ 'numbernegation', [ 'numbernegation', [ 'numbernegation',
                 [ 'numbernegation', [ 'number', '1000' ] ] ] ] ]
@@ -249,21 +201,21 @@ describe( 'Parsing putdown', () => {
     } )
 
     it( 'can convert additions and subtractions to JSON', () => {
-        checkPutdownJson(
+        check(
             '(+ x y)',
             [ 'addition',
                 [ 'numbervariable', 'x' ],
                 [ 'numbervariable', 'y' ]
             ]
         )
-        checkPutdownJson(
+        check(
             '(- 1 (- 3))',
             [ 'subtraction',
                 [ 'number', '1' ],
                 [ 'numbernegation', [ 'number', '3' ] ]
             ]
         )
-        checkPutdownJson(
+        check(
             '(+ (^ A B) (- C D))',
             [ 'addition',
                 [ 'exponentiation',
@@ -275,17 +227,17 @@ describe( 'Parsing putdown', () => {
     } )
 
     it( 'can convert number exprs that normally require groupers to JSON', () => {
-        checkPutdownJson(
+        check(
             '(- (* 1 2))',
             [ 'numbernegation',
                 [ 'multiplication', [ 'number', '1' ], [ 'number', '2' ] ] ]
         )
-        checkPutdownJson(
+        check(
             '(! (^ x 2))',
             [ 'factorial',
                 [ 'exponentiation', [ 'numbervariable', 'x' ], [ 'number', '2' ] ] ]
         )
-        checkPutdownJson(
+        check(
             '(^ (- x) (* 2 (- 3)))',
             [ 'exponentiation',
                 [ 'numbernegation',
@@ -294,7 +246,7 @@ describe( 'Parsing putdown', () => {
                     [ 'number', '2' ], [ 'numbernegation', [ 'number', '3' ] ] ]
             ]
         )
-        checkPutdownJson(
+        check(
             '(^ (- 3) (+ 1 2))',
             [ 'exponentiation',
                 [ 'numbernegation', [ 'number', '3' ] ],
@@ -303,42 +255,42 @@ describe( 'Parsing putdown', () => {
     } )
 
     it( 'can convert relations of numeric expressions to JSON', () => {
-        checkPutdownJson(
+        check(
             '(> 1 2)',
             [ 'greaterthan',
                 [ 'number', '1' ],
                 [ 'number', '2' ]
             ]
         )
-        checkPutdownJson(
+        check(
             '(< (- 1 2) (+ 1 2))',
             [ 'lessthan',
                 [ 'subtraction', [ 'number', '1' ], [ 'number', '2' ] ],
                 [ 'addition', [ 'number', '1' ], [ 'number', '2' ] ]
             ]
         )
-        checkPutdownJson(
+        check(
             '(not (= 1 2))',
             [ 'logicnegation',
                 [ 'equality', [ 'number', '1' ], [ 'number', '2' ] ] ]
         )
-        checkPutdownJson(
+        check(
             '(and (>= 2 1) (<= 2 3))',
             [ 'conjunction',
                 [ 'greaterthanoreq', [ 'number', '2' ], [ 'number', '1' ] ],
                 [ 'lessthanoreq', [ 'number', '2' ], [ 'number', '3' ] ] ]
         )
-        checkPutdownJson(
+        check(
             '(divides 7 14)',
             [ 'divides', [ 'number', '7' ], [ 'number', '14' ] ]
         )
-        checkPutdownJson(
+        check(
             '(divides (apply A k) (! n))',
             [ 'divides',
                 [ 'numfuncapp', [ 'funcvariable', 'A' ], [ 'numbervariable', 'k' ] ],
                 [ 'factorial', [ 'numbervariable', 'n' ] ] ]
         )
-        checkPutdownJson(
+        check(
             '(~ (- 1 k) (+ 1 k))',
             [ 'genericrelation',
                 [ 'subtraction', [ 'number', '1' ], [ 'numbervariable', 'k' ] ],
@@ -347,7 +299,7 @@ describe( 'Parsing putdown', () => {
     } )
 
     it( 'does not undo the canonical form for inequality', () => {
-        checkPutdownJson(
+        check(
             '(not (= x y))',
             [ 'logicnegation',
                 [ 'equality',
@@ -356,37 +308,28 @@ describe( 'Parsing putdown', () => {
     } )
 
     it( 'can convert propositional logic atomics to JSON', () => {
-        checkPutdownJson(
-            'true',
-            [ 'logicaltrue' ]
-        )
-        checkPutdownJson(
-            'false',
-            [ 'logicalfalse' ]
-        )
-        checkPutdownJson(
-            'contradiction',
-            [ 'contradiction' ]
-        )
+        check( 'true', [ 'logicaltrue' ] )
+        check( 'false', [ 'logicalfalse' ] )
+        check( 'contradiction', [ 'contradiction' ] )
         // Not checking variables here, because their meaning is ambiguous
     } )
 
     it( 'can convert propositional logic conjuncts to JSON', () => {
-        checkPutdownJson(
+        check(
             '(and true false)',
             [ 'conjunction',
                 [ 'logicaltrue' ],
                 [ 'logicalfalse' ]
             ]
         )
-        checkPutdownJson(
+        check(
             '(and (not P) (not true))',
             [ 'conjunction',
                 [ 'logicnegation', [ 'logicvariable', 'P' ] ],
                 [ 'logicnegation', [ 'logicaltrue' ] ]
             ]
         )
-        checkPutdownJson(
+        check(
             '(and (and a b) c)',
             [ 'conjunction',
                 [ 'conjunction',
@@ -399,14 +342,14 @@ describe( 'Parsing putdown', () => {
     } )
 
     it( 'can convert propositional logic disjuncts to JSON', () => {
-        checkPutdownJson(
+        check(
             '(or true (not A))',
             [ 'disjunction',
                 [ 'logicaltrue' ],
                 [ 'logicnegation', [ 'logicvariable', 'A' ] ]
             ]
         )
-        checkPutdownJson(
+        check(
             '(or (and P Q) (and Q P))',
             [ 'disjunction',
                 [ 'conjunction', [ 'logicvariable', 'P' ], [ 'logicvariable', 'Q' ] ],
@@ -416,7 +359,7 @@ describe( 'Parsing putdown', () => {
     } )
 
     it( 'can convert propositional logic conditionals to JSON', () => {
-        checkPutdownJson(
+        check(
             '(implies A (and Q (not P)))',
             [ 'implication',
                 [ 'logicvariable', 'A' ],
@@ -426,7 +369,7 @@ describe( 'Parsing putdown', () => {
                 ]
             ]
         )
-        checkPutdownJson(
+        check(
             '(implies (implies (or P Q) (and Q P)) T)',
             [ 'implication',
                 [ 'implication',
@@ -441,7 +384,7 @@ describe( 'Parsing putdown', () => {
     } )
 
     it( 'can convert propositional logic biconditionals to JSON', () => {
-        checkPutdownJson(
+        check(
             '(iff A (and Q (not P)))',
             [ 'iff',
                 [ 'logicvariable', 'A' ],
@@ -451,7 +394,7 @@ describe( 'Parsing putdown', () => {
                 ]
             ]
         )
-        checkPutdownJson(
+        check(
             '(implies (iff (or P Q) (and Q P)) T)',
             [ 'implication',
                 [ 'iff',
@@ -466,7 +409,7 @@ describe( 'Parsing putdown', () => {
     } )
 
     it( 'can convert propositional expressions with groupers to JSON', () => {
-        checkPutdownJson(
+        check(
             '(or P (and (iff Q Q) P))',
             [ 'disjunction',
                 [ 'logicvariable', 'P' ],
@@ -476,7 +419,7 @@ describe( 'Parsing putdown', () => {
                 ]
             ]
         )
-        checkPutdownJson(
+        check(
             '(not (iff true false))',
             [ 'logicnegation',
                 [ 'iff',
@@ -491,21 +434,21 @@ describe( 'Parsing putdown', () => {
         // const rules = converter.languages.get( 'putdown' ).grammar.rules
         // Object.keys( rules ).map( name =>
         //     console.log( name, rules[name].map( rhs => rhs.slice() ) ) )
-        checkPutdownJson(
+        check(
             '(forall (x , P))',
             [ 'universal',
                 [ 'numbervariable', 'x' ],
                 [ 'logicvariable', 'P' ]
             ]
         )
-        checkPutdownJson(
+        check(
             '(exists (t , (not Q)))',
             [ 'existential',
                 [ 'numbervariable', 't' ],
                 [ 'logicnegation', [ 'logicvariable', 'Q' ] ]
             ]
         )
-        checkPutdownJson(
+        check(
             '(existsunique (k , (implies m n)))',
             [ 'existsunique',
                 [ 'numbervariable', 'k' ],
@@ -516,45 +459,45 @@ describe( 'Parsing putdown', () => {
 
     it( 'can convert finite and empty sets to JSON', () => {
         // { }
-        checkPutdownJson( 'emptyset', [ 'emptyset' ] )
+        check( 'emptyset', [ 'emptyset' ] )
         // { 1 }
-        checkPutdownJson(
+        check(
             '(finiteset (elts 1))',
             [ 'finiteset', [ 'oneeltseq', [ 'number', '1' ] ] ]
         )
         // { 1, 2 }
-        checkPutdownJson(
+        check(
             '(finiteset (elts 1 (elts 2)))',
             [ 'finiteset', [ 'eltthenseq', [ 'number', '1' ],
                 [ 'oneeltseq', [ 'number', '2' ] ] ] ]
         )
         // { 1, 2, 3 }
-        checkPutdownJson(
+        check(
             '(finiteset (elts 1 (elts 2 (elts 3))))',
             [ 'finiteset', [ 'eltthenseq', [ 'number', '1' ],
                 [ 'eltthenseq', [ 'number', '2' ],
                     [ 'oneeltseq', [ 'number', '3' ] ] ] ] ]
         )
         // { { }, { } }
-        checkPutdownJson(
+        check(
             '(finiteset (elts emptyset (elts emptyset)))',
             [ 'finiteset', [ 'eltthenseq', [ 'emptyset' ],
                 [ 'oneeltseq', [ 'emptyset' ] ] ] ]
         )
         // { { { } } }
-        checkPutdownJson(
+        check(
             '(finiteset (elts (finiteset (elts emptyset))))',
             [ 'finiteset', [ 'oneeltseq',
                 [ 'finiteset', [ 'oneeltseq', [ 'emptyset' ] ] ] ] ]
         )
         // { 3, x }
-        checkPutdownJson(
+        check(
             '(finiteset (elts 3 (elts x)))',
             [ 'finiteset', [ 'eltthenseq', [ 'number', '3' ],
                 [ 'oneeltseq', [ 'numbervariable', 'x' ] ] ] ]
         )
         // { A cup B, A cap B }
-        checkPutdownJson(
+        check(
             '(finiteset (elts (setuni A B) (elts (setint A B))))',
             [ 'finiteset', [ 'eltthenseq',
                 [ 'union', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
@@ -562,7 +505,7 @@ describe( 'Parsing putdown', () => {
                     [ 'intersection', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ] ] ] ]
         )
         // { 1, 2, emptyset, K, P }
-        checkPutdownJson(
+        check(
             '(finiteset (elts 1 (elts 2 (elts emptyset (elts K (elts P))))))',
             [ 'finiteset', [ 'eltthenseq', [ 'number', '1' ],
                 [ 'eltthenseq', [ 'number', '2' ],
@@ -574,24 +517,24 @@ describe( 'Parsing putdown', () => {
 
     it( 'can convert tuples and vectors to JSON', () => {
         // tuples containing at least two elements are valid
-        checkPutdownJson(
+        check(
             '(tuple (elts 5 (elts 6)))',
             [ 'tuple', [ 'eltthenseq', [ 'number', '5' ],
                 [ 'oneeltseq', [ 'number', '6' ] ] ] ]
         )
-        checkPutdownJson(
+        check(
             '(tuple (elts 5 (elts (setuni A B) (elts k))))',
             [ 'tuple', [ 'eltthenseq', [ 'number', '5' ], [ 'eltthenseq',
                 [ 'union', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
                 [ 'oneeltseq', [ 'numbervariable', 'k' ] ] ] ] ]
         )
         // vectors containing at least two numbers are valid
-        checkPutdownJson(
+        check(
             '(vector (elts 5 (elts 6)))',
             [ 'vector', [ 'numthenseq', [ 'number', '5' ],
                 [ 'onenumseq', [ 'number', '6' ] ] ] ]
         )
-        checkPutdownJson(
+        check(
             '(vector (elts 5 (elts (- 7) (elts k))))',
             [ 'vector', [ 'numthenseq', [ 'number', '5' ], [ 'numthenseq',
                 [ 'numbernegation', [ 'number', '7' ] ],
@@ -605,7 +548,7 @@ describe( 'Parsing putdown', () => {
         checkPutdownJsonFail( '(vector (elts))' )
         checkPutdownJsonFail( '(vector (elts 3))' )
         // tuples can contain other tuples
-        checkPutdownJson(
+        check(
             '(tuple (elts (tuple (elts 1 (elts 2))) (elts 6)))',
             [ 'tuple', [ 'eltthenseq',
                 [ 'tuple', [ 'eltthenseq', [ 'number', '1' ],
@@ -621,40 +564,40 @@ describe( 'Parsing putdown', () => {
     it( 'can convert simple set memberships and subsets to JSON', () => {
         // As before, when a variable could be any type, the alphabetically
         // least type is numbervariable
-        checkPutdownJson(
+        check(
             '(in b B)',
             [ 'nounisin', [ 'numbervariable', 'b' ], [ 'setvariable', 'B' ] ]
         )
-        checkPutdownJson(
+        check(
             '(in 2 (finiteset (elts 1 (elts 2))))',
             [ 'nounisin', [ 'number', '2' ],
                 [ 'finiteset', [ 'eltthenseq', [ 'number', '1' ],
                     [ 'oneeltseq', [ 'number', '2' ] ] ] ] ]
         )
-        checkPutdownJson(
+        check(
             '(in X (setuni a b))',
             [ 'nounisin', [ 'numbervariable', 'X' ],
                 [ 'union', [ 'setvariable', 'a' ], [ 'setvariable', 'b' ] ] ]
         )
-        checkPutdownJson(
+        check(
             '(in (setuni A B) (setuni X Y))',
             [ 'nounisin',
                 [ 'union', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
                 [ 'union', [ 'setvariable', 'X' ], [ 'setvariable', 'Y' ] ] ]
         )
-        checkPutdownJson(
+        check(
             '(subset A (setcomp B))',
             [ 'subset',
                 [ 'setvariable', 'A' ],
                 [ 'complement', [ 'setvariable', 'B' ] ] ]
         )
-        checkPutdownJson(
+        check(
             '(subseteq (setint u v) (setuni u v))',
             [ 'subseteq',
                 [ 'intersection', [ 'setvariable', 'u' ], [ 'setvariable', 'v' ] ],
                 [ 'union', [ 'setvariable', 'u' ], [ 'setvariable', 'v' ] ] ]
         )
-        checkPutdownJson(
+        check(
             '(subseteq (finiteset (elts 1)) (setuni (finiteset (elts 1)) (finiteset (elts 2))))',
             [ 'subseteq',
                 [ 'finiteset', [ 'oneeltseq', [ 'number', '1' ] ] ],
@@ -662,19 +605,19 @@ describe( 'Parsing putdown', () => {
                     [ 'finiteset', [ 'oneeltseq', [ 'number', '1' ] ] ],
                     [ 'finiteset', [ 'oneeltseq', [ 'number', '2' ] ] ] ] ]
         )
-        checkPutdownJson(
+        check(
             '(in p (setprod U V))',
             [ 'nounisin', [ 'numbervariable', 'p' ],
                 [ 'setproduct', [ 'setvariable', 'U' ], [ 'setvariable', 'V' ] ] ]
         )
-        checkPutdownJson(
+        check(
             '(in q (setuni (setcomp U) (setprod V W)))',
             [ 'nounisin', [ 'numbervariable', 'q' ],
                 [ 'union',
                     [ 'complement', [ 'setvariable', 'U' ] ],
                     [ 'setproduct', [ 'setvariable', 'V' ], [ 'setvariable', 'W' ] ] ] ]
         )
-        checkPutdownJson(
+        check(
             '(in (tuple (elts a (elts b))) (setprod A B))',
             [ 'nounisin',
                 [ 'tuple',
@@ -683,7 +626,7 @@ describe( 'Parsing putdown', () => {
                         [ 'oneeltseq', [ 'numbervariable', 'b' ] ] ] ],
                     [ 'setproduct', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ] ]
         )
-        checkPutdownJson(
+        check(
             '(in (vector (elts a (elts b))) (setprod A B))',
             [ 'nounisin',
                 [ 'vector',
@@ -695,16 +638,16 @@ describe( 'Parsing putdown', () => {
     } )
 
     it( 'does not undo the canonical form for "notin" notation', () => {
-        checkPutdownJson(
+        check(
             '(not (in a A))',
             [ 'logicnegation',
                 [ 'nounisin', [ 'numbervariable', 'a' ], [ 'setvariable', 'A' ] ] ]
         )
-        checkPutdownJson(
+        check(
             '(not (in emptyset emptyset))',
             [ 'logicnegation', [ 'nounisin', [ 'emptyset' ], [ 'emptyset' ] ] ]
         )
-        checkPutdownJson(
+        check(
             '(not (in (- 3 5) (setint K P)))',
             [ 'logicnegation',
                 [ 'nounisin',
@@ -716,33 +659,33 @@ describe( 'Parsing putdown', () => {
     } )
 
     it( 'can parse to JSON sentences built from various relations', () => {
-        checkPutdownJson(
+        check(
             '(or P (in b B))',
             [ 'disjunction',
                 [ 'logicvariable', 'P' ],
                 [ 'nounisin',
                     [ 'numbervariable', 'b' ], [ 'setvariable', 'B' ] ] ]
         )
-        checkPutdownJson(
+        check(
             '(forall (x , (in x X)))',
             [ 'universal',
                 [ 'numbervariable', 'x' ],
                 [ 'nounisin',
                     [ 'numbervariable', 'x' ], [ 'setvariable', 'X' ] ] ]
         )
-        checkPutdownJson(
+        check(
             '(and (subseteq A B) (subseteq B A))',
             [ 'conjunction',
                 [ 'subseteq', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
                 [ 'subseteq', [ 'setvariable', 'B' ], [ 'setvariable', 'A' ] ] ]
         )
-        checkPutdownJson(
+        check(
             '(= R (setprod A B))',
             [ 'equality',
                 [ 'numbervariable', 'R' ], // it guesses wrong, oh well
                 [ 'setproduct', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ] ]
         )
-        checkPutdownJson(
+        check(
             '(forall (n , (divides n (! n))))',
             [ 'universal',
                 [ 'numbervariable', 'n' ],
@@ -750,7 +693,7 @@ describe( 'Parsing putdown', () => {
                     [ 'numbervariable', 'n' ],
                     [ 'factorial', [ 'numbervariable', 'n' ] ] ] ]
         )
-        checkPutdownJson(
+        check(
             '(implies (~ a b) (~ b a))',
             [ 'implication',
                 [ 'genericrelation',
@@ -761,61 +704,61 @@ describe( 'Parsing putdown', () => {
     } )
 
     it( 'can parse notation related to functions', () => {
-        checkPutdownJson(
+        check(
             '(function f A B)',
             [ 'funcsignature', [ 'funcvariable', 'f' ],
                 [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ]
         )
-        checkPutdownJson(
+        check(
             '(not (function F (setuni X Y) Z))',
             [ 'logicnegation',
                 [ 'funcsignature', [ 'funcvariable', 'F' ],
                     [ 'union', [ 'setvariable', 'X' ], [ 'setvariable', 'Y' ] ],
                     [ 'setvariable', 'Z' ] ] ]
         )
-        checkPutdownJson(
+        check(
             '(function (compose f g) A C)',
             [ 'funcsignature',
                 [ 'funccomp', [ 'funcvariable', 'f' ], [ 'funcvariable', 'g' ] ],
                 [ 'setvariable', 'A' ], [ 'setvariable', 'C' ] ]
         )
-        checkPutdownJson(
+        check(
             '(apply f x)',
             [ 'numfuncapp', [ 'funcvariable', 'f' ], [ 'numbervariable', 'x' ] ]
         )
-        checkPutdownJson(
+        check(
             '(apply (inverse f) (apply (inverse g) 10))',
             [ 'numfuncapp',
                 [ 'funcinverse', [ 'funcvariable', 'f' ] ],
                 [ 'numfuncapp',
                     [ 'funcinverse', [ 'funcvariable', 'g' ] ], [ 'number', '10' ] ] ]
         )
-        checkPutdownJson(
+        check(
             '(apply E (setcomp L))',
             [ 'numfuncapp', // this is the output type, not the input type
                 [ 'funcvariable', 'E' ],
                 [ 'complement', [ 'setvariable', 'L' ] ] ]
         )
-        checkPutdownJson(
+        check(
             '(setint emptyset (apply f 2))',
             [ 'intersection',
                 [ 'emptyset' ],
                 [ 'setfuncapp', [ 'funcvariable', 'f' ], [ 'number', '2' ] ] ]
         )
-        checkPutdownJson(
+        check(
             '(and (apply P e) (apply Q (+ 3 b)))',
             [ 'conjunction',
                 [ 'propfuncapp', [ 'funcvariable', 'P' ], [ 'numbervariable', 'e' ] ],
                 [ 'propfuncapp', [ 'funcvariable', 'Q' ],
                     [ 'addition', [ 'number', '3' ], [ 'numbervariable', 'b' ] ] ] ]
         )
-        checkPutdownJson(
+        check(
             '(= (apply f x) 3)',
             [ 'equality',
                 [ 'numfuncapp', [ 'funcvariable', 'f' ], [ 'numbervariable', 'x' ] ],
                 [ 'number', '3' ] ]
         )
-        checkPutdownJson(
+        check(
             '(= F (compose G (inverse H)))',
             [ 'funcequality',
                 [ 'funcvariable', 'F' ],

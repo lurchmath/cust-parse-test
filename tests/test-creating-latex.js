@@ -7,7 +7,7 @@ const latex = converter.languages.get( 'latex' )
 
 describe( 'Rendering JSON into LaTeX', () => {
 
-    const checkJsonLatex = ( json, latexText ) => {
+    const check = ( json, latexText ) => {
         expect(
             new AST( latex, ...json ).toLanguage( latex )
         ).to.eql( latexText )
@@ -16,55 +16,34 @@ describe( 'Rendering JSON into LaTeX', () => {
 
     it( 'can convert JSON numbers to LaTeX', () => {
         // non-negative integers
-        checkJsonLatex(
-            [ 'number', '0' ],
-            '0'
-        )
-        checkJsonLatex(
-            [ 'number', '453789' ],
-            '453789'
-        )
-        checkJsonLatex(
+        check( [ 'number', '0' ], '0' )
+        check( [ 'number', '453789' ], '453789' )
+        check(
             [ 'number', '99999999999999999999999999999999999999999' ],
             '99999999999999999999999999999999999999999'
         )
         // negative integers are parsed as the negation of positive integers
-        checkJsonLatex(
-            [ 'numbernegation', [ 'number', '453789' ] ],
-            '- 453789'
-        )
-        checkJsonLatex(
+        check( [ 'numbernegation', [ 'number', '453789' ] ], '- 453789' )
+        check(
             [ 'numbernegation',
                 [ 'number', '99999999999999999999999999999999999999999' ] ],
             '- 99999999999999999999999999999999999999999'
         )
         // non-negative decimals
-        checkJsonLatex(
-            [ 'number', '0.0' ],
-            '0.0'
-        )
-        checkJsonLatex(
-            [ 'number', '29835.6875940' ],
-            '29835.6875940'
-        )
-        checkJsonLatex(
-            [ 'number', '653280458689.' ],
-            '653280458689.'
-        )
-        checkJsonLatex(
-            [ 'number', '.000006327589' ],
-            '.000006327589'
-        )
+        check( [ 'number', '0.0' ], '0.0' )
+        check( [ 'number', '29835.6875940' ], '29835.6875940' )
+        check( [ 'number', '653280458689.' ], '653280458689.' )
+        check( [ 'number', '.000006327589' ], '.000006327589' )
         // negative decimals are the negation of positive decimals
-        checkJsonLatex(
+        check(
             [ 'numbernegation', [ 'number', '29835.6875940' ] ],
             '- 29835.6875940'
         )
-        checkJsonLatex(
+        check(
             [ 'numbernegation', [ 'number', '653280458689.' ] ],
             '- 653280458689.'
         )
-        checkJsonLatex(
+        check(
             [ 'numbernegation', [ 'number', '.000006327589' ] ],
             '- .000006327589'
         )
@@ -72,99 +51,66 @@ describe( 'Rendering JSON into LaTeX', () => {
 
     it( 'can convert any size variable name from JSON to LaTeX', () => {
         // one-letter names work
-        checkJsonLatex(
-            [ 'numbervariable', 'x' ],
-            'x'
-        )
-        checkJsonLatex(
-            [ 'numbervariable', 'E' ],
-            'E'
-        )
-        checkJsonLatex(
-            [ 'numbervariable', 'q' ],
-            'q'
-        )
+        check( [ 'numbervariable', 'x' ], 'x' )
+        check( [ 'numbervariable', 'E' ], 'E' )
+        check( [ 'numbervariable', 'q' ], 'q' )
         // multi-letter names work, too
-        checkJsonLatex(
-            [ 'numbervariable', 'foo' ],
-            'foo'
-        )
-        checkJsonLatex(
-            [ 'numbervariable', 'bar' ],
-            'bar'
-        )
-        checkJsonLatex(
-            [ 'numbervariable', 'to' ],
-            'to'
-        )
+        check( [ 'numbervariable', 'foo' ], 'foo' )
+        check( [ 'numbervariable', 'bar' ], 'bar' )
+        check( [ 'numbervariable', 'to' ], 'to' )
     } )
 
     it( 'can convert infinity from JSON to LaTeX', () => {
-        checkJsonLatex(
-            [ 'infinity' ],
-            '\\infty'
-        )
+        check( [ 'infinity' ], '\\infty' )
     } )
 
     it( 'can convert exponentiation of atomics from JSON to LaTeX', () => {
-        checkJsonLatex(
+        check(
             [ 'exponentiation', [ 'number', '1' ], [ 'number', '2' ] ],
             '1 ^ 2'
         )
-        checkJsonLatex(
+        check(
             [ 'exponentiation',
                 [ 'numbervariable', 'e' ], [ 'numbervariable', 'x' ] ],
             'e ^ x'
         )
-        checkJsonLatex(
+        check(
             [ 'exponentiation', [ 'number', '1' ], [ 'infinity' ] ],
             '1 ^ \\infty'
         )
     } )
 
     it( 'can convert atomic percentages and factorials from JSON to LaTeX', () => {
-        checkJsonLatex(
-            [ 'percentage', [ 'number', '10' ] ],
-            '10 \\%'
-        )
-        checkJsonLatex(
-            [ 'percentage', [ 'numbervariable', 't' ] ],
-            't \\%'
-        )
-        checkJsonLatex(
-            [ 'factorial', [ 'number', '10' ] ],
-            '10 !'
-        )
-        checkJsonLatex(
-            [ 'factorial', [ 'numbervariable', 't' ] ],
-            't !'
-        )
+        check( [ 'percentage', [ 'number', '10' ] ], '10 \\%' )
+        check( [ 'percentage', [ 'numbervariable', 't' ] ], 't \\%' )
+        check( [ 'factorial', [ 'number', '10' ] ], '10 !' )
+        check( [ 'factorial', [ 'numbervariable', 't' ] ], 't !' )
     } )
 
     it( 'can convert division of atomics or factors from JSON to LaTeX', () => {
         // division of atomics
-        checkJsonLatex(
+        check(
             [ 'division', [ 'number', '1' ], [ 'number', '2' ] ],
             '1 \\div 2'
         )
-        checkJsonLatex(
+        check(
             [ 'division',
                 [ 'numbervariable', 'x' ], [ 'numbervariable', 'y' ] ],
             'x \\div y'
         )
-        checkJsonLatex(
+        check(
             [ 'division', [ 'number', '0' ], [ 'infinity' ] ],
             '0 \\div \\infty'
         )
         // division of factors
-        checkJsonLatex(
+        check(
             [ 'division',
                 [ 'exponentiation', [ 'numbervariable', 'x' ], [ 'number', '2' ] ],
                 [ 'number', '3' ]
             ],
             'x ^ 2 \\div 3'
         )
-        checkJsonLatex(
+        check(
             [ 'division',
                 [ 'number', '1' ],
                 [ 'exponentiation',
@@ -172,7 +118,7 @@ describe( 'Rendering JSON into LaTeX', () => {
             ],
             '1 \\div e ^ x'
         )
-        checkJsonLatex(
+        check(
             [ 'division',
                 [ 'percentage', [ 'number', '10' ] ],
                 [ 'exponentiation', [ 'number', '2' ], [ 'number', '100' ] ]
@@ -183,28 +129,28 @@ describe( 'Rendering JSON into LaTeX', () => {
 
     it( 'can convert multiplication of atomics or factors from JSON to LaTeX', () => {
         // multiplication of atomics
-        checkJsonLatex(
+        check(
             [ 'multiplication', [ 'number', '1' ], [ 'number', '2' ] ],
             '1 \\times 2'
         )
-        checkJsonLatex(
+        check(
             [ 'multiplication',
                 [ 'numbervariable', 'x' ], [ 'numbervariable', 'y' ] ],
             'x \\times y'
         )
-        checkJsonLatex(
+        check(
             [ 'multiplication', [ 'number', '0' ], [ 'infinity' ] ],
             '0 \\times \\infty'
         )
         // multiplication of factors
-        checkJsonLatex(
+        check(
             [ 'multiplication',
                 [ 'exponentiation', [ 'numbervariable', 'x' ], [ 'number', '2' ] ],
                 [ 'number', '3' ]
             ],
             'x ^ 2 \\times 3'
         )
-        checkJsonLatex(
+        check(
             [ 'multiplication',
                 [ 'number', '1' ],
                 [ 'exponentiation',
@@ -212,7 +158,7 @@ describe( 'Rendering JSON into LaTeX', () => {
             ],
             '1 \\times e ^ x'
         )
-        checkJsonLatex(
+        check(
             [ 'multiplication',
                 [ 'percentage', [ 'number', '10' ] ],
                 [ 'exponentiation', [ 'number', '2' ], [ 'number', '100' ] ]
@@ -222,21 +168,21 @@ describe( 'Rendering JSON into LaTeX', () => {
     } )
 
     it( 'can convert negations of atomics or factors from JSON to LaTeX', () => {
-        checkJsonLatex(
+        check(
             [ 'multiplication',
                 [ 'numbernegation', [ 'number', '1' ] ],
                 [ 'number', '2' ]
             ],
             '- 1 \\times 2'
         )
-        checkJsonLatex(
+        check(
             [ 'multiplication',
                 [ 'numbervariable', 'x' ],
                 [ 'numbernegation', [ 'numbervariable', 'y' ] ]
             ],
             'x \\times - y'
         )
-        checkJsonLatex(
+        check(
             [ 'multiplication',
                 [ 'numbernegation',
                     [ 'exponentiation',
@@ -245,7 +191,7 @@ describe( 'Rendering JSON into LaTeX', () => {
             ],
             '- x ^ 2 \\times - 3'
         )
-        checkJsonLatex(
+        check(
             [ 'numbernegation', [ 'numbernegation', [ 'numbernegation',
                 [ 'numbernegation', [ 'number', '1000' ] ] ] ] ],
             '- - - - 1000'
@@ -253,21 +199,21 @@ describe( 'Rendering JSON into LaTeX', () => {
     } )
 
     it( 'can convert additions and subtractions from JSON to LaTeX', () => {
-        checkJsonLatex(
+        check(
             [ 'addition',
                 [ 'numbervariable', 'x' ],
                 [ 'numbervariable', 'y' ]
             ],
             'x + y'
         )
-        checkJsonLatex(
+        check(
             [ 'subtraction',
                 [ 'number', '1' ],
                 [ 'numbernegation', [ 'number', '3' ] ]
             ],
             '1 - - 3'
         )
-        checkJsonLatex(
+        check(
             [ 'subtraction',
                 [ 'addition',
                     [ 'exponentiation',
@@ -279,17 +225,17 @@ describe( 'Rendering JSON into LaTeX', () => {
     } )
 
     it( 'can convert number expressions with groupers from JSON to LaTeX', () => {
-        checkJsonLatex(
+        check(
             [ 'numbernegation',
                 [ 'multiplication', [ 'number', '1' ], [ 'number', '2' ] ] ],
             '- 1 \\times 2'
         )
-        checkJsonLatex(
+        check(
             [ 'factorial',
                 [ 'addition', [ 'number', '1' ], [ 'number', '2' ] ] ],
             '{1 + 2} !'
         )
-        checkJsonLatex(
+        check(
             [ 'exponentiation',
                 [ 'numbernegation',
                     [ 'numbervariable', 'x' ] ],
@@ -301,7 +247,7 @@ describe( 'Rendering JSON into LaTeX', () => {
         // Note: The following test doesn't come out the way you would expect,
         // but it's because the hierarchy of concepts in the parser encodes the
         // idea that (x+y)-z is the same as x+(y-z), which is actually true.
-        checkJsonLatex(
+        check(
             [ 'addition',
                 [ 'exponentiation',
                     [ 'numbervariable', 'A' ], [ 'numbervariable', 'B' ] ],
@@ -312,7 +258,7 @@ describe( 'Rendering JSON into LaTeX', () => {
         )
         // Note: The following test shows that rendering LaTeX standardizes some
         // operators and groupers, notably cdot -> times and () -> {} here.
-        checkJsonLatex(
+        check(
             [ 'multiplication',
                 [ 'exponentiation',
                     [ 'numbervariable', 'k' ],
@@ -325,37 +271,37 @@ describe( 'Rendering JSON into LaTeX', () => {
     } )
 
     it( 'can parse relations of numeric expressions from JSON to LaTeX', () => {
-        checkJsonLatex(
+        check(
             [ 'greaterthan',
                 [ 'number', '1' ],
                 [ 'number', '2' ]
             ],
             '1 > 2'
         )
-        checkJsonLatex(
+        check(
             [ 'lessthan',
                 [ 'subtraction', [ 'number', '1' ], [ 'number', '2' ] ],
                 [ 'addition', [ 'number', '1' ], [ 'number', '2' ] ]
             ],
             '1 - 2 < 1 + 2'
         )
-        checkJsonLatex(
+        check(
             [ 'conjunction',
                 [ 'greaterthanoreq', [ 'number', '2' ], [ 'number', '1' ] ],
                 [ 'lessthanoreq', [ 'number', '2' ], [ 'number', '3' ] ] ],
             '2 \\ge 1 \\wedge 2 \\le 3'
         )
-        checkJsonLatex(
+        check(
             [ 'divides', [ 'number', '7' ], [ 'number', '14' ] ],
             '7 | 14'
         )
-        checkJsonLatex(
+        check(
             [ 'divides',
                 [ 'numfuncapp', [ 'funcvariable', 'A' ], [ 'numbervariable', 'k' ] ],
                 [ 'factorial', [ 'numbervariable', 'n' ] ] ],
             'A ( k ) | n !'
         )
-        checkJsonLatex(
+        check(
             [ 'genericrelation',
                 [ 'subtraction', [ 'number', '1' ], [ 'numbervariable', 'k' ] ],
                 [ 'addition', [ 'number', '1' ], [ 'numbervariable', 'k' ] ] ],
@@ -364,11 +310,11 @@ describe( 'Rendering JSON into LaTeX', () => {
     } )
 
     it( 'can represent inequality if JSON explicitly requests it', () => {
-        checkJsonLatex(
+        check(
             [ 'inequality', [ 'number', '1' ], [ 'number', '2' ] ],
             '1 \\ne 2'
         )
-        checkJsonLatex(
+        check(
             [ 'logicnegation',
                 [ 'equality', [ 'number', '1' ], [ 'number', '2' ] ] ],
             '\\neg 1 = 2'
@@ -376,38 +322,29 @@ describe( 'Rendering JSON into LaTeX', () => {
     } )
 
     it( 'can convert propositional logic atomics from JSON to LaTeX', () => {
-        checkJsonLatex(
-            [ 'logicaltrue' ],
-            '\\top'
-        )
-        checkJsonLatex(
-            [ 'logicalfalse' ],
-            '\\bot'
-        )
-        checkJsonLatex(
-            [ 'contradiction' ],
-            '\\rightarrow \\leftarrow'
-        )
+        check( [ 'logicaltrue' ], '\\top' )
+        check( [ 'logicalfalse' ], '\\bot' )
+        check( [ 'contradiction' ], '\\rightarrow \\leftarrow' )
         // Not checking variables here, because their meaning is ambiguous; we
         // will check below to ensure that they can be part of logic expressions.
     } )
 
     it( 'can convert propositional logic conjuncts from JSON to LaTeX', () => {
-        checkJsonLatex(
+        check(
             [ 'conjunction',
                 [ 'logicaltrue' ],
                 [ 'logicalfalse' ]
             ],
             '\\top \\wedge \\bot'
         )
-        checkJsonLatex(
+        check(
             [ 'conjunction',
                 [ 'logicnegation', [ 'logicvariable', 'P' ] ],
                 [ 'logicnegation', [ 'logicaltrue' ] ]
             ],
             '\\neg P \\wedge \\neg \\top'
         )
-        checkJsonLatex(
+        check(
             [ 'conjunction',
                 [ 'conjunction',
                     [ 'logicvariable', 'a' ],
@@ -420,14 +357,14 @@ describe( 'Rendering JSON into LaTeX', () => {
     } )
 
     it( 'can convert propositional logic disjuncts from JSON to LaTeX', () => {
-        checkJsonLatex(
+        check(
             [ 'disjunction',
                 [ 'logicaltrue' ],
                 [ 'logicnegation', [ 'logicvariable', 'A' ] ]
             ],
             '\\top \\vee \\neg A'
         )
-        checkJsonLatex(
+        check(
             [ 'disjunction',
                 [ 'conjunction', [ 'logicvariable', 'P' ], [ 'logicvariable', 'Q' ] ],
                 [ 'conjunction', [ 'logicvariable', 'Q' ], [ 'logicvariable', 'P' ] ]
@@ -437,7 +374,7 @@ describe( 'Rendering JSON into LaTeX', () => {
     } )
 
     it( 'can convert propositional logic conditionals from JSON to LaTeX', () => {
-        checkJsonLatex(
+        check(
             [ 'implication',
                 [ 'logicvariable', 'A' ],
                 [ 'conjunction',
@@ -447,7 +384,7 @@ describe( 'Rendering JSON into LaTeX', () => {
             ],
             'A \\Rightarrow Q \\wedge \\neg P'
         )
-        checkJsonLatex(
+        check(
             [ 'implication',
                 [ 'implication',
                     [ 'disjunction',
@@ -464,7 +401,7 @@ describe( 'Rendering JSON into LaTeX', () => {
     } )
 
     it( 'can convert propositional logic biconditionals from JSON to LaTeX', () => {
-        checkJsonLatex(
+        check(
             [ 'iff',
                 [ 'logicvariable', 'A' ],
                 [ 'conjunction',
@@ -474,7 +411,7 @@ describe( 'Rendering JSON into LaTeX', () => {
             ],
             'A \\Leftrightarrow Q \\wedge \\neg P'
         )
-        checkJsonLatex(
+        check(
             [ 'implication',
                 [ 'iff',
                     [ 'disjunction',
@@ -491,7 +428,7 @@ describe( 'Rendering JSON into LaTeX', () => {
     } )
 
     it( 'can convert propositional expressions with groupers from JSON to LaTeX', () => {
-        checkJsonLatex(
+        check(
             [ 'disjunction',
                 [ 'logicvariable', 'P' ],
                 [ 'conjunction',
@@ -504,7 +441,7 @@ describe( 'Rendering JSON into LaTeX', () => {
             ],
             'P \\vee {Q \\Leftrightarrow Q} \\wedge P'
         )
-        checkJsonLatex(
+        check(
             [ 'logicnegation',
                 [ 'iff',
                     [ 'logicaltrue' ],
@@ -516,21 +453,21 @@ describe( 'Rendering JSON into LaTeX', () => {
     } )
 
     it( 'can convert simple predicate logic expressions from JSON to LaTeX', () => {
-        checkJsonLatex(
+        check(
             [ 'universal',
                 [ 'numbervariable', 'x' ],
                 [ 'logicvariable', 'P' ]
             ],
             '\\forall x , P'
         )
-        checkJsonLatex(
+        check(
             [ 'existential',
                 [ 'numbervariable', 't' ],
                 [ 'logicnegation', [ 'logicvariable', 'Q' ] ]
             ],
             '\\exists t , \\neg Q'
         )
-        checkJsonLatex(
+        check(
             [ 'existsunique',
                 [ 'numbervariable', 'k' ],
                 [ 'implication',
@@ -542,45 +479,45 @@ describe( 'Rendering JSON into LaTeX', () => {
 
     it( 'can convert finite and empty sets from JSON to LaTeX', () => {
         // { }
-        checkJsonLatex( [ 'emptyset' ], '\\emptyset' )
+        check( [ 'emptyset' ], '\\emptyset' )
         // { 1 }
-        checkJsonLatex(
+        check(
             [ 'finiteset', [ 'oneeltseq', [ 'number', '1' ] ] ],
             '\\{ 1 \\}'
         )
         // { 1, 2 }
-        checkJsonLatex(
+        check(
             [ 'finiteset', [ 'eltthenseq', [ 'number', '1' ],
                 [ 'oneeltseq', [ 'number', '2' ] ] ] ],
             '\\{ 1 , 2 \\}'
         )
         // { 1, 2, 3 }
-        checkJsonLatex(
+        check(
             [ 'finiteset', [ 'eltthenseq', [ 'number', '1' ],
                 [ 'eltthenseq', [ 'number', '2' ],
                     [ 'oneeltseq', [ 'number', '3' ] ] ] ] ],
             '\\{ 1 , 2 , 3 \\}'
         )
         // { { }, { } }
-        checkJsonLatex(
+        check(
             [ 'finiteset', [ 'eltthenseq', [ 'emptyset' ],
                 [ 'oneeltseq', [ 'emptyset' ] ] ] ],
             '\\{ \\emptyset , \\emptyset \\}'
         )
         // { { { } } }
-        checkJsonLatex(
+        check(
             [ 'finiteset', [ 'oneeltseq',
                 [ 'finiteset', [ 'oneeltseq', [ 'emptyset' ] ] ] ] ],
             '\\{ \\{ \\emptyset \\} \\}'
         )
         // { 3, x }
-        checkJsonLatex(
+        check(
             [ 'finiteset', [ 'eltthenseq', [ 'number', '3' ],
                 [ 'oneeltseq', [ 'numbervariable', 'x' ] ] ] ],
             '\\{ 3 , x \\}'
         )
         // { A cup B, A cap B }
-        checkJsonLatex(
+        check(
             [ 'finiteset', [ 'eltthenseq',
                 [ 'union', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
                 [ 'oneeltseq',
@@ -588,7 +525,7 @@ describe( 'Rendering JSON into LaTeX', () => {
             '\\{ A \\cup B , A \\cap B \\}'
         )
         // { 1, 2, emptyset, K, P }
-        checkJsonLatex(
+        check(
             [ 'finiteset', [ 'eltthenseq', [ 'number', '1' ],
                 [ 'eltthenseq', [ 'number', '2' ],
                     [ 'eltthenseq', [ 'emptyset' ],
@@ -600,31 +537,31 @@ describe( 'Rendering JSON into LaTeX', () => {
 
     it( 'can convert tuples and vectors from JSON to LaTeX', () => {
         // tuples containing at least two elements are valid
-        checkJsonLatex(
+        check(
             [ 'tuple', [ 'eltthenseq', [ 'number', '5' ],
                 [ 'oneeltseq', [ 'number', '6' ] ] ] ],
             '( 5 , 6 )'
         )
-        checkJsonLatex(
+        check(
             [ 'tuple', [ 'eltthenseq', [ 'number', '5' ], [ 'eltthenseq',
                 [ 'union', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
                 [ 'oneeltseq', [ 'numbervariable', 'k' ] ] ] ] ],
             '( 5 , A \\cup B , k )'
         )
         // vectors containing at least two numbers are valid
-        checkJsonLatex(
+        check(
             [ 'vector', [ 'numthenseq', [ 'number', '5' ],
                 [ 'onenumseq', [ 'number', '6' ] ] ] ],
             '\\langle 5 , 6 \\rangle'
         )
-        checkJsonLatex(
+        check(
             [ 'vector', [ 'numthenseq', [ 'number', '5' ], [ 'numthenseq',
                 [ 'numbernegation', [ 'number', '7' ] ],
                 [ 'onenumseq', [ 'numbervariable', 'k' ] ] ] ] ],
             '\\langle 5 , - 7 , k \\rangle'
         )
         // tuples can contain other tuples
-        checkJsonLatex(
+        check(
             [ 'tuple', [ 'eltthenseq',
                 [ 'tuple', [ 'eltthenseq', [ 'number', '1' ],
                     [ 'oneeltseq', [ 'number', '2' ] ] ] ],
@@ -634,40 +571,40 @@ describe( 'Rendering JSON into LaTeX', () => {
     } )
 
     it( 'can convert simple set memberships and subsets to LaTeX', () => {
-        checkJsonLatex(
+        check(
             [ 'nounisin', [ 'numbervariable', 'b' ], [ 'setvariable', 'B' ] ],
             'b \\in B'
         )
-        checkJsonLatex(
+        check(
             [ 'nounisin', [ 'number', '2' ],
                 [ 'finiteset', [ 'eltthenseq', [ 'number', '1' ],
                     [ 'oneeltseq', [ 'number', '2' ] ] ] ] ],
             '2 \\in \\{ 1 , 2 \\}'
         )
-        checkJsonLatex(
+        check(
             [ 'nounisin', [ 'numbervariable', 'X' ],
                 [ 'union', [ 'setvariable', 'a' ], [ 'setvariable', 'b' ] ] ],
             'X \\in a \\cup b'
         )
-        checkJsonLatex(
+        check(
             [ 'nounisin',
                 [ 'union', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
                 [ 'union', [ 'setvariable', 'X' ], [ 'setvariable', 'Y' ] ] ],
             'A \\cup B \\in X \\cup Y'
         )
-        checkJsonLatex(
+        check(
             [ 'subset',
                 [ 'setvariable', 'A' ],
                 [ 'complement', [ 'setvariable', 'B' ] ] ],
             'A \\subset \\bar B'
         )
-        checkJsonLatex(
+        check(
             [ 'subseteq',
                 [ 'intersection', [ 'setvariable', 'u' ], [ 'setvariable', 'v' ] ],
                 [ 'union', [ 'setvariable', 'u' ], [ 'setvariable', 'v' ] ] ],
             'u \\cap v \\subseteq u \\cup v'
         )
-        checkJsonLatex(
+        check(
             [ 'subseteq',
                 [ 'finiteset', [ 'oneeltseq', [ 'number', '1' ] ] ],
                 [ 'union',
@@ -675,19 +612,19 @@ describe( 'Rendering JSON into LaTeX', () => {
                     [ 'finiteset', [ 'oneeltseq', [ 'number', '2' ] ] ] ] ],
             '\\{ 1 \\} \\subseteq \\{ 1 \\} \\cup \\{ 2 \\}'
         )
-        checkJsonLatex(
+        check(
             [ 'nounisin', [ 'numbervariable', 'p' ],
                 [ 'setproduct', [ 'setvariable', 'U' ], [ 'setvariable', 'V' ] ] ],
             'p \\in U \\times V'
         )
-        checkJsonLatex(
+        check(
             [ 'nounisin', [ 'numbervariable', 'q' ],
                 [ 'union',
                     [ 'complement', [ 'setvariable', 'U' ] ],
                     [ 'setproduct', [ 'setvariable', 'V' ], [ 'setvariable', 'W' ] ] ] ],
             'q \\in \\bar U \\cup V \\times W'
         )
-        checkJsonLatex(
+        check(
             [ 'nounisin',
                 [ 'tuple',
                     [ 'eltthenseq',
@@ -696,7 +633,7 @@ describe( 'Rendering JSON into LaTeX', () => {
                     [ 'setproduct', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ] ],
             '( a , b ) \\in A \\times B'
         )
-        checkJsonLatex(
+        check(
             [ 'nounisin',
                 [ 'vector',
                     [ 'numthenseq',
@@ -708,16 +645,16 @@ describe( 'Rendering JSON into LaTeX', () => {
     } )
 
     it( 'can represent "notin" notation if JSON explicitly requests it', () => {
-        checkJsonLatex(
+        check(
             [ 'logicnegation',
                 [ 'nounisin', [ 'numbervariable', 'a' ], [ 'setvariable', 'A' ] ] ],
             '\\neg a \\in A'
         )
-        checkJsonLatex(
+        check(
             [ 'logicnegation', [ 'nounisin', [ 'emptyset' ], [ 'emptyset' ] ] ],
             '\\neg \\emptyset \\in \\emptyset'
         )
-        checkJsonLatex(
+        check(
             [ 'logicnegation',
                 [ 'nounisin',
                     [ 'subtraction', [ 'number', '3' ], [ 'number', '5' ] ],
@@ -726,15 +663,15 @@ describe( 'Rendering JSON into LaTeX', () => {
             ],
             '\\neg 3 - 5 \\in K \\cap P'
         )
-        checkJsonLatex(
+        check(
             [ 'nounisnotin', [ 'numbervariable', 'a' ], [ 'setvariable', 'A' ] ],
             'a \\notin A'
         )
-        checkJsonLatex(
+        check(
             [ 'nounisnotin', [ 'emptyset' ], [ 'emptyset' ] ],
             '\\emptyset \\notin \\emptyset'
         )
-        checkJsonLatex(
+        check(
             [ 'nounisnotin',
                 [ 'subtraction', [ 'number', '3' ], [ 'number', '5' ] ],
                 [ 'intersection', [ 'setvariable', 'K' ], [ 'setvariable', 'P' ] ]
@@ -744,40 +681,40 @@ describe( 'Rendering JSON into LaTeX', () => {
     } )
 
     it( 'can convert to LaTeX sentences built from various relations', () => {
-        checkJsonLatex(
+        check(
             [ 'disjunction',
                 [ 'logicvariable', 'P' ],
                 [ 'nounisin',
                     [ 'numbervariable', 'b' ], [ 'setvariable', 'B' ] ] ],
             'P \\vee b \\in B'
         )
-        checkJsonLatex(
+        check(
             [ 'propisin',
                 [ 'disjunction',
                     [ 'logicvariable', 'P' ], [ 'logicvariable', 'b' ] ],
                 [ 'setvariable', 'B' ] ],
             '{P \\vee b} \\in B'
         )
-        checkJsonLatex(
+        check(
             [ 'universal',
                 [ 'numbervariable', 'x' ],
                 [ 'nounisin',
                     [ 'numbervariable', 'x' ], [ 'setvariable', 'X' ] ] ],
             '\\forall x , x \\in X'
         )
-        checkJsonLatex(
+        check(
             [ 'conjunction',
                 [ 'subseteq', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
                 [ 'subseteq', [ 'setvariable', 'B' ], [ 'setvariable', 'A' ] ] ],
             'A \\subseteq B \\wedge B \\subseteq A'
         )
-        checkJsonLatex(
+        check(
             [ 'equality',
                 [ 'setvariable', 'R' ],
                 [ 'setproduct', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ] ],
             'R = A \\times B'
         )
-        checkJsonLatex(
+        check(
             [ 'universal',
                 [ 'numbervariable', 'n' ],
                 [ 'divides',
@@ -785,7 +722,7 @@ describe( 'Rendering JSON into LaTeX', () => {
                     [ 'factorial', [ 'numbervariable', 'n' ] ] ] ],
             '\\forall n , n | n !'
         )
-        checkJsonLatex(
+        check(
             [ 'implication',
                 [ 'genericrelation',
                     [ 'numbervariable', 'a' ], [ 'numbervariable', 'b' ] ],
@@ -796,55 +733,55 @@ describe( 'Rendering JSON into LaTeX', () => {
     } )
 
     it( 'can create LaTeX notation related to functions', () => {
-        checkJsonLatex(
+        check(
             [ 'funcsignature', [ 'funcvariable', 'f' ],
                 [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
             'f : A \\to B'
         )
-        checkJsonLatex(
+        check(
             [ 'logicnegation',
                 [ 'funcsignature', [ 'funcvariable', 'F' ],
                     [ 'union', [ 'setvariable', 'X' ], [ 'setvariable', 'Y' ] ],
                     [ 'setvariable', 'Z' ] ] ],
             '\\neg F : X \\cup Y \\to Z'
         )
-        checkJsonLatex(
+        check(
             [ 'funcsignature',
                 [ 'funccomp', [ 'funcvariable', 'f' ], [ 'funcvariable', 'g' ] ],
                 [ 'setvariable', 'A' ], [ 'setvariable', 'C' ] ],
             'f \\circ g : A \\to C'
         )
-        checkJsonLatex(
+        check(
             [ 'numfuncapp', [ 'funcvariable', 'f' ], [ 'numbervariable', 'x' ] ],
             'f ( x )'
         )
-        checkJsonLatex(
+        check(
             [ 'numfuncapp',
                 [ 'funcinverse', [ 'funcvariable', 'f' ] ],
                 [ 'numfuncapp',
                     [ 'funcinverse', [ 'funcvariable', 'g' ] ], [ 'number', '10' ] ] ],
             'f ^ { - 1 } ( g ^ { - 1 } ( 10 ) )'
         )
-        checkJsonLatex(
+        check(
             [ 'numfuncapp', // this is the output type, not the input type
                 [ 'funcvariable', 'E' ],
                 [ 'complement', [ 'setvariable', 'L' ] ] ],
             'E ( \\bar L )'
         )
-        checkJsonLatex(
+        check(
             [ 'intersection',
                 [ 'emptyset' ],
                 [ 'setfuncapp', [ 'funcvariable', 'f' ], [ 'number', '2' ] ] ],
             '\\emptyset \\cap f ( 2 )'
         )
-        checkJsonLatex(
+        check(
             [ 'conjunction',
                 [ 'propfuncapp', [ 'funcvariable', 'P' ], [ 'numbervariable', 'e' ] ],
                 [ 'propfuncapp', [ 'funcvariable', 'Q' ],
                     [ 'addition', [ 'number', '3' ], [ 'numbervariable', 'b' ] ] ] ],
             'P ( e ) \\wedge Q ( 3 + b )'
         )
-        checkJsonLatex(
+        check(
             [ 'funcequality',
                 [ 'funcvariable', 'F' ],
                 [ 'funccomp',
