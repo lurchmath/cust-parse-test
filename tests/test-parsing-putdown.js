@@ -328,6 +328,16 @@ describe( 'Parsing putdown', () => {
                 [ 'greaterthanoreq', [ 'number', '2' ], [ 'number', '1' ] ],
                 [ 'lessthanoreq', [ 'number', '2' ], [ 'number', '3' ] ] ]
         )
+        checkPutdownJson(
+            '(divides 7 14)',
+            [ 'divides', [ 'number', '7' ], [ 'number', '14' ] ]
+        )
+        checkPutdownJson(
+            '(divides (apply A k) (! n))',
+            [ 'divides',
+                [ 'numfuncapp', [ 'funcvariable', 'A' ], [ 'numbervariable', 'k' ] ],
+                [ 'factorial', [ 'numbervariable', 'n' ] ] ]
+        )
     } )
 
     it( 'does not undo the canonical form for inequality', () => {
@@ -699,7 +709,7 @@ describe( 'Parsing putdown', () => {
         )
     } )
 
-    it( 'can parse to JSON sentences built from set operators', () => {
+    it( 'can parse to JSON sentences built from various relations', () => {
         checkPutdownJson(
             '(or P (in b B))',
             [ 'disjunction',
@@ -725,6 +735,14 @@ describe( 'Parsing putdown', () => {
             [ 'equality',
                 [ 'numbervariable', 'R' ], // it guesses wrong, oh well
                 [ 'setproduct', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ] ]
+        )
+        checkPutdownJson(
+            '(forall (n , (divides n (! n))))',
+            [ 'universal',
+                [ 'numbervariable', 'n' ],
+                [ 'divides',
+                    [ 'numbervariable', 'n' ],
+                    [ 'factorial', [ 'numbervariable', 'n' ] ] ] ]
         )
     } )
 

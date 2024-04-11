@@ -75,6 +75,8 @@ converter.addConcept( 'lessthanoreq',    'atomicpropexpr',   '(<= nounexpr noune
 converter.addConcept( 'greaterthan',     'atomicpropexpr',   '(> nounexpr nounexpr)' )
 converter.addConcept( 'greaterthanoreq', 'atomicpropexpr',   '(>= nounexpr nounexpr)' )
 
+converter.addConcept( 'divides',        'atomicpropexpr',   '(divides numberexpr numberexpr)' )
+
 const latex = new Language( 'latex', converter, [ '{', '}', '(', ')' ] )
 
 latex.addNotation( 'infinity',        '\\infty' )
@@ -159,3 +161,5 @@ latex.addNotation( 'greaterthan',     'A>B' )
 latex.addNotation( 'greaterthan',     'A\\gt B' )
 latex.addNotation( 'greaterthanoreq', 'A\\ge B' )
 latex.addNotation( 'greaterthanoreq', 'A\\geq B' )
+
+latex.addNotation( 'divides',         'A | B' )

@@ -111,6 +111,8 @@ describe( 'Converting LaTeX to putdown', () => {
         checkLatexPutdown( '\\neg 1 = 2', '(not (= 1 2))' )
         checkLatexPutdown( '2 \\ge 1 \\wedge 2 \\le 3', '(and (>= 2 1) (<= 2 3))' )
         checkLatexPutdown( '2\\geq1\\wedge2\\leq3', '(and (>= 2 1) (<= 2 3))' )
+        checkLatexPutdown( '7 | 14', '(divides 7 14)' )
+        checkLatexPutdown( 'A ( k ) | n !', '(divides (apply A k) (! n))' )
     } )
 
     it( 'creates the canonical form for inequality', () => {
@@ -305,6 +307,10 @@ describe( 'Converting LaTeX to putdown', () => {
         checkLatexPutdown( 'R = A \\times B', '(= R (* A B))' )
         // so let's try one that has to be sets...
         checkLatexPutdown( 'R = A \\cup B', '(= R (setuni A B))' )
+        checkLatexPutdown(
+            '\\forall n , n | n !',
+            '(forall (n , (divides n (! n))))'
+        )
     } )
 
     it( 'can convert notation related to functions', () => {

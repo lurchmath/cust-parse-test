@@ -335,6 +335,16 @@ describe( 'Rendering JSON into putdown', () => {
                 [ 'lessthanoreq', [ 'number', '2' ], [ 'number', '3' ] ] ],
             '(and (>= 2 1) (<= 2 3))'
         )
+        checkJsonPutdown(
+            [ 'divides', [ 'number', '7' ], [ 'number', '14' ] ],
+            '(divides 7 14)'
+        )
+        checkJsonPutdown(
+            [ 'divides',
+                [ 'numfuncapp', [ 'funcvariable', 'A' ], [ 'numbervariable', 'k' ] ],
+                [ 'factorial', [ 'numbervariable', 'n' ] ] ],
+            '(divides (apply A k) (! n))'
+        )
     } )
 
     it( 'creates the canonical form for inequality', () => {
@@ -704,7 +714,7 @@ describe( 'Rendering JSON into putdown', () => {
         )
     } )
 
-    it( 'can convert to putdown sentences built from set operators', () => {
+    it( 'can convert to putdown sentences built from various relations', () => {
         checkJsonPutdown(
             [ 'disjunction',
                 [ 'logicvariable', 'P' ],
@@ -730,6 +740,14 @@ describe( 'Rendering JSON into putdown', () => {
                 [ 'numbervariable', 'R' ], // it guesses wrong, oh well
                 [ 'setproduct', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ] ],
             '(= R (setprod A B))'
+        )
+        checkJsonPutdown(
+            [ 'universal',
+                [ 'numbervariable', 'n' ],
+                [ 'divides',
+                    [ 'numbervariable', 'n' ],
+                    [ 'factorial', [ 'numbervariable', 'n' ] ] ] ],
+            '(forall (n , (divides n (! n))))'
         )
     } )
 

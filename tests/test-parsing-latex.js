@@ -392,6 +392,16 @@ describe( 'Parsing LaTeX', () => {
                 [ 'greaterthanoreq', [ 'number', '2' ], [ 'number', '1' ] ],
                 [ 'lessthanoreq', [ 'number', '2' ], [ 'number', '3' ] ] ]
         )
+        checkLatexJson(
+            '7|14',
+            [ 'divides', [ 'number', '7' ], [ 'number', '14' ] ]
+        )
+        checkLatexJson(
+            'A(k) | n!',
+            [ 'divides',
+                [ 'numfuncapp', [ 'funcvariable', 'A' ], [ 'numbervariable', 'k' ] ],
+                [ 'factorial', [ 'numbervariable', 'n' ] ] ]
+        )
     } )
 
     it( 'converts inequality to its placeholder concept', () => {
@@ -789,7 +799,7 @@ describe( 'Parsing LaTeX', () => {
         )
     } )
 
-    it( 'can parse to JSON sentences built from set operators', () => {
+    it( 'can parse to JSON sentences built from various relations', () => {
         checkLatexJson(
             'P\\vee b\\in B',
             [ 'disjunction',
@@ -822,6 +832,14 @@ describe( 'Parsing LaTeX', () => {
             [ 'equality',
                 [ 'numbervariable', 'R' ], // it guesses wrong, oh well
                 [ 'union', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ] ]
+        )
+        checkLatexJson(
+            '\\forall n, n|n!',
+            [ 'universal',
+                [ 'numbervariable', 'n' ],
+                [ 'divides',
+                    [ 'numbervariable', 'n' ],
+                    [ 'factorial', [ 'numbervariable', 'n' ] ] ] ]
         )
     } )
 

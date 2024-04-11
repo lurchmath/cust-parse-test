@@ -33,7 +33,6 @@ General to dos:
  - expand set of tests for many new mathematical expressions in many languages,
    including expressions that bind variables.  Use the grammar here as an
    inspiration: https://github.com/lurchmath/earley-parser/blob/master/earley-tests.js#L225
-    - divisibility relation `|`
     - congruence mod m relation
     - generic relation `~`
     - equivalence class (for a relation)
@@ -54,6 +53,9 @@ General to dos:
    that whitespace is not meaningful, and others.
  - Eventually make a nice diagram of the syntactic types hierarchy and add it to
    the documentation for the syntactic-types module.
+ - Create an even simpler API that goes through JSON only and selects a subset of
+   the desired concepts from the example converter, specifying their notation in
+   whatever set of languages the caller wants to use.
 
 Bug fixes:
  - Returning the alphabetically least JSON parsing result from all ambiguous

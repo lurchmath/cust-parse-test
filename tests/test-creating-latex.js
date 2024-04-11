@@ -345,6 +345,16 @@ describe( 'Rendering JSON into LaTeX', () => {
                 [ 'lessthanoreq', [ 'number', '2' ], [ 'number', '3' ] ] ],
             '2 \\ge 1 \\wedge 2 \\le 3'
         )
+        checkJsonLatex(
+            [ 'divides', [ 'number', '7' ], [ 'number', '14' ] ],
+            '7 | 14'
+        )
+        checkJsonLatex(
+            [ 'divides',
+                [ 'numfuncapp', [ 'funcvariable', 'A' ], [ 'numbervariable', 'k' ] ],
+                [ 'factorial', [ 'numbervariable', 'n' ] ] ],
+            'A ( k ) | n !'
+        )
     } )
 
     it( 'can represent inequality if JSON explicitly requests it', () => {
@@ -727,7 +737,7 @@ describe( 'Rendering JSON into LaTeX', () => {
         )
     } )
 
-    it( 'can convert to LaTeX sentences built from set operators', () => {
+    it( 'can convert to LaTeX sentences built from various relations', () => {
         checkJsonLatex(
             [ 'disjunction',
                 [ 'logicvariable', 'P' ],
@@ -760,6 +770,14 @@ describe( 'Rendering JSON into LaTeX', () => {
                 [ 'setvariable', 'R' ],
                 [ 'setproduct', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ] ],
             'R = A \\times B'
+        )
+        checkJsonLatex(
+            [ 'universal',
+                [ 'numbervariable', 'n' ],
+                [ 'divides',
+                    [ 'numbervariable', 'n' ],
+                    [ 'factorial', [ 'numbervariable', 'n' ] ] ] ],
+            '\\forall n , n | n !'
         )
     } )
 

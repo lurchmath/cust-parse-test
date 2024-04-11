@@ -99,6 +99,8 @@ describe( 'Converting putdown to LaTeX', () => {
         checkPutdownLatex( '(< (- 1 2) (+ 1 2))', '1 - 2 < 1 + 2' )
         checkPutdownLatex( '(not (= 1 2))', '\\neg 1 = 2' )
         checkPutdownLatex( '(and (>= 2 1) (<= 2 3))', '2 \\ge 1 \\wedge 2 \\le 3' )
+        checkPutdownLatex( '(divides 7 14)', '7 | 14' )
+        checkPutdownLatex( '(divides (apply A k) (! n))', 'A ( k ) | n !' )
     } )
 
     it( 'does not undo the canonical form for inequality', () => {
@@ -287,6 +289,10 @@ describe( 'Converting putdown to LaTeX', () => {
             'A \\subseteq B \\wedge B \\subseteq A'
         )
         checkPutdownLatex( '(= R (setprod A B))', 'R = A \\times B' )
+        checkPutdownLatex(
+            '(forall (n , (divides n (! n))))',
+            '\\forall n , n | n !'
+        )
     } )
 
     it( 'can convert notation related to functions', () => {
