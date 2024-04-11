@@ -355,6 +355,12 @@ describe( 'Rendering JSON into LaTeX', () => {
                 [ 'factorial', [ 'numbervariable', 'n' ] ] ],
             'A ( k ) | n !'
         )
+        checkJsonLatex(
+            [ 'genericrelation',
+                [ 'subtraction', [ 'number', '1' ], [ 'numbervariable', 'k' ] ],
+                [ 'addition', [ 'number', '1' ], [ 'numbervariable', 'k' ] ] ],
+            '1 - k \\sim 1 + k'
+        )
     } )
 
     it( 'can represent inequality if JSON explicitly requests it', () => {
@@ -778,6 +784,14 @@ describe( 'Rendering JSON into LaTeX', () => {
                     [ 'numbervariable', 'n' ],
                     [ 'factorial', [ 'numbervariable', 'n' ] ] ] ],
             '\\forall n , n | n !'
+        )
+        checkJsonLatex(
+            [ 'implication',
+                [ 'genericrelation',
+                    [ 'numbervariable', 'a' ], [ 'numbervariable', 'b' ] ],
+                [ 'genericrelation',
+                    [ 'numbervariable', 'b' ], [ 'numbervariable', 'a' ] ] ],
+            'a \\sim b \\Rightarrow b \\sim a'
         )
     } )
 

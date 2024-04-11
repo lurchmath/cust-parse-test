@@ -402,6 +402,12 @@ describe( 'Parsing LaTeX', () => {
                 [ 'numfuncapp', [ 'funcvariable', 'A' ], [ 'numbervariable', 'k' ] ],
                 [ 'factorial', [ 'numbervariable', 'n' ] ] ]
         )
+        checkLatexJson(
+            '1-k \\sim 1+k',
+            [ 'genericrelation',
+                [ 'subtraction', [ 'number', '1' ], [ 'numbervariable', 'k' ] ],
+                [ 'addition', [ 'number', '1' ], [ 'numbervariable', 'k' ] ] ]
+        )
     } )
 
     it( 'converts inequality to its placeholder concept', () => {
@@ -840,6 +846,14 @@ describe( 'Parsing LaTeX', () => {
                 [ 'divides',
                     [ 'numbervariable', 'n' ],
                     [ 'factorial', [ 'numbervariable', 'n' ] ] ] ]
+        )
+        checkLatexJson(
+            'a\\sim b\\Rightarrow b\\sim a',
+            [ 'implication',
+                [ 'genericrelation',
+                    [ 'numbervariable', 'a' ], [ 'numbervariable', 'b' ] ],
+                [ 'genericrelation',
+                    [ 'numbervariable', 'b' ], [ 'numbervariable', 'a' ] ] ]
         )
     } )
 

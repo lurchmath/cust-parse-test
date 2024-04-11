@@ -338,6 +338,12 @@ describe( 'Parsing putdown', () => {
                 [ 'numfuncapp', [ 'funcvariable', 'A' ], [ 'numbervariable', 'k' ] ],
                 [ 'factorial', [ 'numbervariable', 'n' ] ] ]
         )
+        checkPutdownJson(
+            '(~ (- 1 k) (+ 1 k))',
+            [ 'genericrelation',
+                [ 'subtraction', [ 'number', '1' ], [ 'numbervariable', 'k' ] ],
+                [ 'addition', [ 'number', '1' ], [ 'numbervariable', 'k' ] ] ]
+        )
     } )
 
     it( 'does not undo the canonical form for inequality', () => {
@@ -743,6 +749,14 @@ describe( 'Parsing putdown', () => {
                 [ 'divides',
                     [ 'numbervariable', 'n' ],
                     [ 'factorial', [ 'numbervariable', 'n' ] ] ] ]
+        )
+        checkPutdownJson(
+            '(implies (~ a b) (~ b a))',
+            [ 'implication',
+                [ 'genericrelation',
+                    [ 'numbervariable', 'a' ], [ 'numbervariable', 'b' ] ],
+                [ 'genericrelation',
+                    [ 'numbervariable', 'b' ], [ 'numbervariable', 'a' ] ] ]
         )
     } )
 

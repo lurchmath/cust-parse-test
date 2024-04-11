@@ -345,6 +345,12 @@ describe( 'Rendering JSON into putdown', () => {
                 [ 'factorial', [ 'numbervariable', 'n' ] ] ],
             '(divides (apply A k) (! n))'
         )
+        checkJsonPutdown(
+            [ 'genericrelation',
+                [ 'subtraction', [ 'number', '1' ], [ 'numbervariable', 'k' ] ],
+                [ 'addition', [ 'number', '1' ], [ 'numbervariable', 'k' ] ] ],
+            '(~ (- 1 k) (+ 1 k))'
+        )
     } )
 
     it( 'creates the canonical form for inequality', () => {
@@ -748,6 +754,14 @@ describe( 'Rendering JSON into putdown', () => {
                     [ 'numbervariable', 'n' ],
                     [ 'factorial', [ 'numbervariable', 'n' ] ] ] ],
             '(forall (n , (divides n (! n))))'
+        )
+        checkJsonPutdown(
+            [ 'implication',
+                [ 'genericrelation',
+                    [ 'numbervariable', 'a' ], [ 'numbervariable', 'b' ] ],
+                [ 'genericrelation',
+                    [ 'numbervariable', 'b' ], [ 'numbervariable', 'a' ] ] ],
+            '(implies (~ a b) (~ b a))'
         )
     } )
 

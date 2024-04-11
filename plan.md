@@ -34,7 +34,6 @@ General to dos:
    including expressions that bind variables.  Use the grammar here as an
    inspiration: https://github.com/lurchmath/earley-parser/blob/master/earley-tests.js#L225
     - congruence mod m relation
-    - generic relation `~`
     - equivalence class (for a relation)
     - `X is a[n] Y`, `X is a[n] Y of Z`, for a specific finite set of Ys
       (e.g., X is a set, or an equivalence relation, or a partial order, etc.)
@@ -56,6 +55,8 @@ General to dos:
  - Create an even simpler API that goes through JSON only and selects a subset of
    the desired concepts from the example converter, specifying their notation in
    whatever set of languages the caller wants to use.
+ - Expand LaTeX to support `\left(`, `\right)`, and the same for curly and square
+   brackets.
 
 Bug fixes:
  - Returning the alphabetically least JSON parsing result from all ambiguous

@@ -101,6 +101,7 @@ describe( 'Converting putdown to LaTeX', () => {
         checkPutdownLatex( '(and (>= 2 1) (<= 2 3))', '2 \\ge 1 \\wedge 2 \\le 3' )
         checkPutdownLatex( '(divides 7 14)', '7 | 14' )
         checkPutdownLatex( '(divides (apply A k) (! n))', 'A ( k ) | n !' )
+        checkPutdownLatex( '(~ (- 1 k) (+ 1 k))', '1 - k \\sim 1 + k' )
     } )
 
     it( 'does not undo the canonical form for inequality', () => {
@@ -292,6 +293,10 @@ describe( 'Converting putdown to LaTeX', () => {
         checkPutdownLatex(
             '(forall (n , (divides n (! n))))',
             '\\forall n , n | n !'
+        )
+        checkPutdownLatex(
+            '(implies (~ a b) (~ b a))',
+            'a \\sim b \\Rightarrow b \\sim a'
         )
     } )
 
