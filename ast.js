@@ -348,10 +348,6 @@ export class AST extends Array {
             rhss.push( language.derivedNotation.get( this.head() ) )
         const rhs = rhss[0]
         let notation = rhs.notation
-        // if this is a canonical form notation, indicated by a prefix "->",
-        // then drop that prefix before using the notation as a template
-        const prefix = /^\s*\-\>(?:\s|\()/.exec( notation )
-        if ( prefix ) notation = notation.substring( prefix[0].length )
         // now split that into an array to make template substitution easier
         const template = [ ]
         const splitter = new RegExp(
