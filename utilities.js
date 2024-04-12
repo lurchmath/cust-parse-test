@@ -85,8 +85,8 @@ export const notationStringToArray = ( str, variables ) => {
     }
     return result.map( piece => {
         if ( variables.includes( piece ) ) return piece
-        const result = new RegExp( escapeRegExp( piece ) )
-        result.originalString = piece
-        return result
+        const regexp = new RegExp( escapeRegExp( piece ) )
+        if ( result.length > 1 ) regexp.originalString = piece
+        return regexp
     } )
 }
