@@ -90,3 +90,25 @@ export const notationStringToArray = ( str, variables ) => {
         return regexp
     } )
 }
+
+// For use in debugging:
+// A compact stack trace in the form of a string
+export const compactStackTrace = () => {
+    const stack = new Error().stack.split( '\n' ).slice( 1 )
+    const filenameAndLine = line => {
+        if ( line.indexOf( '/' ) == -1 ) return
+        let end = line.split( '/' ).pop()
+        if ( line.indexOf( ':' ) == -1 ) return
+        return end.split( ':' ).slice( 0, 2 ).join( ':' )
+    }
+    const undesirableLine = line =>
+        line.startsWith( 'module_job' )
+     || line.startsWith( 'loader' )
+     || line.startsWith( 'esm-' )
+     || line.startsWith( 'run' )
+     || line.startsWith( 'timers' )
+     || line.startsWith( 'test-' )
+    return stack.map( filenameAndLine )
+        .filter( line => !!line && !undesirableLine( line ) )
+        .join( ' <-- ' )
+}
