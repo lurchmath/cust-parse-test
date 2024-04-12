@@ -64,8 +64,10 @@ describe( 'Parsing putdown', () => {
         checkFail( 'to' )
     } )
 
-    it( 'can convert infinity from putdown to JSON', () => {
+    it( 'can convert numeric constants from putdown to JSON', () => {
         check( 'infinity', [ 'infinity' ] )
+        check( 'pi', [ 'pi' ] )
+        check( 'eulersnumber', [ 'eulersnumber' ] )
     } )
 
     it( 'can convert exponentiation of atomics to JSON', () => {
@@ -216,12 +218,12 @@ describe( 'Parsing putdown', () => {
             ]
         )
         check(
-            '(+ (^ A B) (- C D))',
+            '(+ (^ A B) (- C pi))',
             [ 'addition',
                 [ 'exponentiation',
                     [ 'numbervariable', 'A' ], [ 'numbervariable', 'B' ] ],
                 [ 'subtraction',
-                    [ 'numbervariable', 'C' ], [ 'numbervariable', 'D' ] ]
+                    [ 'numbervariable', 'C' ], [ 'pi' ] ]
             ]
         )
     } )
@@ -765,6 +767,33 @@ describe( 'Parsing putdown', () => {
                 [ 'funccomp',
                     [ 'funcvariable', 'G' ],
                     [ 'funcinverse', [ 'funcvariable', 'H' ] ] ] ]
+        )
+    } )
+
+    it( 'can parse trigonometric functions correctly', () => {
+        check(
+            '(apply sin x)',
+            [ 'prefixfuncapp', [ 'sinfunc' ], [ 'numbervariable', 'x' ] ]
+        )
+        check(
+            '(apply cos (* pi x))',
+            [ 'prefixfuncapp', [ 'cosfunc' ],
+                [ 'multiplication', [ 'pi' ], [ 'numbervariable', 'x' ] ] ]
+        )
+        check(
+            '(apply tan t)',
+            [ 'prefixfuncapp', [ 'tanfunc' ], [ 'numbervariable', 't' ] ]
+        )
+        check(
+            '(/ 1 (apply cot pi))',
+            [ 'division', [ 'number', '1' ],
+                [ 'prefixfuncapp', [ 'cotfunc' ], [ 'pi' ] ] ]
+        )
+        check(
+            '(= (apply sec y) (apply csc y))',
+            [ 'equality',
+                [ 'prefixfuncapp', [ 'secfunc' ], [ 'numbervariable', 'y' ] ],
+                [ 'prefixfuncapp', [ 'cscfunc' ], [ 'numbervariable', 'y' ] ] ]
         )
     } )
 

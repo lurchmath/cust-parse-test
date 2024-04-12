@@ -35,13 +35,18 @@ describe( 'Converting LaTeX to putdown', () => {
         checkFail( 'Hi' )
     } )
 
-    it( 'correctly converts the infinity symbol', () => {
+    it( 'correctly converts numeric constants', () => {
         check( '\\infty', 'infinity' )
+        check( '\\pi', 'pi' )
+        // The following happens because, even though the parser detects the
+        // parsing of e as Euler's number is valid, it's not the first in the
+        // alphabetical ordering of the possible parsed results:
+        check( 'e', 'e' )
     } )
 
     it( 'correctly converts exponentiation of atomics', () => {
         check( '1^2', '(^ 1 2)' )
-        check( 'e^x', '(^ e x)' )
+        check( 'e^x', '(^ eulersnumber x)' )
         check( '1^\\infty', '(^ 1 infinity)' )
     } )
 
@@ -59,7 +64,7 @@ describe( 'Converting LaTeX to putdown', () => {
         check( '0\\div\\infty', '(/ 0 infinity)' )
         // division of factors
         check( 'x^2\\div3', '(/ (^ x 2) 3)' )
-        check( '1\\div e^x', '(/ 1 (^ e x))' )
+        check( '1\\div e^x', '(/ 1 (^ eulersnumber x))' )
         check( '10\\%\\div2^{100}', '(/ (% 10) (^ 2 100))' )
     } )
 
@@ -70,7 +75,7 @@ describe( 'Converting LaTeX to putdown', () => {
         check( '0\\times\\infty', '(* 0 infinity)' )
         // multiplication of factors
         check( 'x^2\\cdot3', '(* (^ x 2) 3)' )
-        check( '1\\times e^x', '(* 1 (^ e x))' )
+        check( '1\\times e^x', '(* 1 (^ eulersnumber x))' )
         check( '10\\%\\cdot2^{100}', '(* (% 10) (^ 2 100))' )
     } )
 
@@ -86,9 +91,9 @@ describe( 'Converting LaTeX to putdown', () => {
     it( 'correctly converts additions and subtractions', () => {
         check( 'x + y', '(+ x y)' )
         check( '1 - - 3', '(- 1 (- 3))' )
-        // Following could also be (- (+ (^ A B) C) D), both of which are OK,
+        // Following could also be (- (+ (^ A B) C) pi), both of which are OK,
         // but the one shown below is alphabetically earlier:
-        check( 'A ^ B + C - D', '(+ (^ A B) (- C D))' )
+        check( 'A ^ B + C - \\pi', '(+ (^ A B) (- C pi))' )
     } )
     
     it( 'correctly converts number expressions with groupers', () => {
@@ -301,8 +306,19 @@ describe( 'Converting LaTeX to putdown', () => {
         )
         check( 'E(\\bar L)', '(apply E (setcomp L))' )
         check( '\\emptyset\\cap f(2)', '(setint emptyset (apply f 2))' )
-        check( 'P(e)\\wedge Q(3+b)', '(and (apply P e) (apply Q (+ 3 b)))' )
+        check(
+            'P(e)\\wedge Q(3+b)',
+            '(and (apply P eulersnumber) (apply Q (+ 3 b)))'
+        )
         check( 'F=G\\circ H^{-1}', '(= F (compose G (inverse H)))' )
+    } )
+
+    it( 'can convert expressions with trigonometric functions', () => {
+        check( '\\sin x', '(apply sin x)' )
+        check( '\\cos \\pi \\times x', '(apply cos (* pi x))' )
+        check( '\\tan t', '(apply tan t)' )
+        check( '1 \\div \\cot \\pi', '(/ 1 (apply cot pi))' )
+        check( '\\sec y = \\csc y', '(= (apply sec y) (apply csc y))' )
     } )
 
 } )

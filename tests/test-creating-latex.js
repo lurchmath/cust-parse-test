@@ -60,8 +60,10 @@ describe( 'Rendering JSON into LaTeX', () => {
         check( [ 'numbervariable', 'to' ], 'to' )
     } )
 
-    it( 'can convert infinity from JSON to LaTeX', () => {
+    it( 'can convert numeric constants from JSON to LaTeX', () => {
         check( [ 'infinity' ], '\\infty' )
+        check( [ 'pi' ], '\\pi' )
+        check( [ 'eulersnumber' ], 'e' )
     } )
 
     it( 'can convert exponentiation of atomics from JSON to LaTeX', () => {
@@ -219,8 +221,8 @@ describe( 'Rendering JSON into LaTeX', () => {
                     [ 'exponentiation',
                         [ 'numbervariable', 'A' ], [ 'numbervariable', 'B' ] ],
                     [ 'numbervariable', 'C' ] ],
-                [ 'numbervariable', 'D' ] ],
-            'A ^ B + C - D'
+                [ 'pi' ] ],
+            'A ^ B + C - \\pi'
         )
     } )
 
@@ -788,6 +790,33 @@ describe( 'Rendering JSON into LaTeX', () => {
                     [ 'funcvariable', 'G' ],
                     [ 'funcinverse', [ 'funcvariable', 'H' ] ] ] ],
             'F = G \\circ H ^ { - 1 }'
+        )
+    } )
+
+    it( 'can represent trigonometric functions correctly', () => {
+        check(
+            [ 'prefixfuncapp', [ 'sinfunc' ], [ 'numbervariable', 'x' ] ],
+            '\\sin x'
+        )
+        check(
+            [ 'prefixfuncapp', [ 'cosfunc' ],
+                [ 'multiplication', [ 'pi' ], [ 'numbervariable', 'x' ] ] ],
+            '\\cos \\pi \\times x'
+        )
+        check(
+            [ 'prefixfuncapp', [ 'tanfunc' ], [ 'numbervariable', 't' ] ],
+            '\\tan t'
+        )
+        check(
+            [ 'division', [ 'number', '1' ],
+                [ 'prefixfuncapp', [ 'cotfunc' ], [ 'pi' ] ] ],
+            '1 \\div \\cot \\pi'
+        )
+        check(
+            [ 'equality',
+                [ 'prefixfuncapp', [ 'secfunc' ], [ 'numbervariable', 'y' ] ],
+                [ 'prefixfuncapp', [ 'cscfunc' ], [ 'numbervariable', 'y' ] ] ],
+            '\\sec y = \\csc y'
         )
     } )
 

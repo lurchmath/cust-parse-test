@@ -35,8 +35,10 @@ describe( 'Converting putdown to LaTeX', () => {
         checkFail( 'Hi' )
     } )
 
-    it( 'correctly converts the infinity symbol', () => {
+    it( 'correctly converts numeric constants', () => {
         check( 'infinity', '\\infty' )
+        check( 'pi', '\\pi' )
+        check( 'eulersnumber', 'e' )
     } )
 
     it( 'correctly converts exponentiation of atomics', () => {
@@ -84,7 +86,7 @@ describe( 'Converting putdown to LaTeX', () => {
     it( 'correctly converts additions and subtractions', () => {
         check( '(+ x y)', 'x + y' )
         check( '(- 1 (- 3))', '1 - - 3' )
-        check( '(+ (^ A B) (- C D))', 'A ^ B + C - D' )
+        check( '(+ (^ A B) (- C pi))', 'A ^ B + C - \\pi' )
     } )
     
     it( 'correctly converts number expressions with groupers', () => {
@@ -298,6 +300,14 @@ describe( 'Converting putdown to LaTeX', () => {
             'P ( e ) \\wedge Q ( 3 + b )'
         )
         check( '(= F (compose G (inverse H)))', 'F = G \\circ H ^ { - 1 }' )
+    } )
+
+    it( 'can convert expressions with trigonometric functions', () => {
+        check( '(apply sin x)', '\\sin x' )
+        check( '(apply cos (* pi x))', '\\cos \\pi \\times x' )
+        check( '(apply tan t)', '\\tan t' )
+        check( '(/ 1 (apply cot pi))', '1 \\div \\cot \\pi' )
+        check( '(= (apply sec y) (apply csc y))', '\\sec y = \\csc y' )
     } )
 
 } )

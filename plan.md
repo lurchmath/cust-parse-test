@@ -33,7 +33,7 @@ General to dos:
  - expand set of tests for many new mathematical expressions in many languages,
    including expressions that bind variables.  Use the grammar here as an
    inspiration: https://github.com/lurchmath/earley-parser/blob/master/earley-tests.js#L225
-    - common constants: pi, e, trig functions
+    - logarithms
     - equivalence class (for a relation)
     - congruence mod m relation
     - EFAs
@@ -57,6 +57,9 @@ General to dos:
    whatever set of languages the caller wants to use.
  - Expand LaTeX to support `\left(`, `\right)`, and the same for curly and square
    brackets.
+ - Add the capability of asking for all possible parsings, rather than just
+   getting the first one.  Run some tests on this, especially anywhere the test
+   suite mentioned "alphabetical order."
 
 Bug fixes:
  - Returning the alphabetically least JSON parsing result from all ambiguous

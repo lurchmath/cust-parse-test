@@ -99,6 +99,10 @@ export const hierarchies = [
         'expr',
         'funcexpr',
         'atomicfuncexpr'
+    ],
+    [
+        'expr',
+        'prefixfuncexpr' // the kind you write without parens, like sin/ln/etc.
     ]
 ]
 

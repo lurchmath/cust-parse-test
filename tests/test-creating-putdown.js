@@ -63,8 +63,10 @@ describe( 'Rendering JSON into putdown', () => {
         check( [ 'numbervariable', 'to' ], 'to' )
     } )
 
-    it( 'can convert infinity from JSON to putdown', () => {
+    it( 'can convert numeric constants from JSON to putdown', () => {
         check( [ 'infinity' ], 'infinity' )
+        check( [ 'pi' ], 'pi' )
+        check( [ 'eulersnumber' ], 'eulersnumber' )
     } )
 
     it( 'can convert exponentiation of atomics to putdown', () => {
@@ -219,9 +221,9 @@ describe( 'Rendering JSON into putdown', () => {
                 [ 'exponentiation',
                     [ 'numbervariable', 'A' ], [ 'numbervariable', 'B' ] ],
                 [ 'subtraction',
-                    [ 'numbervariable', 'C' ], [ 'numbervariable', 'D' ] ]
+                    [ 'numbervariable', 'C' ], [ 'pi' ] ]
             ],
-            '(+ (^ A B) (- C D))'
+            '(+ (^ A B) (- C pi))'
         )
     } )
 
@@ -749,6 +751,33 @@ describe( 'Rendering JSON into putdown', () => {
                     [ 'funcvariable', 'G' ],
                     [ 'funcinverse', [ 'funcvariable', 'H' ] ] ] ],
             '(= F (compose G (inverse H)))'
+        )
+    } )
+
+    it( 'can express trigonometric functions correctly', () => {
+        check(
+            [ 'numfuncapp', [ 'sinfunc' ], [ 'numbervariable', 'x' ] ],
+            '(apply sin x)'
+        )
+        check(
+            [ 'numfuncapp', [ 'cosfunc' ],
+                [ 'multiplication', [ 'pi' ], [ 'numbervariable', 'x' ] ] ],
+            '(apply cos (* pi x))'
+        )
+        check(
+            [ 'numfuncapp', [ 'tanfunc' ], [ 'numbervariable', 't' ] ],
+            '(apply tan t)'
+        )
+        check(
+            [ 'division', [ 'number', '1' ],
+                [ 'numfuncapp', [ 'cotfunc' ], [ 'pi' ] ] ],
+            '(/ 1 (apply cot pi))'
+        )
+        check(
+            [ 'equality',
+                [ 'numfuncapp', [ 'secfunc' ], [ 'numbervariable', 'y' ] ],
+                [ 'numfuncapp', [ 'cscfunc' ], [ 'numbervariable', 'y' ] ] ],
+            '(= (apply sec y) (apply csc y))'
         )
     } )
 

@@ -63,8 +63,13 @@ describe( 'Parsing LaTeX', () => {
         checkFail( 'to' )
     } )
 
-    it( 'can parse LaTeX infinity to JSON', () => {
+    it( 'can parse LaTeX numeric constants to JSON', () => {
         check( '\\infty', [ 'infinity' ] )
+        check( '\\pi', [ 'pi' ] )
+        // The following happens because, even though the parser detects the
+        // parsing of e as Euler's number is valid, it's not the first in the
+        // alphabetical ordering of the possible parsed results:
+        check( 'e', [ 'funcvariable', 'e' ] )
     } )
 
     it( 'can parse exponentiation of atomics to JSON', () => {
@@ -74,8 +79,7 @@ describe( 'Parsing LaTeX', () => {
         )
         check(
             'e^x',
-            [ 'exponentiation',
-                [ 'numbervariable', 'e' ], [ 'numbervariable', 'x' ] ]
+            [ 'exponentiation', [ 'eulersnumber' ], [ 'numbervariable', 'x' ] ]
         )
         check(
             '1^\\infty',
@@ -118,7 +122,7 @@ describe( 'Parsing LaTeX', () => {
             [ 'division',
                 [ 'number', '1' ],
                 [ 'exponentiation',
-                    [ 'numbervariable', 'e' ], [ 'numbervariable', 'x' ] ]
+                    [ 'eulersnumber' ], [ 'numbervariable', 'x' ] ]
             ]
         )
         check(
@@ -158,7 +162,7 @@ describe( 'Parsing LaTeX', () => {
             [ 'multiplication',
                 [ 'number', '1' ],
                 [ 'exponentiation',
-                    [ 'numbervariable', 'e' ], [ 'numbervariable', 'x' ] ]
+                    [ 'eulersnumber' ], [ 'numbervariable', 'x' ] ]
             ]
         )
         check(
@@ -227,12 +231,12 @@ describe( 'Parsing LaTeX', () => {
         // Following could also be a subtraction of a sum and a variable, which
         // is also OK, but the one shown below is alphabetically earlier:
         check(
-            'A^B+C-D',
+            'A^B+C-\\pi',
             [ 'addition',
                 [ 'exponentiation',
                     [ 'numbervariable', 'A' ], [ 'numbervariable', 'B' ] ],
                 [ 'subtraction',
-                    [ 'numbervariable', 'C' ], [ 'numbervariable', 'D' ] ] ]
+                    [ 'numbervariable', 'C' ], [ 'pi' ] ] ]
         )
     } )
 
@@ -860,7 +864,7 @@ describe( 'Parsing LaTeX', () => {
         check(
             'P(e)\\wedge Q(3+b)',
             [ 'conjunction',
-                [ 'propfuncapp', [ 'funcvariable', 'P' ], [ 'numbervariable', 'e' ] ],
+                [ 'propfuncapp', [ 'funcvariable', 'P' ], [ 'eulersnumber' ] ],
                 [ 'propfuncapp', [ 'funcvariable', 'Q' ],
                     [ 'addition', [ 'number', '3' ], [ 'numbervariable', 'b' ] ] ] ]
         )
@@ -871,6 +875,33 @@ describe( 'Parsing LaTeX', () => {
                 [ 'funccomp',
                     [ 'funcvariable', 'G' ],
                     [ 'funcinverse', [ 'funcvariable', 'H' ] ] ] ]
+        )
+    } )
+
+    it( 'can parse trigonometric functions correctly', () => {
+        check(
+            '\\sin x',
+            [ 'prefixfuncapp', [ 'sinfunc' ], [ 'numbervariable', 'x' ] ]
+        )
+        check(
+            '\\cos\\pi\\cdot x',
+            [ 'prefixfuncapp', [ 'cosfunc' ],
+                [ 'multiplication', [ 'pi' ], [ 'numbervariable', 'x' ] ] ]
+        )
+        check(
+            '\\tan t',
+            [ 'prefixfuncapp', [ 'tanfunc' ], [ 'numbervariable', 't' ] ]
+        )
+        check(
+            '1\\div\\cot\\pi',
+            [ 'division', [ 'number', '1' ],
+                [ 'prefixfuncapp', [ 'cotfunc' ], [ 'pi' ] ] ]
+        )
+        check(
+            '\\sec y=\\csc y',
+            [ 'equality',
+                [ 'prefixfuncapp', [ 'secfunc' ], [ 'numbervariable', 'y' ] ],
+                [ 'prefixfuncapp', [ 'cscfunc' ], [ 'numbervariable', 'y' ] ] ]
         )
     } )
 
