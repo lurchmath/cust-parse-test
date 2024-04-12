@@ -33,15 +33,15 @@ General to dos:
  - expand set of tests for many new mathematical expressions in many languages,
    including expressions that bind variables.  Use the grammar here as an
    inspiration: https://github.com/lurchmath/earley-parser/blob/master/earley-tests.js#L225
-    - congruence mod m relation
+    - common constants: pi, e, trig functions
     - equivalence class (for a relation)
+    - congruence mod m relation
+    - EFAs
     - `X is a[n] Y`, `X is a[n] Y of Z`, for a specific finite set of Ys
       (e.g., X is a set, or an equivalence relation, or a partial order, etc.)
     - assumptions (given flags)
     - Let-style declarations, with or without body
     - ForSome-style declarations, always with body
-    - EFAs
-    - common constants: pi, e, trig functions
  - expand all languages to support many new mathematical features, tests for each
    (note that set theory notation will need analogs to sum, product, ...)
  - define new language of Lurch notation and verify all (or almost all) of its
