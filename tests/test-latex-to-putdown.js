@@ -31,8 +31,8 @@ describe( 'Converting LaTeX to putdown', () => {
         check( 'U', 'U' )
         check( 'Q', 'Q' )
         check( 'm', 'm' )
-        checkFail( 'foo', 'foo' )
-        checkFail( 'Hi', 'Hi' )
+        checkFail( 'foo' )
+        checkFail( 'Hi' )
     } )
 
     it( 'correctly converts the infinity symbol', () => {
