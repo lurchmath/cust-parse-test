@@ -10,7 +10,7 @@ describe( 'Parsing putdown', () => {
         expect( putdown.parse( putdownText ).toJSON() ).to.eql( json )
         global.log?.( 'putdown', putdownText, 'JSON', json )
     }
-    const checkPutdownJsonFail = ( putdownText ) => {
+    const checkFail = ( putdownText ) => {
         expect( putdown.parse( putdownText ) ).to.be.undefined
         global.log?.( 'putdown', putdownText, 'JSON', null )
     }
@@ -59,9 +59,9 @@ describe( 'Parsing putdown', () => {
         check( 'q', [ 'funcvariable', 'q' ] )
         // multi-letter names don't work; it just does nothing with them
         // because it can't find any concept to which they belong
-        checkPutdownJsonFail( 'foo' )
-        checkPutdownJsonFail( 'bar' )
-        checkPutdownJsonFail( 'to' )
+        checkFail( 'foo' )
+        checkFail( 'bar' )
+        checkFail( 'to' )
     } )
 
     it( 'can convert infinity from putdown to JSON', () => {
@@ -541,12 +541,12 @@ describe( 'Parsing putdown', () => {
                 [ 'onenumseq', [ 'numbervariable', 'k' ] ] ] ] ]
         )
         // tuples and vectors containing zero or one element are not valid
-        checkPutdownJsonFail( '(tuple)' )
-        checkPutdownJsonFail( '(tuple (elts))' )
-        checkPutdownJsonFail( '(tuple (elts 3))' )
-        checkPutdownJsonFail( '(vector)' )
-        checkPutdownJsonFail( '(vector (elts))' )
-        checkPutdownJsonFail( '(vector (elts 3))' )
+        checkFail( '(tuple)' )
+        checkFail( '(tuple (elts))' )
+        checkFail( '(tuple (elts 3))' )
+        checkFail( '(vector)' )
+        checkFail( '(vector (elts))' )
+        checkFail( '(vector (elts 3))' )
         // tuples can contain other tuples
         check(
             '(tuple (elts (tuple (elts 1 (elts 2))) (elts 6)))',
@@ -556,9 +556,9 @@ describe( 'Parsing putdown', () => {
                 [ 'oneeltseq', [ 'number', '6' ] ] ] ]
         )
         // vectors can contain only numbers
-        checkPutdownJsonFail( '(vector (elts (tuple (elts 1 (elts 2))) (elts 6)))' )
-        checkPutdownJsonFail( '(vector (elts (vector (elts 1 (elts 2))) (elts 6)))' )
-        checkPutdownJsonFail( '(vector (elts (setuni A B) (elts 6)))' )
+        checkFail( '(vector (elts (tuple (elts 1 (elts 2))) (elts 6)))' )
+        checkFail( '(vector (elts (vector (elts 1 (elts 2))) (elts 6)))' )
+        checkFail( '(vector (elts (setuni A B) (elts 6)))' )
     } )
 
     it( 'can convert simple set memberships and subsets to JSON', () => {
