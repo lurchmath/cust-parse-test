@@ -79,11 +79,17 @@ satisfy the requirements of the test suite) are shown below.
    - output: JSON `null`
 
 
-### can convert infinity from putdown to JSON
+### can convert numeric constants from putdown to JSON
 
 - Test 1
    - input: putdown `infinity`
    - output: JSON `["infinity"]`
+- Test 2
+   - input: putdown `pi`
+   - output: JSON `["pi"]`
+- Test 3
+   - input: putdown `eulersnumber`
+   - output: JSON `["eulersnumber"]`
 
 
 ### can convert exponentiation of atomics to JSON
@@ -184,8 +190,8 @@ satisfy the requirements of the test suite) are shown below.
    - input: putdown `(- 1 (- 3))`
    - output: JSON `["subtraction",["number","1"],["numbernegation",["number","3"]]]`
 - Test 3
-   - input: putdown `(+ (^ A B) (- C D))`
-   - output: JSON `["addition",["exponentiation",["numbervariable","A"],["numbervariable","B"]],["subtraction",["numbervariable","C"],["numbervariable","D"]]]`
+   - input: putdown `(+ (^ A B) (- C pi))`
+   - output: JSON `["addition",["exponentiation",["numbervariable","A"],["numbervariable","B"]],["subtraction",["numbervariable","C"],["pi"]]]`
 
 
 ### can convert number exprs that normally require groupers to JSON
@@ -218,6 +224,15 @@ satisfy the requirements of the test suite) are shown below.
 - Test 4
    - input: putdown `(and (>= 2 1) (<= 2 3))`
    - output: JSON `["conjunction",["greaterthanoreq",["number","2"],["number","1"]],["lessthanoreq",["number","2"],["number","3"]]]`
+- Test 5
+   - input: putdown `(divides 7 14)`
+   - output: JSON `["divides",["number","7"],["number","14"]]`
+- Test 6
+   - input: putdown `(divides (apply A k) (! n))`
+   - output: JSON `["divides",["numfuncapp",["funcvariable","A"],["numbervariable","k"]],["factorial",["numbervariable","n"]]]`
+- Test 7
+   - input: putdown `(~ (- 1 k) (+ 1 k))`
+   - output: JSON `["genericrelation",["subtraction",["number","1"],["numbervariable","k"]],["addition",["number","1"],["numbervariable","k"]]]`
 
 
 ### does not undo the canonical form for inequality
@@ -433,7 +448,7 @@ satisfy the requirements of the test suite) are shown below.
    - output: JSON `["logicnegation",["nounisin",["subtraction",["number","3"],["number","5"]],["intersection",["setvariable","K"],["setvariable","P"]]]]`
 
 
-### can parse to JSON sentences built from set operators
+### can parse to JSON sentences built from various relations
 
 - Test 1
    - input: putdown `(or P (in b B))`
@@ -447,6 +462,12 @@ satisfy the requirements of the test suite) are shown below.
 - Test 4
    - input: putdown `(= R (setprod A B))`
    - output: JSON `["equality",["numbervariable","R"],["setproduct",["setvariable","A"],["setvariable","B"]]]`
+- Test 5
+   - input: putdown `(forall (n , (divides n (! n))))`
+   - output: JSON `["universal",["numbervariable","n"],["divides",["numbervariable","n"],["factorial",["numbervariable","n"]]]]`
+- Test 6
+   - input: putdown `(implies (~ a b) (~ b a))`
+   - output: JSON `["implication",["genericrelation",["numbervariable","a"],["numbervariable","b"]],["genericrelation",["numbervariable","b"],["numbervariable","a"]]]`
 
 
 ### can parse notation related to functions
@@ -481,6 +502,25 @@ satisfy the requirements of the test suite) are shown below.
 - Test 10
    - input: putdown `(= F (compose G (inverse H)))`
    - output: JSON `["funcequality",["funcvariable","F"],["funccomp",["funcvariable","G"],["funcinverse",["funcvariable","H"]]]]`
+
+
+### can parse trigonometric functions correctly
+
+- Test 1
+   - input: putdown `(apply sin x)`
+   - output: JSON `["prefixfuncapp",["sinfunc"],["numbervariable","x"]]`
+- Test 2
+   - input: putdown `(apply cos (* pi x))`
+   - output: JSON `["prefixfuncapp",["cosfunc"],["multiplication",["pi"],["numbervariable","x"]]]`
+- Test 3
+   - input: putdown `(apply tan t)`
+   - output: JSON `["prefixfuncapp",["tanfunc"],["numbervariable","t"]]`
+- Test 4
+   - input: putdown `(/ 1 (apply cot pi))`
+   - output: JSON `["division",["number","1"],["prefixfuncapp",["cotfunc"],["pi"]]]`
+- Test 5
+   - input: putdown `(= (apply sec y) (apply csc y))`
+   - output: JSON `["equality",["prefixfuncapp",["secfunc"],["numbervariable","y"]],["prefixfuncapp",["cscfunc"],["numbervariable","y"]]]`
 
 
 ## <a name="Rendering-JSON-into-putdown">Rendering JSON into putdown</a>
@@ -547,11 +587,17 @@ satisfy the requirements of the test suite) are shown below.
    - output: putdown `to`
 
 
-### can convert infinity from JSON to putdown
+### can convert numeric constants from JSON to putdown
 
 - Test 1
    - input: JSON `["infinity"]`
    - output: putdown `infinity`
+- Test 2
+   - input: JSON `["pi"]`
+   - output: putdown `pi`
+- Test 3
+   - input: JSON `["eulersnumber"]`
+   - output: putdown `eulersnumber`
 
 
 ### can convert exponentiation of atomics to putdown
@@ -652,8 +698,8 @@ satisfy the requirements of the test suite) are shown below.
    - input: JSON `["subtraction",["number","1"],["numbernegation",["number","3"]]]`
    - output: putdown `(- 1 (- 3))`
 - Test 3
-   - input: JSON `["addition",["exponentiation",["numbervariable","A"],["numbervariable","B"]],["subtraction",["numbervariable","C"],["numbervariable","D"]]]`
-   - output: putdown `(+ (^ A B) (- C D))`
+   - input: JSON `["addition",["exponentiation",["numbervariable","A"],["numbervariable","B"]],["subtraction",["numbervariable","C"],["pi"]]]`
+   - output: putdown `(+ (^ A B) (- C pi))`
 
 
 ### can convert number expressions with groupers to putdown
@@ -686,6 +732,15 @@ satisfy the requirements of the test suite) are shown below.
 - Test 4
    - input: JSON `["conjunction",["greaterthanoreq",["number","2"],["number","1"]],["lessthanoreq",["number","2"],["number","3"]]]`
    - output: putdown `(and (>= 2 1) (<= 2 3))`
+- Test 5
+   - input: JSON `["divides",["number","7"],["number","14"]]`
+   - output: putdown `(divides 7 14)`
+- Test 6
+   - input: JSON `["divides",["numfuncapp",["funcvariable","A"],["numbervariable","k"]],["factorial",["numbervariable","n"]]]`
+   - output: putdown `(divides (apply A k) (! n))`
+- Test 7
+   - input: JSON `["genericrelation",["subtraction",["number","1"],["numbervariable","k"]],["addition",["number","1"],["numbervariable","k"]]]`
+   - output: putdown `(~ (- 1 k) (+ 1 k))`
 
 
 ### creates the canonical form for inequality
@@ -883,7 +938,7 @@ satisfy the requirements of the test suite) are shown below.
    - output: putdown `(not (in (- 3 5) (setint K P)))`
 
 
-### can convert to putdown sentences built from set operators
+### can convert to putdown sentences built from various relations
 
 - Test 1
    - input: JSON `["disjunction",["logicvariable","P"],["nounisin",["numbervariable","b"],["setvariable","B"]]]`
@@ -897,6 +952,12 @@ satisfy the requirements of the test suite) are shown below.
 - Test 4
    - input: JSON `["equality",["numbervariable","R"],["setproduct",["setvariable","A"],["setvariable","B"]]]`
    - output: putdown `(= R (setprod A B))`
+- Test 5
+   - input: JSON `["universal",["numbervariable","n"],["divides",["numbervariable","n"],["factorial",["numbervariable","n"]]]]`
+   - output: putdown `(forall (n , (divides n (! n))))`
+- Test 6
+   - input: JSON `["implication",["genericrelation",["numbervariable","a"],["numbervariable","b"]],["genericrelation",["numbervariable","b"],["numbervariable","a"]]]`
+   - output: putdown `(implies (~ a b) (~ b a))`
 
 
 ### can create putdown notation related to functions
@@ -928,6 +989,25 @@ satisfy the requirements of the test suite) are shown below.
 - Test 9
    - input: JSON `["funcequality",["funcvariable","F"],["funccomp",["funcvariable","G"],["funcinverse",["funcvariable","H"]]]]`
    - output: putdown `(= F (compose G (inverse H)))`
+
+
+### can express trigonometric functions correctly
+
+- Test 1
+   - input: JSON `["numfuncapp",["sinfunc"],["numbervariable","x"]]`
+   - output: putdown `(apply sin x)`
+- Test 2
+   - input: JSON `["numfuncapp",["cosfunc"],["multiplication",["pi"],["numbervariable","x"]]]`
+   - output: putdown `(apply cos (* pi x))`
+- Test 3
+   - input: JSON `["numfuncapp",["tanfunc"],["numbervariable","t"]]`
+   - output: putdown `(apply tan t)`
+- Test 4
+   - input: JSON `["division",["number","1"],["numfuncapp",["cotfunc"],["pi"]]]`
+   - output: putdown `(/ 1 (apply cot pi))`
+- Test 5
+   - input: JSON `["equality",["numfuncapp",["secfunc"],["numbervariable","y"]],["numfuncapp",["cscfunc"],["numbervariable","y"]]]`
+   - output: putdown `(= (apply sec y) (apply csc y))`
 
 
 ## <a name="Parsing-LaTeX">Parsing LaTeX</a>
@@ -994,11 +1074,17 @@ satisfy the requirements of the test suite) are shown below.
    - output: JSON `null`
 
 
-### can parse LaTeX infinity to JSON
+### can parse LaTeX numeric constants to JSON
 
 - Test 1
    - input: LaTeX `\infty`, typeset $\infty$
    - output: JSON `["infinity"]`
+- Test 2
+   - input: LaTeX `\pi`, typeset $\pi$
+   - output: JSON `["pi"]`
+- Test 3
+   - input: LaTeX `e`, typeset $e$
+   - output: JSON `["funcvariable","e"]`
 
 
 ### can parse exponentiation of atomics to JSON
@@ -1008,7 +1094,7 @@ satisfy the requirements of the test suite) are shown below.
    - output: JSON `["exponentiation",["number","1"],["number","2"]]`
 - Test 2
    - input: LaTeX `e^x`, typeset $e^x$
-   - output: JSON `["exponentiation",["numbervariable","e"],["numbervariable","x"]]`
+   - output: JSON `["exponentiation",["eulersnumber"],["numbervariable","x"]]`
 - Test 3
    - input: LaTeX `1^\infty`, typeset $1^\infty$
    - output: JSON `["exponentiation",["number","1"],["infinity"]]`
@@ -1046,7 +1132,7 @@ satisfy the requirements of the test suite) are shown below.
    - output: JSON `["division",["exponentiation",["numbervariable","x"],["number","2"]],["number","3"]]`
 - Test 5
    - input: LaTeX `1\div e^x`, typeset $1\div e^x$
-   - output: JSON `["division",["number","1"],["exponentiation",["numbervariable","e"],["numbervariable","x"]]]`
+   - output: JSON `["division",["number","1"],["exponentiation",["eulersnumber"],["numbervariable","x"]]]`
 - Test 6
    - input: LaTeX `10\%\div2^{100}`, typeset $10\\%\div2^{100}$
    - output: JSON `["division",["percentage",["number","10"]],["exponentiation",["number","2"],["number","100"]]]`
@@ -1068,7 +1154,7 @@ satisfy the requirements of the test suite) are shown below.
    - output: JSON `["multiplication",["exponentiation",["numbervariable","x"],["number","2"]],["number","3"]]`
 - Test 5
    - input: LaTeX `1\times e^x`, typeset $1\times e^x$
-   - output: JSON `["multiplication",["number","1"],["exponentiation",["numbervariable","e"],["numbervariable","x"]]]`
+   - output: JSON `["multiplication",["number","1"],["exponentiation",["eulersnumber"],["numbervariable","x"]]]`
 - Test 6
    - input: LaTeX `10\%\cdot2^{100}`, typeset $10\\%\cdot2^{100}$
    - output: JSON `["multiplication",["percentage",["number","10"]],["exponentiation",["number","2"],["number","100"]]]`
@@ -1102,8 +1188,8 @@ satisfy the requirements of the test suite) are shown below.
    - input: LaTeX `1--3`, typeset $1--3$
    - output: JSON `["subtraction",["number","1"],["numbernegation",["number","3"]]]`
 - Test 3
-   - input: LaTeX `A^B+C-D`, typeset $A^B+C-D$
-   - output: JSON `["addition",["exponentiation",["numbervariable","A"],["numbervariable","B"]],["subtraction",["numbervariable","C"],["numbervariable","D"]]]`
+   - input: LaTeX `A^B+C-\pi`, typeset $A^B+C-\pi$
+   - output: JSON `["addition",["exponentiation",["numbervariable","A"],["numbervariable","B"]],["subtraction",["numbervariable","C"],["pi"]]]`
 
 
 ### can parse number expressions with groupers to JSON
@@ -1157,6 +1243,15 @@ satisfy the requirements of the test suite) are shown below.
 - Test 7
    - input: LaTeX `2\geq1\wedge2\leq3`, typeset $2\geq1\wedge2\leq3$
    - output: JSON `["conjunction",["greaterthanoreq",["number","2"],["number","1"]],["lessthanoreq",["number","2"],["number","3"]]]`
+- Test 8
+   - input: LaTeX `7|14`, typeset $7|14$
+   - output: JSON `["divides",["number","7"],["number","14"]]`
+- Test 9
+   - input: LaTeX `A(k) | n!`, typeset $A(k) | n!$
+   - output: JSON `["divides",["numfuncapp",["funcvariable","A"],["numbervariable","k"]],["factorial",["numbervariable","n"]]]`
+- Test 10
+   - input: LaTeX `1-k \sim 1+k`, typeset $1-k \sim 1+k$
+   - output: JSON `["genericrelation",["subtraction",["number","1"],["numbervariable","k"]],["addition",["number","1"],["numbervariable","k"]]]`
 
 
 ### converts inequality to its placeholder concept
@@ -1384,7 +1479,7 @@ satisfy the requirements of the test suite) are shown below.
    - output: JSON `["nounisnotin",["subtraction",["number","3"],["number","5"]],["intersection",["setvariable","K"],["setvariable","P"]]]`
 
 
-### can parse to JSON sentences built from set operators
+### can parse to JSON sentences built from various relations
 
 - Test 1
    - input: LaTeX `P\vee b\in B`, typeset $P\vee b\in B$
@@ -1401,6 +1496,12 @@ satisfy the requirements of the test suite) are shown below.
 - Test 5
    - input: LaTeX `R = A\cup B`, typeset $R = A\cup B$
    - output: JSON `["equality",["numbervariable","R"],["union",["setvariable","A"],["setvariable","B"]]]`
+- Test 6
+   - input: LaTeX `\forall n, n|n!`, typeset $\forall n, n|n!$
+   - output: JSON `["universal",["numbervariable","n"],["divides",["numbervariable","n"],["factorial",["numbervariable","n"]]]]`
+- Test 7
+   - input: LaTeX `a\sim b\Rightarrow b\sim a`, typeset $a\sim b\Rightarrow b\sim a$
+   - output: JSON `["implication",["genericrelation",["numbervariable","a"],["numbervariable","b"]],["genericrelation",["numbervariable","b"],["numbervariable","a"]]]`
 
 
 ### can parse notation related to functions
@@ -1434,10 +1535,29 @@ satisfy the requirements of the test suite) are shown below.
    - output: JSON `["intersection",["emptyset"],["setfuncapp",["funcvariable","f"],["number","2"]]]`
 - Test 10
    - input: LaTeX `P(e)\wedge Q(3+b)`, typeset $P(e)\wedge Q(3+b)$
-   - output: JSON `["conjunction",["propfuncapp",["funcvariable","P"],["numbervariable","e"]],["propfuncapp",["funcvariable","Q"],["addition",["number","3"],["numbervariable","b"]]]]`
+   - output: JSON `["conjunction",["propfuncapp",["funcvariable","P"],["eulersnumber"]],["propfuncapp",["funcvariable","Q"],["addition",["number","3"],["numbervariable","b"]]]]`
 - Test 11
    - input: LaTeX `F=G\circ H^{-1}`, typeset $F=G\circ H^{-1}$
    - output: JSON `["funcequality",["funcvariable","F"],["funccomp",["funcvariable","G"],["funcinverse",["funcvariable","H"]]]]`
+
+
+### can parse trigonometric functions correctly
+
+- Test 1
+   - input: LaTeX `\sin x`, typeset $\sin x$
+   - output: JSON `["prefixfuncapp",["sinfunc"],["numbervariable","x"]]`
+- Test 2
+   - input: LaTeX `\cos\pi\cdot x`, typeset $\cos\pi\cdot x$
+   - output: JSON `["prefixfuncapp",["cosfunc"],["multiplication",["pi"],["numbervariable","x"]]]`
+- Test 3
+   - input: LaTeX `\tan t`, typeset $\tan t$
+   - output: JSON `["prefixfuncapp",["tanfunc"],["numbervariable","t"]]`
+- Test 4
+   - input: LaTeX `1\div\cot\pi`, typeset $1\div\cot\pi$
+   - output: JSON `["division",["number","1"],["prefixfuncapp",["cotfunc"],["pi"]]]`
+- Test 5
+   - input: LaTeX `\sec y=\csc y`, typeset $\sec y=\csc y$
+   - output: JSON `["equality",["prefixfuncapp",["secfunc"],["numbervariable","y"]],["prefixfuncapp",["cscfunc"],["numbervariable","y"]]]`
 
 
 ## <a name="Rendering-JSON-into-LaTeX">Rendering JSON into LaTeX</a>
@@ -1504,11 +1624,17 @@ satisfy the requirements of the test suite) are shown below.
    - output: LaTeX `to`, typeset $to$
 
 
-### can convert infinity from JSON to LaTeX
+### can convert numeric constants from JSON to LaTeX
 
 - Test 1
    - input: JSON `["infinity"]`
    - output: LaTeX `\infty`, typeset $\infty$
+- Test 2
+   - input: JSON `["pi"]`
+   - output: LaTeX `\pi`, typeset $\pi$
+- Test 3
+   - input: JSON `["eulersnumber"]`
+   - output: LaTeX `e`, typeset $e$
 
 
 ### can convert exponentiation of atomics from JSON to LaTeX
@@ -1609,8 +1735,8 @@ satisfy the requirements of the test suite) are shown below.
    - input: JSON `["subtraction",["number","1"],["numbernegation",["number","3"]]]`
    - output: LaTeX `1 - - 3`, typeset $1 - - 3$
 - Test 3
-   - input: JSON `["subtraction",["addition",["exponentiation",["numbervariable","A"],["numbervariable","B"]],["numbervariable","C"]],["numbervariable","D"]]`
-   - output: LaTeX `A ^ B + C - D`, typeset $A ^ B + C - D$
+   - input: JSON `["subtraction",["addition",["exponentiation",["numbervariable","A"],["numbervariable","B"]],["numbervariable","C"]],["pi"]]`
+   - output: LaTeX `A ^ B + C - \pi`, typeset $A ^ B + C - \pi$
 
 
 ### can convert number expressions with groupers from JSON to LaTeX
@@ -1643,6 +1769,15 @@ satisfy the requirements of the test suite) are shown below.
 - Test 3
    - input: JSON `["conjunction",["greaterthanoreq",["number","2"],["number","1"]],["lessthanoreq",["number","2"],["number","3"]]]`
    - output: LaTeX `2 \ge 1 \wedge 2 \le 3`, typeset $2 \ge 1 \wedge 2 \le 3$
+- Test 4
+   - input: JSON `["divides",["number","7"],["number","14"]]`
+   - output: LaTeX `7 | 14`, typeset $7 | 14$
+- Test 5
+   - input: JSON `["divides",["numfuncapp",["funcvariable","A"],["numbervariable","k"]],["factorial",["numbervariable","n"]]]`
+   - output: LaTeX `A ( k ) | n !`, typeset $A ( k ) | n !$
+- Test 6
+   - input: JSON `["genericrelation",["subtraction",["number","1"],["numbervariable","k"]],["addition",["number","1"],["numbervariable","k"]]]`
+   - output: LaTeX `1 - k \sim 1 + k`, typeset $1 - k \sim 1 + k$
 
 
 ### can represent inequality if JSON explicitly requests it
@@ -1843,7 +1978,7 @@ satisfy the requirements of the test suite) are shown below.
    - output: LaTeX `3 - 5 \notin K \cap P`, typeset $3 - 5 \notin K \cap P$
 
 
-### can convert to LaTeX sentences built from set operators
+### can convert to LaTeX sentences built from various relations
 
 - Test 1
    - input: JSON `["disjunction",["logicvariable","P"],["nounisin",["numbervariable","b"],["setvariable","B"]]]`
@@ -1860,6 +1995,12 @@ satisfy the requirements of the test suite) are shown below.
 - Test 5
    - input: JSON `["equality",["setvariable","R"],["setproduct",["setvariable","A"],["setvariable","B"]]]`
    - output: LaTeX `R = A \times B`, typeset $R = A \times B$
+- Test 6
+   - input: JSON `["universal",["numbervariable","n"],["divides",["numbervariable","n"],["factorial",["numbervariable","n"]]]]`
+   - output: LaTeX `\forall n , n | n !`, typeset $\forall n , n | n !$
+- Test 7
+   - input: JSON `["implication",["genericrelation",["numbervariable","a"],["numbervariable","b"]],["genericrelation",["numbervariable","b"],["numbervariable","a"]]]`
+   - output: LaTeX `a \sim b \Rightarrow b \sim a`, typeset $a \sim b \Rightarrow b \sim a$
 
 
 ### can create LaTeX notation related to functions
@@ -1891,6 +2032,25 @@ satisfy the requirements of the test suite) are shown below.
 - Test 9
    - input: JSON `["funcequality",["funcvariable","F"],["funccomp",["funcvariable","G"],["funcinverse",["funcvariable","H"]]]]`
    - output: LaTeX `F = G \circ H ^ { - 1 }`, typeset $F = G \circ H ^ { - 1 }$
+
+
+### can represent trigonometric functions correctly
+
+- Test 1
+   - input: JSON `["prefixfuncapp",["sinfunc"],["numbervariable","x"]]`
+   - output: LaTeX `\sin x`, typeset $\sin x$
+- Test 2
+   - input: JSON `["prefixfuncapp",["cosfunc"],["multiplication",["pi"],["numbervariable","x"]]]`
+   - output: LaTeX `\cos \pi \times x`, typeset $\cos \pi \times x$
+- Test 3
+   - input: JSON `["prefixfuncapp",["tanfunc"],["numbervariable","t"]]`
+   - output: LaTeX `\tan t`, typeset $\tan t$
+- Test 4
+   - input: JSON `["division",["number","1"],["prefixfuncapp",["cotfunc"],["pi"]]]`
+   - output: LaTeX `1 \div \cot \pi`, typeset $1 \div \cot \pi$
+- Test 5
+   - input: JSON `["equality",["prefixfuncapp",["secfunc"],["numbervariable","y"]],["prefixfuncapp",["cscfunc"],["numbervariable","y"]]]`
+   - output: LaTeX `\sec y = \csc y`, typeset $\sec y = \csc y$
 
 
 ## <a name="Converting-putdown-to-LaTeX">Converting putdown to LaTeX</a>
@@ -1945,11 +2105,17 @@ satisfy the requirements of the test suite) are shown below.
    - output: LaTeX `null`, typeset $undefined$
 
 
-### correctly converts the infinity symbol
+### correctly converts numeric constants
 
 - Test 1
    - input: putdown `infinity`
    - output: LaTeX `\infty`, typeset $\infty$
+- Test 2
+   - input: putdown `pi`
+   - output: LaTeX `\pi`, typeset $\pi$
+- Test 3
+   - input: putdown `eulersnumber`
+   - output: LaTeX `e`, typeset $e$
 
 
 ### correctly converts exponentiation of atomics
@@ -2050,8 +2216,8 @@ satisfy the requirements of the test suite) are shown below.
    - input: putdown `(- 1 (- 3))`
    - output: LaTeX `1 - - 3`, typeset $1 - - 3$
 - Test 3
-   - input: putdown `(+ (^ A B) (- C D))`
-   - output: LaTeX `A ^ B + C - D`, typeset $A ^ B + C - D$
+   - input: putdown `(+ (^ A B) (- C pi))`
+   - output: LaTeX `A ^ B + C - \pi`, typeset $A ^ B + C - \pi$
 
 
 ### correctly converts number expressions with groupers
@@ -2084,6 +2250,15 @@ satisfy the requirements of the test suite) are shown below.
 - Test 4
    - input: putdown `(and (>= 2 1) (<= 2 3))`
    - output: LaTeX `2 \ge 1 \wedge 2 \le 3`, typeset $2 \ge 1 \wedge 2 \le 3$
+- Test 5
+   - input: putdown `(divides 7 14)`
+   - output: LaTeX `7 | 14`, typeset $7 | 14$
+- Test 6
+   - input: putdown `(divides (apply A k) (! n))`
+   - output: LaTeX `A ( k ) | n !`, typeset $A ( k ) | n !$
+- Test 7
+   - input: putdown `(~ (- 1 k) (+ 1 k))`
+   - output: LaTeX `1 - k \sim 1 + k`, typeset $1 - k \sim 1 + k$
 
 
 ### does not undo the canonical form for inequality
@@ -2316,6 +2491,12 @@ satisfy the requirements of the test suite) are shown below.
 - Test 5
    - input: putdown `(= R (setprod A B))`
    - output: LaTeX `R = A \times B`, typeset $R = A \times B$
+- Test 6
+   - input: putdown `(forall (n , (divides n (! n))))`
+   - output: LaTeX `\forall n , n | n !`, typeset $\forall n , n | n !$
+- Test 7
+   - input: putdown `(implies (~ a b) (~ b a))`
+   - output: LaTeX `a \sim b \Rightarrow b \sim a`, typeset $a \sim b \Rightarrow b \sim a$
 
 
 ### can convert notation related to functions
@@ -2347,6 +2528,25 @@ satisfy the requirements of the test suite) are shown below.
 - Test 9
    - input: putdown `(= F (compose G (inverse H)))`
    - output: LaTeX `F = G \circ H ^ { - 1 }`, typeset $F = G \circ H ^ { - 1 }$
+
+
+### can convert expressions with trigonometric functions
+
+- Test 1
+   - input: putdown `(apply sin x)`
+   - output: LaTeX `\sin x`, typeset $\sin x$
+- Test 2
+   - input: putdown `(apply cos (* pi x))`
+   - output: LaTeX `\cos \pi \times x`, typeset $\cos \pi \times x$
+- Test 3
+   - input: putdown `(apply tan t)`
+   - output: LaTeX `\tan t`, typeset $\tan t$
+- Test 4
+   - input: putdown `(/ 1 (apply cot pi))`
+   - output: LaTeX `1 \div \cot \pi`, typeset $1 \div \cot \pi$
+- Test 5
+   - input: putdown `(= (apply sec y) (apply csc y))`
+   - output: LaTeX `\sec y = \csc y`, typeset $\sec y = \csc y$
 
 
 ## <a name="Converting-LaTeX-to-putdown">Converting LaTeX to putdown</a>
@@ -2401,11 +2601,17 @@ satisfy the requirements of the test suite) are shown below.
    - output: putdown `null`
 
 
-### correctly converts the infinity symbol
+### correctly converts numeric constants
 
 - Test 1
    - input: LaTeX `\infty`, typeset $\infty$
    - output: putdown `infinity`
+- Test 2
+   - input: LaTeX `\pi`, typeset $\pi$
+   - output: putdown `pi`
+- Test 3
+   - input: LaTeX `e`, typeset $e$
+   - output: putdown `e`
 
 
 ### correctly converts exponentiation of atomics
@@ -2415,7 +2621,7 @@ satisfy the requirements of the test suite) are shown below.
    - output: putdown `(^ 1 2)`
 - Test 2
    - input: LaTeX `e^x`, typeset $e^x$
-   - output: putdown `(^ e x)`
+   - output: putdown `(^ eulersnumber x)`
 - Test 3
    - input: LaTeX `1^\infty`, typeset $1^\infty$
    - output: putdown `(^ 1 infinity)`
@@ -2453,7 +2659,7 @@ satisfy the requirements of the test suite) are shown below.
    - output: putdown `(/ (^ x 2) 3)`
 - Test 5
    - input: LaTeX `1\div e^x`, typeset $1\div e^x$
-   - output: putdown `(/ 1 (^ e x))`
+   - output: putdown `(/ 1 (^ eulersnumber x))`
 - Test 6
    - input: LaTeX `10\%\div2^{100}`, typeset $10\\%\div2^{100}$
    - output: putdown `(/ (% 10) (^ 2 100))`
@@ -2475,7 +2681,7 @@ satisfy the requirements of the test suite) are shown below.
    - output: putdown `(* (^ x 2) 3)`
 - Test 5
    - input: LaTeX `1\times e^x`, typeset $1\times e^x$
-   - output: putdown `(* 1 (^ e x))`
+   - output: putdown `(* 1 (^ eulersnumber x))`
 - Test 6
    - input: LaTeX `10\%\cdot2^{100}`, typeset $10\\%\cdot2^{100}$
    - output: putdown `(* (% 10) (^ 2 100))`
@@ -2512,8 +2718,8 @@ satisfy the requirements of the test suite) are shown below.
    - input: LaTeX `1 - - 3`, typeset $1 - - 3$
    - output: putdown `(- 1 (- 3))`
 - Test 3
-   - input: LaTeX `A ^ B + C - D`, typeset $A ^ B + C - D$
-   - output: putdown `(+ (^ A B) (- C D))`
+   - input: LaTeX `A ^ B + C - \pi`, typeset $A ^ B + C - \pi$
+   - output: putdown `(+ (^ A B) (- C pi))`
 
 
 ### correctly converts number expressions with groupers
@@ -2570,6 +2776,15 @@ satisfy the requirements of the test suite) are shown below.
 - Test 7
    - input: LaTeX `2\geq1\wedge2\leq3`, typeset $2\geq1\wedge2\leq3$
    - output: putdown `(and (>= 2 1) (<= 2 3))`
+- Test 8
+   - input: LaTeX `7 | 14`, typeset $7 | 14$
+   - output: putdown `(divides 7 14)`
+- Test 9
+   - input: LaTeX `A ( k ) | n !`, typeset $A ( k ) | n !$
+   - output: putdown `(divides (apply A k) (! n))`
+- Test 10
+   - input: LaTeX `1 - k \sim 1 + k`, typeset $1 - k \sim 1 + k$
+   - output: putdown `(~ (- 1 k) (+ 1 k))`
 
 
 ### creates the canonical form for inequality
@@ -2811,6 +3026,12 @@ satisfy the requirements of the test suite) are shown below.
 - Test 6
    - input: LaTeX `R = A \cup B`, typeset $R = A \cup B$
    - output: putdown `(= R (setuni A B))`
+- Test 7
+   - input: LaTeX `\forall n , n | n !`, typeset $\forall n , n | n !$
+   - output: putdown `(forall (n , (divides n (! n))))`
+- Test 8
+   - input: LaTeX `a \sim b \Rightarrow b \sim a`, typeset $a \sim b \Rightarrow b \sim a$
+   - output: putdown `(implies (~ a b) (~ b a))`
 
 
 ### can convert notation related to functions
@@ -2844,9 +3065,28 @@ satisfy the requirements of the test suite) are shown below.
    - output: putdown `(setint emptyset (apply f 2))`
 - Test 10
    - input: LaTeX `P(e)\wedge Q(3+b)`, typeset $P(e)\wedge Q(3+b)$
-   - output: putdown `(and (apply P e) (apply Q (+ 3 b)))`
+   - output: putdown `(and (apply P eulersnumber) (apply Q (+ 3 b)))`
 - Test 11
    - input: LaTeX `F=G\circ H^{-1}`, typeset $F=G\circ H^{-1}$
    - output: putdown `(= F (compose G (inverse H)))`
+
+
+### can convert expressions with trigonometric functions
+
+- Test 1
+   - input: LaTeX `\sin x`, typeset $\sin x$
+   - output: putdown `(apply sin x)`
+- Test 2
+   - input: LaTeX `\cos \pi \times x`, typeset $\cos \pi \times x$
+   - output: putdown `(apply cos (* pi x))`
+- Test 3
+   - input: LaTeX `\tan t`, typeset $\tan t$
+   - output: putdown `(apply tan t)`
+- Test 4
+   - input: LaTeX `1 \div \cot \pi`, typeset $1 \div \cot \pi$
+   - output: putdown `(/ 1 (apply cot pi))`
+- Test 5
+   - input: LaTeX `\sec y = \csc y`, typeset $\sec y = \csc y$
+   - output: putdown `(= (apply sec y) (apply csc y))`
 
 

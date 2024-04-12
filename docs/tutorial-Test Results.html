@@ -183,12 +183,24 @@ satisfy the requirements of the test suite) are shown below.</p>
 </ul>
 </li>
 </ul>
-<h3>can convert infinity from putdown to JSON</h3>
+<h3>can convert numeric constants from putdown to JSON</h3>
 <ul>
 <li>Test 1
 <ul>
 <li>input: putdown <code>infinity</code></li>
 <li>output: JSON <code>[&quot;infinity&quot;]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>pi</code></li>
+<li>output: JSON <code>[&quot;pi&quot;]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>eulersnumber</code></li>
+<li>output: JSON <code>[&quot;eulersnumber&quot;]</code></li>
 </ul>
 </li>
 </ul>
@@ -361,8 +373,8 @@ satisfy the requirements of the test suite) are shown below.</p>
 </li>
 <li>Test 3
 <ul>
-<li>input: putdown <code>(+ (^ A B) (- C D))</code></li>
-<li>output: JSON <code>[&quot;addition&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;A&quot;],[&quot;numbervariable&quot;,&quot;B&quot;]],[&quot;subtraction&quot;,[&quot;numbervariable&quot;,&quot;C&quot;],[&quot;numbervariable&quot;,&quot;D&quot;]]]</code></li>
+<li>input: putdown <code>(+ (^ A B) (- C pi))</code></li>
+<li>output: JSON <code>[&quot;addition&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;A&quot;],[&quot;numbervariable&quot;,&quot;B&quot;]],[&quot;subtraction&quot;,[&quot;numbervariable&quot;,&quot;C&quot;],[&quot;pi&quot;]]]</code></li>
 </ul>
 </li>
 </ul>
@@ -417,6 +429,24 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: putdown <code>(and (&gt;= 2 1) (&lt;= 2 3))</code></li>
 <li>output: JSON <code>[&quot;conjunction&quot;,[&quot;greaterthanoreq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;number&quot;,&quot;1&quot;]],[&quot;lessthanoreq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;number&quot;,&quot;3&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: putdown <code>(divides 7 14)</code></li>
+<li>output: JSON <code>[&quot;divides&quot;,[&quot;number&quot;,&quot;7&quot;],[&quot;number&quot;,&quot;14&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: putdown <code>(divides (apply A k) (! n))</code></li>
+<li>output: JSON <code>[&quot;divides&quot;,[&quot;numfuncapp&quot;,[&quot;funcvariable&quot;,&quot;A&quot;],[&quot;numbervariable&quot;,&quot;k&quot;]],[&quot;factorial&quot;,[&quot;numbervariable&quot;,&quot;n&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: putdown <code>(~ (- 1 k) (+ 1 k))</code></li>
+<li>output: JSON <code>[&quot;genericrelation&quot;,[&quot;subtraction&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numbervariable&quot;,&quot;k&quot;]],[&quot;addition&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numbervariable&quot;,&quot;k&quot;]]]</code></li>
 </ul>
 </li>
 </ul>
@@ -786,7 +816,7 @@ satisfy the requirements of the test suite) are shown below.</p>
 </ul>
 </li>
 </ul>
-<h3>can parse to JSON sentences built from set operators</h3>
+<h3>can parse to JSON sentences built from various relations</h3>
 <ul>
 <li>Test 1
 <ul>
@@ -810,6 +840,18 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: putdown <code>(= R (setprod A B))</code></li>
 <li>output: JSON <code>[&quot;equality&quot;,[&quot;numbervariable&quot;,&quot;R&quot;],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: putdown <code>(forall (n , (divides n (! n))))</code></li>
+<li>output: JSON <code>[&quot;universal&quot;,[&quot;numbervariable&quot;,&quot;n&quot;],[&quot;divides&quot;,[&quot;numbervariable&quot;,&quot;n&quot;],[&quot;factorial&quot;,[&quot;numbervariable&quot;,&quot;n&quot;]]]]</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: putdown <code>(implies (~ a b) (~ b a))</code></li>
+<li>output: JSON <code>[&quot;implication&quot;,[&quot;genericrelation&quot;,[&quot;numbervariable&quot;,&quot;a&quot;],[&quot;numbervariable&quot;,&quot;b&quot;]],[&quot;genericrelation&quot;,[&quot;numbervariable&quot;,&quot;b&quot;],[&quot;numbervariable&quot;,&quot;a&quot;]]]</code></li>
 </ul>
 </li>
 </ul>
@@ -873,6 +915,39 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: putdown <code>(= F (compose G (inverse H)))</code></li>
 <li>output: JSON <code>[&quot;funcequality&quot;,[&quot;funcvariable&quot;,&quot;F&quot;],[&quot;funccomp&quot;,[&quot;funcvariable&quot;,&quot;G&quot;],[&quot;funcinverse&quot;,[&quot;funcvariable&quot;,&quot;H&quot;]]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can parse trigonometric functions correctly</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(apply sin x)</code></li>
+<li>output: JSON <code>[&quot;prefixfuncapp&quot;,[&quot;sinfunc&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(apply cos (* pi x))</code></li>
+<li>output: JSON <code>[&quot;prefixfuncapp&quot;,[&quot;cosfunc&quot;],[&quot;multiplication&quot;,[&quot;pi&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(apply tan t)</code></li>
+<li>output: JSON <code>[&quot;prefixfuncapp&quot;,[&quot;tanfunc&quot;],[&quot;numbervariable&quot;,&quot;t&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: putdown <code>(/ 1 (apply cot pi))</code></li>
+<li>output: JSON <code>[&quot;division&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;prefixfuncapp&quot;,[&quot;cotfunc&quot;],[&quot;pi&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: putdown <code>(= (apply sec y) (apply csc y))</code></li>
+<li>output: JSON <code>[&quot;equality&quot;,[&quot;prefixfuncapp&quot;,[&quot;secfunc&quot;],[&quot;numbervariable&quot;,&quot;y&quot;]],[&quot;prefixfuncapp&quot;,[&quot;cscfunc&quot;],[&quot;numbervariable&quot;,&quot;y&quot;]]]</code></li>
 </ul>
 </li>
 </ul>
@@ -991,12 +1066,24 @@ satisfy the requirements of the test suite) are shown below.</p>
 </ul>
 </li>
 </ul>
-<h3>can convert infinity from JSON to putdown</h3>
+<h3>can convert numeric constants from JSON to putdown</h3>
 <ul>
 <li>Test 1
 <ul>
 <li>input: JSON <code>[&quot;infinity&quot;]</code></li>
 <li>output: putdown <code>infinity</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;pi&quot;]</code></li>
+<li>output: putdown <code>pi</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;eulersnumber&quot;]</code></li>
+<li>output: putdown <code>eulersnumber</code></li>
 </ul>
 </li>
 </ul>
@@ -1169,8 +1256,8 @@ satisfy the requirements of the test suite) are shown below.</p>
 </li>
 <li>Test 3
 <ul>
-<li>input: JSON <code>[&quot;addition&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;A&quot;],[&quot;numbervariable&quot;,&quot;B&quot;]],[&quot;subtraction&quot;,[&quot;numbervariable&quot;,&quot;C&quot;],[&quot;numbervariable&quot;,&quot;D&quot;]]]</code></li>
-<li>output: putdown <code>(+ (^ A B) (- C D))</code></li>
+<li>input: JSON <code>[&quot;addition&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;A&quot;],[&quot;numbervariable&quot;,&quot;B&quot;]],[&quot;subtraction&quot;,[&quot;numbervariable&quot;,&quot;C&quot;],[&quot;pi&quot;]]]</code></li>
+<li>output: putdown <code>(+ (^ A B) (- C pi))</code></li>
 </ul>
 </li>
 </ul>
@@ -1225,6 +1312,24 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: JSON <code>[&quot;conjunction&quot;,[&quot;greaterthanoreq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;number&quot;,&quot;1&quot;]],[&quot;lessthanoreq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;number&quot;,&quot;3&quot;]]]</code></li>
 <li>output: putdown <code>(and (&gt;= 2 1) (&lt;= 2 3))</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: JSON <code>[&quot;divides&quot;,[&quot;number&quot;,&quot;7&quot;],[&quot;number&quot;,&quot;14&quot;]]</code></li>
+<li>output: putdown <code>(divides 7 14)</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: JSON <code>[&quot;divides&quot;,[&quot;numfuncapp&quot;,[&quot;funcvariable&quot;,&quot;A&quot;],[&quot;numbervariable&quot;,&quot;k&quot;]],[&quot;factorial&quot;,[&quot;numbervariable&quot;,&quot;n&quot;]]]</code></li>
+<li>output: putdown <code>(divides (apply A k) (! n))</code></li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: JSON <code>[&quot;genericrelation&quot;,[&quot;subtraction&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numbervariable&quot;,&quot;k&quot;]],[&quot;addition&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numbervariable&quot;,&quot;k&quot;]]]</code></li>
+<li>output: putdown <code>(~ (- 1 k) (+ 1 k))</code></li>
 </ul>
 </li>
 </ul>
@@ -1558,7 +1663,7 @@ satisfy the requirements of the test suite) are shown below.</p>
 </ul>
 </li>
 </ul>
-<h3>can convert to putdown sentences built from set operators</h3>
+<h3>can convert to putdown sentences built from various relations</h3>
 <ul>
 <li>Test 1
 <ul>
@@ -1582,6 +1687,18 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: JSON <code>[&quot;equality&quot;,[&quot;numbervariable&quot;,&quot;R&quot;],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
 <li>output: putdown <code>(= R (setprod A B))</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: JSON <code>[&quot;universal&quot;,[&quot;numbervariable&quot;,&quot;n&quot;],[&quot;divides&quot;,[&quot;numbervariable&quot;,&quot;n&quot;],[&quot;factorial&quot;,[&quot;numbervariable&quot;,&quot;n&quot;]]]]</code></li>
+<li>output: putdown <code>(forall (n , (divides n (! n))))</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: JSON <code>[&quot;implication&quot;,[&quot;genericrelation&quot;,[&quot;numbervariable&quot;,&quot;a&quot;],[&quot;numbervariable&quot;,&quot;b&quot;]],[&quot;genericrelation&quot;,[&quot;numbervariable&quot;,&quot;b&quot;],[&quot;numbervariable&quot;,&quot;a&quot;]]]</code></li>
+<li>output: putdown <code>(implies (~ a b) (~ b a))</code></li>
 </ul>
 </li>
 </ul>
@@ -1639,6 +1756,39 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: JSON <code>[&quot;funcequality&quot;,[&quot;funcvariable&quot;,&quot;F&quot;],[&quot;funccomp&quot;,[&quot;funcvariable&quot;,&quot;G&quot;],[&quot;funcinverse&quot;,[&quot;funcvariable&quot;,&quot;H&quot;]]]]</code></li>
 <li>output: putdown <code>(= F (compose G (inverse H)))</code></li>
+</ul>
+</li>
+</ul>
+<h3>can express trigonometric functions correctly</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;numfuncapp&quot;,[&quot;sinfunc&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]</code></li>
+<li>output: putdown <code>(apply sin x)</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;numfuncapp&quot;,[&quot;cosfunc&quot;],[&quot;multiplication&quot;,[&quot;pi&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]]</code></li>
+<li>output: putdown <code>(apply cos (* pi x))</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;numfuncapp&quot;,[&quot;tanfunc&quot;],[&quot;numbervariable&quot;,&quot;t&quot;]]</code></li>
+<li>output: putdown <code>(apply tan t)</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;division&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numfuncapp&quot;,[&quot;cotfunc&quot;],[&quot;pi&quot;]]]</code></li>
+<li>output: putdown <code>(/ 1 (apply cot pi))</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: JSON <code>[&quot;equality&quot;,[&quot;numfuncapp&quot;,[&quot;secfunc&quot;],[&quot;numbervariable&quot;,&quot;y&quot;]],[&quot;numfuncapp&quot;,[&quot;cscfunc&quot;],[&quot;numbervariable&quot;,&quot;y&quot;]]]</code></li>
+<li>output: putdown <code>(= (apply sec y) (apply csc y))</code></li>
 </ul>
 </li>
 </ul>
@@ -1757,12 +1907,24 @@ satisfy the requirements of the test suite) are shown below.</p>
 </ul>
 </li>
 </ul>
-<h3>can parse LaTeX infinity to JSON</h3>
+<h3>can parse LaTeX numeric constants to JSON</h3>
 <ul>
 <li>Test 1
 <ul>
 <li>input: LaTeX <code>\infty</code>, typeset $\infty$</li>
 <li>output: JSON <code>[&quot;infinity&quot;]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>\pi</code>, typeset $\pi$</li>
+<li>output: JSON <code>[&quot;pi&quot;]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>e</code>, typeset $e$</li>
+<li>output: JSON <code>[&quot;funcvariable&quot;,&quot;e&quot;]</code></li>
 </ul>
 </li>
 </ul>
@@ -1777,7 +1939,7 @@ satisfy the requirements of the test suite) are shown below.</p>
 <li>Test 2
 <ul>
 <li>input: LaTeX <code>e^x</code>, typeset $e^x$</li>
-<li>output: JSON <code>[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;e&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]</code></li>
+<li>output: JSON <code>[&quot;exponentiation&quot;,[&quot;eulersnumber&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]</code></li>
 </ul>
 </li>
 <li>Test 3
@@ -1843,7 +2005,7 @@ satisfy the requirements of the test suite) are shown below.</p>
 <li>Test 5
 <ul>
 <li>input: LaTeX <code>1\div e^x</code>, typeset $1\div e^x$</li>
-<li>output: JSON <code>[&quot;division&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;e&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]]</code></li>
+<li>output: JSON <code>[&quot;division&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;exponentiation&quot;,[&quot;eulersnumber&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]]</code></li>
 </ul>
 </li>
 <li>Test 6
@@ -1882,7 +2044,7 @@ satisfy the requirements of the test suite) are shown below.</p>
 <li>Test 5
 <ul>
 <li>input: LaTeX <code>1\times e^x</code>, typeset $1\times e^x$</li>
-<li>output: JSON <code>[&quot;multiplication&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;e&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]]</code></li>
+<li>output: JSON <code>[&quot;multiplication&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;exponentiation&quot;,[&quot;eulersnumber&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]]</code></li>
 </ul>
 </li>
 <li>Test 6
@@ -1941,8 +2103,8 @@ satisfy the requirements of the test suite) are shown below.</p>
 </li>
 <li>Test 3
 <ul>
-<li>input: LaTeX <code>A^B+C-D</code>, typeset $A^B+C-D$</li>
-<li>output: JSON <code>[&quot;addition&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;A&quot;],[&quot;numbervariable&quot;,&quot;B&quot;]],[&quot;subtraction&quot;,[&quot;numbervariable&quot;,&quot;C&quot;],[&quot;numbervariable&quot;,&quot;D&quot;]]]</code></li>
+<li>input: LaTeX <code>A^B+C-\pi</code>, typeset $A^B+C-\pi$</li>
+<li>output: JSON <code>[&quot;addition&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;A&quot;],[&quot;numbervariable&quot;,&quot;B&quot;]],[&quot;subtraction&quot;,[&quot;numbervariable&quot;,&quot;C&quot;],[&quot;pi&quot;]]]</code></li>
 </ul>
 </li>
 </ul>
@@ -2039,6 +2201,24 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: LaTeX <code>2\geq1\wedge2\leq3</code>, typeset $2\geq1\wedge2\leq3$</li>
 <li>output: JSON <code>[&quot;conjunction&quot;,[&quot;greaterthanoreq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;number&quot;,&quot;1&quot;]],[&quot;lessthanoreq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;number&quot;,&quot;3&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: LaTeX <code>7|14</code>, typeset $7|14$</li>
+<li>output: JSON <code>[&quot;divides&quot;,[&quot;number&quot;,&quot;7&quot;],[&quot;number&quot;,&quot;14&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 9
+<ul>
+<li>input: LaTeX <code>A(k) | n!</code>, typeset $A(k) | n!$</li>
+<li>output: JSON <code>[&quot;divides&quot;,[&quot;numfuncapp&quot;,[&quot;funcvariable&quot;,&quot;A&quot;],[&quot;numbervariable&quot;,&quot;k&quot;]],[&quot;factorial&quot;,[&quot;numbervariable&quot;,&quot;n&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 10
+<ul>
+<li>input: LaTeX <code>1-k \sim 1+k</code>, typeset $1-k \sim 1+k$</li>
+<li>output: JSON <code>[&quot;genericrelation&quot;,[&quot;subtraction&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numbervariable&quot;,&quot;k&quot;]],[&quot;addition&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numbervariable&quot;,&quot;k&quot;]]]</code></li>
 </ul>
 </li>
 </ul>
@@ -2432,7 +2612,7 @@ satisfy the requirements of the test suite) are shown below.</p>
 </ul>
 </li>
 </ul>
-<h3>can parse to JSON sentences built from set operators</h3>
+<h3>can parse to JSON sentences built from various relations</h3>
 <ul>
 <li>Test 1
 <ul>
@@ -2462,6 +2642,18 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: LaTeX <code>R = A\cup B</code>, typeset $R = A\cup B$</li>
 <li>output: JSON <code>[&quot;equality&quot;,[&quot;numbervariable&quot;,&quot;R&quot;],[&quot;union&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: LaTeX <code>\forall n, n|n!</code>, typeset $\forall n, n|n!$</li>
+<li>output: JSON <code>[&quot;universal&quot;,[&quot;numbervariable&quot;,&quot;n&quot;],[&quot;divides&quot;,[&quot;numbervariable&quot;,&quot;n&quot;],[&quot;factorial&quot;,[&quot;numbervariable&quot;,&quot;n&quot;]]]]</code></li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: LaTeX <code>a\sim b\Rightarrow b\sim a</code>, typeset $a\sim b\Rightarrow b\sim a$</li>
+<li>output: JSON <code>[&quot;implication&quot;,[&quot;genericrelation&quot;,[&quot;numbervariable&quot;,&quot;a&quot;],[&quot;numbervariable&quot;,&quot;b&quot;]],[&quot;genericrelation&quot;,[&quot;numbervariable&quot;,&quot;b&quot;],[&quot;numbervariable&quot;,&quot;a&quot;]]]</code></li>
 </ul>
 </li>
 </ul>
@@ -2524,13 +2716,46 @@ satisfy the requirements of the test suite) are shown below.</p>
 <li>Test 10
 <ul>
 <li>input: LaTeX <code>P(e)\wedge Q(3+b)</code>, typeset $P(e)\wedge Q(3+b)$</li>
-<li>output: JSON <code>[&quot;conjunction&quot;,[&quot;propfuncapp&quot;,[&quot;funcvariable&quot;,&quot;P&quot;],[&quot;numbervariable&quot;,&quot;e&quot;]],[&quot;propfuncapp&quot;,[&quot;funcvariable&quot;,&quot;Q&quot;],[&quot;addition&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;numbervariable&quot;,&quot;b&quot;]]]]</code></li>
+<li>output: JSON <code>[&quot;conjunction&quot;,[&quot;propfuncapp&quot;,[&quot;funcvariable&quot;,&quot;P&quot;],[&quot;eulersnumber&quot;]],[&quot;propfuncapp&quot;,[&quot;funcvariable&quot;,&quot;Q&quot;],[&quot;addition&quot;,[&quot;number&quot;,&quot;3&quot;],[&quot;numbervariable&quot;,&quot;b&quot;]]]]</code></li>
 </ul>
 </li>
 <li>Test 11
 <ul>
 <li>input: LaTeX <code>F=G\circ H^{-1}</code>, typeset $F=G\circ H^{-1}$</li>
 <li>output: JSON <code>[&quot;funcequality&quot;,[&quot;funcvariable&quot;,&quot;F&quot;],[&quot;funccomp&quot;,[&quot;funcvariable&quot;,&quot;G&quot;],[&quot;funcinverse&quot;,[&quot;funcvariable&quot;,&quot;H&quot;]]]]</code></li>
+</ul>
+</li>
+</ul>
+<h3>can parse trigonometric functions correctly</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>\sin x</code>, typeset $\sin x$</li>
+<li>output: JSON <code>[&quot;prefixfuncapp&quot;,[&quot;sinfunc&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>\cos\pi\cdot x</code>, typeset $\cos\pi\cdot x$</li>
+<li>output: JSON <code>[&quot;prefixfuncapp&quot;,[&quot;cosfunc&quot;],[&quot;multiplication&quot;,[&quot;pi&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>\tan t</code>, typeset $\tan t$</li>
+<li>output: JSON <code>[&quot;prefixfuncapp&quot;,[&quot;tanfunc&quot;],[&quot;numbervariable&quot;,&quot;t&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: LaTeX <code>1\div\cot\pi</code>, typeset $1\div\cot\pi$</li>
+<li>output: JSON <code>[&quot;division&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;prefixfuncapp&quot;,[&quot;cotfunc&quot;],[&quot;pi&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: LaTeX <code>\sec y=\csc y</code>, typeset $\sec y=\csc y$</li>
+<li>output: JSON <code>[&quot;equality&quot;,[&quot;prefixfuncapp&quot;,[&quot;secfunc&quot;],[&quot;numbervariable&quot;,&quot;y&quot;]],[&quot;prefixfuncapp&quot;,[&quot;cscfunc&quot;],[&quot;numbervariable&quot;,&quot;y&quot;]]]</code></li>
 </ul>
 </li>
 </ul>
@@ -2649,12 +2874,24 @@ satisfy the requirements of the test suite) are shown below.</p>
 </ul>
 </li>
 </ul>
-<h3>can convert infinity from JSON to LaTeX</h3>
+<h3>can convert numeric constants from JSON to LaTeX</h3>
 <ul>
 <li>Test 1
 <ul>
 <li>input: JSON <code>[&quot;infinity&quot;]</code></li>
 <li>output: LaTeX <code>\infty</code>, typeset $\infty$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;pi&quot;]</code></li>
+<li>output: LaTeX <code>\pi</code>, typeset $\pi$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;eulersnumber&quot;]</code></li>
+<li>output: LaTeX <code>e</code>, typeset $e$</li>
 </ul>
 </li>
 </ul>
@@ -2827,8 +3064,8 @@ satisfy the requirements of the test suite) are shown below.</p>
 </li>
 <li>Test 3
 <ul>
-<li>input: JSON <code>[&quot;subtraction&quot;,[&quot;addition&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;A&quot;],[&quot;numbervariable&quot;,&quot;B&quot;]],[&quot;numbervariable&quot;,&quot;C&quot;]],[&quot;numbervariable&quot;,&quot;D&quot;]]</code></li>
-<li>output: LaTeX <code>A ^ B + C - D</code>, typeset $A ^ B + C - D$</li>
+<li>input: JSON <code>[&quot;subtraction&quot;,[&quot;addition&quot;,[&quot;exponentiation&quot;,[&quot;numbervariable&quot;,&quot;A&quot;],[&quot;numbervariable&quot;,&quot;B&quot;]],[&quot;numbervariable&quot;,&quot;C&quot;]],[&quot;pi&quot;]]</code></li>
+<li>output: LaTeX <code>A ^ B + C - \pi</code>, typeset $A ^ B + C - \pi$</li>
 </ul>
 </li>
 </ul>
@@ -2883,6 +3120,24 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: JSON <code>[&quot;conjunction&quot;,[&quot;greaterthanoreq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;number&quot;,&quot;1&quot;]],[&quot;lessthanoreq&quot;,[&quot;number&quot;,&quot;2&quot;],[&quot;number&quot;,&quot;3&quot;]]]</code></li>
 <li>output: LaTeX <code>2 \ge 1 \wedge 2 \le 3</code>, typeset $2 \ge 1 \wedge 2 \le 3$</li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;divides&quot;,[&quot;number&quot;,&quot;7&quot;],[&quot;number&quot;,&quot;14&quot;]]</code></li>
+<li>output: LaTeX <code>7 | 14</code>, typeset $7 | 14$</li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: JSON <code>[&quot;divides&quot;,[&quot;numfuncapp&quot;,[&quot;funcvariable&quot;,&quot;A&quot;],[&quot;numbervariable&quot;,&quot;k&quot;]],[&quot;factorial&quot;,[&quot;numbervariable&quot;,&quot;n&quot;]]]</code></li>
+<li>output: LaTeX <code>A ( k ) | n !</code>, typeset $A ( k ) | n !$</li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: JSON <code>[&quot;genericrelation&quot;,[&quot;subtraction&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numbervariable&quot;,&quot;k&quot;]],[&quot;addition&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;numbervariable&quot;,&quot;k&quot;]]]</code></li>
+<li>output: LaTeX <code>1 - k \sim 1 + k</code>, typeset $1 - k \sim 1 + k$</li>
 </ul>
 </li>
 </ul>
@@ -3222,7 +3477,7 @@ satisfy the requirements of the test suite) are shown below.</p>
 </ul>
 </li>
 </ul>
-<h3>can convert to LaTeX sentences built from set operators</h3>
+<h3>can convert to LaTeX sentences built from various relations</h3>
 <ul>
 <li>Test 1
 <ul>
@@ -3252,6 +3507,18 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: JSON <code>[&quot;equality&quot;,[&quot;setvariable&quot;,&quot;R&quot;],[&quot;setproduct&quot;,[&quot;setvariable&quot;,&quot;A&quot;],[&quot;setvariable&quot;,&quot;B&quot;]]]</code></li>
 <li>output: LaTeX <code>R = A \times B</code>, typeset $R = A \times B$</li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: JSON <code>[&quot;universal&quot;,[&quot;numbervariable&quot;,&quot;n&quot;],[&quot;divides&quot;,[&quot;numbervariable&quot;,&quot;n&quot;],[&quot;factorial&quot;,[&quot;numbervariable&quot;,&quot;n&quot;]]]]</code></li>
+<li>output: LaTeX <code>\forall n , n | n !</code>, typeset $\forall n , n | n !$</li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: JSON <code>[&quot;implication&quot;,[&quot;genericrelation&quot;,[&quot;numbervariable&quot;,&quot;a&quot;],[&quot;numbervariable&quot;,&quot;b&quot;]],[&quot;genericrelation&quot;,[&quot;numbervariable&quot;,&quot;b&quot;],[&quot;numbervariable&quot;,&quot;a&quot;]]]</code></li>
+<li>output: LaTeX <code>a \sim b \Rightarrow b \sim a</code>, typeset $a \sim b \Rightarrow b \sim a$</li>
 </ul>
 </li>
 </ul>
@@ -3309,6 +3576,39 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: JSON <code>[&quot;funcequality&quot;,[&quot;funcvariable&quot;,&quot;F&quot;],[&quot;funccomp&quot;,[&quot;funcvariable&quot;,&quot;G&quot;],[&quot;funcinverse&quot;,[&quot;funcvariable&quot;,&quot;H&quot;]]]]</code></li>
 <li>output: LaTeX <code>F = G \circ H ^ { - 1 }</code>, typeset $F = G \circ H ^ { - 1 }$</li>
+</ul>
+</li>
+</ul>
+<h3>can represent trigonometric functions correctly</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;prefixfuncapp&quot;,[&quot;sinfunc&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]</code></li>
+<li>output: LaTeX <code>\sin x</code>, typeset $\sin x$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;prefixfuncapp&quot;,[&quot;cosfunc&quot;],[&quot;multiplication&quot;,[&quot;pi&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]]</code></li>
+<li>output: LaTeX <code>\cos \pi \times x</code>, typeset $\cos \pi \times x$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;prefixfuncapp&quot;,[&quot;tanfunc&quot;],[&quot;numbervariable&quot;,&quot;t&quot;]]</code></li>
+<li>output: LaTeX <code>\tan t</code>, typeset $\tan t$</li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;division&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;prefixfuncapp&quot;,[&quot;cotfunc&quot;],[&quot;pi&quot;]]]</code></li>
+<li>output: LaTeX <code>1 \div \cot \pi</code>, typeset $1 \div \cot \pi$</li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: JSON <code>[&quot;equality&quot;,[&quot;prefixfuncapp&quot;,[&quot;secfunc&quot;],[&quot;numbervariable&quot;,&quot;y&quot;]],[&quot;prefixfuncapp&quot;,[&quot;cscfunc&quot;],[&quot;numbervariable&quot;,&quot;y&quot;]]]</code></li>
+<li>output: LaTeX <code>\sec y = \csc y</code>, typeset $\sec y = \csc y$</li>
 </ul>
 </li>
 </ul>
@@ -3403,12 +3703,24 @@ satisfy the requirements of the test suite) are shown below.</p>
 </ul>
 </li>
 </ul>
-<h3>correctly converts the infinity symbol</h3>
+<h3>correctly converts numeric constants</h3>
 <ul>
 <li>Test 1
 <ul>
 <li>input: putdown <code>infinity</code></li>
 <li>output: LaTeX <code>\infty</code>, typeset $\infty$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>pi</code></li>
+<li>output: LaTeX <code>\pi</code>, typeset $\pi$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>eulersnumber</code></li>
+<li>output: LaTeX <code>e</code>, typeset $e$</li>
 </ul>
 </li>
 </ul>
@@ -3581,8 +3893,8 @@ satisfy the requirements of the test suite) are shown below.</p>
 </li>
 <li>Test 3
 <ul>
-<li>input: putdown <code>(+ (^ A B) (- C D))</code></li>
-<li>output: LaTeX <code>A ^ B + C - D</code>, typeset $A ^ B + C - D$</li>
+<li>input: putdown <code>(+ (^ A B) (- C pi))</code></li>
+<li>output: LaTeX <code>A ^ B + C - \pi</code>, typeset $A ^ B + C - \pi$</li>
 </ul>
 </li>
 </ul>
@@ -3637,6 +3949,24 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: putdown <code>(and (&gt;= 2 1) (&lt;= 2 3))</code></li>
 <li>output: LaTeX <code>2 \ge 1 \wedge 2 \le 3</code>, typeset $2 \ge 1 \wedge 2 \le 3$</li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: putdown <code>(divides 7 14)</code></li>
+<li>output: LaTeX <code>7 | 14</code>, typeset $7 | 14$</li>
+</ul>
+</li>
+<li>Test 6
+<ul>
+<li>input: putdown <code>(divides (apply A k) (! n))</code></li>
+<li>output: LaTeX <code>A ( k ) | n !</code>, typeset $A ( k ) | n !$</li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: putdown <code>(~ (- 1 k) (+ 1 k))</code></li>
+<li>output: LaTeX <code>1 - k \sim 1 + k</code>, typeset $1 - k \sim 1 + k$</li>
 </ul>
 </li>
 </ul>
@@ -4038,6 +4368,18 @@ satisfy the requirements of the test suite) are shown below.</p>
 <li>output: LaTeX <code>R = A \times B</code>, typeset $R = A \times B$</li>
 </ul>
 </li>
+<li>Test 6
+<ul>
+<li>input: putdown <code>(forall (n , (divides n (! n))))</code></li>
+<li>output: LaTeX <code>\forall n , n | n !</code>, typeset $\forall n , n | n !$</li>
+</ul>
+</li>
+<li>Test 7
+<ul>
+<li>input: putdown <code>(implies (~ a b) (~ b a))</code></li>
+<li>output: LaTeX <code>a \sim b \Rightarrow b \sim a</code>, typeset $a \sim b \Rightarrow b \sim a$</li>
+</ul>
+</li>
 </ul>
 <h3>can convert notation related to functions</h3>
 <ul>
@@ -4093,6 +4435,39 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: putdown <code>(= F (compose G (inverse H)))</code></li>
 <li>output: LaTeX <code>F = G \circ H ^ { - 1 }</code>, typeset $F = G \circ H ^ { - 1 }$</li>
+</ul>
+</li>
+</ul>
+<h3>can convert expressions with trigonometric functions</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(apply sin x)</code></li>
+<li>output: LaTeX <code>\sin x</code>, typeset $\sin x$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(apply cos (* pi x))</code></li>
+<li>output: LaTeX <code>\cos \pi \times x</code>, typeset $\cos \pi \times x$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(apply tan t)</code></li>
+<li>output: LaTeX <code>\tan t</code>, typeset $\tan t$</li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: putdown <code>(/ 1 (apply cot pi))</code></li>
+<li>output: LaTeX <code>1 \div \cot \pi</code>, typeset $1 \div \cot \pi$</li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: putdown <code>(= (apply sec y) (apply csc y))</code></li>
+<li>output: LaTeX <code>\sec y = \csc y</code>, typeset $\sec y = \csc y$</li>
 </ul>
 </li>
 </ul>
@@ -4187,12 +4562,24 @@ satisfy the requirements of the test suite) are shown below.</p>
 </ul>
 </li>
 </ul>
-<h3>correctly converts the infinity symbol</h3>
+<h3>correctly converts numeric constants</h3>
 <ul>
 <li>Test 1
 <ul>
 <li>input: LaTeX <code>\infty</code>, typeset $\infty$</li>
 <li>output: putdown <code>infinity</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>\pi</code>, typeset $\pi$</li>
+<li>output: putdown <code>pi</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>e</code>, typeset $e$</li>
+<li>output: putdown <code>e</code></li>
 </ul>
 </li>
 </ul>
@@ -4207,7 +4594,7 @@ satisfy the requirements of the test suite) are shown below.</p>
 <li>Test 2
 <ul>
 <li>input: LaTeX <code>e^x</code>, typeset $e^x$</li>
-<li>output: putdown <code>(^ e x)</code></li>
+<li>output: putdown <code>(^ eulersnumber x)</code></li>
 </ul>
 </li>
 <li>Test 3
@@ -4273,7 +4660,7 @@ satisfy the requirements of the test suite) are shown below.</p>
 <li>Test 5
 <ul>
 <li>input: LaTeX <code>1\div e^x</code>, typeset $1\div e^x$</li>
-<li>output: putdown <code>(/ 1 (^ e x))</code></li>
+<li>output: putdown <code>(/ 1 (^ eulersnumber x))</code></li>
 </ul>
 </li>
 <li>Test 6
@@ -4312,7 +4699,7 @@ satisfy the requirements of the test suite) are shown below.</p>
 <li>Test 5
 <ul>
 <li>input: LaTeX <code>1\times e^x</code>, typeset $1\times e^x$</li>
-<li>output: putdown <code>(* 1 (^ e x))</code></li>
+<li>output: putdown <code>(* 1 (^ eulersnumber x))</code></li>
 </ul>
 </li>
 <li>Test 6
@@ -4377,8 +4764,8 @@ satisfy the requirements of the test suite) are shown below.</p>
 </li>
 <li>Test 3
 <ul>
-<li>input: LaTeX <code>A ^ B + C - D</code>, typeset $A ^ B + C - D$</li>
-<li>output: putdown <code>(+ (^ A B) (- C D))</code></li>
+<li>input: LaTeX <code>A ^ B + C - \pi</code>, typeset $A ^ B + C - \pi$</li>
+<li>output: putdown <code>(+ (^ A B) (- C pi))</code></li>
 </ul>
 </li>
 </ul>
@@ -4481,6 +4868,24 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: LaTeX <code>2\geq1\wedge2\leq3</code>, typeset $2\geq1\wedge2\leq3$</li>
 <li>output: putdown <code>(and (&gt;= 2 1) (&lt;= 2 3))</code></li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: LaTeX <code>7 | 14</code>, typeset $7 | 14$</li>
+<li>output: putdown <code>(divides 7 14)</code></li>
+</ul>
+</li>
+<li>Test 9
+<ul>
+<li>input: LaTeX <code>A ( k ) | n !</code>, typeset $A ( k ) | n !$</li>
+<li>output: putdown <code>(divides (apply A k) (! n))</code></li>
+</ul>
+</li>
+<li>Test 10
+<ul>
+<li>input: LaTeX <code>1 - k \sim 1 + k</code>, typeset $1 - k \sim 1 + k$</li>
+<li>output: putdown <code>(~ (- 1 k) (+ 1 k))</code></li>
 </ul>
 </li>
 </ul>
@@ -4900,6 +5305,18 @@ satisfy the requirements of the test suite) are shown below.</p>
 <li>output: putdown <code>(= R (setuni A B))</code></li>
 </ul>
 </li>
+<li>Test 7
+<ul>
+<li>input: LaTeX <code>\forall n , n | n !</code>, typeset $\forall n , n | n !$</li>
+<li>output: putdown <code>(forall (n , (divides n (! n))))</code></li>
+</ul>
+</li>
+<li>Test 8
+<ul>
+<li>input: LaTeX <code>a \sim b \Rightarrow b \sim a</code>, typeset $a \sim b \Rightarrow b \sim a$</li>
+<li>output: putdown <code>(implies (~ a b) (~ b a))</code></li>
+</ul>
+</li>
 </ul>
 <h3>can convert notation related to functions</h3>
 <ul>
@@ -4960,13 +5377,46 @@ satisfy the requirements of the test suite) are shown below.</p>
 <li>Test 10
 <ul>
 <li>input: LaTeX <code>P(e)\wedge Q(3+b)</code>, typeset $P(e)\wedge Q(3+b)$</li>
-<li>output: putdown <code>(and (apply P e) (apply Q (+ 3 b)))</code></li>
+<li>output: putdown <code>(and (apply P eulersnumber) (apply Q (+ 3 b)))</code></li>
 </ul>
 </li>
 <li>Test 11
 <ul>
 <li>input: LaTeX <code>F=G\circ H^{-1}</code>, typeset $F=G\circ H^{-1}$</li>
 <li>output: putdown <code>(= F (compose G (inverse H)))</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert expressions with trigonometric functions</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>\sin x</code>, typeset $\sin x$</li>
+<li>output: putdown <code>(apply sin x)</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>\cos \pi \times x</code>, typeset $\cos \pi \times x$</li>
+<li>output: putdown <code>(apply cos (* pi x))</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>\tan t</code>, typeset $\tan t$</li>
+<li>output: putdown <code>(apply tan t)</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: LaTeX <code>1 \div \cot \pi</code>, typeset $1 \div \cot \pi$</li>
+<li>output: putdown <code>(/ 1 (apply cot pi))</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: LaTeX <code>\sec y = \csc y</code>, typeset $\sec y = \csc y$</li>
+<li>output: putdown <code>(= (apply sec y) (apply csc y))</code></li>
 </ul>
 </li>
 </ul>

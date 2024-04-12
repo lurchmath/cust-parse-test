@@ -141,12 +141,23 @@ export class Language {
         // For storing derived concepts' putdown forms:
         this.derivedNotation = new Map()
         // For each concept in the converter, if it is atomic and has a putdown
-        // form, use that as the default notation in the new language; this can
-        // be overridden by any later call to addNotation().  So we mark it here
-        // as the default, so they know they can delete it later.
+        // form that is a single regular expression, use that as the default
+        // notation in the new language; this can be overridden by any later
+        // call to addNotation().  So we mark it here as the default, so they
+        // know they can delete it later.
         Array.from( converter.concepts.keys() ).forEach( conceptName => {
             const concept = converter.concepts.get( conceptName )
             if ( SyntacticTypes.isAtomic( concept.parentType ) ) {
+                if ( concept.putdown instanceof Array ) {
+                    if ( concept.putdown.length != 1 ) return
+                    if ( !( concept.putdown[0] instanceof RegExp ) ) return
+                }
+                if ( !( concept.putdown instanceof RegExp ) ) {
+                    const array = notationStringToArray( concept.putdown,
+                        Array.from( Language.defaultVarNames ) )
+                    if ( array.length != 1 ) return
+                    if ( !( array[0] instanceof RegExp ) ) return
+                }
                 this.addNotation( conceptName, concept.putdown )
                 const rhss = this.grammar.rules[conceptName]
                 rhss[rhss.length-1].putdownDefault = true
@@ -385,7 +396,9 @@ export class Language {
     // token matches that same string, then the new token will not be added.
     // This prevents bugs like the following:  If you define function inverse to
     // be f^{-1}, then the "1" doesn't become its own token, borking ordinary
-    // decimal numbers like 1.5.
+    // decimal numbers like 1.5.  We make (in notationStringToArray()) an
+    // exception for this for one-regexp notations, which clearly intend for
+    // themselves to be tokenized as-is.
     addTokenType ( regexp ) {
         if ( this.hasTokenType( regexp ) ) return
         if ( regexp.hasOwnProperty( 'originalString' )
