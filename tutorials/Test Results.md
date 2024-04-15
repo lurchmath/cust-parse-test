@@ -523,6 +523,22 @@ satisfy the requirements of the test suite) are shown below.
    - output: JSON `["equality",["prefixfuncapp",["secfunc"],["numbervariable","y"]],["prefixfuncapp",["cscfunc"],["numbervariable","y"]]]`
 
 
+### can parse logarithms correctly
+
+- Test 1
+   - input: putdown `(apply log n)`
+   - output: JSON `["prefixfuncapp",["logarithm"],["numbervariable","n"]]`
+- Test 2
+   - input: putdown `(+ 1 (apply ln x))`
+   - output: JSON `["addition",["number","1"],["prefixfuncapp",["naturallog"],["numbervariable","x"]]]`
+- Test 3
+   - input: putdown `(apply (logbase 2) 1024)`
+   - output: JSON `["prefixfuncapp",["logwithbase",["number","2"]],["number","1024"]]`
+- Test 4
+   - input: putdown `(/ (apply log n) (apply log (apply log n)))`
+   - output: JSON `["division",["prefixfuncapp",["logarithm"],["numbervariable","n"]],["prefixfuncapp",["logarithm"],["prefixfuncapp",["logarithm"],["numbervariable","n"]]]]`
+
+
 ## <a name="Rendering-JSON-into-putdown">Rendering JSON into putdown</a>
 
 ### can convert JSON numbers to putdown
@@ -1008,6 +1024,22 @@ satisfy the requirements of the test suite) are shown below.
 - Test 5
    - input: JSON `["equality",["numfuncapp",["secfunc"],["numbervariable","y"]],["numfuncapp",["cscfunc"],["numbervariable","y"]]]`
    - output: putdown `(= (apply sec y) (apply csc y))`
+
+
+### can express logarithms correctly
+
+- Test 1
+   - input: JSON `["prefixfuncapp",["logarithm"],["numbervariable","n"]]`
+   - output: putdown `(apply log n)`
+- Test 2
+   - input: JSON `["addition",["number","1"],["prefixfuncapp",["naturallog"],["numbervariable","x"]]]`
+   - output: putdown `(+ 1 (apply ln x))`
+- Test 3
+   - input: JSON `["prefixfuncapp",["logwithbase",["number","2"]],["number","1024"]]`
+   - output: putdown `(apply (logbase 2) 1024)`
+- Test 4
+   - input: JSON `["division",["prefixfuncapp",["logarithm"],["numbervariable","n"]],["prefixfuncapp",["logarithm"],["prefixfuncapp",["logarithm"],["numbervariable","n"]]]]`
+   - output: putdown `(/ (apply log n) (apply log (apply log n)))`
 
 
 ## <a name="Parsing-LaTeX">Parsing LaTeX</a>
@@ -1560,6 +1592,25 @@ satisfy the requirements of the test suite) are shown below.
    - output: JSON `["equality",["prefixfuncapp",["secfunc"],["numbervariable","y"]],["prefixfuncapp",["cscfunc"],["numbervariable","y"]]]`
 
 
+### can parse logarithms correctly
+
+- Test 1
+   - input: LaTeX `\log n`, typeset $\log n$
+   - output: JSON `["prefixfuncapp",["logarithm"],["numbervariable","n"]]`
+- Test 2
+   - input: LaTeX `1+\ln{x}`, typeset $1+\ln{x}$
+   - output: JSON `["addition",["number","1"],["prefixfuncapp",["naturallog"],["numbervariable","x"]]]`
+- Test 3
+   - input: LaTeX `\log_2 1024`, typeset $\log_2 1024$
+   - output: JSON `["prefixfuncapp",["logwithbase",["number","2"]],["number","1024"]]`
+- Test 4
+   - input: LaTeX `\log_{2}{1024}`, typeset $\log_{2}{1024}$
+   - output: JSON `["prefixfuncapp",["logwithbase",["number","2"]],["number","1024"]]`
+- Test 5
+   - input: LaTeX `\log n \div \log\log n`, typeset $\log n \div \log\log n$
+   - output: JSON `["division",["prefixfuncapp",["logarithm"],["numbervariable","n"]],["prefixfuncapp",["logarithm"],["prefixfuncapp",["logarithm"],["numbervariable","n"]]]]`
+
+
 ## <a name="Rendering-JSON-into-LaTeX">Rendering JSON into LaTeX</a>
 
 ### can convert JSON numbers to LaTeX
@@ -2051,6 +2102,22 @@ satisfy the requirements of the test suite) are shown below.
 - Test 5
    - input: JSON `["equality",["prefixfuncapp",["secfunc"],["numbervariable","y"]],["prefixfuncapp",["cscfunc"],["numbervariable","y"]]]`
    - output: LaTeX `\sec y = \csc y`, typeset $\sec y = \csc y$
+
+
+### can express logarithms correctly
+
+- Test 1
+   - input: JSON `["prefixfuncapp",["logarithm"],["numbervariable","n"]]`
+   - output: LaTeX `\log n`, typeset $\log n$
+- Test 2
+   - input: JSON `["addition",["number","1"],["prefixfuncapp",["naturallog"],["numbervariable","x"]]]`
+   - output: LaTeX `1 + \ln x`, typeset $1 + \ln x$
+- Test 3
+   - input: JSON `["prefixfuncapp",["logwithbase",["number","2"]],["number","1024"]]`
+   - output: LaTeX `\log_ 2 1024`, typeset $\log_ 2 1024$
+- Test 4
+   - input: JSON `["division",["prefixfuncapp",["logarithm"],["numbervariable","n"]],["prefixfuncapp",["logarithm"],["prefixfuncapp",["logarithm"],["numbervariable","n"]]]]`
+   - output: LaTeX `\log n \div \log \log n`, typeset $\log n \div \log \log n$
 
 
 ## <a name="Converting-putdown-to-LaTeX">Converting putdown to LaTeX</a>
@@ -2547,6 +2614,22 @@ satisfy the requirements of the test suite) are shown below.
 - Test 5
    - input: putdown `(= (apply sec y) (apply csc y))`
    - output: LaTeX `\sec y = \csc y`, typeset $\sec y = \csc y$
+
+
+### can convert expressions with logarithms
+
+- Test 1
+   - input: putdown `(apply log n)`
+   - output: LaTeX `\log n`, typeset $\log n$
+- Test 2
+   - input: putdown `(+ 1 (apply ln x))`
+   - output: LaTeX `1 + \ln x`, typeset $1 + \ln x$
+- Test 3
+   - input: putdown `(apply (logbase 2) 1024)`
+   - output: LaTeX `\log_ 2 1024`, typeset $\log_ 2 1024$
+- Test 4
+   - input: putdown `(/ (apply log n) (apply log (apply log n)))`
+   - output: LaTeX `\log n \div \log \log n`, typeset $\log n \div \log \log n$
 
 
 ## <a name="Converting-LaTeX-to-putdown">Converting LaTeX to putdown</a>
@@ -3088,5 +3171,21 @@ satisfy the requirements of the test suite) are shown below.
 - Test 5
    - input: LaTeX `\sec y = \csc y`, typeset $\sec y = \csc y$
    - output: putdown `(= (apply sec y) (apply csc y))`
+
+
+### can convert expressions with logarithms
+
+- Test 1
+   - input: LaTeX `\log n`, typeset $\log n$
+   - output: putdown `(apply log n)`
+- Test 2
+   - input: LaTeX `1 + \ln x`, typeset $1 + \ln x$
+   - output: putdown `(+ 1 (apply ln x))`
+- Test 3
+   - input: LaTeX `\log_ 2 1024`, typeset $\log_ 2 1024$
+   - output: putdown `(apply (logbase 2) 1024)`
+- Test 4
+   - input: LaTeX `\log n \div \log \log n`, typeset $\log n \div \log \log n$
+   - output: putdown `(/ (apply log n) (apply log (apply log n)))`
 
 

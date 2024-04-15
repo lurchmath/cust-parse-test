@@ -781,4 +781,29 @@ describe( 'Rendering JSON into putdown', () => {
         )
     } )
 
+    it( 'can express logarithms correctly', () => {
+        check(
+            [ 'prefixfuncapp', [ 'logarithm' ], [ 'numbervariable', 'n' ] ],
+            '(apply log n)'
+        )
+        check(
+            [ 'addition',
+                [ 'number', '1' ],
+                [ 'prefixfuncapp', [ 'naturallog' ], [ 'numbervariable', 'x' ] ] ],
+            '(+ 1 (apply ln x))'
+        )
+        check(
+            [ 'prefixfuncapp',
+                [ 'logwithbase', [ 'number', '2' ] ], [ 'number', '1024' ] ],
+            '(apply (logbase 2) 1024)'
+        )
+        check(
+            [ 'division',
+                [ 'prefixfuncapp', [ 'logarithm' ], [ 'numbervariable', 'n' ] ],
+                [ 'prefixfuncapp', [ 'logarithm' ],
+                    [ 'prefixfuncapp', [ 'logarithm' ], [ 'numbervariable', 'n' ] ] ] ],
+            '(/ (apply log n) (apply log (apply log n)))'
+        )
+    } )
+
 } )

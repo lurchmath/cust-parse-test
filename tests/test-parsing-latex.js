@@ -905,4 +905,34 @@ describe( 'Parsing LaTeX', () => {
         )
     } )
 
+    it( 'can parse logarithms correctly', () => {
+        check(
+            '\\log n',
+            [ 'prefixfuncapp', [ 'logarithm' ], [ 'numbervariable', 'n' ] ]
+        )
+        check(
+            '1+\\ln{x}',
+            [ 'addition',
+                [ 'number', '1' ],
+                [ 'prefixfuncapp', [ 'naturallog' ], [ 'numbervariable', 'x' ] ] ]
+        )
+        check(
+            '\\log_2 1024',
+            [ 'prefixfuncapp',
+                [ 'logwithbase', [ 'number', '2' ] ], [ 'number', '1024' ] ]
+        )
+        check(
+            '\\log_{2}{1024}',
+            [ 'prefixfuncapp',
+                [ 'logwithbase', [ 'number', '2' ] ], [ 'number', '1024' ] ]
+        )
+        check(
+            '\\log n \\div \\log\\log n',
+            [ 'division',
+                [ 'prefixfuncapp', [ 'logarithm' ], [ 'numbervariable', 'n' ] ],
+                [ 'prefixfuncapp', [ 'logarithm' ],
+                    [ 'prefixfuncapp', [ 'logarithm' ], [ 'numbervariable', 'n' ] ] ] ]
+        )
+    } )
+
 } )

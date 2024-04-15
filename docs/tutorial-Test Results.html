@@ -951,6 +951,33 @@ satisfy the requirements of the test suite) are shown below.</p>
 </ul>
 </li>
 </ul>
+<h3>can parse logarithms correctly</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(apply log n)</code></li>
+<li>output: JSON <code>[&quot;prefixfuncapp&quot;,[&quot;logarithm&quot;],[&quot;numbervariable&quot;,&quot;n&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(+ 1 (apply ln x))</code></li>
+<li>output: JSON <code>[&quot;addition&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;prefixfuncapp&quot;,[&quot;naturallog&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(apply (logbase 2) 1024)</code></li>
+<li>output: JSON <code>[&quot;prefixfuncapp&quot;,[&quot;logwithbase&quot;,[&quot;number&quot;,&quot;2&quot;]],[&quot;number&quot;,&quot;1024&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: putdown <code>(/ (apply log n) (apply log (apply log n)))</code></li>
+<li>output: JSON <code>[&quot;division&quot;,[&quot;prefixfuncapp&quot;,[&quot;logarithm&quot;],[&quot;numbervariable&quot;,&quot;n&quot;]],[&quot;prefixfuncapp&quot;,[&quot;logarithm&quot;],[&quot;prefixfuncapp&quot;,[&quot;logarithm&quot;],[&quot;numbervariable&quot;,&quot;n&quot;]]]]</code></li>
+</ul>
+</li>
+</ul>
 <h2><a name="Rendering-JSON-into-putdown">Rendering JSON into putdown</a></h2>
 <h3>can convert JSON numbers to putdown</h3>
 <ul>
@@ -1789,6 +1816,33 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: JSON <code>[&quot;equality&quot;,[&quot;numfuncapp&quot;,[&quot;secfunc&quot;],[&quot;numbervariable&quot;,&quot;y&quot;]],[&quot;numfuncapp&quot;,[&quot;cscfunc&quot;],[&quot;numbervariable&quot;,&quot;y&quot;]]]</code></li>
 <li>output: putdown <code>(= (apply sec y) (apply csc y))</code></li>
+</ul>
+</li>
+</ul>
+<h3>can express logarithms correctly</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;prefixfuncapp&quot;,[&quot;logarithm&quot;],[&quot;numbervariable&quot;,&quot;n&quot;]]</code></li>
+<li>output: putdown <code>(apply log n)</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;addition&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;prefixfuncapp&quot;,[&quot;naturallog&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]]</code></li>
+<li>output: putdown <code>(+ 1 (apply ln x))</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;prefixfuncapp&quot;,[&quot;logwithbase&quot;,[&quot;number&quot;,&quot;2&quot;]],[&quot;number&quot;,&quot;1024&quot;]]</code></li>
+<li>output: putdown <code>(apply (logbase 2) 1024)</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;division&quot;,[&quot;prefixfuncapp&quot;,[&quot;logarithm&quot;],[&quot;numbervariable&quot;,&quot;n&quot;]],[&quot;prefixfuncapp&quot;,[&quot;logarithm&quot;],[&quot;prefixfuncapp&quot;,[&quot;logarithm&quot;],[&quot;numbervariable&quot;,&quot;n&quot;]]]]</code></li>
+<li>output: putdown <code>(/ (apply log n) (apply log (apply log n)))</code></li>
 </ul>
 </li>
 </ul>
@@ -2759,6 +2813,39 @@ satisfy the requirements of the test suite) are shown below.</p>
 </ul>
 </li>
 </ul>
+<h3>can parse logarithms correctly</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>\log n</code>, typeset $\log n$</li>
+<li>output: JSON <code>[&quot;prefixfuncapp&quot;,[&quot;logarithm&quot;],[&quot;numbervariable&quot;,&quot;n&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>1+\ln{x}</code>, typeset $1+\ln{x}$</li>
+<li>output: JSON <code>[&quot;addition&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;prefixfuncapp&quot;,[&quot;naturallog&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]]</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>\log_2 1024</code>, typeset $\log_2 1024$</li>
+<li>output: JSON <code>[&quot;prefixfuncapp&quot;,[&quot;logwithbase&quot;,[&quot;number&quot;,&quot;2&quot;]],[&quot;number&quot;,&quot;1024&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: LaTeX <code>\log_{2}{1024}</code>, typeset $\log_{2}{1024}$</li>
+<li>output: JSON <code>[&quot;prefixfuncapp&quot;,[&quot;logwithbase&quot;,[&quot;number&quot;,&quot;2&quot;]],[&quot;number&quot;,&quot;1024&quot;]]</code></li>
+</ul>
+</li>
+<li>Test 5
+<ul>
+<li>input: LaTeX <code>\log n \div \log\log n</code>, typeset $\log n \div \log\log n$</li>
+<li>output: JSON <code>[&quot;division&quot;,[&quot;prefixfuncapp&quot;,[&quot;logarithm&quot;],[&quot;numbervariable&quot;,&quot;n&quot;]],[&quot;prefixfuncapp&quot;,[&quot;logarithm&quot;],[&quot;prefixfuncapp&quot;,[&quot;logarithm&quot;],[&quot;numbervariable&quot;,&quot;n&quot;]]]]</code></li>
+</ul>
+</li>
+</ul>
 <h2><a name="Rendering-JSON-into-LaTeX">Rendering JSON into LaTeX</a></h2>
 <h3>can convert JSON numbers to LaTeX</h3>
 <ul>
@@ -3609,6 +3696,33 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: JSON <code>[&quot;equality&quot;,[&quot;prefixfuncapp&quot;,[&quot;secfunc&quot;],[&quot;numbervariable&quot;,&quot;y&quot;]],[&quot;prefixfuncapp&quot;,[&quot;cscfunc&quot;],[&quot;numbervariable&quot;,&quot;y&quot;]]]</code></li>
 <li>output: LaTeX <code>\sec y = \csc y</code>, typeset $\sec y = \csc y$</li>
+</ul>
+</li>
+</ul>
+<h3>can express logarithms correctly</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: JSON <code>[&quot;prefixfuncapp&quot;,[&quot;logarithm&quot;],[&quot;numbervariable&quot;,&quot;n&quot;]]</code></li>
+<li>output: LaTeX <code>\log n</code>, typeset $\log n$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: JSON <code>[&quot;addition&quot;,[&quot;number&quot;,&quot;1&quot;],[&quot;prefixfuncapp&quot;,[&quot;naturallog&quot;],[&quot;numbervariable&quot;,&quot;x&quot;]]]</code></li>
+<li>output: LaTeX <code>1 + \ln x</code>, typeset $1 + \ln x$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: JSON <code>[&quot;prefixfuncapp&quot;,[&quot;logwithbase&quot;,[&quot;number&quot;,&quot;2&quot;]],[&quot;number&quot;,&quot;1024&quot;]]</code></li>
+<li>output: LaTeX <code>\log_ 2 1024</code>, typeset $\log_ 2 1024$</li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: JSON <code>[&quot;division&quot;,[&quot;prefixfuncapp&quot;,[&quot;logarithm&quot;],[&quot;numbervariable&quot;,&quot;n&quot;]],[&quot;prefixfuncapp&quot;,[&quot;logarithm&quot;],[&quot;prefixfuncapp&quot;,[&quot;logarithm&quot;],[&quot;numbervariable&quot;,&quot;n&quot;]]]]</code></li>
+<li>output: LaTeX <code>\log n \div \log \log n</code>, typeset $\log n \div \log \log n$</li>
 </ul>
 </li>
 </ul>
@@ -4468,6 +4582,33 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: putdown <code>(= (apply sec y) (apply csc y))</code></li>
 <li>output: LaTeX <code>\sec y = \csc y</code>, typeset $\sec y = \csc y$</li>
+</ul>
+</li>
+</ul>
+<h3>can convert expressions with logarithms</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: putdown <code>(apply log n)</code></li>
+<li>output: LaTeX <code>\log n</code>, typeset $\log n$</li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: putdown <code>(+ 1 (apply ln x))</code></li>
+<li>output: LaTeX <code>1 + \ln x</code>, typeset $1 + \ln x$</li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: putdown <code>(apply (logbase 2) 1024)</code></li>
+<li>output: LaTeX <code>\log_ 2 1024</code>, typeset $\log_ 2 1024$</li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: putdown <code>(/ (apply log n) (apply log (apply log n)))</code></li>
+<li>output: LaTeX <code>\log n \div \log \log n</code>, typeset $\log n \div \log \log n$</li>
 </ul>
 </li>
 </ul>
@@ -5417,6 +5558,33 @@ satisfy the requirements of the test suite) are shown below.</p>
 <ul>
 <li>input: LaTeX <code>\sec y = \csc y</code>, typeset $\sec y = \csc y$</li>
 <li>output: putdown <code>(= (apply sec y) (apply csc y))</code></li>
+</ul>
+</li>
+</ul>
+<h3>can convert expressions with logarithms</h3>
+<ul>
+<li>Test 1
+<ul>
+<li>input: LaTeX <code>\log n</code>, typeset $\log n$</li>
+<li>output: putdown <code>(apply log n)</code></li>
+</ul>
+</li>
+<li>Test 2
+<ul>
+<li>input: LaTeX <code>1 + \ln x</code>, typeset $1 + \ln x$</li>
+<li>output: putdown <code>(+ 1 (apply ln x))</code></li>
+</ul>
+</li>
+<li>Test 3
+<ul>
+<li>input: LaTeX <code>\log_ 2 1024</code>, typeset $\log_ 2 1024$</li>
+<li>output: putdown <code>(apply (logbase 2) 1024)</code></li>
+</ul>
+</li>
+<li>Test 4
+<ul>
+<li>input: LaTeX <code>\log n \div \log \log n</code>, typeset $\log n \div \log \log n$</li>
+<li>output: putdown <code>(/ (apply log n) (apply log (apply log n)))</code></li>
 </ul>
 </li>
 </ul>

@@ -257,7 +257,13 @@ export class Language {
      */
     parse ( text ) {
         const tokens = this.tokenizer.tokenize( text )
-        if ( !tokens ) return undefined
+        if ( !tokens ) {
+            if ( this._debug ) {
+                console.log( `Tokenizer failed to tokenize "${text}"` )
+                console.log( this.tokenizer.tokenTypes )
+            }
+            return
+        }
         const all = this.grammar.parse( tokens, {
             showDebuggingOutput : this._debug
         } )
@@ -356,7 +362,13 @@ export class Language {
             const aLater = shouldBeLater( a.regexp )
             const bLater = shouldBeLater( b.regexp )
             if ( aLater != bLater ) return aLater - bLater
-            return -a.regexp.source.localeCompare( b.regexp.source )
+            a = a.regexp.source
+            b = b.regexp.source
+            a = a.substring( 4, a.length - 1 ) // turn ^(?:foo) into foo
+            b = b.substring( 4, b.length - 1 ) // same
+            if ( a.startsWith( b ) ) return -1 // sort Xsuffix before X
+            if ( b.startsWith( a ) ) return 1  // same
+            return a.localeCompare( b )        // alphabetical order
         } )
     }
 

@@ -820,4 +820,29 @@ describe( 'Rendering JSON into LaTeX', () => {
         )
     } )
 
+    it( 'can express logarithms correctly', () => {
+        check(
+            [ 'prefixfuncapp', [ 'logarithm' ], [ 'numbervariable', 'n' ] ],
+            '\\log n'
+        )
+        check(
+            [ 'addition',
+                [ 'number', '1' ],
+                [ 'prefixfuncapp', [ 'naturallog' ], [ 'numbervariable', 'x' ] ] ],
+            '1 + \\ln x'
+        )
+        check(
+            [ 'prefixfuncapp',
+                [ 'logwithbase', [ 'number', '2' ] ], [ 'number', '1024' ] ],
+            '\\log_ 2 1024'
+        )
+        check(
+            [ 'division',
+                [ 'prefixfuncapp', [ 'logarithm' ], [ 'numbervariable', 'n' ] ],
+                [ 'prefixfuncapp', [ 'logarithm' ],
+                    [ 'prefixfuncapp', [ 'logarithm' ], [ 'numbervariable', 'n' ] ] ] ],
+            '\\log n \\div \\log \\log n'
+        )
+    } )
+
 } )

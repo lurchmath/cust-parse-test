@@ -321,4 +321,14 @@ describe( 'Converting LaTeX to putdown', () => {
         check( '\\sec y = \\csc y', '(= (apply sec y) (apply csc y))' )
     } )
 
+    it( 'can convert expressions with logarithms', () => {
+        check( '\\log n', '(apply log n)' )
+        check( '1 + \\ln x', '(+ 1 (apply ln x))' )
+        check( '\\log_ 2 1024', '(apply (logbase 2) 1024)' )
+        check(
+            '\\log n \\div \\log \\log n',
+            '(/ (apply log n) (apply log (apply log n)))'
+        )
+    } )
+
 } )

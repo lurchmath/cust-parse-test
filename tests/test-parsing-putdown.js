@@ -797,4 +797,29 @@ describe( 'Parsing putdown', () => {
         )
     } )
 
+    it( 'can parse logarithms correctly', () => {
+        check(
+            '(apply log n)',
+            [ 'prefixfuncapp', [ 'logarithm' ], [ 'numbervariable', 'n' ] ]
+        )
+        check(
+            '(+ 1 (apply ln x))',
+            [ 'addition',
+                [ 'number', '1' ],
+                [ 'prefixfuncapp', [ 'naturallog' ], [ 'numbervariable', 'x' ] ] ]
+        )
+        check(
+            '(apply (logbase 2) 1024)',
+            [ 'prefixfuncapp',
+                [ 'logwithbase', [ 'number', '2' ] ], [ 'number', '1024' ] ]
+        )
+        check(
+            '(/ (apply log n) (apply log (apply log n)))',
+            [ 'division',
+                [ 'prefixfuncapp', [ 'logarithm' ], [ 'numbervariable', 'n' ] ],
+                [ 'prefixfuncapp', [ 'logarithm' ],
+                    [ 'prefixfuncapp', [ 'logarithm' ], [ 'numbervariable', 'n' ] ] ] ]
+        )
+    } )
+
 } )

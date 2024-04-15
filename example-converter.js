@@ -76,6 +76,10 @@ converter.addConcept( 'cotfunc',         'prefixfuncexpr',   'cot' )
 converter.addConcept( 'secfunc',         'prefixfuncexpr',   'sec' )
 converter.addConcept( 'cscfunc',         'prefixfuncexpr',   'csc' )
 
+converter.addConcept( 'logarithm',       'prefixfuncexpr',   'log' )
+converter.addConcept( 'naturallog',      'prefixfuncexpr',   'ln' )
+converter.addConcept( 'logwithbase',     'prefixfuncexpr',   '(logbase numberexpr)' )
+
 converter.addConcept( 'equality',        'atomicpropexpr',   '(= nounexpr nounexpr)' )
 converter.addConcept( 'funcequality',    'atomicpropexpr',   '(= funcexpr funcexpr)' )
 converter.addConcept( 'inequality',      'atomicpropexpr',   '(not (= nounexpr nounexpr))', { primitive : false } )
@@ -167,6 +171,10 @@ latex.addNotation( 'tanfunc',         '\\tan' )
 latex.addNotation( 'cotfunc',         '\\cot' )
 latex.addNotation( 'secfunc',         '\\sec' )
 latex.addNotation( 'cscfunc',         '\\csc' )
+
+latex.addNotation( 'logarithm',       '\\log' )
+latex.addNotation( 'naturallog',      '\\ln' )
+latex.addNotation( 'logwithbase',     '\\log_A' )
 
 latex.addNotation( 'equality',        'A=B' )
 latex.addNotation( 'inequality',      'A\\ne B' )

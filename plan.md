@@ -33,7 +33,6 @@ General to dos:
  - expand set of tests for many new mathematical expressions in many languages,
    including expressions that bind variables.  Use the grammar here as an
    inspiration: https://github.com/lurchmath/earley-parser/blob/master/earley-tests.js#L225
-    - logarithms
     - equivalence class (for a relation)
     - congruence mod m relation
     - EFAs
@@ -42,8 +41,8 @@ General to dos:
     - assumptions (given flags)
     - Let-style declarations, with or without body
     - ForSome-style declarations, always with body
- - expand all languages to support many new mathematical features, tests for each
-   (note that set theory notation will need analogs to sum, product, ...)
+ - why is infinity `['infinity']` and so on, for `sinfunc` and `pi` and more?
+   is there a good reason for that or can we fix it?
  - define new language of Lurch notation and verify all (or almost all) of its
    features can be supported
  - test whether all MathLive output can be parsed by this LaTeX parser
@@ -74,6 +73,11 @@ Bug fixes:
    flattened, but it fails in that those ASTs will then be unable to convert to
    putdown because they have the wrong number of arguments for the putdown form
    as originally defined.  Redesign?
+
+Misc notes:
+ - Did not bother adding "arcsin" and "asin" and so on for all trig functions.
+   Does not add any functionality and just clutters things up, given that we
+   already have `^{-1}` notation for all functions.  Could be done if needed.
 
 Information we may need later:
  - infinity      = '\u221e' = ∞
