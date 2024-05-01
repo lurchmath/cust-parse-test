@@ -65,9 +65,9 @@ describe( 'Parsing putdown', () => {
     } )
 
     it( 'can convert numeric constants from putdown to JSON', () => {
-        check( 'infinity', [ 'infinity' ] )
-        check( 'pi', [ 'pi' ] )
-        check( 'eulersnumber', [ 'eulersnumber' ] )
+        check( 'infinity', 'infinity' )
+        check( 'pi', 'pi' )
+        check( 'eulersnumber', 'eulersnumber' )
     } )
 
     it( 'can convert exponentiation of atomics to JSON', () => {
@@ -82,7 +82,7 @@ describe( 'Parsing putdown', () => {
         )
         check(
             '(^ 1 infinity)',
-            [ 'exponentiation', [ 'number', '1' ], [ 'infinity' ] ]
+            [ 'exponentiation', [ 'number', '1' ], 'infinity' ]
         )
     } )
 
@@ -103,7 +103,7 @@ describe( 'Parsing putdown', () => {
         )
         check(
             '(/ 0 infinity)',
-            [ 'division', [ 'number', '0' ], [ 'infinity' ] ]
+            [ 'division', [ 'number', '0' ], 'infinity' ]
         )
         // division of factors
         check(
@@ -144,7 +144,7 @@ describe( 'Parsing putdown', () => {
         )
         check(
             '(* 0 infinity)',
-            [ 'multiplication', [ 'number', '0' ], [ 'infinity' ] ]
+            [ 'multiplication', [ 'number', '0' ], 'infinity' ]
         )
         // multiplication of factors
         check(
@@ -223,7 +223,7 @@ describe( 'Parsing putdown', () => {
                 [ 'exponentiation',
                     [ 'numbervariable', 'A' ], [ 'numbervariable', 'B' ] ],
                 [ 'subtraction',
-                    [ 'numbervariable', 'C' ], [ 'pi' ] ]
+                    [ 'numbervariable', 'C' ], 'pi' ]
             ]
         )
     } )
@@ -310,9 +310,9 @@ describe( 'Parsing putdown', () => {
     } )
 
     it( 'can convert propositional logic atomics to JSON', () => {
-        check( 'true', [ 'logicaltrue' ] )
-        check( 'false', [ 'logicalfalse' ] )
-        check( 'contradiction', [ 'contradiction' ] )
+        check( 'true', 'logicaltrue' )
+        check( 'false', 'logicalfalse' )
+        check( 'contradiction', 'contradiction' )
         // Not checking variables here, because their meaning is ambiguous
     } )
 
@@ -320,15 +320,15 @@ describe( 'Parsing putdown', () => {
         check(
             '(and true false)',
             [ 'conjunction',
-                [ 'logicaltrue' ],
-                [ 'logicalfalse' ]
+                'logicaltrue',
+                'logicalfalse'
             ]
         )
         check(
             '(and (not P) (not true))',
             [ 'conjunction',
                 [ 'logicnegation', [ 'logicvariable', 'P' ] ],
-                [ 'logicnegation', [ 'logicaltrue' ] ]
+                [ 'logicnegation', 'logicaltrue' ]
             ]
         )
         check(
@@ -347,7 +347,7 @@ describe( 'Parsing putdown', () => {
         check(
             '(or true (not A))',
             [ 'disjunction',
-                [ 'logicaltrue' ],
+                'logicaltrue',
                 [ 'logicnegation', [ 'logicvariable', 'A' ] ]
             ]
         )
@@ -425,17 +425,14 @@ describe( 'Parsing putdown', () => {
             '(not (iff true false))',
             [ 'logicnegation',
                 [ 'iff',
-                    [ 'logicaltrue' ],
-                    [ 'logicalfalse' ]
+                    'logicaltrue',
+                    'logicalfalse'
                 ]
             ]
         )
     } )
 
     it( 'can convert simple predicate logic expressions to JSON', () => {
-        // const rules = converter.languages.get( 'putdown' ).grammar.rules
-        // Object.keys( rules ).map( name =>
-        //     console.log( name, rules[name].map( rhs => rhs.slice() ) ) )
         check(
             '(forall (x , P))',
             [ 'universal',
@@ -461,7 +458,7 @@ describe( 'Parsing putdown', () => {
 
     it( 'can convert finite and empty sets to JSON', () => {
         // { }
-        check( 'emptyset', [ 'emptyset' ] )
+        check( 'emptyset', 'emptyset' )
         // { 1 }
         check(
             '(finiteset (elts 1))',
@@ -483,14 +480,14 @@ describe( 'Parsing putdown', () => {
         // { { }, { } }
         check(
             '(finiteset (elts emptyset (elts emptyset)))',
-            [ 'finiteset', [ 'eltthenseq', [ 'emptyset' ],
-                [ 'oneeltseq', [ 'emptyset' ] ] ] ]
+            [ 'finiteset', [ 'eltthenseq', 'emptyset',
+                [ 'oneeltseq', 'emptyset' ] ] ]
         )
         // { { { } } }
         check(
             '(finiteset (elts (finiteset (elts emptyset))))',
             [ 'finiteset', [ 'oneeltseq',
-                [ 'finiteset', [ 'oneeltseq', [ 'emptyset' ] ] ] ] ]
+                [ 'finiteset', [ 'oneeltseq', 'emptyset' ] ] ] ]
         )
         // { 3, x }
         check(
@@ -511,7 +508,7 @@ describe( 'Parsing putdown', () => {
             '(finiteset (elts 1 (elts 2 (elts emptyset (elts K (elts P))))))',
             [ 'finiteset', [ 'eltthenseq', [ 'number', '1' ],
                 [ 'eltthenseq', [ 'number', '2' ],
-                    [ 'eltthenseq', [ 'emptyset' ],
+                    [ 'eltthenseq', 'emptyset',
                         [ 'eltthenseq', [ 'numbervariable', 'K' ],
                             [ 'oneeltseq', [ 'numbervariable', 'P' ] ] ] ] ] ] ]
         )
@@ -647,7 +644,7 @@ describe( 'Parsing putdown', () => {
         )
         check(
             '(not (in emptyset emptyset))',
-            [ 'logicnegation', [ 'nounisin', [ 'emptyset' ], [ 'emptyset' ] ] ]
+            [ 'logicnegation', [ 'nounisin', 'emptyset', 'emptyset' ] ]
         )
         check(
             '(not (in (- 3 5) (setint K P)))',
@@ -744,7 +741,7 @@ describe( 'Parsing putdown', () => {
         check(
             '(setint emptyset (apply f 2))',
             [ 'intersection',
-                [ 'emptyset' ],
+                'emptyset',
                 [ 'setfuncapp', [ 'funcvariable', 'f' ], [ 'number', '2' ] ] ]
         )
         check(
@@ -773,40 +770,40 @@ describe( 'Parsing putdown', () => {
     it( 'can parse trigonometric functions correctly', () => {
         check(
             '(apply sin x)',
-            [ 'prefixfuncapp', [ 'sinfunc' ], [ 'numbervariable', 'x' ] ]
+            [ 'prefixfuncapp', 'sinfunc', [ 'numbervariable', 'x' ] ]
         )
         check(
             '(apply cos (* pi x))',
-            [ 'prefixfuncapp', [ 'cosfunc' ],
-                [ 'multiplication', [ 'pi' ], [ 'numbervariable', 'x' ] ] ]
+            [ 'prefixfuncapp', 'cosfunc',
+                [ 'multiplication', 'pi', [ 'numbervariable', 'x' ] ] ]
         )
         check(
             '(apply tan t)',
-            [ 'prefixfuncapp', [ 'tanfunc' ], [ 'numbervariable', 't' ] ]
+            [ 'prefixfuncapp', 'tanfunc', [ 'numbervariable', 't' ] ]
         )
         check(
             '(/ 1 (apply cot pi))',
             [ 'division', [ 'number', '1' ],
-                [ 'prefixfuncapp', [ 'cotfunc' ], [ 'pi' ] ] ]
+                [ 'prefixfuncapp', 'cotfunc', 'pi' ] ]
         )
         check(
             '(= (apply sec y) (apply csc y))',
             [ 'equality',
-                [ 'prefixfuncapp', [ 'secfunc' ], [ 'numbervariable', 'y' ] ],
-                [ 'prefixfuncapp', [ 'cscfunc' ], [ 'numbervariable', 'y' ] ] ]
+                [ 'prefixfuncapp', 'secfunc', [ 'numbervariable', 'y' ] ],
+                [ 'prefixfuncapp', 'cscfunc', [ 'numbervariable', 'y' ] ] ]
         )
     } )
 
     it( 'can parse logarithms correctly', () => {
         check(
             '(apply log n)',
-            [ 'prefixfuncapp', [ 'logarithm' ], [ 'numbervariable', 'n' ] ]
+            [ 'prefixfuncapp', 'logarithm', [ 'numbervariable', 'n' ] ]
         )
         check(
             '(+ 1 (apply ln x))',
             [ 'addition',
                 [ 'number', '1' ],
-                [ 'prefixfuncapp', [ 'naturallog' ], [ 'numbervariable', 'x' ] ] ]
+                [ 'prefixfuncapp', 'naturallog', [ 'numbervariable', 'x' ] ] ]
         )
         check(
             '(apply (logbase 2) 1024)',
@@ -816,9 +813,9 @@ describe( 'Parsing putdown', () => {
         check(
             '(/ (apply log n) (apply log (apply log n)))',
             [ 'division',
-                [ 'prefixfuncapp', [ 'logarithm' ], [ 'numbervariable', 'n' ] ],
-                [ 'prefixfuncapp', [ 'logarithm' ],
-                    [ 'prefixfuncapp', [ 'logarithm' ], [ 'numbervariable', 'n' ] ] ] ]
+                [ 'prefixfuncapp', 'logarithm', [ 'numbervariable', 'n' ] ],
+                [ 'prefixfuncapp', 'logarithm',
+                    [ 'prefixfuncapp', 'logarithm', [ 'numbervariable', 'n' ] ] ] ]
         )
     } )
 

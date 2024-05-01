@@ -33,16 +33,15 @@ General to dos:
  - expand set of tests for many new mathematical expressions in many languages,
    including expressions that bind variables.  Use the grammar here as an
    inspiration: https://github.com/lurchmath/earley-parser/blob/master/earley-tests.js#L225
-    - equivalence class (for a relation)
-    - congruence mod m relation
-    - EFAs
+    - equivalence class (for a relation): `[x]`, `[x,~]`
+    - congruence mod m relation: `x = y (mod m)`
+    - EFAs: `(@ P x)`
     - `X is a[n] Y`, `X is a[n] Y of Z`, for a specific finite set of Ys
       (e.g., X is a set, or an equivalence relation, or a partial order, etc.)
-    - assumptions (given flags)
-    - Let-style declarations, with or without body
-    - ForSome-style declarations, always with body
- - why is infinity `['infinity']` and so on, for `sinfunc` and `pi` and more?
-   is there a good reason for that or can we fix it?
+    - assumptions (given flags): `:A`, `Assume A`, etc.
+    - Let-style declarations, with or without body: `Let x`, `Let x be such that P`
+    - ForSome-style declarations, always with body: `For some x, P` and
+      `P for some x`
  - define new language of Lurch notation and verify all (or almost all) of its
    features can be supported
  - test whether all MathLive output can be parsed by this LaTeX parser

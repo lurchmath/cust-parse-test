@@ -1,13 +1,15 @@
 
 import { expect } from 'chai'
 import { converter } from '../example-converter.js'
+import { AST } from '../ast.js'
 
 const latex = converter.languages.get( 'latex' )
 
 describe( 'Parsing LaTeX', () => {
 
     const check = ( latexText, json ) => {
-        expect( latex.parse( latexText ).toJSON() ).to.eql( json )
+        const ast = latex.parse( latexText )
+        expect( ast instanceof AST ? ast.toJSON() : ast ).to.eql( json )
         global.log?.( 'LaTeX', latexText, 'JSON', json )
     }
     const checkFail = ( latexText ) => {
@@ -64,8 +66,8 @@ describe( 'Parsing LaTeX', () => {
     } )
 
     it( 'can parse LaTeX numeric constants to JSON', () => {
-        check( '\\infty', [ 'infinity' ] )
-        check( '\\pi', [ 'pi' ] )
+        check( '\\infty', 'infinity' )
+        check( '\\pi', 'pi' )
         // The following happens because, even though the parser detects the
         // parsing of e as Euler's number is valid, it's not the first in the
         // alphabetical ordering of the possible parsed results:
@@ -79,11 +81,11 @@ describe( 'Parsing LaTeX', () => {
         )
         check(
             'e^x',
-            [ 'exponentiation', [ 'eulersnumber' ], [ 'numbervariable', 'x' ] ]
+            [ 'exponentiation', 'eulersnumber', [ 'numbervariable', 'x' ] ]
         )
         check(
             '1^\\infty',
-            [ 'exponentiation', [ 'number', '1' ], [ 'infinity' ] ]
+            [ 'exponentiation', [ 'number', '1' ], 'infinity' ]
         )
     } )
 
@@ -107,7 +109,7 @@ describe( 'Parsing LaTeX', () => {
         )
         check(
             '0\\div\\infty',
-            [ 'division', [ 'number', '0' ], [ 'infinity' ] ]
+            [ 'division', [ 'number', '0' ], 'infinity' ]
         )
         // division of factors
         check(
@@ -122,7 +124,7 @@ describe( 'Parsing LaTeX', () => {
             [ 'division',
                 [ 'number', '1' ],
                 [ 'exponentiation',
-                    [ 'eulersnumber' ], [ 'numbervariable', 'x' ] ]
+                    'eulersnumber', [ 'numbervariable', 'x' ] ]
             ]
         )
         check(
@@ -147,7 +149,7 @@ describe( 'Parsing LaTeX', () => {
         )
         check(
             '0\\times\\infty',
-            [ 'multiplication', [ 'number', '0' ], [ 'infinity' ] ]
+            [ 'multiplication', [ 'number', '0' ], 'infinity' ]
         )
         // multiplication of factors
         check(
@@ -162,7 +164,7 @@ describe( 'Parsing LaTeX', () => {
             [ 'multiplication',
                 [ 'number', '1' ],
                 [ 'exponentiation',
-                    [ 'eulersnumber' ], [ 'numbervariable', 'x' ] ]
+                    'eulersnumber', [ 'numbervariable', 'x' ] ]
             ]
         )
         check(
@@ -236,7 +238,7 @@ describe( 'Parsing LaTeX', () => {
                 [ 'exponentiation',
                     [ 'numbervariable', 'A' ], [ 'numbervariable', 'B' ] ],
                 [ 'subtraction',
-                    [ 'numbervariable', 'C' ], [ 'pi' ] ] ]
+                    [ 'numbervariable', 'C' ], 'pi' ] ]
         )
     } )
 
@@ -381,9 +383,9 @@ describe( 'Parsing LaTeX', () => {
     } )
 
     it( 'can parse propositional logic atomics to JSON', () => {
-        check( '\\top', [ 'logicaltrue' ] )
-        check( '\\bot', [ 'logicalfalse' ] )
-        check( '\\rightarrow\\leftarrow', [ 'contradiction' ] )
+        check( '\\top', 'logicaltrue' )
+        check( '\\bot', 'logicalfalse' )
+        check( '\\rightarrow\\leftarrow', 'contradiction' )
         // Not checking variables here, because their meaning is ambiguous; we
         // will check below to ensure that they can be part of logic expressions.
     } )
@@ -392,15 +394,15 @@ describe( 'Parsing LaTeX', () => {
         check(
             '\\top\\wedge\\bot',
             [ 'conjunction',
-                [ 'logicaltrue' ],
-                [ 'logicalfalse' ]
+                'logicaltrue',
+                'logicalfalse'
             ]
         )
         check(
             '\\neg P\\wedge\\neg\\top',
             [ 'conjunction',
                 [ 'logicnegation', [ 'logicvariable', 'P' ] ],
-                [ 'logicnegation', [ 'logicaltrue' ] ]
+                [ 'logicnegation', 'logicaltrue' ]
             ]
         )
         // Following could also be left-associated, which is also a valid
@@ -421,7 +423,7 @@ describe( 'Parsing LaTeX', () => {
         check(
             '\\top\\vee \\neg A',
             [ 'disjunction',
-                [ 'logicaltrue' ],
+                'logicaltrue',
                 [ 'logicnegation', [ 'logicvariable', 'A' ] ]
             ]
         )
@@ -506,8 +508,8 @@ describe( 'Parsing LaTeX', () => {
             '\\lnot{\\top\\Leftrightarrow\\bot}',
             [ 'logicnegation',
                 [ 'iff',
-                    [ 'logicaltrue' ],
-                    [ 'logicalfalse' ]
+                    'logicaltrue',
+                    'logicalfalse'
                 ]
             ]
         )
@@ -515,8 +517,8 @@ describe( 'Parsing LaTeX', () => {
             '\\lnot(\\top\\Leftrightarrow\\bot)',
             [ 'logicnegation',
                 [ 'iff',
-                    [ 'logicaltrue' ],
-                    [ 'logicalfalse' ]
+                    'logicaltrue',
+                    'logicalfalse'
                 ]
             ]
         )
@@ -549,9 +551,9 @@ describe( 'Parsing LaTeX', () => {
 
     it( 'can convert finite and empty sets to JSON', () => {
         // { }
-        check( '\\emptyset', [ 'emptyset' ] )
-        check( '\\{\\}', [ 'emptyset' ] )
-        check( '\\{ \\}', [ 'emptyset' ] )
+        check( '\\emptyset', 'emptyset' )
+        check( '\\{\\}', 'emptyset' )
+        check( '\\{ \\}', 'emptyset' )
         // { 1 }
         check(
             '\\{ 1 \\}',
@@ -573,14 +575,14 @@ describe( 'Parsing LaTeX', () => {
         // { { }, { } }
         check(
             '\\{\\{\\},\\emptyset\\}',
-            [ 'finiteset', [ 'eltthenseq', [ 'emptyset' ],
-                [ 'oneeltseq', [ 'emptyset' ] ] ] ]
+            [ 'finiteset', [ 'eltthenseq', 'emptyset',
+                [ 'oneeltseq', 'emptyset' ] ] ]
         )
         // { { { } } }
         check(
             '\\{\\{\\emptyset\\}\\}',
             [ 'finiteset', [ 'oneeltseq',
-                [ 'finiteset', [ 'oneeltseq', [ 'emptyset' ] ] ] ] ]
+                [ 'finiteset', [ 'oneeltseq', 'emptyset' ] ] ] ]
         )
         // { 3, x }
         check(
@@ -601,7 +603,7 @@ describe( 'Parsing LaTeX', () => {
             '\\{ 1, 2, \\emptyset, K, P \\}',
             [ 'finiteset', [ 'eltthenseq', [ 'number', '1' ],
                 [ 'eltthenseq', [ 'number', '2' ],
-                    [ 'eltthenseq', [ 'emptyset' ],
+                    [ 'eltthenseq', 'emptyset',
                         [ 'eltthenseq', [ 'numbervariable', 'K' ],
                             [ 'oneeltseq', [ 'numbervariable', 'P' ] ] ] ] ] ] ]
         )
@@ -744,7 +746,7 @@ describe( 'Parsing LaTeX', () => {
         )
         check(
             '\\emptyset\\notin\\emptyset',
-            [ 'nounisnotin', [ 'emptyset' ], [ 'emptyset' ] ]
+            [ 'nounisnotin', 'emptyset', 'emptyset' ]
         )
         check(
             '3-5 \\notin K\\cap P',
@@ -858,13 +860,13 @@ describe( 'Parsing LaTeX', () => {
         check(
             '\\emptyset\\cap f(2)',
             [ 'intersection',
-                [ 'emptyset' ],
+                'emptyset',
                 [ 'setfuncapp', [ 'funcvariable', 'f' ], [ 'number', '2' ] ] ]
         )
         check(
             'P(e)\\wedge Q(3+b)',
             [ 'conjunction',
-                [ 'propfuncapp', [ 'funcvariable', 'P' ], [ 'eulersnumber' ] ],
+                [ 'propfuncapp', [ 'funcvariable', 'P' ], 'eulersnumber' ],
                 [ 'propfuncapp', [ 'funcvariable', 'Q' ],
                     [ 'addition', [ 'number', '3' ], [ 'numbervariable', 'b' ] ] ] ]
         )
@@ -881,40 +883,40 @@ describe( 'Parsing LaTeX', () => {
     it( 'can parse trigonometric functions correctly', () => {
         check(
             '\\sin x',
-            [ 'prefixfuncapp', [ 'sinfunc' ], [ 'numbervariable', 'x' ] ]
+            [ 'prefixfuncapp', 'sinfunc', [ 'numbervariable', 'x' ] ]
         )
         check(
             '\\cos\\pi\\cdot x',
-            [ 'prefixfuncapp', [ 'cosfunc' ],
-                [ 'multiplication', [ 'pi' ], [ 'numbervariable', 'x' ] ] ]
+            [ 'prefixfuncapp', 'cosfunc',
+                [ 'multiplication', 'pi', [ 'numbervariable', 'x' ] ] ]
         )
         check(
             '\\tan t',
-            [ 'prefixfuncapp', [ 'tanfunc' ], [ 'numbervariable', 't' ] ]
+            [ 'prefixfuncapp', 'tanfunc', [ 'numbervariable', 't' ] ]
         )
         check(
             '1\\div\\cot\\pi',
             [ 'division', [ 'number', '1' ],
-                [ 'prefixfuncapp', [ 'cotfunc' ], [ 'pi' ] ] ]
+                [ 'prefixfuncapp', 'cotfunc', 'pi' ] ]
         )
         check(
             '\\sec y=\\csc y',
             [ 'equality',
-                [ 'prefixfuncapp', [ 'secfunc' ], [ 'numbervariable', 'y' ] ],
-                [ 'prefixfuncapp', [ 'cscfunc' ], [ 'numbervariable', 'y' ] ] ]
+                [ 'prefixfuncapp', 'secfunc', [ 'numbervariable', 'y' ] ],
+                [ 'prefixfuncapp', 'cscfunc', [ 'numbervariable', 'y' ] ] ]
         )
     } )
 
     it( 'can parse logarithms correctly', () => {
         check(
             '\\log n',
-            [ 'prefixfuncapp', [ 'logarithm' ], [ 'numbervariable', 'n' ] ]
+            [ 'prefixfuncapp', 'logarithm', [ 'numbervariable', 'n' ] ]
         )
         check(
             '1+\\ln{x}',
             [ 'addition',
                 [ 'number', '1' ],
-                [ 'prefixfuncapp', [ 'naturallog' ], [ 'numbervariable', 'x' ] ] ]
+                [ 'prefixfuncapp', 'naturallog', [ 'numbervariable', 'x' ] ] ]
         )
         check(
             '\\log_2 1024',
@@ -929,9 +931,9 @@ describe( 'Parsing LaTeX', () => {
         check(
             '\\log n \\div \\log\\log n',
             [ 'division',
-                [ 'prefixfuncapp', [ 'logarithm' ], [ 'numbervariable', 'n' ] ],
-                [ 'prefixfuncapp', [ 'logarithm' ],
-                    [ 'prefixfuncapp', [ 'logarithm' ], [ 'numbervariable', 'n' ] ] ] ]
+                [ 'prefixfuncapp', 'logarithm', [ 'numbervariable', 'n' ] ],
+                [ 'prefixfuncapp', 'logarithm',
+                    [ 'prefixfuncapp', 'logarithm', [ 'numbervariable', 'n' ] ] ] ]
         )
     } )
 

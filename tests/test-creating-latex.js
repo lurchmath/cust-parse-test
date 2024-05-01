@@ -9,7 +9,7 @@ describe( 'Rendering JSON into LaTeX', () => {
 
     const check = ( json, latexText ) => {
         expect(
-            new AST( latex, ...json ).toLanguage( latex )
+            new AST( latex, json ).toLanguage( latex )
         ).to.eql( latexText )
         global.log?.( 'JSON', json, 'LaTeX', latexText )
     }
@@ -61,9 +61,9 @@ describe( 'Rendering JSON into LaTeX', () => {
     } )
 
     it( 'can convert numeric constants from JSON to LaTeX', () => {
-        check( [ 'infinity' ], '\\infty' )
-        check( [ 'pi' ], '\\pi' )
-        check( [ 'eulersnumber' ], 'e' )
+        check( 'infinity', '\\infty' )
+        check( 'pi', '\\pi' )
+        check( 'eulersnumber', 'e' )
     } )
 
     it( 'can convert exponentiation of atomics from JSON to LaTeX', () => {
@@ -77,7 +77,7 @@ describe( 'Rendering JSON into LaTeX', () => {
             'e ^ x'
         )
         check(
-            [ 'exponentiation', [ 'number', '1' ], [ 'infinity' ] ],
+            [ 'exponentiation', [ 'number', '1' ], 'infinity' ],
             '1 ^ \\infty'
         )
     } )
@@ -101,7 +101,7 @@ describe( 'Rendering JSON into LaTeX', () => {
             'x \\div y'
         )
         check(
-            [ 'division', [ 'number', '0' ], [ 'infinity' ] ],
+            [ 'division', [ 'number', '0' ], 'infinity' ],
             '0 \\div \\infty'
         )
         // division of factors
@@ -141,7 +141,7 @@ describe( 'Rendering JSON into LaTeX', () => {
             'x \\times y'
         )
         check(
-            [ 'multiplication', [ 'number', '0' ], [ 'infinity' ] ],
+            [ 'multiplication', [ 'number', '0' ], 'infinity' ],
             '0 \\times \\infty'
         )
         // multiplication of factors
@@ -221,7 +221,7 @@ describe( 'Rendering JSON into LaTeX', () => {
                     [ 'exponentiation',
                         [ 'numbervariable', 'A' ], [ 'numbervariable', 'B' ] ],
                     [ 'numbervariable', 'C' ] ],
-                [ 'pi' ] ],
+                'pi' ],
             'A ^ B + C - \\pi'
         )
     } )
@@ -324,9 +324,9 @@ describe( 'Rendering JSON into LaTeX', () => {
     } )
 
     it( 'can convert propositional logic atomics from JSON to LaTeX', () => {
-        check( [ 'logicaltrue' ], '\\top' )
-        check( [ 'logicalfalse' ], '\\bot' )
-        check( [ 'contradiction' ], '\\rightarrow \\leftarrow' )
+        check( 'logicaltrue', '\\top' )
+        check( 'logicalfalse', '\\bot' )
+        check( 'contradiction', '\\rightarrow \\leftarrow' )
         // Not checking variables here, because their meaning is ambiguous; we
         // will check below to ensure that they can be part of logic expressions.
     } )
@@ -334,15 +334,15 @@ describe( 'Rendering JSON into LaTeX', () => {
     it( 'can convert propositional logic conjuncts from JSON to LaTeX', () => {
         check(
             [ 'conjunction',
-                [ 'logicaltrue' ],
-                [ 'logicalfalse' ]
+                'logicaltrue',
+                'logicalfalse'
             ],
             '\\top \\wedge \\bot'
         )
         check(
             [ 'conjunction',
                 [ 'logicnegation', [ 'logicvariable', 'P' ] ],
-                [ 'logicnegation', [ 'logicaltrue' ] ]
+                [ 'logicnegation', 'logicaltrue' ]
             ],
             '\\neg P \\wedge \\neg \\top'
         )
@@ -361,7 +361,7 @@ describe( 'Rendering JSON into LaTeX', () => {
     it( 'can convert propositional logic disjuncts from JSON to LaTeX', () => {
         check(
             [ 'disjunction',
-                [ 'logicaltrue' ],
+                'logicaltrue',
                 [ 'logicnegation', [ 'logicvariable', 'A' ] ]
             ],
             '\\top \\vee \\neg A'
@@ -446,8 +446,8 @@ describe( 'Rendering JSON into LaTeX', () => {
         check(
             [ 'logicnegation',
                 [ 'iff',
-                    [ 'logicaltrue' ],
-                    [ 'logicalfalse' ]
+                    'logicaltrue',
+                    'logicalfalse'
                 ]
             ],
             '\\neg {\\top \\Leftrightarrow \\bot}'
@@ -481,7 +481,7 @@ describe( 'Rendering JSON into LaTeX', () => {
 
     it( 'can convert finite and empty sets from JSON to LaTeX', () => {
         // { }
-        check( [ 'emptyset' ], '\\emptyset' )
+        check( 'emptyset', '\\emptyset' )
         // { 1 }
         check(
             [ 'finiteset', [ 'oneeltseq', [ 'number', '1' ] ] ],
@@ -502,14 +502,14 @@ describe( 'Rendering JSON into LaTeX', () => {
         )
         // { { }, { } }
         check(
-            [ 'finiteset', [ 'eltthenseq', [ 'emptyset' ],
-                [ 'oneeltseq', [ 'emptyset' ] ] ] ],
+            [ 'finiteset', [ 'eltthenseq', 'emptyset',
+                [ 'oneeltseq', 'emptyset' ] ] ],
             '\\{ \\emptyset , \\emptyset \\}'
         )
         // { { { } } }
         check(
             [ 'finiteset', [ 'oneeltseq',
-                [ 'finiteset', [ 'oneeltseq', [ 'emptyset' ] ] ] ] ],
+                [ 'finiteset', [ 'oneeltseq', 'emptyset' ] ] ] ],
             '\\{ \\{ \\emptyset \\} \\}'
         )
         // { 3, x }
@@ -530,7 +530,7 @@ describe( 'Rendering JSON into LaTeX', () => {
         check(
             [ 'finiteset', [ 'eltthenseq', [ 'number', '1' ],
                 [ 'eltthenseq', [ 'number', '2' ],
-                    [ 'eltthenseq', [ 'emptyset' ],
+                    [ 'eltthenseq', 'emptyset',
                         [ 'eltthenseq', [ 'numbervariable', 'K' ],
                             [ 'oneeltseq', [ 'numbervariable', 'P' ] ] ] ] ] ] ],
             '\\{ 1 , 2 , \\emptyset , K , P \\}'
@@ -653,7 +653,7 @@ describe( 'Rendering JSON into LaTeX', () => {
             '\\neg a \\in A'
         )
         check(
-            [ 'logicnegation', [ 'nounisin', [ 'emptyset' ], [ 'emptyset' ] ] ],
+            [ 'logicnegation', [ 'nounisin', 'emptyset', 'emptyset' ] ],
             '\\neg \\emptyset \\in \\emptyset'
         )
         check(
@@ -670,7 +670,7 @@ describe( 'Rendering JSON into LaTeX', () => {
             'a \\notin A'
         )
         check(
-            [ 'nounisnotin', [ 'emptyset' ], [ 'emptyset' ] ],
+            [ 'nounisnotin', 'emptyset', 'emptyset' ],
             '\\emptyset \\notin \\emptyset'
         )
         check(
@@ -772,7 +772,7 @@ describe( 'Rendering JSON into LaTeX', () => {
         )
         check(
             [ 'intersection',
-                [ 'emptyset' ],
+                'emptyset',
                 [ 'setfuncapp', [ 'funcvariable', 'f' ], [ 'number', '2' ] ] ],
             '\\emptyset \\cap f ( 2 )'
         )
@@ -795,40 +795,40 @@ describe( 'Rendering JSON into LaTeX', () => {
 
     it( 'can represent trigonometric functions correctly', () => {
         check(
-            [ 'prefixfuncapp', [ 'sinfunc' ], [ 'numbervariable', 'x' ] ],
+            [ 'prefixfuncapp', 'sinfunc', [ 'numbervariable', 'x' ] ],
             '\\sin x'
         )
         check(
-            [ 'prefixfuncapp', [ 'cosfunc' ],
-                [ 'multiplication', [ 'pi' ], [ 'numbervariable', 'x' ] ] ],
+            [ 'prefixfuncapp', 'cosfunc',
+                [ 'multiplication', 'pi', [ 'numbervariable', 'x' ] ] ],
             '\\cos \\pi \\times x'
         )
         check(
-            [ 'prefixfuncapp', [ 'tanfunc' ], [ 'numbervariable', 't' ] ],
+            [ 'prefixfuncapp', 'tanfunc', [ 'numbervariable', 't' ] ],
             '\\tan t'
         )
         check(
             [ 'division', [ 'number', '1' ],
-                [ 'prefixfuncapp', [ 'cotfunc' ], [ 'pi' ] ] ],
+                [ 'prefixfuncapp', 'cotfunc', 'pi' ] ],
             '1 \\div \\cot \\pi'
         )
         check(
             [ 'equality',
-                [ 'prefixfuncapp', [ 'secfunc' ], [ 'numbervariable', 'y' ] ],
-                [ 'prefixfuncapp', [ 'cscfunc' ], [ 'numbervariable', 'y' ] ] ],
+                [ 'prefixfuncapp', 'secfunc', [ 'numbervariable', 'y' ] ],
+                [ 'prefixfuncapp', 'cscfunc', [ 'numbervariable', 'y' ] ] ],
             '\\sec y = \\csc y'
         )
     } )
 
     it( 'can express logarithms correctly', () => {
         check(
-            [ 'prefixfuncapp', [ 'logarithm' ], [ 'numbervariable', 'n' ] ],
+            [ 'prefixfuncapp', 'logarithm', [ 'numbervariable', 'n' ] ],
             '\\log n'
         )
         check(
             [ 'addition',
                 [ 'number', '1' ],
-                [ 'prefixfuncapp', [ 'naturallog' ], [ 'numbervariable', 'x' ] ] ],
+                [ 'prefixfuncapp', 'naturallog', [ 'numbervariable', 'x' ] ] ],
             '1 + \\ln x'
         )
         check(
@@ -838,9 +838,9 @@ describe( 'Rendering JSON into LaTeX', () => {
         )
         check(
             [ 'division',
-                [ 'prefixfuncapp', [ 'logarithm' ], [ 'numbervariable', 'n' ] ],
-                [ 'prefixfuncapp', [ 'logarithm' ],
-                    [ 'prefixfuncapp', [ 'logarithm' ], [ 'numbervariable', 'n' ] ] ] ],
+                [ 'prefixfuncapp', 'logarithm', [ 'numbervariable', 'n' ] ],
+                [ 'prefixfuncapp', 'logarithm',
+                    [ 'prefixfuncapp', 'logarithm', [ 'numbervariable', 'n' ] ] ] ],
             '\\log n \\div \\log \\log n'
         )
     } )

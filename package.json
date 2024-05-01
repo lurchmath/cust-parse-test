@@ -7,6 +7,7 @@
   "scripts": {
     "test": "node ./node_modules/mocha/bin/mocha.js tests/",
     "log-test": "node ./node_modules/mocha/bin/mocha.js --require tests/log-hooks.js tests/",
+    "one-test": "node ./node_modules/mocha/bin/mocha.js",
     "docs": "rm -rf docs && node scripts/pre-jsdoc.js && jsdoc *.js -d docs -R doc-main.md -c jsdoc-conf.json --verbose && node scripts/post-jsdoc.js"
   },
   "author": "Nathan Carter (ncarter@bentley.edu)",

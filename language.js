@@ -104,7 +104,7 @@ export class Language {
                     if ( !( array[0] instanceof RegExp ) ) return
                 }
                 this.addNotation( conceptName, concept.putdown )
-                const rhss = this.grammar.rules[conceptName]
+                const rhss = this.rulesFor( conceptName )
                 rhss[rhss.length-1].putdownDefault = true
             }
         } )
@@ -236,7 +236,7 @@ export class Language {
                 parentType = SyntacticTypes.lowestSubtype( parentType )
             this.grammar.addRule( parentType, conceptName )
             this.grammar.addRule( conceptName, notation )
-            const rhss = this.grammar.rules[conceptName]
+            const rhss = this.rulesFor( conceptName )
             const newRule = rhss[rhss.length - 1]
             // record in the new rule RHS several data about how the rule was made
             newRule.notationToPutdown = notationToPutdown
@@ -290,6 +290,27 @@ export class Language {
         if ( this.converter != language.converter )
             throw new Error( 'The two languages do not share a Converter' )
         return this.parse( text )?.toLanguage( language )
+    }
+
+    /**
+     * Get all grammar rules for the given concept or syntactic type.  The
+     * result is an array of the right-hand sides of the grammar rules for the
+     * concept or syntactic type.  Each such right-hand side is the array of
+     * tokens or type names used internally by the parser.
+     * 
+     * @param {String|AST} target - if this is a string, it must be the name of
+     *   the concept or syntactic type to look up; if it is a leaf AST, then its
+     *   contents as a string are used; if it is a compound AST, then its head
+     *   is used
+     * @returns {Array} an array of the right-hand sides of the grammar rules
+     */
+    rulesFor ( type ) {
+        if ( type instanceof AST )
+            type = type.isCompound() ? type.head().contents : type.contents
+        const result = this.grammar.rules[type] || [ ]
+        if ( this.derivedNotation.has( type ) )
+            result.push( this.derivedNotation.get( type ) )
+        return result
     }
 
     /**
