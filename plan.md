@@ -1,107 +1,126 @@
 
-How to expand the example converter to handle new concepts/notation:
- 1. Add a new `addConcept()` call to the `example-converter.js` file, with the
-    appropriate putdown notation included.
- 2. Add an `it()` call to `test-parsing-putdown.js` to ensure that the new
-    concept can be parsed from putdown notation.
-     - Possibly also add a test to an `it()` whose purpose is to test nesting of
-       expressions in one another, using the new type you just introduced.
- 3. Add an `it()` call to `test-creating-putdown.js` to ensure that the new
-    concept can be rendered to putdown notation.  (You can probably copy and
-    paste the test you created in item 2., but rename the function call and swap
-    the two arguments' order.)
-     - Possibly also add a test to an `it()` whose purpose is to test nesting of
-       expressions in one another, using the new type you just introduced.
- 4. Add a new `addNotation()` call to the `example-converter.js` file, with one
-    or more LaTeX notations for the new concept.
- 5. Add an `it()` call to `test-parsing-latex.js` to ensure that the new
-    concept can be parsed from latex notation.
-     - Possibly also add a test to an `it()` whose purpose is to test precedence
-       of your new operator (if indeed it is one) compared to pre-existing ones.
- 6. Add an `it()` call to `test-creating-latex.js` to ensure that the new
-    concept can be rendered to latex notation.  (You can probably copy and
-    paste the test you created in item 5., but rename the function call and swap
-    the two arguments' order.)
-     - Possibly also add a test to an `it()` whose purpose is to test that
-       rendering puts groupers where needed to respect relative precedence.
- 7. Add an `it()` call to `test-putdown-to-latex.js` to compose two of the tests
-    run above.
- 8. Add an `it()` call to `test-latex-to-putdown.js` to compose two of the tests
-    run above.
-
-General to dos:
- - expand set of tests for many new mathematical expressions in many languages,
-   including expressions that bind variables.  Use the grammar here as an
-   inspiration: https://github.com/lurchmath/earley-parser/blob/master/earley-tests.js#L225
-    - equivalence class (for a relation): `[x]`, `[x,~]`
-    - congruence mod m relation: `x = y (mod m)`
-    - EFAs: `(@ P x)`
-    - `X is a[n] Y`, `X is a[n] Y of Z`, for a specific finite set of Ys
-      (e.g., X is a set, or an equivalence relation, or a partial order, etc.)
-    - assumptions (given flags): `:A`, `Assume A`, etc.
-    - Let-style declarations, with or without body: `Let x`, `Let x be such that P`
-    - ForSome-style declarations, always with body: `For some x, P` and
-      `P for some x`
- - define new language of Lurch notation and verify all (or almost all) of its
-   features can be supported
- - test whether all MathLive output can be parsed by this LaTeX parser
- - Eventually make overview documentation for the main docs index page.  It should
-   include all the assumptions abked into this implementation, such as the fact
-   that whitespace is not meaningful, and others.
- - Eventually make a nice diagram of the syntactic types hierarchy and add it to
-   the documentation for the syntactic-types module.
- - Create an even simpler API that goes through JSON only and selects a subset of
-   the desired concepts from the example converter, specifying their notation in
-   whatever set of languages the caller wants to use.
+To finish verifying that this project is for parsing LaTeX:
+ - Finish making the example converter (and thus the default set of syntactic
+   types) as robust as needed by adding the following features.
+    1. Equivalence class (for a relation): `[x]`, `[x,~]`
+    2. Congruence mod m relation: `x = y (mod m)`
+    3. EFAs: `(@ P x)`
+    4. `X is a[n] Y`, `X is a[n] Y of Z`, for a specific finite set of Ys
+       (e.g., X is a set, or an equivalence relation, or a partial order, etc.)
+    5. Assumptions (given flags): `:A`, `Assume A`, etc.
+    6. Let-style declarations, with or without body: `Let x`, `Let x be such that P`
+    7. ForSome-style declarations, always with body: `For some x, P` and
+       `P for some x`
  - Expand LaTeX to support `\left(`, `\right)`, and the same for curly and square
    brackets.
- - Add the capability of asking for all possible parsings, rather than just
-   getting the first one.  Run some tests on this, especially anywhere the test
-   suite mentioned "alphabetical order."
+ - Ensure that every test from the MathLive data later in this document has been
+   brought into the test suite and is parsed correctly into AST/putdown forms.
 
-Bug fixes:
- - Returning the alphabetically least JSON parsing result from all ambiguous
-   results leads to right association in most cases.  This is actually a good
-   thing and should be documented somewhere, because for operators that are
-   associative, it doesn't matter which way you do it, but for operators like
-   the conditional, right association is the correct default.  Eventually, you
-   will want to specify how an operator associates (L/R) and have the tree be
-   post-processed to take any `(op (op x y) z)` or` (op x (op y z))` and turn it
-   into the correct default for that specific op.
+To verify that this project can be presented simply to users:
+ - Legitimize the example converter as a foundational set of mathematical
+   concepts and the LaTeX parser and putdown notation for those concepts, not
+   just something just used for testing.
+ - Create a simple JSON-based API that lets the user select a subset of the
+   concepts from the (no-longer-example) converter and specify the notation for
+   them in the new language.  Phrase the keys in the API in a natural language
+   way to make clear the kinds of natural language sentences that would be used
+   in a document when "calling" this API.
+ - Create tests of this for some tiny subset of the full language, but the next
+   section of this plan includes a much bigger test.
+
+To verify that this project is also viable for parsing Lurch notation:
+ - Use the scraper tool in the lurchmath repo's grading tools folder to get a
+   list of all unique Lurch notation expressions used in Math299 in Spring 2024.
+ - Define a new language of Lurch notation and verify that all (or almost all)
+   of the expressions scraped from Math299 can be parsed by this tool.  Use the
+   new JSON API to define this language, to give a full, robust test of that
+   simpler API.
+
+Bug fix:
  - Associativity right now works well in that it will produce ASTs that are
    flattened, but it fails in that those ASTs will then be unable to convert to
    putdown because they have the wrong number of arguments for the putdown form
-   as originally defined.  Redesign?
+   as originally defined.  This needs a redesign, probably like so:
+    - Create a `Template` class that will take a string and a variables list and
+      (at construction time) split the string to also store a template array
+      internally, like the code at about `ast.js:500` does.
+    - Add a `Template.fillIn(...args)` method that does what it says on the tin,
+      by re-using the code from the very end of `AST.toLanguage()`.  Now replace
+      the last approx.30 lines of code in `AST.toLanguage()` with a construction
+      of a `Template` instance and then use of it thereafter.
+    - See if there are any other places you might want to use the new `Template`
+      class.
+    - When you flatten, give the resulting AST an attribute that says it was
+      flattened, so that this is recorded.
+    - When you check for the correct arity in `AST.toLanguage()`, if the AST is
+      a flattened one and the concept permits some types of associative
+      flattening, then do not throw the error.
+    - Enhance `Template.fillIn(...args)` so that if it receives too many
+      arguments, it does something sensible by repeating the last two (and the
+      text between them) as many times as necessary to handle the extras.
 
-Misc notes:
- - Did not bother adding "arcsin" and "asin" and so on for all trig functions.
-   Does not add any functionality and just clutters things up, given that we
-   already have `^{-1}` notation for all functions.  Could be done if needed.
+Polishing:
+ - Add the capability of asking for all possible parsings, rather than just
+   getting the first one.
+    - Run tests on this, especially anywhere the test suite mentioned
+      "alphabetical order."
+    - Rewrite one-result parsing functions so that they call this one and then
+      index/filter the result.
+    - Did not bother adding "arcsin" and "asin" and so on for all trig functions
+      because doing so does not add any functionality and just clutters things
+      up, given that we already have `^{-1}` notation for all functions.
+      Could be done if needed.
+ - Add a feature where you can specify, for any given operator, whether it
+   associates right or left, and if you do, then we will filter out of the list
+   of valid parsings any result that contains a nesting different than what you
+   specified.
+ - Make overview documentation for the main docs index page.  It should include
+   all the assumptions baked into this implementation, such as:
+    - whitespace is not meaningful
+    - alphabetically least JSON parsing leads to right association in most cases
+      (which is good for conditional, f.ex., and irrelevant for associative
+      stuff)
+ - Also add to the overview documentation the procedure for adding new concepts
+   and tests to the example converter, which is:
+    1. Add a new `addConcept()` call to the `example-converter.js` file, with
+       the appropriate putdown notation included.
+    2. Add an `it()` call to `test-parsing-putdown.js` to ensure that the new
+       concept can be parsed from putdown notation.
+        - Possibly also add a test to an `it()` whose purpose is to test nesting
+          of expressions in one another, using the new type you just introduced.
+    3. Add an `it()` call to `test-creating-putdown.js` to ensure that the new
+       concept can be rendered to putdown notation.  (You can probably copy and
+       paste the test you created in item 2., but rename the function call and
+       swap the two arguments' order.)
+        - Possibly also add a test to an `it()` whose purpose is to test nesting
+          of expressions in one another, using the new type you just introduced.
+    4. Add a new `addNotation()` call to the `example-converter.js` file, with
+       one or more LaTeX notations for the new concept.
+    5. Add an `it()` call to `test-parsing-latex.js` to ensure that the new
+       concept can be parsed from latex notation.
+        - Possibly also add a test to an `it()` whose purpose is to test
+          precedence of your new operator (if indeed it is one) compared to
+          pre-existing ones.
+    6. Add an `it()` call to `test-creating-latex.js` to ensure that the new
+       concept can be rendered to latex notation.  (You can probably copy and
+       paste the test you created in item 5., but rename the function call and
+       swap the two arguments' order.)
+        - Possibly also add a test to an `it()` whose purpose is to test that
+          rendering puts groupers where needed to respect relative precedence.
+    7. Add an `it()` call to `test-putdown-to-latex.js` to compose two of the
+       tests run above.
+    8. Add an `it()` call to `test-latex-to-putdown.js` to compose two of the
+       tests run above.
+ - Automate the creation of a nice diagram of the syntactic types hierarchy and
+   add to the docs build process the regeneration of that diagram and the
+   integration of it into the docs themselves.
 
-Information we may need later:
- - infinity      = '\u221e' = ∞
- - longMinus     = '\u2212' = −
- - divide        = '\u00f7' = ÷
- - times         = '\u00d7' = ×
- - cdot          = '\u00b7' = ·
- - another minus = '\u2212'
- - plusminus     = '\u00b1'
- - root          = '\u221a'
- - set1          = '\u223c' // alternate form of ~
- - neq           = '\u2260'
- - approx        = '\u2248'
- - le            = '\u2264'
- - ge            = '\u2265'
- - modulo        = '\u2243'
- - not           = '\u00ac'
- - degrees       = '\u2218'
- - integral      = '\u222b'
 
 Tests used in the Earley testing library that we can use here:
 (Note that these are written here in LaTeX notation, but they can be used to
 test any language, not just LaTeX.)
 ```
-// LaTeX                    What MathLive produces (iff different)
+// LaTeX                        What MathLive produces (iff different)
 // basics:
 6 + k                           6+k
 1.9 - T                         1.9-T
@@ -452,3 +471,23 @@ x⁻
 λP(k)
 undefined
 ```
+
+Information we may need later:
+ - infinity      = '\u221e' = ∞
+ - longMinus     = '\u2212' = −
+ - divide        = '\u00f7' = ÷
+ - times         = '\u00d7' = ×
+ - cdot          = '\u00b7' = ·
+ - another minus = '\u2212'
+ - plusminus     = '\u00b1'
+ - root          = '\u221a'
+ - set1          = '\u223c' // alternate form of ~
+ - neq           = '\u2260'
+ - approx        = '\u2248'
+ - le            = '\u2264'
+ - ge            = '\u2265'
+ - modulo        = '\u2243'
+ - not           = '\u00ac'
+ - degrees       = '\u2218'
+ - integral      = '\u222b'
+
