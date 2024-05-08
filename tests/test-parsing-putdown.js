@@ -824,4 +824,27 @@ describe( 'Parsing putdown', () => {
         )
     } )
 
+    it( 'can parse equivalence classes and treat them as sets', () => {
+        check(
+            '(eqclass 1 ~~)',
+            [ 'equivclass', [ 'number', '1' ], 'approximately' ]
+        )
+        check(
+            '(eqclass (+ x 2) ~)',
+            [ 'bareequivclass',
+                [ 'addition', [ 'numbervariable', 'x' ], [ 'number', '2' ] ] ]
+        )
+        check(
+            '(setuni (eqclass 1 ~~) (eqclass 2 ~~))',
+            [ 'union',
+                [ 'equivclass', [ 'number', '1' ], 'approximately' ],
+                [ 'equivclass', [ 'number', '2' ], 'approximately' ] ]
+        )
+        check(
+            '(in 7 (eqclass 7 ~))',
+            [ 'nounisin', [ 'number', '7' ],
+                [ 'bareequivclass', [ 'number', '7' ] ] ]
+        )
+    } )
+
 } )

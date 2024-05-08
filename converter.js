@@ -242,6 +242,7 @@ export class Converter {
             associative : [ ]
         }, options )
         const conceptData = {
+            name,
             parentType,
             putdown,
             associative : options.associative,

@@ -94,6 +94,9 @@ converter.addConcept( 'genericrelation', 'binaryrelation',   '~' )
 converter.addConcept( 'approximately',   'binaryrelation',   '~~' )
 converter.addConcept( 'binrelapp',       'atomicpropexpr',   '(applyrel binaryrelation nounexpr nounexpr)' )
 
+converter.addConcept( 'equivclass',      'atomicsetexpr',    '(eqclass nounexpr binaryrelation)' )
+converter.addConcept( 'bareequivclass',  'atomicsetexpr',    '(eqclass nounexpr ~)' )
+
 const latex = new Language( 'latex', converter, [ '{', '}', '(', ')' ] )
 
 latex.addNotation( 'infinity',        '\\infty' )
@@ -197,3 +200,6 @@ latex.addNotation( 'binrelapp',       'B A C' )
 latex.addNotation( 'divisibility',    '|' )
 latex.addNotation( 'approximately',   '\\approx' )
 latex.addNotation( 'genericrelation', '\\sim' )
+
+latex.addNotation( 'equivclass',      '[A,B]' )
+latex.addNotation( 'bareequivclass',  '[A]' )

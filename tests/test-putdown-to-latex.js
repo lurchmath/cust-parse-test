@@ -324,4 +324,14 @@ describe( 'Converting putdown to LaTeX', () => {
         )
     } )
 
+    it( 'can convert equivalence classes and expressions that use them', () => {
+        check( '(eqclass 1 ~~)', '[ 1 , \\approx ]' )
+        check( '(eqclass (+ x 2) ~)', '[ x + 2 ]' )
+        check(
+            '(setuni (eqclass 1 ~~) (eqclass 2 ~~))',
+            '[ 1 , \\approx ] \\cup [ 2 , \\approx ]'
+        )
+        check( '(in 7 (eqclass 7 ~))', '7 \\in [ 7 ]' )
+    } )
+
 } )

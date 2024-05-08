@@ -811,4 +811,32 @@ describe( 'Rendering JSON into putdown', () => {
         )
     } )
 
+    it( 'can express equivalence classes and expressions that use them', () => {
+        check(
+            [ 'equivclass', [ 'number', '1' ], 'approximately' ],
+            '(eqclass 1 ~~)'
+        )
+        check(
+            [ 'equivclass',
+                [ 'addition', [ 'numbervariable', 'x' ], [ 'number', '2' ] ],
+                'genericrelation' ],
+            '(eqclass (+ x 2) ~)'
+        )
+        check(
+            [ 'union',
+                [ 'equivclass', [ 'number', '1' ], 'approximately' ],
+                [ 'equivclass', [ 'number', '2' ], 'approximately' ] ],
+            '(setuni (eqclass 1 ~~) (eqclass 2 ~~))'
+        )
+        check(
+            [ 'nounisin', [ 'number', '7' ],
+                [ 'equivclass', [ 'number', '7' ], 'genericrelation' ] ],
+            '(in 7 (eqclass 7 ~))'
+        )
+        check(
+            [ 'equivclass', [ 'funcvariable', 'P' ], 'genericrelation' ],
+            '(eqclass P ~)'
+        )
+    } )
+
 } )

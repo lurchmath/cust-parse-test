@@ -942,4 +942,32 @@ describe( 'Parsing LaTeX', () => {
         )
     } )
 
+    it( 'can parse equivalence classes and treat them as sets', () => {
+        check(
+            '[1,\\approx]',
+            [ 'equivclass', [ 'number', '1' ], 'approximately' ]
+        )
+        check(
+            '[x+2,\\sim]',
+            [ 'equivclass',
+                [ 'addition', [ 'numbervariable', 'x' ], [ 'number', '2' ] ],
+                'genericrelation' ]
+        )
+        check(
+            '[1,\\approx]\\cup[2,\\approx]',
+            [ 'union',
+                [ 'equivclass', [ 'number', '1' ], 'approximately' ],
+                [ 'equivclass', [ 'number', '2' ], 'approximately' ] ]
+        )
+        check(
+            '7\\in[7,\\sim]',
+            [ 'nounisin', [ 'number', '7' ],
+                [ 'equivclass', [ 'number', '7' ], 'genericrelation' ] ]
+        )
+        check(
+            '[P]',
+            [ 'bareequivclass', [ 'numbervariable', 'P' ] ]
+        )
+    } )
+
 } )

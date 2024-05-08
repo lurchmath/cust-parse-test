@@ -850,4 +850,32 @@ describe( 'Rendering JSON into LaTeX', () => {
         )
     } )
 
+    it( 'can express equivalence classes and expressions that use them', () => {
+        check(
+            [ 'equivclass', [ 'number', '1' ], 'approximately' ],
+            '[ 1 , \\approx ]'
+        )
+        check(
+            [ 'equivclass',
+                [ 'addition', [ 'numbervariable', 'x' ], [ 'number', '2' ] ],
+                'genericrelation' ],
+            '[ x + 2 , \\sim ]'
+        )
+        check(
+            [ 'union',
+                [ 'equivclass', [ 'number', '1' ], 'approximately' ],
+                [ 'equivclass', [ 'number', '2' ], 'approximately' ] ],
+            '[ 1 , \\approx ] \\cup [ 2 , \\approx ]'
+        )
+        check(
+            [ 'nounisin', [ 'number', '7' ],
+                [ 'equivclass', [ 'number', '7' ], 'genericrelation' ] ],
+            '7 \\in [ 7 , \\sim ]'
+        )
+        check(
+            [ 'bareequivclass', [ 'numbervariable', 'P' ] ],
+            '[ P ]'
+        )
+    } )
+
 } )
