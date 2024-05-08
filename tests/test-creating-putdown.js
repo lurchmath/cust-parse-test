@@ -284,20 +284,25 @@ describe( 'Rendering JSON into putdown', () => {
             '(and (>= 2 1) (<= 2 3))'
         )
         check(
-            [ 'divides', [ 'number', '7' ], [ 'number', '14' ] ],
-            '(divides 7 14)'
+            [ 'binrelapp', 'divisibility', [ 'number', '7' ], [ 'number', '14' ] ],
+            '(applyrel | 7 14)'
         )
         check(
-            [ 'divides',
+            [ 'binrelapp', 'divisibility',
                 [ 'numfuncapp', [ 'funcvariable', 'A' ], [ 'numbervariable', 'k' ] ],
                 [ 'factorial', [ 'numbervariable', 'n' ] ] ],
-            '(divides (apply A k) (! n))'
+            '(applyrel | (apply A k) (! n))'
         )
         check(
-            [ 'genericrelation',
+            [ 'binrelapp', 'genericrelation',
                 [ 'subtraction', [ 'number', '1' ], [ 'numbervariable', 'k' ] ],
                 [ 'addition', [ 'number', '1' ], [ 'numbervariable', 'k' ] ] ],
-            '(~ (- 1 k) (+ 1 k))'
+            '(applyrel ~ (- 1 k) (+ 1 k))'
+        )
+        check(
+            [ 'binrelapp', 'approximately',
+                [ 'number', '0.99' ], [ 'number', '1.01' ] ],
+            '(applyrel ~~ 0.99 1.01)'
         )
     } )
 
@@ -680,18 +685,18 @@ describe( 'Rendering JSON into putdown', () => {
         check(
             [ 'universal',
                 [ 'numbervariable', 'n' ],
-                [ 'divides',
+                [ 'binrelapp', 'divisibility',
                     [ 'numbervariable', 'n' ],
                     [ 'factorial', [ 'numbervariable', 'n' ] ] ] ],
-            '(forall (n , (divides n (! n))))'
+            '(forall (n , (applyrel | n (! n))))'
         )
         check(
             [ 'implication',
-                [ 'genericrelation',
+                [ 'binrelapp', 'genericrelation',
                     [ 'numbervariable', 'a' ], [ 'numbervariable', 'b' ] ],
-                [ 'genericrelation',
+                [ 'binrelapp', 'genericrelation',
                     [ 'numbervariable', 'b' ], [ 'numbervariable', 'a' ] ] ],
-            '(implies (~ a b) (~ b a))'
+            '(implies (applyrel ~ a b) (applyrel ~ b a))'
         )
     } )
 

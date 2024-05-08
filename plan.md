@@ -3,17 +3,9 @@ To finish verifying that this project is viable for parsing LaTeX:
  - Finish making the example converter (and thus the default set of syntactic
    types) as robust as needed by adding the following features.
     1. Equivalence class (for a relation):
-        a. Define a syntactic type for binary relations and put some stuff in
-           it, including the "genericrelation" currently written `~` plus some
-           other things like "divides" and maybe other generic relations like
-           the double tilde.
-        b. Define a sentence type for applying binary relations to two arguments
-           and update old tests for applying the generic relation to use this
-           new form now.  Ensure they can accept more than just numbers as
-           arguments.
-        c. Define an equivalence class notation `[x,R]` that creates equivalence
+        a. Define an equivalence class notation `[x,R]` that creates equivalence
            classes for a specific relation symbol R.
-        d. Define an equivalence class notation `[x]` that fills in the default
+        a. Define an equivalence class notation `[x]` that fills in the default
            relation `~` for the missing one.
     2. Congruence mod m relation:
         a. Define the notation `x = y (mod m)`.

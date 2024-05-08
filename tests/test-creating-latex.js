@@ -294,20 +294,25 @@ describe( 'Rendering JSON into LaTeX', () => {
             '2 \\ge 1 \\wedge 2 \\le 3'
         )
         check(
-            [ 'divides', [ 'number', '7' ], [ 'number', '14' ] ],
+            [ 'binrelapp', 'divisibility', [ 'number', '7' ], [ 'number', '14' ] ],
             '7 | 14'
         )
         check(
-            [ 'divides',
+            [ 'binrelapp', 'divisibility',
                 [ 'numfuncapp', [ 'funcvariable', 'A' ], [ 'numbervariable', 'k' ] ],
                 [ 'factorial', [ 'numbervariable', 'n' ] ] ],
             'A ( k ) | n !'
         )
         check(
-            [ 'genericrelation',
+            [ 'binrelapp', 'genericrelation',
                 [ 'subtraction', [ 'number', '1' ], [ 'numbervariable', 'k' ] ],
                 [ 'addition', [ 'number', '1' ], [ 'numbervariable', 'k' ] ] ],
             '1 - k \\sim 1 + k'
+        )
+        check(
+            [ 'binrelapp', 'approximately',
+                [ 'number', '0.99' ], [ 'number', '1.01' ] ],
+            '0.99 \\approx 1.01'
         )
     } )
 
@@ -719,16 +724,16 @@ describe( 'Rendering JSON into LaTeX', () => {
         check(
             [ 'universal',
                 [ 'numbervariable', 'n' ],
-                [ 'divides',
+                [ 'binrelapp', 'divisibility',
                     [ 'numbervariable', 'n' ],
                     [ 'factorial', [ 'numbervariable', 'n' ] ] ] ],
             '\\forall n , n | n !'
         )
         check(
             [ 'implication',
-                [ 'genericrelation',
+                [ 'binrelapp', 'genericrelation',
                     [ 'numbervariable', 'a' ], [ 'numbervariable', 'b' ] ],
-                [ 'genericrelation',
+                [ 'binrelapp', 'genericrelation',
                     [ 'numbervariable', 'b' ], [ 'numbervariable', 'a' ] ] ],
             'a \\sim b \\Rightarrow b \\sim a'
         )

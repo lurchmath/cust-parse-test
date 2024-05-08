@@ -101,9 +101,10 @@ describe( 'Converting putdown to LaTeX', () => {
         check( '(< (- 1 2) (+ 1 2))', '1 - 2 < 1 + 2' )
         check( '(not (= 1 2))', '\\neg 1 = 2' )
         check( '(and (>= 2 1) (<= 2 3))', '2 \\ge 1 \\wedge 2 \\le 3' )
-        check( '(divides 7 14)', '7 | 14' )
-        check( '(divides (apply A k) (! n))', 'A ( k ) | n !' )
-        check( '(~ (- 1 k) (+ 1 k))', '1 - k \\sim 1 + k' )
+        check( '(applyrel | 7 14)', '7 | 14' )
+        check( '(applyrel | (apply A k) (! n))', 'A ( k ) | n !' )
+        check( '(applyrel ~ (- 1 k) (+ 1 k))', '1 - k \\sim 1 + k' )
+        check( '(applyrel ~~ 0.99 1.01)', '0.99 \\approx 1.01' )
     } )
 
     it( 'does not undo the canonical form for inequality', () => {
@@ -277,8 +278,11 @@ describe( 'Converting putdown to LaTeX', () => {
             'A \\subseteq B \\wedge B \\subseteq A'
         )
         check( '(= R (setprod A B))', 'R = A \\times B' )
-        check( '(forall (n , (divides n (! n))))', '\\forall n , n | n !' )
-        check( '(implies (~ a b) (~ b a))', 'a \\sim b \\Rightarrow b \\sim a' )
+        check( '(forall (n , (applyrel | n (! n))))', '\\forall n , n | n !' )
+        check(
+            '(implies (applyrel ~ a b) (applyrel ~ b a))',
+            'a \\sim b \\Rightarrow b \\sim a'
+        )
     } )
 
     it( 'can convert notation related to functions', () => {

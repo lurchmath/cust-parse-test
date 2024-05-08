@@ -283,20 +283,25 @@ describe( 'Parsing putdown', () => {
                 [ 'lessthanoreq', [ 'number', '2' ], [ 'number', '3' ] ] ]
         )
         check(
-            '(divides 7 14)',
-            [ 'divides', [ 'number', '7' ], [ 'number', '14' ] ]
+            '(applyrel | 7 14)',
+            [ 'binrelapp', 'divisibility', [ 'number', '7' ], [ 'number', '14' ] ]
         )
         check(
-            '(divides (apply A k) (! n))',
-            [ 'divides',
+            '(applyrel | (apply A k) (! n))',
+            [ 'binrelapp', 'divisibility',
                 [ 'numfuncapp', [ 'funcvariable', 'A' ], [ 'numbervariable', 'k' ] ],
                 [ 'factorial', [ 'numbervariable', 'n' ] ] ]
         )
         check(
-            '(~ (- 1 k) (+ 1 k))',
-            [ 'genericrelation',
+            '(applyrel ~ (- 1 k) (+ 1 k))',
+            [ 'binrelapp', 'genericrelation',
                 [ 'subtraction', [ 'number', '1' ], [ 'numbervariable', 'k' ] ],
                 [ 'addition', [ 'number', '1' ], [ 'numbervariable', 'k' ] ] ]
+        )
+        check(
+            '(applyrel ~~ 0.99 1.01)',
+            [ 'binrelapp', 'approximately',
+                [ 'number', '0.99' ], [ 'number', '1.01' ] ]
         )
     } )
 
@@ -685,19 +690,19 @@ describe( 'Parsing putdown', () => {
                 [ 'setproduct', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ] ]
         )
         check(
-            '(forall (n , (divides n (! n))))',
+            '(forall (n , (applyrel | n (! n))))',
             [ 'universal',
                 [ 'numbervariable', 'n' ],
-                [ 'divides',
+                [ 'binrelapp', 'divisibility',
                     [ 'numbervariable', 'n' ],
                     [ 'factorial', [ 'numbervariable', 'n' ] ] ] ]
         )
         check(
-            '(implies (~ a b) (~ b a))',
+            '(implies (applyrel ~ a b) (applyrel ~ b a))',
             [ 'implication',
-                [ 'genericrelation',
+                [ 'binrelapp', 'genericrelation',
                     [ 'numbervariable', 'a' ], [ 'numbervariable', 'b' ] ],
-                [ 'genericrelation',
+                [ 'binrelapp', 'genericrelation',
                     [ 'numbervariable', 'b' ], [ 'numbervariable', 'a' ] ] ]
         )
     } )

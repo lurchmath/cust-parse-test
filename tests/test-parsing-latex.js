@@ -355,19 +355,24 @@ describe( 'Parsing LaTeX', () => {
         )
         check(
             '7|14',
-            [ 'divides', [ 'number', '7' ], [ 'number', '14' ] ]
+            [ 'binrelapp', 'divisibility', [ 'number', '7' ], [ 'number', '14' ] ]
         )
         check(
             'A(k) | n!',
-            [ 'divides',
+            [ 'binrelapp', 'divisibility',
                 [ 'numfuncapp', [ 'funcvariable', 'A' ], [ 'numbervariable', 'k' ] ],
                 [ 'factorial', [ 'numbervariable', 'n' ] ] ]
         )
         check(
             '1-k \\sim 1+k',
-            [ 'genericrelation',
+            [ 'binrelapp', 'genericrelation',
                 [ 'subtraction', [ 'number', '1' ], [ 'numbervariable', 'k' ] ],
                 [ 'addition', [ 'number', '1' ], [ 'numbervariable', 'k' ] ] ]
+        )
+        check(
+            '0.99\\approx1.01',
+            [ 'binrelapp', 'approximately',
+                [ 'number', '0.99' ], [ 'number', '1.01' ] ]
         )
     } )
 
@@ -795,16 +800,16 @@ describe( 'Parsing LaTeX', () => {
             '\\forall n, n|n!',
             [ 'universal',
                 [ 'numbervariable', 'n' ],
-                [ 'divides',
+                [ 'binrelapp', 'divisibility',
                     [ 'numbervariable', 'n' ],
                     [ 'factorial', [ 'numbervariable', 'n' ] ] ] ]
         )
         check(
             'a\\sim b\\Rightarrow b\\sim a',
             [ 'implication',
-                [ 'genericrelation',
+                [ 'binrelapp', 'genericrelation',
                     [ 'numbervariable', 'a' ], [ 'numbervariable', 'b' ] ],
-                [ 'genericrelation',
+                [ 'binrelapp', 'genericrelation',
                     [ 'numbervariable', 'b' ], [ 'numbervariable', 'a' ] ] ]
         )
     } )

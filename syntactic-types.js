@@ -91,6 +91,9 @@ export const hierarchies = [
         // or else putdown will let all sequenceexprs be numsequenceexprs
     ],
     [
+        'binaryrelation' // operators, like ~ and |
+    ],
+    [
         'expr',
         'nounexpr',
         'tupleexpr'

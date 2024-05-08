@@ -89,8 +89,10 @@ converter.addConcept( 'lessthanoreq',    'atomicpropexpr',   '(<= nounexpr noune
 converter.addConcept( 'greaterthan',     'atomicpropexpr',   '(> nounexpr nounexpr)' )
 converter.addConcept( 'greaterthanoreq', 'atomicpropexpr',   '(>= nounexpr nounexpr)' )
 
-converter.addConcept( 'divides',         'atomicpropexpr',   '(divides numberexpr numberexpr)' )
-converter.addConcept( 'genericrelation', 'atomicpropexpr',   '(~ numberexpr numberexpr)' )
+converter.addConcept( 'divisibility',    'binaryrelation',   '|' )
+converter.addConcept( 'genericrelation', 'binaryrelation',   '~' )
+converter.addConcept( 'approximately',   'binaryrelation',   '~~' )
+converter.addConcept( 'binrelapp',       'atomicpropexpr',   '(applyrel binaryrelation nounexpr nounexpr)' )
 
 const latex = new Language( 'latex', converter, [ '{', '}', '(', ')' ] )
 
@@ -191,5 +193,7 @@ latex.addNotation( 'greaterthan',     'A\\gt B' )
 latex.addNotation( 'greaterthanoreq', 'A\\ge B' )
 latex.addNotation( 'greaterthanoreq', 'A\\geq B' )
 
-latex.addNotation( 'divides',         'A | B' )
-latex.addNotation( 'genericrelation', 'A \\sim B' )
+latex.addNotation( 'binrelapp',       'B A C' )
+latex.addNotation( 'divisibility',    '|' )
+latex.addNotation( 'approximately',   '\\approx' )
+latex.addNotation( 'genericrelation', '\\sim' )

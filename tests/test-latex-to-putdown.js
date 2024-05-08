@@ -106,6 +106,7 @@ describe( 'Converting LaTeX to putdown', () => {
         check( '(-x)^{2\\cdot(-3)}', '(^ (- x) (* 2 (- 3)))' )
         check( '{-3}^{1+2}', '(^ (- 3) (+ 1 2))' )
         check( 'k^{1-y}\\cdot(2+k)', '(* (^ k (- 1 y)) (+ 2 k))' )
+        check( '0.99\\approx1.01', '(applyrel ~~ 0.99 1.01)' )
     } )
 
     it( 'can convert relations of numeric expressions', () => {
@@ -116,9 +117,9 @@ describe( 'Converting LaTeX to putdown', () => {
         check( '\\neg 1 = 2', '(not (= 1 2))' )
         check( '2 \\ge 1 \\wedge 2 \\le 3', '(and (>= 2 1) (<= 2 3))' )
         check( '2\\geq1\\wedge2\\leq3', '(and (>= 2 1) (<= 2 3))' )
-        check( '7 | 14', '(divides 7 14)' )
-        check( 'A ( k ) | n !', '(divides (apply A k) (! n))' )
-        check( '1 - k \\sim 1 + k', '(~ (- 1 k) (+ 1 k))' )
+        check( '7 | 14', '(applyrel | 7 14)' )
+        check( 'A ( k ) | n !', '(applyrel | (apply A k) (! n))' )
+        check( '1 - k \\sim 1 + k', '(applyrel ~ (- 1 k) (+ 1 k))' )
     } )
 
     it( 'creates the canonical form for inequality', () => {
@@ -286,8 +287,11 @@ describe( 'Converting LaTeX to putdown', () => {
         check( 'R = A \\times B', '(= R (* A B))' )
         // so let's try one that has to be sets...
         check( 'R = A \\cup B', '(= R (setuni A B))' )
-        check( '\\forall n , n | n !', '(forall (n , (divides n (! n))))' )
-        check( 'a \\sim b \\Rightarrow b \\sim a', '(implies (~ a b) (~ b a))' )
+        check( '\\forall n , n | n !', '(forall (n , (applyrel | n (! n))))' )
+        check(
+            'a \\sim b \\Rightarrow b \\sim a',
+            '(implies (applyrel ~ a b) (applyrel ~ b a))'
+        )
     } )
 
     it( 'can convert notation related to functions', () => {
