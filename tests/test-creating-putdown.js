@@ -839,4 +839,23 @@ describe( 'Rendering JSON into putdown', () => {
         )
     } )
 
+    it( 'can express equivalence and classes mod a number', () => {
+        check(
+            [ 'equivmodulo',
+                [ 'number', '5' ], [ 'number', '11' ], [ 'number', '3' ] ],
+            '(=mod 5 11 3)'
+        )
+        check(
+            [ 'equivmodulo', [ 'numbervariable', 'k' ],
+                [ 'numbervariable', 'm' ], [ 'numbervariable', 'n' ] ],
+            '(=mod k m n)'
+        )
+        check(
+            [ 'subset', 'emptyset',
+                [ 'eqmodclass', [ 'numbernegation', [ 'number', '1' ] ],
+                    [ 'number', '10' ] ] ],
+            '(subset emptyset (modclass (- 1) 10))'
+        )
+    } )
+
 } )

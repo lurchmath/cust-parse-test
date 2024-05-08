@@ -847,4 +847,23 @@ describe( 'Parsing putdown', () => {
         )
     } )
 
+    it( 'can parse equivalence and classes mod a number', () => {
+        check(
+            '(=mod 5 11 3)',
+            [ 'equivmodulo',
+                [ 'number', '5' ], [ 'number', '11' ], [ 'number', '3' ] ]
+        )
+        check(
+            '(=mod k m n)',
+            [ 'equivmodulo', [ 'numbervariable', 'k' ],
+                [ 'numbervariable', 'm' ], [ 'numbervariable', 'n' ] ]
+        )
+        check(
+            '(subset emptyset (modclass (- 1) 10))',
+            [ 'subset', 'emptyset',
+                [ 'eqmodclass', [ 'numbernegation', [ 'number', '1' ] ],
+                    [ 'number', '10' ] ] ]
+        )
+    } )
+
 } )

@@ -970,4 +970,38 @@ describe( 'Parsing LaTeX', () => {
         )
     } )
 
+    it( 'can parse equivalence and classes mod a number', () => {
+        check(
+            '5\\equiv11\\mod3',
+            [ 'equivmodulo',
+                [ 'number', '5' ], [ 'number', '11' ], [ 'number', '3' ] ]
+        )
+        check(
+            '5\\equiv_3 11',
+            [ 'equivmodulo',
+                [ 'number', '5' ], [ 'number', '11' ], [ 'number', '3' ] ]
+        )
+        check(
+            'k \\equiv m \\mod n',
+            [ 'equivmodulo', [ 'numbervariable', 'k' ],
+                [ 'numbervariable', 'm' ], [ 'numbervariable', 'n' ] ]
+        )
+        check(
+            'k \\equiv_n m',
+            [ 'equivmodulo', [ 'numbervariable', 'k' ],
+                [ 'numbervariable', 'm' ], [ 'numbervariable', 'n' ] ]
+        )
+        check(
+            'k \\equiv_{n} m',
+            [ 'equivmodulo', [ 'numbervariable', 'k' ],
+                [ 'numbervariable', 'm' ], [ 'numbervariable', 'n' ] ]
+        )
+        check(
+            '\\emptyset \\subset [-1,\\equiv_10]',
+            [ 'subset', 'emptyset',
+                [ 'eqmodclass', [ 'numbernegation', [ 'number', '1' ] ],
+                    [ 'number', '10' ] ] ]
+        )
+    } )
+
 } )

@@ -346,4 +346,13 @@ describe( 'Converting LaTeX to putdown', () => {
         check( '[P]', '(eqclass P ~)' )
     } )
 
+    it( 'can convert equivalence and classes mod a number', () => {
+        check( '5 \\equiv 11 \\mod 3', '(=mod 5 11 3)' )
+        check( 'k \\equiv m \\mod n', '(=mod k m n)' )
+        check(
+            '\\emptyset \\subset [ - 1 , \\equiv _ 10 ]',
+            '(subset emptyset (modclass (- 1) 10))'
+        )
+    } )
+
 } )

@@ -2,21 +2,17 @@
 To finish verifying that this project is viable for parsing LaTeX:
  - Finish making the example converter (and thus the default set of syntactic
    types) as robust as needed by adding the following features.
-    1. Congruence mod m relation:
-        a. Define the notation `x = y (mod m)`.
-        b. Allow notation `[x,n]` for a number expression `n` that means the
-           equivalence class for the congruence-mod-n relation.
-    2. `X is a[n] Y`, `X is a[n] Y of Z`, for a specific finite set of Ys
+    1. `X is a[n] Y`, `X is a[n] Y of Z`, for a specific finite set of Ys
        (e.g., X is a set, or an equivalence relation, or a partial order, etc.)
         a. Define a syntactic type for "category phrases" like "a set" and "an
            equivalence relation" and "a partial order" and put those things in
            it.
         b. Define the "is" operator for placing a noun into one of these
            category phrases.
-    3. EFAs: `(@ P x)`
-    4. Assumptions (given flags): `:A`, `Assume A`, etc.
-    5. Let-style declarations, with or without body: `Let x`, `Let x be such that P`
-    6. ForSome-style declarations, always with body: `For some x, P` and
+    2. EFAs: `(@ P x)`
+    3. Assumptions (given flags): `:A`, `Assume A`, etc.
+    4. Let-style declarations, with or without body: `Let x`, `Let x be such that P`
+    5. ForSome-style declarations, always with body: `For some x, P` and
        `P for some x`
  - Expand LaTeX to support `\left(`, `\right)`, and the same for curly and square
    brackets.
@@ -67,6 +63,21 @@ Bug fix:
       text between them) as many times as necessary to handle the extras.
 
 Polishing:
+ - It's silly that we have to use different words for syntactic types than for
+   putdown operators (most of the time!) because of the coincidences of how
+   notation strings are parsed at various times.  Solving this is several steps:
+    - Change `addConcept()`'s putdown parsing so that it expects leaves that
+      indicate types to be of the form `_type_` instead of `type`.
+    - Change all calls to `addConcept()` in the example converter and all tests
+      to use this convention.
+    - Update all putdown operator names to be as natural as possible now that we
+      have no more restrictions on naming them non-conflicting stuff.  This will
+      require changing them not only in the example converter, but throughout
+      the test suite, of course.  Note that in some cases, what needs to change
+      is not the putdown, but the semantic type name (e.g., `sinfunc` -> `sin`).
+ - Rename all syntactic and semantic types to use upper camel case, so that they
+   can be trivially represented in a human readable way (e.g., in a UI) as short
+   phrases with spaces.
  - Add the capability of asking for all possible parsings, rather than just
    getting the first one.
     - Run tests on this, especially anywhere the test suite mentioned

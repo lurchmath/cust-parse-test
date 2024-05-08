@@ -93,9 +93,11 @@ converter.addConcept( 'divisibility',    'binaryrelation',   '|' )
 converter.addConcept( 'genericrelation', 'binaryrelation',   '~' )
 converter.addConcept( 'approximately',   'binaryrelation',   '~~' )
 converter.addConcept( 'binrelapp',       'atomicpropexpr',   '(applyrel binaryrelation nounexpr nounexpr)' )
+converter.addConcept( 'equivmodulo',     'atomicpropexpr',   '(=mod numberexpr numberexpr numberexpr)' )
 
 converter.addConcept( 'equivclass',      'atomicsetexpr',    '(eqclass nounexpr binaryrelation)' )
 converter.addConcept( 'bareequivclass',  'atomicsetexpr',    '(eqclass nounexpr ~)' )
+converter.addConcept( 'eqmodclass',      'atomicsetexpr',    '(modclass numberexpr numberexpr)' )
 
 const latex = new Language( 'latex', converter, [ '{', '}', '(', ')' ] )
 
@@ -200,6 +202,9 @@ latex.addNotation( 'binrelapp',       'B A C' )
 latex.addNotation( 'divisibility',    '|' )
 latex.addNotation( 'approximately',   '\\approx' )
 latex.addNotation( 'genericrelation', '\\sim' )
+latex.addNotation( 'equivmodulo',     'A \\equiv B \\mod C' )
+latex.addNotation( 'equivmodulo',     'A \\equiv _ C B' )
 
 latex.addNotation( 'equivclass',      '[A,B]' )
 latex.addNotation( 'bareequivclass',  '[A]' )
+latex.addNotation( 'eqmodclass',      '[A, \\equiv _ B]' )

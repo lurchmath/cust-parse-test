@@ -878,4 +878,23 @@ describe( 'Rendering JSON into LaTeX', () => {
         )
     } )
 
+    it( 'can express equivalence and classes mod a number', () => {
+        check(
+            [ 'equivmodulo',
+                [ 'number', '5' ], [ 'number', '11' ], [ 'number', '3' ] ],
+            '5 \\equiv 11 \\mod 3'
+        )
+        check(
+            [ 'equivmodulo', [ 'numbervariable', 'k' ],
+                [ 'numbervariable', 'm' ], [ 'numbervariable', 'n' ] ],
+            'k \\equiv m \\mod n'
+        )
+        check(
+            [ 'subset', 'emptyset',
+                [ 'eqmodclass', [ 'numbernegation', [ 'number', '1' ] ],
+                    [ 'number', '10' ] ] ],
+            '\\emptyset \\subset [ - 1 , \\equiv _ 10 ]'
+        )
+    } )
+
 } )

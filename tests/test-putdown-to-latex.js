@@ -334,4 +334,13 @@ describe( 'Converting putdown to LaTeX', () => {
         check( '(in 7 (eqclass 7 ~))', '7 \\in [ 7 ]' )
     } )
 
+    it( 'can convert equivalence and classes mod a number', () => {
+        check( '(=mod 5 11 3)', '5 \\equiv 11 \\mod 3' )
+        check( '(=mod k m n)', 'k \\equiv m \\mod n' )
+        check(
+            '(subset emptyset (modclass (- 1) 10))',
+            '\\emptyset \\subset [ - 1 , \\equiv _ 10 ]'
+        )
+    } )
+
 } )
