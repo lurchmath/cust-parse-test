@@ -1,12 +1,32 @@
 
-To finish verifying that this project is for parsing LaTeX:
+To finish verifying that this project is viable for parsing LaTeX:
  - Finish making the example converter (and thus the default set of syntactic
    types) as robust as needed by adding the following features.
-    1. Equivalence class (for a relation): `[x]`, `[x,~]`
-    2. Congruence mod m relation: `x = y (mod m)`
-    3. EFAs: `(@ P x)`
-    4. `X is a[n] Y`, `X is a[n] Y of Z`, for a specific finite set of Ys
+    1. Equivalence class (for a relation):
+        a. Define a syntactic type for binary relations and put some stuff in
+           it, including the "genericrelation" currently written `~` plus some
+           other things like "divides" and maybe other generic relations like
+           the double tilde.
+        b. Define a sentence type for applying binary relations to two arguments
+           and update old tests for applying the generic relation to use this
+           new form now.  Ensure they can accept more than just numbers as
+           arguments.
+        c. Define an equivalence class notation `[x,R]` that creates equivalence
+           classes for a specific relation symbol R.
+        d. Define an equivalence class notation `[x]` that fills in the default
+           relation `~` for the missing one.
+    2. Congruence mod m relation:
+        a. Define the notation `x = y (mod m)`.
+        b. Allow notation `[x,n]` for a number expression `n` that means the
+           equivalence class for the congruence-mod-n relation.
+    3. `X is a[n] Y`, `X is a[n] Y of Z`, for a specific finite set of Ys
        (e.g., X is a set, or an equivalence relation, or a partial order, etc.)
+        a. Define a syntactic type for "category phrases" like "a set" and "an
+           equivalence relation" and "a partial order" and put those things in
+           it.
+        b. Define the "is" operator for placing a noun into one of these
+           category phrases.
+    4. EFAs: `(@ P x)`
     5. Assumptions (given flags): `:A`, `Assume A`, etc.
     6. Let-style declarations, with or without body: `Let x`, `Let x be such that P`
     7. ForSome-style declarations, always with body: `For some x, P` and
