@@ -1132,4 +1132,77 @@ describe( 'Parsing LaTeX', () => {
         checkFail( '\\text{Let }x \\text{ be such that }\\text{Assume }B' )
     } )
 
+    it( 'can parse notation for For Some-style declarations', () => {
+        // You can declare variables with predicates attached
+        check(
+            '\\text{For some }x, x>0',
+            [ 'forsomevariant1', [ 'numbervariable', 'x' ],
+                [ 'greaterthan', [ 'numbervariable', 'x' ], [ 'number', '0' ] ] ]
+        )
+        check(
+            '\\text{for some }x, x>0',
+            [ 'forsomevariant2', [ 'numbervariable', 'x' ],
+                [ 'greaterthan', [ 'numbervariable', 'x' ], [ 'number', '0' ] ] ]
+        )
+        check(
+            'x>0 \\text{ for some } x',
+            [ 'forsomevariant3', [ 'numbervariable', 'x' ],
+                [ 'greaterthan', [ 'numbervariable', 'x' ], [ 'number', '0' ] ] ]
+        )
+        check(
+            'x>0~\\text{for some}~x',
+            [ 'forsomevariant4', [ 'numbervariable', 'x' ],
+                [ 'greaterthan', [ 'numbervariable', 'x' ], [ 'number', '0' ] ] ]
+        )
+        check(
+            '\\text{For some }T, T=5\\vee T\\in S',
+            [ 'forsomevariant1', [ 'numbervariable', 'T' ],
+                [ 'disjunction',
+                    [ 'equality', [ 'numbervariable', 'T' ], [ 'number', '5' ] ],
+                    [ 'nounisin', [ 'numbervariable', 'T' ], [ 'setvariable', 'S' ] ] ] ]
+        )
+        check(
+            '\\text{for some }T, T=5\\vee T\\in S',
+            [ 'forsomevariant2', [ 'numbervariable', 'T' ],
+                [ 'disjunction',
+                    [ 'equality', [ 'numbervariable', 'T' ], [ 'number', '5' ] ],
+                    [ 'nounisin', [ 'numbervariable', 'T' ], [ 'setvariable', 'S' ] ] ] ]
+        )
+        check(
+            'T=5\\vee T\\in S \\text{ for some } T',
+            [ 'forsomevariant3', [ 'numbervariable', 'T' ],
+                [ 'disjunction',
+                    [ 'equality', [ 'numbervariable', 'T' ], [ 'number', '5' ] ],
+                    [ 'nounisin', [ 'numbervariable', 'T' ], [ 'setvariable', 'S' ] ] ] ]
+        )
+        check(
+            'T=5\\vee T\\in S~\\text{for some}~T',
+            [ 'forsomevariant4', [ 'numbervariable', 'T' ],
+                [ 'disjunction',
+                    [ 'equality', [ 'numbervariable', 'T' ], [ 'number', '5' ] ],
+                    [ 'nounisin', [ 'numbervariable', 'T' ], [ 'setvariable', 'S' ] ] ] ]
+        )
+        // You can't declare variables by themselves
+        checkFail( '\\text{For some }x' )
+        checkFail( '\\text{for some }x' )
+        checkFail( '\\text{For some }T' )
+        checkFail( '\\text{for some }T' )
+        // You cannot declare something that's not a variable
+        checkFail( '\\text{For some }x>5, x>55' )
+        checkFail( '\\text{For some }1=1, P' )
+        checkFail( '\\text{For some }\\emptyset, 1+1=2' )
+        checkFail( 'x>55 \\text{ for some } x>5' )
+        checkFail( 'P \\text{ for some } 1=1' )
+        checkFail( '\\emptyset \\text{ for some } 1+1=2' )
+        // You cannot declare a variable with a non-predicate attached
+        checkFail( '\\text{For some }x, 1' )
+        checkFail( '\\text{For some }x, 1\\vee 2' )
+        checkFail( '\\text{For some }x, \\text{Let }y' )
+        checkFail( '\\text{For some }x, \\text{Assume }B' )
+        checkFail( '1~\\text{for some}~x' )
+        checkFail( '1\\vee 2~\\text{for some}~x' )
+        checkFail( '\\text{Let }y~\\text{for some}~x' )
+        checkFail( '\\text{Assume }B~\\text{for some}~x' )
+    } )
+
 } )

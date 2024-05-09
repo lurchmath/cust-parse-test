@@ -425,4 +425,34 @@ describe( 'Converting LaTeX to putdown', () => {
         checkFail( '\\text{Let }x \\text{ be such that }\\text{Assume }B' )
     } )
 
+    it( 'can convert notation for For Some-style declarations', () => {
+        // You can declare variables with predicates attached
+        check( '\\text{For some }x, x>0', '[x , (> x 0)]' )
+        check(
+            '\\text{For some }T, T=5\\vee T\\in S',
+            '[T , (or (= T 5) (in T S))]'
+        )
+        // You can't declare variables by themselves
+        checkFail( '\\text{For some }x' )
+        checkFail( '\\text{for some }x' )
+        checkFail( '\\text{For some }T' )
+        checkFail( '\\text{for some }T' )
+        // You cannot declare something that's not a variable
+        checkFail( '\\text{For some }x>5, x>55' )
+        checkFail( '\\text{For some }1=1, P' )
+        checkFail( '\\text{For some }\\emptyset, 1+1=2' )
+        checkFail( 'x>55 \\text{ for some } x>5' )
+        checkFail( 'P \\text{ for some } 1=1' )
+        checkFail( '\\emptyset \\text{ for some } 1+1=2' )
+        // You cannot declare a variable with a non-predicate attached
+        checkFail( '\\text{For some }x, 1' )
+        checkFail( '\\text{For some }x, 1\\vee 2' )
+        checkFail( '\\text{For some }x, \\text{Let }y' )
+        checkFail( '\\text{For some }x, \\text{Assume }B' )
+        checkFail( '1~\\text{for some}~x' )
+        checkFail( '1\\vee 2~\\text{for some}~x' )
+        checkFail( '\\text{Let }y~\\text{for some}~x' )
+        checkFail( '\\text{Assume }B~\\text{for some}~x' )
+    } )
+
 } )

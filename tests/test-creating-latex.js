@@ -1043,4 +1043,56 @@ describe( 'Rendering JSON into LaTeX', () => {
         )
     } )
 
+    it( 'can parse notation for For Some-style declarations', () => {
+        // You can declare variables with predicates attached
+        check(
+            [ 'forsomevariant1', [ 'numbervariable', 'x' ],
+                [ 'greaterthan', [ 'numbervariable', 'x' ], [ 'number', '0' ] ] ],
+            '\\text{For some }x, x>0'
+        )
+        check(
+            [ 'forsomevariant2', [ 'numbervariable', 'x' ],
+                [ 'greaterthan', [ 'numbervariable', 'x' ], [ 'number', '0' ] ] ],
+            '\\text{for some }x, x>0'
+        )
+        check(
+            [ 'forsomevariant3', [ 'numbervariable', 'x' ],
+                [ 'greaterthan', [ 'numbervariable', 'x' ], [ 'number', '0' ] ] ],
+            'x>0 \\text{ for some } x'
+        )
+        check(
+            [ 'forsomevariant4', [ 'numbervariable', 'x' ],
+                [ 'greaterthan', [ 'numbervariable', 'x' ], [ 'number', '0' ] ] ],
+            'x>0~\\text{for some}~x'
+        )
+        check(
+            [ 'forsomevariant1', [ 'numbervariable', 'T' ],
+                [ 'disjunction',
+                    [ 'equality', [ 'numbervariable', 'T' ], [ 'number', '5' ] ],
+                    [ 'nounisin', [ 'numbervariable', 'T' ], [ 'setvariable', 'S' ] ] ] ],
+            '\\text{For some }T, T=5\\vee T\\in S'
+        )
+        check(
+            [ 'forsomevariant2', [ 'numbervariable', 'T' ],
+                [ 'disjunction',
+                    [ 'equality', [ 'numbervariable', 'T' ], [ 'number', '5' ] ],
+                    [ 'nounisin', [ 'numbervariable', 'T' ], [ 'setvariable', 'S' ] ] ] ],
+            '\\text{for some }T, T=5\\vee T\\in S'
+        )
+        check(
+            [ 'forsomevariant3', [ 'numbervariable', 'T' ],
+                [ 'disjunction',
+                    [ 'equality', [ 'numbervariable', 'T' ], [ 'number', '5' ] ],
+                    [ 'nounisin', [ 'numbervariable', 'T' ], [ 'setvariable', 'S' ] ] ] ],
+            'T=5\\vee T\\in S \\text{ for some } T'
+        )
+        check(
+            [ 'forsomevariant4', [ 'numbervariable', 'T' ],
+                [ 'disjunction',
+                    [ 'equality', [ 'numbervariable', 'T' ], [ 'number', '5' ] ],
+                    [ 'nounisin', [ 'numbervariable', 'T' ], [ 'setvariable', 'S' ] ] ] ],
+            'T=5\\vee T\\in S~\\text{for some}~T'
+        )
+    } )
+
 } )

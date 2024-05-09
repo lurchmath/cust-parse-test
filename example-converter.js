@@ -119,6 +119,10 @@ converter.addConcept( 'letvariant1',     'expr',             ':[numbervariable]'
 converter.addConcept( 'letvariant2',     'expr',             ':[numbervariable]', { primitive : false } )
 converter.addConcept( 'letbevariant1',   'expr',             ':[numbervariable , sentenceexpr]' )
 converter.addConcept( 'letbevariant2',   'expr',             ':[numbervariable , sentenceexpr]', { primitive : false } )
+converter.addConcept( 'forsomevariant1', 'expr',             '[numbervariable , sentenceexpr]' )
+converter.addConcept( 'forsomevariant2', 'expr',             '[numbervariable , sentenceexpr]', { primitive : false } )
+converter.addConcept( 'forsomevariant3', 'expr',             '[numbervariable , sentenceexpr]', { primitive : false } )
+converter.addConcept( 'forsomevariant4', 'expr',             '[numbervariable , sentenceexpr]', { primitive : false } )
 
 const latex = new Language( 'latex', converter, [ '{', '}', '(', ')' ] )
 
@@ -257,3 +261,7 @@ latex.addNotation( 'letvariant1',     '\\text{Let }A' )
 latex.addNotation( 'letvariant2',     '\\text{let }A' )
 latex.addNotation( 'letbevariant1',   '\\text{Let }A \\text{ be such that }B' )
 latex.addNotation( 'letbevariant2',   '\\text{let }A \\text{ be such that }B' )
+latex.addNotation( 'forsomevariant1', '\\text{For some }A, B' )
+latex.addNotation( 'forsomevariant2', '\\text{for some }A, B' )
+latex.addNotation( 'forsomevariant3', 'B \\text{ for some } A' )
+latex.addNotation( 'forsomevariant4', 'B~\\text{for some}~A' )

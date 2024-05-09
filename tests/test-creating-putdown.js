@@ -966,4 +966,55 @@ describe( 'Rendering JSON into putdown', () => {
         )
     } )
 
+    it( 'can create notation for For Some-style declarations', () => {
+        check(
+            [ 'forsomevariant1', [ 'numbervariable', 'x' ],
+                [ 'greaterthan', [ 'numbervariable', 'x' ], [ 'number', '0' ] ] ],
+            '[x , (> x 0)]'
+        )
+        check(
+            [ 'forsomevariant2', [ 'numbervariable', 'x' ],
+                [ 'greaterthan', [ 'numbervariable', 'x' ], [ 'number', '0' ] ] ],
+            '[x , (> x 0)]'
+        )
+        check(
+            [ 'forsomevariant3', [ 'numbervariable', 'x' ],
+                [ 'greaterthan', [ 'numbervariable', 'x' ], [ 'number', '0' ] ] ],
+            '[x , (> x 0)]'
+        )
+        check(
+            [ 'forsomevariant4', [ 'numbervariable', 'x' ],
+                [ 'greaterthan', [ 'numbervariable', 'x' ], [ 'number', '0' ] ] ],
+            '[x , (> x 0)]'
+        )
+        check(
+            [ 'forsomevariant1', [ 'numbervariable', 'T' ],
+                [ 'disjunction',
+                    [ 'equality', [ 'numbervariable', 'T' ], [ 'number', '5' ] ],
+                    [ 'nounisin', [ 'numbervariable', 'T' ], [ 'setvariable', 'S' ] ] ] ],
+            '[T , (or (= T 5) (in T S))]'
+        )
+        check(
+            [ 'forsomevariant2', [ 'numbervariable', 'T' ],
+                [ 'disjunction',
+                    [ 'equality', [ 'numbervariable', 'T' ], [ 'number', '5' ] ],
+                    [ 'nounisin', [ 'numbervariable', 'T' ], [ 'setvariable', 'S' ] ] ] ],
+            '[T , (or (= T 5) (in T S))]'
+        )
+        check(
+            [ 'forsomevariant3', [ 'numbervariable', 'T' ],
+                [ 'disjunction',
+                    [ 'equality', [ 'numbervariable', 'T' ], [ 'number', '5' ] ],
+                    [ 'nounisin', [ 'numbervariable', 'T' ], [ 'setvariable', 'S' ] ] ] ],
+            '[T , (or (= T 5) (in T S))]'
+        )
+        check(
+            [ 'forsomevariant4', [ 'numbervariable', 'T' ],
+                [ 'disjunction',
+                    [ 'equality', [ 'numbervariable', 'T' ], [ 'number', '5' ] ],
+                    [ 'nounisin', [ 'numbervariable', 'T' ], [ 'setvariable', 'S' ] ] ] ],
+            '[T , (or (= T 5) (in T S))]'
+        )
+    } )
+
 } )

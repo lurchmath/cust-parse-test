@@ -408,4 +408,25 @@ describe( 'Converting putdown to LaTeX', () => {
         checkFail( ':[x , :B]' )
     } )
 
+    it( 'can convert notation for For Some-style declarations', () => {
+        // You can declare variables with predicates attached
+        check( '[x , (> x 0)]', '\\text{For some }x, x>0' )
+        check(
+            '[T , (or (= T 5) (in T S))]',
+            '\\text{For some }T, T=5\\vee T\\in S'
+        )
+        // You can't declare variables by themselves
+        checkFail( '[x]' )
+        checkFail( '[T]' )
+        // You cannot declare something that's not a variable
+        checkFail( '[(> x 5)]' )
+        checkFail( '[(= 1 1)]' )
+        checkFail( '[emptyset]' )
+        // You cannot declare a variable with a non-predicate attached
+        checkFail( '[x , 1]' )
+        checkFail( '[x , (or 1 2)]' )
+        checkFail( '[x , [y]]' )
+        checkFail( '[x , :B]' )
+    } )
+
 } )
