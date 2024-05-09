@@ -374,4 +374,17 @@ describe( 'Converting putdown to LaTeX', () => {
         )
     } )
 
+    it( 'can convert notation for assumptions', () => {
+        // You can assume a sentence
+        check( ':X', '\\text{Assume }X' )
+        check( ':(= k 1000)', '\\text{Assume }k=1000' )
+        check( ':true', '\\text{Assume }\\top' )
+        // You cannot assume something that's not a sentence
+        checkFail( ':50' )
+        checkFail( ':(tuple (elts 5 (elts 6)))' )
+        checkFail( ':(compose f g)' )
+        checkFail( ':emptyset' )
+        checkFail( ':infinity' )
+    } )
+
 } )

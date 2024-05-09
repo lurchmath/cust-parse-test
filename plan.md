@@ -2,9 +2,8 @@
 To finish verifying that this project is viable for parsing LaTeX:
  - Finish making the example converter (and thus the default set of syntactic
    types) as robust as needed by adding the following features.
-    1. Assumptions (given flags): `:A`, `Assume A`, etc.
-    2. Let-style declarations, with or without body: `Let x`, `Let x be such that P`
-    3. ForSome-style declarations, always with body: `For some x, P` and
+    1. Let-style declarations, with or without body: `Let x`, `Let x be such that P`
+    2. ForSome-style declarations, always with body: `For some x, P` and
        `P for some x`
  - Expand LaTeX to support `\left(`, `\right)`, and the same for curly and square
    brackets.

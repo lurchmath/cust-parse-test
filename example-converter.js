@@ -111,6 +111,11 @@ converter.addConcept( 'numefa',          'factorexpr',       '(efa funcexpr noun
 converter.addConcept( 'propefa',         'atomicpropexpr',   '(efa funcexpr nounexpr)' )
 converter.addConcept( 'setefa',          'atomicsetexpr',    '(efa funcexpr nounexpr)' )
 
+converter.addConcept( 'givenvariant1',   'expr',             ':sentenceexpr' )
+converter.addConcept( 'givenvariant2',   'expr',             ':sentenceexpr', { primitive : false } )
+converter.addConcept( 'givenvariant3',   'expr',             ':sentenceexpr', { primitive : false }  )
+converter.addConcept( 'givenvariant4',   'expr',             ':sentenceexpr', { primitive : false }  )
+
 const latex = new Language( 'latex', converter, [ '{', '}', '(', ')' ] )
 
 latex.addNotation( 'infinity',        '\\infty' )
@@ -234,3 +239,12 @@ latex.addNotation( 'hastype',         'A \\text{is} ~ \\text{B}' )
 latex.addNotation( 'numefa',          '\\mathcal{A} (B)' )
 latex.addNotation( 'propefa',         '\\mathcal{A} (B)' )
 latex.addNotation( 'setefa',          '\\mathcal{A} (B)' )
+
+latex.addNotation( 'givenvariant1',   '\\text{Assume }X', { variables : [ 'X' ] } )
+latex.addNotation( 'givenvariant1',   '\\text{Assume}~X', { variables : [ 'X' ] } )
+latex.addNotation( 'givenvariant2',   '\\text{assume }X', { variables : [ 'X' ] } )
+latex.addNotation( 'givenvariant2',   '\\text{assume}~X', { variables : [ 'X' ] } )
+latex.addNotation( 'givenvariant3',   '\\text{Given }X', { variables : [ 'X' ] } )
+latex.addNotation( 'givenvariant3',   '\\text{Given}~X', { variables : [ 'X' ] } )
+latex.addNotation( 'givenvariant4',   '\\text{given }X', { variables : [ 'X' ] } )
+latex.addNotation( 'givenvariant4',   '\\text{given}~X', { variables : [ 'X' ] } )

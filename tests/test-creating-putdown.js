@@ -916,4 +916,35 @@ describe( 'Rendering JSON into putdown', () => {
         )
     } )
 
+    it( 'can create notation for assumptions', () => {
+        check( [ 'givenvariant1', [ 'logicvariable', 'X' ] ], ':X' )
+        check( [ 'givenvariant2', [ 'logicvariable', 'X' ] ], ':X' )
+        check( [ 'givenvariant3', [ 'logicvariable', 'X' ] ], ':X' )
+        check( [ 'givenvariant4', [ 'logicvariable', 'X' ] ], ':X' )
+        check(
+            [ 'givenvariant1',
+                [ 'equality', [ 'numbervariable', 'k' ], [ 'number', '1000' ] ] ],
+            ':(= k 1000)'
+        )
+        check(
+            [ 'givenvariant2',
+                [ 'equality', [ 'numbervariable', 'k' ], [ 'number', '1000' ] ] ],
+            ':(= k 1000)'
+        )
+        check(
+            [ 'givenvariant3',
+                [ 'equality', [ 'numbervariable', 'k' ], [ 'number', '1000' ] ] ],
+            ':(= k 1000)'
+        )
+        check(
+            [ 'givenvariant4',
+            [ 'equality', [ 'numbervariable', 'k' ], [ 'number', '1000' ] ] ],
+            ':(= k 1000)'
+        )
+        check( [ 'givenvariant1', 'logicaltrue' ], ':true' )
+        check( [ 'givenvariant2', 'logicaltrue' ], ':true' )
+        check( [ 'givenvariant3', 'logicaltrue' ], ':true' )
+        check( [ 'givenvariant4', 'logicaltrue' ], ':true' )
+    } )
+
 } )

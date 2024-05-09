@@ -914,4 +914,21 @@ describe( 'Parsing putdown', () => {
         )
     } )
 
+    it( 'can parse notation for assumptions', () => {
+        // You can assume a sentence
+        check( ':X', [ 'givenvariant1', [ 'logicvariable', 'X' ] ] )
+        check(
+            ':(= k 1000)',
+            [ 'givenvariant1',
+                [ 'equality', [ 'numbervariable', 'k' ], [ 'number', '1000' ] ] ]
+        )
+        check( ':true', [ 'givenvariant1', 'logicaltrue' ] )
+        // You cannot assume something that's not a sentence
+        checkFail( ':50' )
+        checkFail( ':(tuple (elts 5 (elts 6)))' )
+        checkFail( ':(compose f g)' )
+        checkFail( ':emptyset' )
+        checkFail( ':infinity' )
+    } )
+
 } )

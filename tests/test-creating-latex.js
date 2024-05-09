@@ -955,4 +955,59 @@ describe( 'Rendering JSON into LaTeX', () => {
         )
     } )
 
+    it( 'can create notation for assumptions', () => {
+        check(
+            [ 'givenvariant1', [ 'logicvariable', 'X' ] ],
+            '\\text{Assume }X'
+        )
+        check(
+            [ 'givenvariant2', [ 'logicvariable', 'X' ] ],
+            '\\text{assume }X'
+        )
+        check(
+            [ 'givenvariant3', [ 'logicvariable', 'X' ] ],
+            '\\text{Given }X'
+        )
+        check(
+            [ 'givenvariant4', [ 'logicvariable', 'X' ] ],
+            '\\text{given }X'
+        )
+        check(
+            [ 'givenvariant1',
+                [ 'equality', [ 'numbervariable', 'k' ], [ 'number', '1000' ] ] ],
+            '\\text{Assume }k=1000'
+        )
+        check(
+            [ 'givenvariant2',
+                [ 'equality', [ 'numbervariable', 'k' ], [ 'number', '1000' ] ] ],
+            '\\text{assume }k=1000'
+        )
+        check(
+            [ 'givenvariant3',
+                [ 'equality', [ 'numbervariable', 'k' ], [ 'number', '1000' ] ] ],
+            '\\text{Given }k=1000'
+        )
+        check(
+            [ 'givenvariant4',
+                [ 'equality', [ 'numbervariable', 'k' ], [ 'number', '1000' ] ] ],
+            '\\text{given }k=1000'
+        )
+        check(
+            [ 'givenvariant1', 'logicaltrue' ],
+            '\\text{Assume }\\top'
+        )
+        check(
+            [ 'givenvariant2', 'logicaltrue' ],
+            '\\text{assume }\\top'
+        )
+        check(
+            [ 'givenvariant3', 'logicaltrue' ],
+            '\\text{Given }\\top'
+        )
+        check(
+            [ 'givenvariant4', 'logicaltrue' ],
+            '\\text{given }\\top'
+        )
+    } )
+
 } )

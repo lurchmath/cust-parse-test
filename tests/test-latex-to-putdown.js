@@ -384,4 +384,17 @@ describe( 'Converting LaTeX to putdown', () => {
         )
     } )
 
+    it( 'can convert notation for assumptions', () => {
+        // You can assume a sentence
+        check( '\\text{Assume }X', ':X' )
+        check( '\\text{Assume }k=1000', ':(= k 1000)' )
+        check( '\\text{Assume }\\top', ':true' )
+        // You cannot assume something that's not a sentence
+        checkFail( '\\text{Assume }50' )
+        checkFail( '\\text{assume }(5,6)' )
+        checkFail( '\\text{Given }f\\circ g' )
+        checkFail( '\\text{given }\\emptyset' )
+        checkFail( '\\text{Assume }\\infty' )
+    } )
+
 } )

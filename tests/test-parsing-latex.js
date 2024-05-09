@@ -1052,4 +1052,42 @@ describe( 'Parsing LaTeX', () => {
         )
     } )
 
+    it( 'can parse notation for assumptions', () => {
+        // You can assume a sentence
+        check( '\\text{Assume }X', [ 'givenvariant1', [ 'logicvariable', 'X' ] ] )
+        check( '\\text{assume }X', [ 'givenvariant2', [ 'logicvariable', 'X' ] ] )
+        check( '\\text{Given }X', [ 'givenvariant3', [ 'logicvariable', 'X' ] ] )
+        check( '\\text{given }X', [ 'givenvariant4', [ 'logicvariable', 'X' ] ] )
+        check(
+            '\\text{Assume }k=1000',
+            [ 'givenvariant1',
+                [ 'equality', [ 'numbervariable', 'k' ], [ 'number', '1000' ] ] ]
+        )
+        check(
+            '\\text{assume }k=1000',
+            [ 'givenvariant2',
+                [ 'equality', [ 'numbervariable', 'k' ], [ 'number', '1000' ] ] ]
+        )
+        check(
+            '\\text{Given }k=1000',
+            [ 'givenvariant3',
+                [ 'equality', [ 'numbervariable', 'k' ], [ 'number', '1000' ] ] ]
+        )
+        check(
+            '\\text{given }k=1000',
+            [ 'givenvariant4',
+                [ 'equality', [ 'numbervariable', 'k' ], [ 'number', '1000' ] ] ]
+        )
+        check( '\\text{Assume }\\top', [ 'givenvariant1', 'logicaltrue' ] )
+        check( '\\text{assume }\\top', [ 'givenvariant2', 'logicaltrue' ] )
+        check( '\\text{Given }\\top', [ 'givenvariant3', 'logicaltrue' ] )
+        check( '\\text{given }\\top', [ 'givenvariant4', 'logicaltrue' ] )
+        // You cannot assume something that's not a sentence
+        checkFail( '\\text{Assume }50' )
+        checkFail( '\\text{assume }(5,6)' )
+        checkFail( '\\text{Given }f\\circ g' )
+        checkFail( '\\text{given }\\emptyset' )
+        checkFail( '\\text{Assume }\\infty' )
+    } )
+
 } )
