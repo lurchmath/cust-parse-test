@@ -180,9 +180,9 @@ export class Language {
      */
     addNotation ( conceptName, notation, options = { } ) {
         const originalNotation = notation
-        Object.assign( options, {
+        options = Object.assign( {
             variables : Array.from( Language.defaultVarNames )
-        } )
+        }, options )
         // ensure concept is valid
         const concept = this.converter.concept( conceptName )
         if ( !concept )
