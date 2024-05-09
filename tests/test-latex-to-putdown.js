@@ -355,4 +355,19 @@ describe( 'Converting LaTeX to putdown', () => {
         )
     } )
 
+    it( 'can convert type sentences and combinations of them', () => {
+        check( 'x \\text{is a set}', '(hastype x settype)' )
+        check( 'n \\text{is }\\text{a number}', '(hastype n numbertype)' )
+        check( 'S\\text{is}~\\text{a partial order}',
+            '(hastype S partialordertype)' )
+        check(
+            '1\\text{is a number}\\wedge 10\\text{is a number}',
+            '(and (hastype 1 numbertype) (hastype 10 numbertype))'
+        )
+        check(
+            'R\\text{is an equivalence relation}\\Rightarrow R\\text{is a relation}',
+            '(implies (hastype R equivalencerelationtype) (hastype R relationtype))'
+        )
+    } )
+
 } )

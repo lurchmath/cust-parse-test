@@ -858,4 +858,31 @@ describe( 'Rendering JSON into putdown', () => {
         )
     } )
 
+    it( 'can construct type sentences and combinations of them', () => {
+        check(
+            [ 'hastype', [ 'numbervariable', 'x' ], 'settype' ],
+            '(hastype x settype)'
+        )
+        check(
+            [ 'hastype', [ 'numbervariable', 'n' ], 'numbertype' ],
+            '(hastype n numbertype)'
+        )
+        check(
+            [ 'hastype', [ 'numbervariable', 'S' ], 'partialordtype' ],
+            '(hastype S partialordertype)'
+        )
+        check(
+            [ 'conjunction',
+                [ 'hastype', [ 'number', '1' ], 'numbertype' ],
+                [ 'hastype', [ 'number', '10' ], 'numbertype' ] ],
+            '(and (hastype 1 numbertype) (hastype 10 numbertype))'
+        )
+        check(
+            [ 'implication',
+                [ 'hastype', [ 'numbervariable', 'R' ], 'equivreltype' ],
+                [ 'hastype', [ 'numbervariable', 'R' ], 'reltype' ] ],
+            '(implies (hastype R equivalencerelationtype) (hastype R relationtype))'
+        )
+    } )
+
 } )

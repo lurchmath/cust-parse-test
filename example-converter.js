@@ -99,6 +99,14 @@ converter.addConcept( 'equivclass',      'atomicsetexpr',    '(eqclass nounexpr 
 converter.addConcept( 'bareequivclass',  'atomicsetexpr',    '(eqclass nounexpr ~)' )
 converter.addConcept( 'eqmodclass',      'atomicsetexpr',    '(modclass numberexpr numberexpr)' )
 
+converter.addConcept( 'settype',         'typephrase',       'settype' )
+converter.addConcept( 'numbertype',      'typephrase',       'numbertype' )
+converter.addConcept( 'reltype',         'typephrase',       'relationtype' )
+converter.addConcept( 'partialordtype',  'typephrase',       'partialordertype' )
+converter.addConcept( 'equivreltype',    'typephrase',       'equivalencerelationtype' )
+
+converter.addConcept( 'hastype',         'atomicpropexpr',   '(hastype nounexpr typephrase)' )
+
 const latex = new Language( 'latex', converter, [ '{', '}', '(', ')' ] )
 
 latex.addNotation( 'infinity',        '\\infty' )
@@ -208,3 +216,13 @@ latex.addNotation( 'equivmodulo',     'A \\equiv _ C B' )
 latex.addNotation( 'equivclass',      '[A,B]' )
 latex.addNotation( 'bareequivclass',  '[A]' )
 latex.addNotation( 'eqmodclass',      '[A, \\equiv _ B]' )
+
+latex.addNotation( 'settype',         'a set' )
+latex.addNotation( 'numbertype',      'a number' )
+latex.addNotation( 'reltype',         'a relation' )
+latex.addNotation( 'partialordtype',  'a partial order' )
+latex.addNotation( 'equivreltype',    'an equivalence relation' )
+
+latex.addNotation( 'hastype',         'A \\text{is B}' )
+latex.addNotation( 'hastype',         'A \\text{is } \\text{B}' )
+latex.addNotation( 'hastype',         'A \\text{is} ~ \\text{B}' )

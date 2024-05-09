@@ -866,4 +866,21 @@ describe( 'Parsing putdown', () => {
         )
     } )
 
+    it( 'can parse type sentences and combinations of them', () => {
+        check( '(hastype x settype)',
+            [ 'hastype', [ 'numbervariable', 'x' ], 'settype' ] )
+        check( '(hastype n numbertype)',
+            [ 'hastype', [ 'numbervariable', 'n' ], 'numbertype' ] )
+        check( '(hastype S partialordertype)',
+            [ 'hastype', [ 'numbervariable', 'S' ], 'partialordtype' ] )
+        check( '(and (hastype 1 numbertype) (hastype 10 numbertype))',
+            [ 'conjunction',
+                [ 'hastype', [ 'number', '1' ], 'numbertype' ],
+                [ 'hastype', [ 'number', '10' ], 'numbertype' ] ] )
+        check( '(implies (hastype R equivalencerelationtype) (hastype R relationtype))',
+            [ 'implication',
+                [ 'hastype', [ 'numbervariable', 'R' ], 'equivreltype' ],
+                [ 'hastype', [ 'numbervariable', 'R' ], 'reltype' ] ] )
+    } )
+
 } )

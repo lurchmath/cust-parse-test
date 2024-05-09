@@ -94,6 +94,9 @@ export const hierarchies = [
         'binaryrelation' // operators, like ~ and |
     ],
     [
+        'typephrase' // such as "a set" or "an equivalence relation"
+    ],
+    [
         'expr',
         'nounexpr',
         'tupleexpr'

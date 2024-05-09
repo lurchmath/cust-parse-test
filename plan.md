@@ -2,17 +2,10 @@
 To finish verifying that this project is viable for parsing LaTeX:
  - Finish making the example converter (and thus the default set of syntactic
    types) as robust as needed by adding the following features.
-    1. `X is a[n] Y`, `X is a[n] Y of Z`, for a specific finite set of Ys
-       (e.g., X is a set, or an equivalence relation, or a partial order, etc.)
-        a. Define a syntactic type for "category phrases" like "a set" and "an
-           equivalence relation" and "a partial order" and put those things in
-           it.
-        b. Define the "is" operator for placing a noun into one of these
-           category phrases.
-    2. EFAs: `(@ P x)`
-    3. Assumptions (given flags): `:A`, `Assume A`, etc.
-    4. Let-style declarations, with or without body: `Let x`, `Let x be such that P`
-    5. ForSome-style declarations, always with body: `For some x, P` and
+    1. EFAs: `(@ P x)`
+    2. Assumptions (given flags): `:A`, `Assume A`, etc.
+    3. Let-style declarations, with or without body: `Let x`, `Let x be such that P`
+    4. ForSome-style declarations, always with body: `For some x, P` and
        `P for some x`
  - Expand LaTeX to support `\left(`, `\right)`, and the same for curly and square
    brackets.
@@ -39,7 +32,7 @@ To verify that this project is also viable for parsing Lurch notation:
    new JSON API to define this language, to give a full, robust test of that
    simpler API.
 
-Bug fix:
+Bug fixes:
  - Associativity right now works well in that it will produce ASTs that are
    flattened, but it fails in that those ASTs will then be unable to convert to
    putdown because they have the wrong number of arguments for the putdown form
@@ -61,6 +54,9 @@ Bug fix:
     - Enhance `Template.fillIn(...args)` so that if it receives too many
       arguments, it does something sensible by repeating the last two (and the
       text between them) as many times as necessary to handle the extras.
+ - Converting `(hastype a b)` to LaTeX does not produce `a \\text{is a b}` but
+   rather `a \\text{is a b }` (extra space at the end).  Think about how to fix
+   this bug.
 
 Polishing:
  - It's silly that we have to use different words for syntactic types than for

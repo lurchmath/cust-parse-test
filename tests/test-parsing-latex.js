@@ -1004,4 +1004,21 @@ describe( 'Parsing LaTeX', () => {
         )
     } )
 
+    it( 'can parse type sentences and combinations of them', () => {
+        check( 'x \\text{is a set}',
+            [ 'hastype', [ 'numbervariable', 'x' ], 'settype' ] )
+        check( 'n \\text{is }\\text{a number}',
+            [ 'hastype', [ 'numbervariable', 'n' ], 'numbertype' ] )
+        check( 'S\\text{is}~\\text{a partial order}',
+            [ 'hastype', [ 'numbervariable', 'S' ], 'partialordtype' ] )
+        check( '1\\text{is a number}\\wedge 10\\text{is a number}',
+            [ 'conjunction',
+                [ 'hastype', [ 'number', '1' ], 'numbertype' ],
+                [ 'hastype', [ 'number', '10' ], 'numbertype' ] ] )
+        check( 'R\\text{is an equivalence relation}\\Rightarrow R\\text{is a relation}',
+            [ 'implication',
+                [ 'hastype', [ 'numbervariable', 'R' ], 'equivreltype' ],
+                [ 'hastype', [ 'numbervariable', 'R' ], 'reltype' ] ] )
+    } )
+
 } )

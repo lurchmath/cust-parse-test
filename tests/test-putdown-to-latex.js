@@ -343,4 +343,21 @@ describe( 'Converting putdown to LaTeX', () => {
         )
     } )
 
+    it( 'can convert type sentences and combinations of them', () => {
+        // In every case here, the LaTeX produced has an extra space in it.
+        // This will be slightly ugly, and is a bug we need to figure out how
+        // to fix, long term.
+        check( '(hastype x settype)', 'x \\text{is a set }' )
+        check( '(hastype n numbertype)', 'n \\text{is a number }' )
+        check( '(hastype S partialordertype)', 'S \\text{is a partial order }' )
+        check(
+            '(and (hastype 1 numbertype) (hastype 10 numbertype))',
+            '1 \\text{is a number } \\wedge 10 \\text{is a number }'
+        )
+        check(
+            '(implies (hastype R equivalencerelationtype) (hastype R relationtype))',
+            'R \\text{is an equivalence relation } \\Rightarrow R \\text{is a relation }'
+        )
+    } )
+
 } )

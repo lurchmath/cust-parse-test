@@ -897,4 +897,34 @@ describe( 'Rendering JSON into LaTeX', () => {
         )
     } )
 
+    it( 'can construct type sentences and combinations of them', () => {
+        // In every case here, the LaTeX produced has an extra space in it.
+        // This will be slightly ugly, and is a bug we need to figure out how
+        // to fix, long term.
+        check(
+            [ 'hastype', [ 'numbervariable', 'x' ], 'settype' ],
+            'x \\text{is a set }'
+        )
+        check(
+            [ 'hastype', [ 'numbervariable', 'n' ], 'numbertype' ],
+            'n \\text{is a number }'
+        )
+        check(
+            [ 'hastype', [ 'numbervariable', 'S' ], 'partialordtype' ],
+            'S \\text{is a partial order }'
+        )
+        check(
+            [ 'conjunction',
+                [ 'hastype', [ 'number', '1' ], 'numbertype' ],
+                [ 'hastype', [ 'number', '10' ], 'numbertype' ] ],
+            '1 \\text{is a number } \\wedge 10 \\text{is a number }'
+        )
+        check(
+            [ 'implication',
+                [ 'hastype', [ 'numbervariable', 'R' ], 'equivreltype' ],
+                [ 'hastype', [ 'numbervariable', 'R' ], 'reltype' ] ],
+            'R \\text{is an equivalence relation } \\Rightarrow R \\text{is a relation }'
+        )
+    } )
+
 } )
