@@ -137,7 +137,7 @@ export class Converter {
             if ( SyntacticTypes.isAtomic( last ) )
                 this.addConcept( `grouped${last}`, last, hierarchy[1] )
         } )
-        new Language( 'putdown', this, null, x =>
+        new Language( 'putdown', this, null, x => 
             x.replaceAll( '( ', '(' ).replaceAll( ' )', ')' ) )
     }
 

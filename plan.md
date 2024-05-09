@@ -32,7 +32,7 @@ To verify that this project is also viable for parsing Lurch notation:
    new JSON API to define this language, to give a full, robust test of that
    simpler API.
 
-Bug fixes:
+Bug fix:
  - Associativity right now works well in that it will produce ASTs that are
    flattened, but it fails in that those ASTs will then be unable to convert to
    putdown because they have the wrong number of arguments for the putdown form
@@ -54,9 +54,6 @@ Bug fixes:
     - Enhance `Template.fillIn(...args)` so that if it receives too many
       arguments, it does something sensible by repeating the last two (and the
       text between them) as many times as necessary to handle the extras.
- - Converting `(hastype a b)` to LaTeX does not produce `a \\text{is a b}` but
-   rather `a \\text{is a b }` (extra space at the end).  Think about how to fix
-   this bug.
 
 Polishing:
  - It's silly that we have to use different words for syntactic types than for

@@ -513,11 +513,7 @@ export class AST {
             template.map( piece => {
                 const variableIndex = rhs.variables.indexOf( piece )
                 return variableIndex > -1 ? recur[variableIndex] : piece
-            } ).map(
-                piece => piece.trim()
-            ).filter(
-                piece => piece.length > 0
-            ).join( ' ' ).replace( /\s+/g, ' ' )
+            } ).join( '' ).replace( /\s+/g, ' ' )
         )
     }
 

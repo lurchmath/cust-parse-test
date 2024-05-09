@@ -44,16 +44,16 @@ describe( 'Converter instance', () => {
         // Be sure we can convert sums in both directions
         expect( infix.convertTo( '2+3', prefix ) ).to.equal( '+ 2 3' )
         expect( infix.convertTo( '0+-66', prefix ) ).to.equal( '+ 0 -66' )
-        expect( prefix.convertTo( '+-3 5', infix ) ).to.equal( '-3 + 5' )
-        expect( prefix.convertTo( '+999 999', infix ) ).to.equal( '999 + 999' )
+        expect( prefix.convertTo( '+-3 5', infix ) ).to.equal( '-3+5' )
+        expect( prefix.convertTo( '+999 999', infix ) ).to.equal( '999+999' )
         // Be sure we can convert products in both directions, and it preserves
         // which type of product (which is the key thing being tested here)
         expect( infix.convertTo( '2*3', prefix ) ).to.equal( '* 2 3' )
         expect( infix.convertTo( '0*-66', prefix ) ).to.equal( '* 0 -66' )
         expect( infix.convertTo( '2x3', prefix ) ).to.equal( 'x 2 3' )
         expect( infix.convertTo( '0x-66', prefix ) ).to.equal( 'x 0 -66' )
-        expect( prefix.convertTo( '*-3 5', infix ) ).to.equal( '-3 * 5' )
-        expect( prefix.convertTo( '*999 999', infix ) ).to.equal( '999 * 999' )
+        expect( prefix.convertTo( '*-3 5', infix ) ).to.equal( '-3*5' )
+        expect( prefix.convertTo( '*999 999', infix ) ).to.equal( '999*999' )
         expect( prefix.convertTo( 'x-3 5', infix ) ).to.equal( '-3 x 5' )
         expect( prefix.convertTo( 'x999 999', infix ) ).to.equal( '999 x 999' )
         // Be sure we can convert compound expressions in both directions, and
@@ -61,8 +61,8 @@ describe( 'Converter instance', () => {
         // those that mix more than one kind of product notation
         expect( infix.convertTo( '10+20x40', prefix ) ).to.equal( '+ 10 x 20 40' )
         expect( infix.convertTo( '10*20+40', prefix ) ).to.equal( '+ * 10 20 40' )
-        expect( prefix.convertTo( '+ 10 x 20 40', infix ) ).to.equal( '10 + 20 x 40' )
-        expect( prefix.convertTo( '+ * 10 20 40', infix ) ).to.equal( '10 * 20 + 40' )
+        expect( prefix.convertTo( '+ 10 x 20 40', infix ) ).to.equal( '10+20 x 40' )
+        expect( prefix.convertTo( '+ * 10 20 40', infix ) ).to.equal( '10*20+40' )
     } )
 
     it( 'should behave differently without derived concepts', () => {
@@ -90,23 +90,23 @@ describe( 'Converter instance', () => {
         // Results for sums are same as in previous test
         expect( infix.convertTo( '2+3', prefix ) ).to.equal( '+ 2 3' )
         expect( infix.convertTo( '0+-66', prefix ) ).to.equal( '+ 0 -66' )
-        expect( prefix.convertTo( '+-3 5', infix ) ).to.equal( '-3 + 5' )
-        expect( prefix.convertTo( '+999 999', infix ) ).to.equal( '999 + 999' )
+        expect( prefix.convertTo( '+-3 5', infix ) ).to.equal( '-3+5' )
+        expect( prefix.convertTo( '+999 999', infix ) ).to.equal( '999+999' )
         // Results for products are now all *-type, unlike previous test
         expect( infix.convertTo( '2*3', prefix ) ).to.equal( '* 2 3' )
         expect( infix.convertTo( '0*-66', prefix ) ).to.equal( '* 0 -66' )
         expect( infix.convertTo( '2x3', prefix ) ).to.equal( '* 2 3' )
         expect( infix.convertTo( '0x-66', prefix ) ).to.equal( '* 0 -66' )
-        expect( prefix.convertTo( '*-3 5', infix ) ).to.equal( '-3 * 5' )
-        expect( prefix.convertTo( '*999 999', infix ) ).to.equal( '999 * 999' )
-        expect( prefix.convertTo( 'x-3 5', infix ) ).to.equal( '-3 * 5' )
-        expect( prefix.convertTo( 'x999 999', infix ) ).to.equal( '999 * 999' )
+        expect( prefix.convertTo( '*-3 5', infix ) ).to.equal( '-3*5' )
+        expect( prefix.convertTo( '*999 999', infix ) ).to.equal( '999*999' )
+        expect( prefix.convertTo( 'x-3 5', infix ) ).to.equal( '-3*5' )
+        expect( prefix.convertTo( 'x999 999', infix ) ).to.equal( '999*999' )
         // Results for compound expressions now all use *-type multiplications,
         // unlike previous test
         expect( infix.convertTo( '10+20x40', prefix ) ).to.equal( '+ 10 * 20 40' )
         expect( infix.convertTo( '10*20+40', prefix ) ).to.equal( '+ * 10 20 40' )
-        expect( prefix.convertTo( '+ 10 x 20 40', infix ) ).to.equal( '10 + 20 * 40' )
-        expect( prefix.convertTo( '+ * 10 20 40', infix ) ).to.equal( '10 * 20 + 40' )
+        expect( prefix.convertTo( '+ 10 x 20 40', infix ) ).to.equal( '10+20*40' )
+        expect( prefix.convertTo( '+ * 10 20 40', infix ) ).to.equal( '10*20+40' )
     } )
 
 } )
