@@ -2,9 +2,9 @@
 To finish verifying that this project is viable for parsing LaTeX:
  - Finish making the example converter (and thus the default set of syntactic
    types) as robust as needed by adding the following features.
-    2. Assumptions (given flags): `:A`, `Assume A`, etc.
-    3. Let-style declarations, with or without body: `Let x`, `Let x be such that P`
-    4. ForSome-style declarations, always with body: `For some x, P` and
+    1. Assumptions (given flags): `:A`, `Assume A`, etc.
+    2. Let-style declarations, with or without body: `Let x`, `Let x be such that P`
+    3. ForSome-style declarations, always with body: `For some x, P` and
        `P for some x`
  - Expand LaTeX to support `\left(`, `\right)`, and the same for curly and square
    brackets.
@@ -21,8 +21,13 @@ To verify that this project can be presented simply to users:
    concepts from the (no-longer-example) converter and specify the notation for
    them in the new language.  Phrase the keys in the API in a natural language
    way to make clear the kinds of natural language sentences that would be used
-   in a document when "calling" this API.  Test this API by converting the LaTeX
-   file to use this instead of its current set of function calls.
+   in a document when "calling" this API.  Test this API by:
+    - converting the LaTeX file to use this instead of its current set of
+      function calls
+    - creating a new LaTeX file for just a subset of the full set of concepts,
+      and verify that it works for precisely that subset, since any user who
+      defines their own language will typically be picking a subset of the full
+      set of concepts defined in the example converter
 
 To verify that this project is also viable for parsing Lurch notation:
  - Use the scraper tool in the lurchmath repo's grading tools folder to get a
