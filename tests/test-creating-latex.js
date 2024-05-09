@@ -924,4 +924,35 @@ describe( 'Rendering JSON into LaTeX', () => {
         )
     } )
 
+    it( 'can create notation for expression function application', () => {
+        check(
+            [ 'numefa', [ 'funcvariable', 'f' ], [ 'numbervariable', 'x' ] ],
+            '\\mathcal{f} (x)'
+        )
+        check(
+            [ 'numfuncapp',
+                [ 'funcvariable', 'F' ],
+                [ 'numefa', [ 'funcvariable', 'k' ], [ 'number', '10' ] ] ],
+            'F(\\mathcal{k} (10))'
+        )
+        check(
+            [ 'numefa', // this is the output type, not the input type
+                [ 'funcvariable', 'E' ],
+                [ 'complement', [ 'setvariable', 'L' ] ] ],
+            '\\mathcal{E} (\\bar L)'
+        )
+        check(
+            [ 'intersection',
+                'emptyset',
+                [ 'setefa', [ 'funcvariable', 'f' ], [ 'number', '2' ] ] ],
+            '\\emptyset\\cap \\mathcal{f} (2)'
+        )
+        check(
+            [ 'conjunction',
+                [ 'propefa', [ 'funcvariable', 'P' ], [ 'numbervariable', 'x' ] ],
+                [ 'propefa', [ 'funcvariable', 'Q' ], [ 'numbervariable', 'y' ] ] ],
+            '\\mathcal{P} (x)\\wedge \\mathcal{Q} (y)'
+        )
+    } )
+
 } )

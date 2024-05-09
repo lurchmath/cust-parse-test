@@ -1021,4 +1021,35 @@ describe( 'Parsing LaTeX', () => {
                 [ 'hastype', [ 'numbervariable', 'R' ], 'reltype' ] ] )
     } )
 
+    it( 'can parse notation for expression function application', () => {
+        check(
+            '\\mathcal{f}(x)',
+            [ 'numefa', [ 'funcvariable', 'f' ], [ 'numbervariable', 'x' ] ]
+        )
+        check(
+            'F(\\mathcal{k}(10))',
+            [ 'numfuncapp',
+                [ 'funcvariable', 'F' ],
+                [ 'numefa', [ 'funcvariable', 'k' ], [ 'number', '10' ] ] ]
+        )
+        check(
+            '\\mathcal{E}(L\')',
+            [ 'numefa', // this is the output type, not the input type
+                [ 'funcvariable', 'E' ],
+                [ 'complement', [ 'setvariable', 'L' ] ] ]
+        )
+        check(
+            '\\emptyset\\cap\\mathcal{f}(2)',
+            [ 'intersection',
+                'emptyset',
+                [ 'setefa', [ 'funcvariable', 'f' ], [ 'number', '2' ] ] ]
+        )
+        check(
+            '\\mathcal{P}(x)\\wedge\\mathcal{Q}(y)',
+            [ 'conjunction',
+                [ 'propefa', [ 'funcvariable', 'P' ], [ 'numbervariable', 'x' ] ],
+                [ 'propefa', [ 'funcvariable', 'Q' ], [ 'numbervariable', 'y' ] ] ]
+        )
+    } )
+
 } )

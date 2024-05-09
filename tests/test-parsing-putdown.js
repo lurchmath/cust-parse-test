@@ -883,4 +883,35 @@ describe( 'Parsing putdown', () => {
                 [ 'hastype', [ 'numbervariable', 'R' ], 'reltype' ] ] )
     } )
 
+    it( 'can parse notation for expression function application', () => {
+        check(
+            '(efa f x)',
+            [ 'numefa', [ 'funcvariable', 'f' ], [ 'numbervariable', 'x' ] ]
+        )
+        check(
+            '(apply F (efa k 10))',
+            [ 'numfuncapp',
+                [ 'funcvariable', 'F' ],
+                [ 'numefa', [ 'funcvariable', 'k' ], [ 'number', '10' ] ] ]
+        )
+        check(
+            '(efa E (setcomp L))',
+            [ 'numefa', // this is the output type, not the input type
+                [ 'funcvariable', 'E' ],
+                [ 'complement', [ 'setvariable', 'L' ] ] ]
+        )
+        check(
+            '(setint emptyset (efa f 2))',
+            [ 'intersection',
+                'emptyset',
+                [ 'setefa', [ 'funcvariable', 'f' ], [ 'number', '2' ] ] ]
+        )
+        check(
+            '(and (efa P x) (efa Q y))',
+            [ 'conjunction',
+                [ 'propefa', [ 'funcvariable', 'P' ], [ 'numbervariable', 'x' ] ],
+                [ 'propefa', [ 'funcvariable', 'Q' ], [ 'numbervariable', 'y' ] ] ]
+        )
+    } )
+
 } )

@@ -370,4 +370,18 @@ describe( 'Converting LaTeX to putdown', () => {
         )
     } )
 
+    it( 'can convert notation for expression function application', () => {
+        check( '\\mathcal{f} (x)', '(efa f x)' )
+        check( 'F(\\mathcal{k} (10))', '(apply F (efa k 10))' )
+        check( '\\mathcal{E} (\\bar L)', '(efa E (setcomp L))' )
+        check(
+            '\\emptyset\\cap \\mathcal{f} (2)',
+            '(setint emptyset (efa f 2))'
+        )
+        check(
+            '\\mathcal{P} (x)\\wedge \\mathcal{Q} (y)',
+            '(and (efa P x) (efa Q y))'
+        )
+    } )
+
 } )

@@ -107,6 +107,10 @@ converter.addConcept( 'equivreltype',    'typephrase',       'equivalencerelatio
 
 converter.addConcept( 'hastype',         'atomicpropexpr',   '(hastype nounexpr typephrase)' )
 
+converter.addConcept( 'numefa',          'factorexpr',       '(efa funcexpr nounexpr)' )
+converter.addConcept( 'propefa',         'atomicpropexpr',   '(efa funcexpr nounexpr)' )
+converter.addConcept( 'setefa',          'atomicsetexpr',    '(efa funcexpr nounexpr)' )
+
 const latex = new Language( 'latex', converter, [ '{', '}', '(', ')' ] )
 
 latex.addNotation( 'infinity',        '\\infty' )
@@ -173,8 +177,8 @@ latex.addNotation( 'funcsignature',   'A:B\\to C' )
 latex.addNotation( 'funcsignature',   'A:B\\rightarrow C' )
 latex.addNotation( 'funcsignature',   'A\\colon B\\to C' )
 latex.addNotation( 'funcsignature',   'A\\colon B\\rightarrow C' )
-latex.addNotation( 'numfuncapp',      'A(B)' )
 latex.addNotation( 'prefixfuncapp',   'A B' )
+latex.addNotation( 'numfuncapp',      'A(B)' )
 latex.addNotation( 'propfuncapp',     'A(B)' )
 latex.addNotation( 'setfuncapp',      'A(B)' )
 latex.addNotation( 'funccomp',        'A\\circ B' )
@@ -226,3 +230,7 @@ latex.addNotation( 'equivreltype',    'an equivalence relation' )
 latex.addNotation( 'hastype',         'A \\text{is B}' )
 latex.addNotation( 'hastype',         'A \\text{is } \\text{B}' )
 latex.addNotation( 'hastype',         'A \\text{is} ~ \\text{B}' )
+
+latex.addNotation( 'numefa',          '\\mathcal{A} (B)' )
+latex.addNotation( 'propefa',         '\\mathcal{A} (B)' )
+latex.addNotation( 'setefa',          '\\mathcal{A} (B)' )

@@ -2,7 +2,6 @@
 To finish verifying that this project is viable for parsing LaTeX:
  - Finish making the example converter (and thus the default set of syntactic
    types) as robust as needed by adding the following features.
-    1. EFAs: `(@ P x)`
     2. Assumptions (given flags): `:A`, `Assume A`, etc.
     3. Let-style declarations, with or without body: `Let x`, `Let x be such that P`
     4. ForSome-style declarations, always with body: `For some x, P` and
@@ -132,6 +131,12 @@ Polishing:
     - Second, can we write two notations, a top-priority one `x^{-1}` and a
       lower-priority one `x ^ { - 1 }`, so that the latter gives flexibility and
       the former is the default one used for output?
+   This may relate to the need to define the LaTeX notation for EFAs as
+   `\\mathcal{A} (B)` (space important!) because if we do not, then the token
+   `}(` is created, and prioritized more highly than `{`, which makes it
+   impossible to then parse `f^{-1}(x)`.  Creating the lower-priority parsing of
+   `x^{-1}` might allow LaTeX notation authors to write `\\mathcal{A}(B)`, but
+   I have not yet tested it.
 
 
 Tests used in the Earley testing library that we can use here:

@@ -885,4 +885,35 @@ describe( 'Rendering JSON into putdown', () => {
         )
     } )
 
+    it( 'can create notation for expression function application', () => {
+        check(
+            [ 'numefa', [ 'funcvariable', 'f' ], [ 'numbervariable', 'x' ] ],
+            '(efa f x)'
+        )
+        check(
+            [ 'numfuncapp',
+                [ 'funcvariable', 'F' ],
+                [ 'numefa', [ 'funcvariable', 'k' ], [ 'number', '10' ] ] ],
+            '(apply F (efa k 10))'
+        )
+        check(
+            [ 'numefa', // this is the output type, not the input type
+                [ 'funcvariable', 'E' ],
+                [ 'complement', [ 'setvariable', 'L' ] ] ],
+            '(efa E (setcomp L))'
+        )
+        check(
+            [ 'intersection',
+                'emptyset',
+                [ 'setefa', [ 'funcvariable', 'f' ], [ 'number', '2' ] ] ],
+            '(setint emptyset (efa f 2))'
+        )
+        check(
+            [ 'conjunction',
+                [ 'propefa', [ 'funcvariable', 'P' ], [ 'numbervariable', 'x' ] ],
+                [ 'propefa', [ 'funcvariable', 'Q' ], [ 'numbervariable', 'y' ] ] ],
+            '(and (efa P x) (efa Q y))'
+        )
+    } )
+
 } )
