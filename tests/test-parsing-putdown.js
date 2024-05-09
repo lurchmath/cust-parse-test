@@ -931,4 +931,32 @@ describe( 'Parsing putdown', () => {
         checkFail( ':infinity' )
     } )
 
+    it( 'can parse notation for Let-style declarations', () => {
+        // You can declare variables by themselves
+        check( ':[x]', [ 'letvariant1', [ 'numbervariable', 'x' ] ] )
+        check( ':[T]', [ 'letvariant1', [ 'numbervariable', 'T' ] ] )
+        // You can declare variables with predicates attached
+        check(
+            ':[x , (> x 0)]',
+            [ 'letbevariant1', [ 'numbervariable', 'x' ],
+                [ 'greaterthan', [ 'numbervariable', 'x' ], [ 'number', '0' ] ] ]
+        )
+        check(
+            ':[T , (or (= T 5) (in T S))]',
+            [ 'letbevariant1', [ 'numbervariable', 'T' ],
+                [ 'disjunction',
+                    [ 'equality', [ 'numbervariable', 'T' ], [ 'number', '5' ] ],
+                    [ 'nounisin', [ 'numbervariable', 'T' ], [ 'setvariable', 'S' ] ] ] ]
+        )
+        // You cannot declare something that's not a variable
+        checkFail( ':[(> x 5)]' )
+        checkFail( ':[(= 1 1)]' )
+        checkFail( ':[emptyset]' )
+        // You cannot declare a variable with a non-predicate attached
+        checkFail( ':[x , 1]' )
+        checkFail( ':[x , (or 1 2)]' )
+        checkFail( ':[x , [y]]' )
+        checkFail( ':[x , :B]' )
+    } )
+
 } )

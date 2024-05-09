@@ -2,9 +2,8 @@
 To finish verifying that this project is viable for parsing LaTeX:
  - Finish making the example converter (and thus the default set of syntactic
    types) as robust as needed by adding the following features.
-    1. Let-style declarations, with or without body: `Let x`, `Let x be such that P`
-    2. ForSome-style declarations, always with body: `For some x, P` and
-       `P for some x`
+    - ForSome-style declarations, always with body: `For some x, P` and
+      `P for some x`
  - Expand LaTeX to support `\left(`, `\right)`, and the same for curly and square
    brackets.
  - Ensure that every test from the MathLive data later in this document has been

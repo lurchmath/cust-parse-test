@@ -397,4 +397,32 @@ describe( 'Converting LaTeX to putdown', () => {
         checkFail( '\\text{Assume }\\infty' )
     } )
 
+    it( 'can convert notation for Let-style declarations', () => {
+        // You can declare variables by themselves
+        check( '\\text{Let }x', ':[x]' )
+        check( '\\text{let }x', ':[x]' )
+        check( '\\text{Let }T', ':[T]' )
+        check( '\\text{let }T', ':[T]' )
+        // You can declare variables with predicates attached
+        check( '\\text{Let }x \\text{ be such that }x>0', ':[x , (> x 0)]' )
+        check( '\\text{let }x \\text{ be such that }x>0', ':[x , (> x 0)]' )
+        check(
+            '\\text{Let }T \\text{ be such that }T=5\\vee T\\in S',
+            ':[T , (or (= T 5) (in T S))]'
+        )
+        check(
+            '\\text{let }T \\text{ be such that }T=5\\vee T\\in S',
+            ':[T , (or (= T 5) (in T S))]'
+        )
+        // You cannot declare something that's not a variable
+        checkFail( '\\text{Let }x>5' )
+        checkFail( '\\text{Let }1=1' )
+        checkFail( '\\text{Let }\\emptyset' )
+        // You cannot declare a variable with a non-predicate attached
+        checkFail( '\\text{Let }x \\text{ be such that }1' )
+        checkFail( '\\text{Let }x \\text{ be such that }1\\vee 2' )
+        checkFail( '\\text{Let }x \\text{ be such that }\\text{Let }y' )
+        checkFail( '\\text{Let }x \\text{ be such that }\\text{Assume }B' )
+    } )
+
 } )

@@ -1090,4 +1090,46 @@ describe( 'Parsing LaTeX', () => {
         checkFail( '\\text{Assume }\\infty' )
     } )
 
+    it( 'can parse notation for Let-style declarations', () => {
+        // You can declare variables by themselves
+        check( '\\text{Let }x', [ 'letvariant1', [ 'numbervariable', 'x' ] ] )
+        check( '\\text{let }x', [ 'letvariant2', [ 'numbervariable', 'x' ] ] )
+        check( '\\text{Let }T', [ 'letvariant1', [ 'numbervariable', 'T' ] ] )
+        check( '\\text{let }T', [ 'letvariant2', [ 'numbervariable', 'T' ] ] )
+        // You can declare variables with predicates attached
+        check(
+            '\\text{Let }x \\text{ be such that }x>0',
+            [ 'letbevariant1', [ 'numbervariable', 'x' ],
+                [ 'greaterthan', [ 'numbervariable', 'x' ], [ 'number', '0' ] ] ]
+        )
+        check(
+            '\\text{let }x \\text{ be such that }x>0',
+            [ 'letbevariant2', [ 'numbervariable', 'x' ],
+                [ 'greaterthan', [ 'numbervariable', 'x' ], [ 'number', '0' ] ] ]
+        )
+        check(
+            '\\text{Let }T \\text{ be such that }T=5\\vee T\\in S',
+            [ 'letbevariant1', [ 'numbervariable', 'T' ],
+                [ 'disjunction',
+                    [ 'equality', [ 'numbervariable', 'T' ], [ 'number', '5' ] ],
+                    [ 'nounisin', [ 'numbervariable', 'T' ], [ 'setvariable', 'S' ] ] ] ]
+        )
+        check(
+            '\\text{let }T \\text{ be such that }T=5\\vee T\\in S',
+            [ 'letbevariant2', [ 'numbervariable', 'T' ],
+                [ 'disjunction',
+                    [ 'equality', [ 'numbervariable', 'T' ], [ 'number', '5' ] ],
+                    [ 'nounisin', [ 'numbervariable', 'T' ], [ 'setvariable', 'S' ] ] ] ]
+        )
+        // You cannot declare something that's not a variable
+        checkFail( '\\text{Let }x>5' )
+        checkFail( '\\text{Let }1=1' )
+        checkFail( '\\text{Let }\\emptyset' )
+        // You cannot declare a variable with a non-predicate attached
+        checkFail( '\\text{Let }x \\text{ be such that }1' )
+        checkFail( '\\text{Let }x \\text{ be such that }1\\vee 2' )
+        checkFail( '\\text{Let }x \\text{ be such that }\\text{Let }y' )
+        checkFail( '\\text{Let }x \\text{ be such that }\\text{Assume }B' )
+    } )
+
 } )

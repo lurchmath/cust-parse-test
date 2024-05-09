@@ -387,4 +387,25 @@ describe( 'Converting putdown to LaTeX', () => {
         checkFail( ':infinity' )
     } )
 
+    it( 'can convert notation for Let-style declarations', () => {
+        // You can declare variables by themselves
+        check( ':[x]', '\\text{Let }x' )
+        check( ':[T]', '\\text{Let }T' )
+        // You can declare variables with predicates attached
+        check( ':[x , (> x 0)]', '\\text{Let }x \\text{ be such that }x>0' )
+        check(
+            ':[T , (or (= T 5) (in T S))]',
+            '\\text{Let }T \\text{ be such that }T=5\\vee T\\in S'
+        )
+        // You cannot declare something that's not a variable
+        checkFail( ':[(> x 5)]' )
+        checkFail( ':[(= 1 1)]' )
+        checkFail( ':[emptyset]' )
+        // You cannot declare a variable with a non-predicate attached
+        checkFail( ':[x , 1]' )
+        checkFail( ':[x , (or 1 2)]' )
+        checkFail( ':[x , [y]]' )
+        checkFail( ':[x , :B]' )
+    } )
+
 } )

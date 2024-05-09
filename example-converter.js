@@ -113,8 +113,12 @@ converter.addConcept( 'setefa',          'atomicsetexpr',    '(efa funcexpr noun
 
 converter.addConcept( 'givenvariant1',   'expr',             ':sentenceexpr' )
 converter.addConcept( 'givenvariant2',   'expr',             ':sentenceexpr', { primitive : false } )
-converter.addConcept( 'givenvariant3',   'expr',             ':sentenceexpr', { primitive : false }  )
-converter.addConcept( 'givenvariant4',   'expr',             ':sentenceexpr', { primitive : false }  )
+converter.addConcept( 'givenvariant3',   'expr',             ':sentenceexpr', { primitive : false } )
+converter.addConcept( 'givenvariant4',   'expr',             ':sentenceexpr', { primitive : false } )
+converter.addConcept( 'letvariant1',     'expr',             ':[numbervariable]' )
+converter.addConcept( 'letvariant2',     'expr',             ':[numbervariable]', { primitive : false } )
+converter.addConcept( 'letbevariant1',   'expr',             ':[numbervariable , sentenceexpr]' )
+converter.addConcept( 'letbevariant2',   'expr',             ':[numbervariable , sentenceexpr]', { primitive : false } )
 
 const latex = new Language( 'latex', converter, [ '{', '}', '(', ')' ] )
 
@@ -248,3 +252,8 @@ latex.addNotation( 'givenvariant3',   '\\text{Given }X', { variables : [ 'X' ] }
 latex.addNotation( 'givenvariant3',   '\\text{Given}~X', { variables : [ 'X' ] } )
 latex.addNotation( 'givenvariant4',   '\\text{given }X', { variables : [ 'X' ] } )
 latex.addNotation( 'givenvariant4',   '\\text{given}~X', { variables : [ 'X' ] } )
+
+latex.addNotation( 'letvariant1',     '\\text{Let }A' )
+latex.addNotation( 'letvariant2',     '\\text{let }A' )
+latex.addNotation( 'letbevariant1',   '\\text{Let }A \\text{ be such that }B' )
+latex.addNotation( 'letbevariant2',   '\\text{let }A \\text{ be such that }B' )

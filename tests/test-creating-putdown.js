@@ -947,4 +947,23 @@ describe( 'Rendering JSON into putdown', () => {
         check( [ 'givenvariant4', 'logicaltrue' ], ':true' )
     } )
 
+    it( 'can create notation for Let-style declarations', () => {
+        // You can declare variables by themselves
+        check( [ 'letvariant1', [ 'numbervariable', 'x' ] ], ':[x]' )
+        check( [ 'letvariant1', [ 'numbervariable', 'T' ] ], ':[T]' )
+        // You can declare variables with predicates attached
+        check(
+            [ 'letbevariant1', [ 'numbervariable', 'x' ],
+                [ 'greaterthan', [ 'numbervariable', 'x' ], [ 'number', '0' ] ] ],
+            ':[x , (> x 0)]'
+        )
+        check(
+            [ 'letbevariant1', [ 'numbervariable', 'T' ],
+                [ 'disjunction',
+                    [ 'equality', [ 'numbervariable', 'T' ], [ 'number', '5' ] ],
+                    [ 'nounisin', [ 'numbervariable', 'T' ], [ 'setvariable', 'S' ] ] ] ],
+            ':[T , (or (= T 5) (in T S))]'
+        )
+    } )
+
 } )
