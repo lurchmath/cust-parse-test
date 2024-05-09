@@ -15,14 +15,15 @@ To finish verifying that this project is viable for parsing LaTeX:
 To verify that this project can be presented simply to users:
  - Legitimize the example converter as a foundational set of mathematical
    concepts and the LaTeX parser and putdown notation for those concepts, not
-   just something just used for testing.
+   just something just used for testing.  In doing so, factor it into two files,
+   the converter that speaks only putdown, and the LaTeX language defined on top
+   of that converter.
  - Create a simple JSON-based API that lets the user select a subset of the
    concepts from the (no-longer-example) converter and specify the notation for
    them in the new language.  Phrase the keys in the API in a natural language
    way to make clear the kinds of natural language sentences that would be used
-   in a document when "calling" this API.
- - Create tests of this for some tiny subset of the full language, but the next
-   section of this plan includes a much bigger test.
+   in a document when "calling" this API.  Test this API by converting the LaTeX
+   file to use this instead of its current set of function calls.
 
 To verify that this project is also viable for parsing Lurch notation:
  - Use the scraper tool in the lurchmath repo's grading tools folder to get a
@@ -59,8 +60,10 @@ Polishing:
  - It's silly that we have to use different words for syntactic types than for
    putdown operators (most of the time!) because of the coincidences of how
    notation strings are parsed at various times.  Solving this is several steps:
-    - Change `addConcept()`'s putdown parsing so that it expects leaves that
-      indicate types to be of the form `_type_` instead of `type`.
+    - Rename all syntactic and semantic types to use upper camel case, so that
+      they can be trivially represented in a human readable way (e.g., in a UI)
+      as short phrases with spaces.  Now they are disjoint from the set of
+      putdown operators, all of which use lower case exclusively.
     - Change all calls to `addConcept()` in the example converter and all tests
       to use this convention.
     - Update all putdown operator names to be as natural as possible now that we
@@ -68,9 +71,6 @@ Polishing:
       require changing them not only in the example converter, but throughout
       the test suite, of course.  Note that in some cases, what needs to change
       is not the putdown, but the semantic type name (e.g., `sinfunc` -> `sin`).
- - Rename all syntactic and semantic types to use upper camel case, so that they
-   can be trivially represented in a human readable way (e.g., in a UI) as short
-   phrases with spaces.
  - Add the capability of asking for all possible parsings, rather than just
    getting the first one.
     - Run tests on this, especially anywhere the test suite mentioned
