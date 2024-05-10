@@ -1,29 +1,4 @@
 
-To finish verifying that this project is viable for parsing LaTeX:
- - Ensure that every test from the MathLive data later in this document has been
-   brought into the test suite and is parsed correctly into AST/putdown forms.
-
-List of symbols that can be entered with MathLive but for which the current
-example converter has no concepts:
- - `\pm` as in `v\pm w`
- - `\imaginaryI`
- - `\sqrt` (including both `\sqrt{...}` and things like `\sqrt5`)
- - `\exp` which is just a math-Roman operator, I think
- - `\exponentialE`
- - `\therefore`
- - `\cong` (because we use `\equiv` for equivalence mod a number)
- - `\lim`
- - `\sum` (which is used in Math299 but I haven't added it here yet)
- - `\differentialD` and `\int`/`\iint`/`\iiint`
- - `\nexists`
- - `\ni` (horizontally flipped version of `\in`, and the negated version of it
-   in MathLive is `\not\owns`)
-
-List of LaTeX forms that MathLive creates but that this parser cannot handle:
- - `\frac12` because the 12 tokenizes as a single integer (solution is probably
-   to preprocess anything coming out of MathLive and add curlies to clarify the
-   parameters of the fraction command)
-
 To verify that this project can be presented simply to users:
  - Legitimize the example converter as a foundational set of mathematical
    concepts and the LaTeX parser and putdown notation for those concepts, not
@@ -163,6 +138,53 @@ that come built into this parser
  - Norms/distances, using `||...||` or `\Vert...\Vert` (opt.w/`\left/\right`)
  - All upper and lower case Greek letters, with variants
 
+List of symbols that can be entered with MathLive but for which the current
+example converter has no concepts:
+```
+\pm as in v\pm w
+\imaginaryI
+\sqrt (including both \sqrt{...} and things like \sqrt5)
+\exp which is just a math-Roman operator, I think
+\exponentialE
+\therefore
+\cong (because we use \equiv for equivalence mod a number)
+\lim
+\sum (which is used in Math299 but I haven't added it here yet)
+\differentialD and \int/\iint/\iiint
+\nexists
+\ni (horizontally flipped version of \in, and the negated version of it
+   in MathLive is \not\owns)
+
+\differentialD x
+dQ // unexpected!  should be \differentialD Q?
+\frac{d}{dx}                    \frac{d}{\differentialD x}
+                                // Also lets you type just the d by itself: \mathrm{d}
+                                // Also supports \partial
+\int x^2 \cdot dx               \int x^2\cdot\differentialD x
+                                // or if we write it the usual way:
+                                \int x^2dx // !! (bug to report to MathLive?)
+\int (\frac x k - 10)\cdot dk   \int\left(\frac{x}{k}-10\right)\cdot dk
+                                \int\left(\frac{x}{k}-10\right)dk // or this
+\int_0^2 (s+t)\cdot dt          \int_0^2\!\left(s+t\right)\,\mathrm{dt} // !!
+                                // Note: the above happens by use of the keyboard template
+                                // But if you delete and retype the dt, you get:
+                                \int_0^2\!\left(s+t\right)\,dt // Bug to report
+\int^b_a |x-1|\cdot dx          \int_{a}^{b}\left\vert x-1\right\vert\differentialD x\!
+                                // Note I edited an earlier integral,
+                                // which moved the space to the end, unseen!
+
+\overrightarrow{...}, \overleftarrow{...}, \overline{...}, \underline{...}
+X^{\prime}, X^{\doubleprime}
+{\displaylines x\\ y} is like a fraction with no bar
+```
+
+Plus one LaTeX form that MathLive creates but that this parser cannot handle:
+```
+\frac12   because the 12 tokenizes as a single integer (solution is probably
+          to preprocess anything coming out of MathLive and add curlies to
+          clarify the parameters of the fraction command)
+```
+
 Tests used in the Earley testing library that we can use here:
 (Note that these are written here in LaTeX notation, but they can be used to
 test any language, not just LaTeX.)
@@ -271,24 +293,13 @@ W\times R!
 \sum^{n+1}_{m=0}m-1 // where the -1 is outside the sum
 
 // differential and integral calculus:
-dx                              \differentialD x
-dQ                              dQ // !!
-\frac{d}{dx}                    \frac{d}{\differentialD x}
-                                // Also lets you type just the d by itself: \mathrm{d}
-                                // Also supports \partial
-\int x^2 \cdot dx               \int x^2\cdot\differentialD x
-                                // or if we write it the usual way:
-                                \int x^2dx // !! (bug to report to MathLive?)
-\int (\frac x k - 10)\cdot dk   \int\left(\frac{x}{k}-10\right)\cdot dk
-                                \int\left(\frac{x}{k}-10\right)dk // or this
-\int_0^2 (s+t)\cdot dt          \int_0^2\!\left(s+t\right)\,\mathrm{dt} // !!
-                                // Note: the above happens by use of the keyboard template
-                                // But if you delete and retype the dt, you get:
-                                \int_0^2\!\left(s+t\right)\,dt // Bug to report
-\int^b_a |x-1|\cdot dx          \int_{a}^{b}\left\vert x-1\right\vert\differentialD x\!
-                                // Note I edited an earlier integral,
-                                // which moved the space to the end, unseen!
-// Note that it also supports \iint for double integrals, and \iiint
+dx
+dQ
+\frac{d}{dx}
+\int x^2 \cdot dx
+\int (\frac x k - 10)\cdot dk
+\int_0^2 (s+t)\cdot dt
+\int^b_a |x-1|\cdot dx
 
 // arithmetic around limit-like things
 \int A\cdot B // == \int (A\cdot B)
@@ -310,20 +321,6 @@ B-\lim_{x\to t}A
 
 // difficult pitfalls:
 \lim_{x\to\infty}\tan^{-1}x // == \lim_{x\to\intfy}(\arctan x)
-
-// Other misc MathLive symbols:
-\rarr for \to, similarly \larr, \leftrightarrow, \rArr, \lArr, \lrArr
-\colon is a colon, \Colon is a double colon
-\ast is an asterisk
-\nexists
-\in for sets, plus \ni for the flipped version, and \notin,
-    and then the negated \ni is actually \not\owns
-X^{\complement} for sets
-Standard \cup, \cap, \subset, \subseteq
-\overrightarrow{...}, \overleftarrow{...}, \overline{...}, \underline{...}
-X^{\prime}, X^{\doubleprime}
-All upper- and lower-case Greek letters, with variants
-{\displaylines x\\ y} is like a fraction with no bar
 ```
 
 Latest version of the things that Lurch notation parses (as of Mar 26, 2024),
@@ -529,4 +526,3 @@ Information we may need later:
  - not           = '\u00ac'
  - degrees       = '\u2218'
  - integral      = '\u222b'
-
