@@ -25,7 +25,7 @@ converter.addConcept( 'logicaltrue',     'atomicpropexpr',   'true' )
 converter.addConcept( 'logicalfalse',    'atomicpropexpr',   'false' )
 converter.addConcept( 'contradiction',   'atomicpropexpr',   'contradiction' )
 
-converter.addConcept( 'logicnegation',   'conjunctexpr',     '(not atomicpropexpr)' )
+converter.addConcept( 'logicnegation',   'atomicpropexpr',   '(not atomicpropexpr)' )
 converter.addConcept( 'conjunction',     'conjunctexpr',     '(and conjunctexpr conjunctexpr)' )
 converter.addConcept( 'disjunction',     'disjunctexpr',     '(or disjunctexpr disjunctexpr)' )
 converter.addConcept( 'implication',     'condexpr',         '(implies condexpr condexpr)' )
