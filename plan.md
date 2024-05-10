@@ -1,10 +1,5 @@
 
 To verify that this project can be presented simply to users:
- - Legitimize the example converter as a foundational set of mathematical
-   concepts and the LaTeX parser and putdown notation for those concepts, not
-   just something just used for testing.  In doing so, factor it into two files,
-   the converter that speaks only putdown, and the LaTeX language defined on top
-   of that converter.
  - Create a simple JSON-based API that lets the user select a subset of the
    concepts from the (no-longer-example) converter and specify the notation for
    them in the new language.  Phrase the keys in the API in a natural language
