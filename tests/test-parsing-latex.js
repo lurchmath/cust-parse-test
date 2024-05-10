@@ -260,6 +260,14 @@ describe( 'Parsing LaTeX', () => {
                     [ 'numbervariable', 'N' ], [ 'number', '1' ] ] ]
         )
         check(
+            '\\left(N-1\\right)!',
+            [ 'factorial',
+                [ 'subtraction',
+                    [ 'numbervariable', 'N' ], [ 'number', '1' ] ] ]
+        )
+        checkFail( '\\left(N-1)!' )
+        checkFail( '(N-1\\right)!' )
+        check(
             '{-x}^{2\\cdot{-3}}',
             [ 'exponentiation',
                 [ 'numbernegation',
@@ -288,6 +296,15 @@ describe( 'Parsing LaTeX', () => {
         )
         check(
             'A^B+(C-D)',
+            [ 'addition',
+                [ 'exponentiation',
+                    [ 'numbervariable', 'A' ], [ 'numbervariable', 'B' ] ],
+                [ 'subtraction',
+                    [ 'numbervariable', 'C' ], [ 'numbervariable', 'D' ] ]
+            ]
+        )
+        check(
+            'A^B+\\left(C-D\\right)',
             [ 'addition',
                 [ 'exponentiation',
                     [ 'numbervariable', 'A' ], [ 'numbervariable', 'B' ] ],
@@ -519,6 +536,15 @@ describe( 'Parsing LaTeX', () => {
             ]
         )
         check(
+            '\\lnot\\left(\\top\\Leftrightarrow\\bot\\right)',
+            [ 'logicnegation',
+                [ 'iff',
+                    'logicaltrue',
+                    'logicalfalse'
+                ]
+            ]
+        )
+        check(
             '\\lnot(\\top\\Leftrightarrow\\bot)',
             [ 'logicnegation',
                 [ 'iff',
@@ -564,6 +590,10 @@ describe( 'Parsing LaTeX', () => {
             '\\{ 1 \\}',
             [ 'finiteset', [ 'oneeltseq', [ 'number', '1' ] ] ]
         )
+        check(
+            '\\left\\{ 1 \\right\\}',
+            [ 'finiteset', [ 'oneeltseq', [ 'number', '1' ] ] ]
+        )
         // { 1, 2 }
         check(
             '\\{1,2\\}',
@@ -592,6 +622,11 @@ describe( 'Parsing LaTeX', () => {
         // { 3, x }
         check(
             '\\{ 3,x \\}',
+            [ 'finiteset', [ 'eltthenseq', [ 'number', '3' ],
+                [ 'oneeltseq', [ 'numbervariable', 'x' ] ] ] ]
+        )
+        check(
+            '\\left\\{ 3,x \\right\\}',
             [ 'finiteset', [ 'eltthenseq', [ 'number', '3' ],
                 [ 'oneeltseq', [ 'numbervariable', 'x' ] ] ] ]
         )
@@ -948,6 +983,12 @@ describe( 'Parsing LaTeX', () => {
             [ 'equivclass', [ 'number', '1' ], 'approximately' ]
         )
         check(
+            '\\left[1,\\approx\\right]',
+            [ 'equivclass', [ 'number', '1' ], 'approximately' ]
+        )
+        checkFail( '\\left[1,\\approx]' )
+        checkFail( '[1,\\approx\\right]' )
+        check(
             '[x+2,\\sim]',
             [ 'equivclass',
                 [ 'addition', [ 'numbervariable', 'x' ], [ 'number', '2' ] ],
@@ -966,6 +1007,10 @@ describe( 'Parsing LaTeX', () => {
         )
         check(
             '[P]',
+            [ 'bareequivclass', [ 'numbervariable', 'P' ] ]
+        )
+        check(
+            '\\left[P\\right]',
             [ 'bareequivclass', [ 'numbervariable', 'P' ] ]
         )
     } )
@@ -998,6 +1043,12 @@ describe( 'Parsing LaTeX', () => {
         )
         check(
             '\\emptyset \\subset [-1,\\equiv_10]',
+            [ 'subset', 'emptyset',
+                [ 'eqmodclass', [ 'numbernegation', [ 'number', '1' ] ],
+                    [ 'number', '10' ] ] ]
+        )
+        check(
+            '\\emptyset \\subset \\left[-1,\\equiv_10\\right]',
             [ 'subset', 'emptyset',
                 [ 'eqmodclass', [ 'numbernegation', [ 'number', '1' ] ],
                     [ 'number', '10' ] ] ]

@@ -100,6 +100,10 @@ describe( 'Converting LaTeX to putdown', () => {
         check( '-{1\\times2}', '(- (* 1 2))' )
         check( '-(1\\times2)', '(- (* 1 2))' )
         check( '{x^2}!', '(! (^ x 2))' )
+        check( '(N-1)!', '(! (- N 1))' )
+        check( '\\left(N-1\\right)!', '(! (- N 1))' )
+        checkFail( '\\left(N-1)!' )
+        checkFail( '(N-1\\right)!' )
         check( '3!\\cdot4!', '(* (! 3) (! 4))' )
         check( '{-x}^{2\\cdot{-3}}', '(^ (- x) (* 2 (- 3)))' )
         check( '(-x)^(2\\cdot(-3))', '(^ (- x) (* 2 (- 3)))' )
@@ -172,6 +176,10 @@ describe( 'Converting LaTeX to putdown', () => {
             '(or P (and (iff Q Q) P))'
         )
         check( '\\lnot{\\top\\Leftrightarrow\\bot}', '(not (iff true false))' )
+        check(
+            '\\lnot\\left(\\top\\Leftrightarrow\\bot\\right)',
+            '(not (iff true false))'
+        )
         check( '\\lnot(\\top\\Leftrightarrow\\bot)', '(not (iff true false))' )
     } )
 
@@ -187,6 +195,7 @@ describe( 'Converting LaTeX to putdown', () => {
     it( 'can convert finite and empty sets', () => {
         check( '\\emptyset', 'emptyset' )
         check( '\\{ 1 \\}', '(finiteset (elts 1))' )
+        check( '\\left\\{ 1 \\right\\}', '(finiteset (elts 1))' )
         check( '\\{ 1 , 2 \\}', '(finiteset (elts 1 (elts 2)))' )
         check( '\\{ 1 , 2 , 3 \\}', '(finiteset (elts 1 (elts 2 (elts 3))))' )
         check(
@@ -198,6 +207,7 @@ describe( 'Converting LaTeX to putdown', () => {
             '(finiteset (elts (finiteset (elts emptyset))))'
         )
         check( '\\{ 3 , x \\}', '(finiteset (elts 3 (elts x)))' )
+        check( '\\left\\{ 3 , x \\right\\}', '(finiteset (elts 3 (elts x)))' )
         check(
             '\\{ A \\cup B , A \\cap B \\}',
             '(finiteset (elts (setuni A B) (elts (setint A B))))'
@@ -337,6 +347,9 @@ describe( 'Converting LaTeX to putdown', () => {
 
     it( 'can convert equivalence classes and expressions that use them', () => {
         check( '[ 1 , \\approx ]', '(eqclass 1 ~~)' )
+        check( '\\left[ 1 , \\approx \\right]', '(eqclass 1 ~~)' )
+        checkFail( '\\left[ 1 , \\approx ]' )
+        checkFail( '[ 1 , \\approx \\right]' )
         check( '[ x + 2 , \\sim ]', '(eqclass (+ x 2) ~)' )
         check(
             '[ 1 , \\approx ] \\cup [ 2 , \\approx ]',
@@ -344,6 +357,7 @@ describe( 'Converting LaTeX to putdown', () => {
         )
         check( '7 \\in [ 7 , \\sim ]', '(in 7 (eqclass 7 ~))' )
         check( '[P]', '(eqclass P ~)' )
+        check( '\\left[P\\right]', '(eqclass P ~)' )
     } )
 
     it( 'can convert equivalence and classes mod a number', () => {
@@ -351,6 +365,10 @@ describe( 'Converting LaTeX to putdown', () => {
         check( 'k \\equiv m \\mod n', '(=mod k m n)' )
         check(
             '\\emptyset \\subset [ - 1 , \\equiv _ 10 ]',
+            '(subset emptyset (modclass (- 1) 10))'
+        )
+        check(
+            '\\emptyset \\subset \\left[ - 1 , \\equiv _ 10 \\right]',
             '(subset emptyset (modclass (- 1) 10))'
         )
     } )

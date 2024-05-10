@@ -1,7 +1,5 @@
 
 To finish verifying that this project is viable for parsing LaTeX:
- - Expand LaTeX to support `\left(`, `\right)`, and the same for curly and square
-   brackets.
  - Ensure that every test from the MathLive data later in this document has been
    brought into the test suite and is parsed correctly into AST/putdown forms.
 

@@ -124,7 +124,11 @@ converter.addConcept( 'forsomevariant2', 'expr',             '[numbervariable , 
 converter.addConcept( 'forsomevariant3', 'expr',             '[numbervariable , sentenceexpr]', { primitive : false } )
 converter.addConcept( 'forsomevariant4', 'expr',             '[numbervariable , sentenceexpr]', { primitive : false } )
 
-const latex = new Language( 'latex', converter, [ '{', '}', '(', ')' ] )
+const latex = new Language( 'latex', converter, [
+    '{', '}',
+    '(', ')',
+    '\\left(', '\\right)',
+] )
 
 latex.addNotation( 'infinity',        '\\infty' )
 latex.addNotation( 'pi',              '\\pi' )
@@ -162,7 +166,9 @@ latex.addNotation( 'existsunique',    '\\exists ! A, B' )
 
 latex.addNotation( 'emptyset',        '\\emptyset' )
 latex.addNotation( 'emptyset',        '\\{ \\}' )
+latex.addNotation( 'emptyset',        '\\left\\{ \\right\\}' )
 latex.addNotation( 'finiteset',       '\\{A\\}' )
+latex.addNotation( 'finiteset',       '\\left\\{A\\right\\}' )
 latex.addNotation( 'oneeltseq',       'A' )
 latex.addNotation( 'eltthenseq',      'A,B' )
 latex.addNotation( 'onenumseq',       'A' )
@@ -231,8 +237,11 @@ latex.addNotation( 'equivmodulo',     'A \\equiv B \\mod C' )
 latex.addNotation( 'equivmodulo',     'A \\equiv _ C B' )
 
 latex.addNotation( 'equivclass',      '[A,B]' )
+latex.addNotation( 'equivclass',      '\\left[A,B\\right]' )
 latex.addNotation( 'bareequivclass',  '[A]' )
+latex.addNotation( 'bareequivclass',  '\\left[A\\right]' )
 latex.addNotation( 'eqmodclass',      '[A, \\equiv _ B]' )
+latex.addNotation( 'eqmodclass',      '\\left[A, \\equiv _ B\\right]' )
 
 latex.addNotation( 'settype',         'a set' )
 latex.addNotation( 'numbertype',      'a number' )
