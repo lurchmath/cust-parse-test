@@ -375,7 +375,17 @@ describe( 'Parsing LaTeX', () => {
             [ 'binrelapp', 'divisibility', [ 'number', '7' ], [ 'number', '14' ] ]
         )
         check(
+            '7\\vert14',
+            [ 'binrelapp', 'divisibility', [ 'number', '7' ], [ 'number', '14' ] ]
+        )
+        check(
             'A(k) | n!',
+            [ 'binrelapp', 'divisibility',
+                [ 'numfuncapp', [ 'funcvariable', 'A' ], [ 'numbervariable', 'k' ] ],
+                [ 'factorial', [ 'numbervariable', 'n' ] ] ]
+        )
+        check(
+            'A(k) \\vert n!',
             [ 'binrelapp', 'divisibility',
                 [ 'numfuncapp', [ 'funcvariable', 'A' ], [ 'numbervariable', 'k' ] ],
                 [ 'factorial', [ 'numbervariable', 'n' ] ] ]
@@ -984,6 +994,14 @@ describe( 'Parsing LaTeX', () => {
         )
         check(
             '\\left[1,\\approx\\right]',
+            [ 'equivclass', [ 'number', '1' ], 'approximately' ]
+        )
+        check(
+            '\\lbrack1,\\approx\\rbrack',
+            [ 'equivclass', [ 'number', '1' ], 'approximately' ]
+        )
+        check(
+            '\\left\\lbrack1,\\approx\\right\\rbrack',
             [ 'equivclass', [ 'number', '1' ], 'approximately' ]
         )
         checkFail( '\\left[1,\\approx]' )

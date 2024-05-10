@@ -122,7 +122,9 @@ describe( 'Converting LaTeX to putdown', () => {
         check( '2 \\ge 1 \\wedge 2 \\le 3', '(and (>= 2 1) (<= 2 3))' )
         check( '2\\geq1\\wedge2\\leq3', '(and (>= 2 1) (<= 2 3))' )
         check( '7 | 14', '(applyrel | 7 14)' )
+        check( '7 \\vert 14', '(applyrel | 7 14)' )
         check( 'A ( k ) | n !', '(applyrel | (apply A k) (! n))' )
+        check( 'A ( k )\\vert n !', '(applyrel | (apply A k) (! n))' )
         check( '1 - k \\sim 1 + k', '(applyrel ~ (- 1 k) (+ 1 k))' )
     } )
 

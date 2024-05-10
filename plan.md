@@ -3,6 +3,27 @@ To finish verifying that this project is viable for parsing LaTeX:
  - Ensure that every test from the MathLive data later in this document has been
    brought into the test suite and is parsed correctly into AST/putdown forms.
 
+List of symbols that can be entered with MathLive but for which the current
+example converter has no concepts:
+ - `\pm` as in `v\pm w`
+ - `\imaginaryI`
+ - `\sqrt` (including both `\sqrt{...}` and things like `\sqrt5`)
+ - `\exp` which is just a math-Roman operator, I think
+ - `\exponentialE`
+ - `\therefore`
+ - `\cong` (because we use `\equiv` for equivalence mod a number)
+ - `\lim`
+ - `\sum` (which is used in Math299 but I haven't added it here yet)
+ - `\differentialD` and `\int`/`\iint`/`\iiint`
+ - `\nexists`
+ - `\ni` (horizontally flipped version of `\in`, and the negated version of it
+   in MathLive is `\not\owns`)
+
+List of LaTeX forms that MathLive creates but that this parser cannot handle:
+ - `\frac12` because the 12 tokenizes as a single integer (solution is probably
+   to preprocess anything coming out of MathLive and add curlies to clarify the
+   parameters of the fraction command)
+
 To verify that this project can be presented simply to users:
  - Legitimize the example converter as a foundational set of mathematical
    concepts and the LaTeX parser and putdown notation for those concepts, not
@@ -135,120 +156,118 @@ Polishing:
    `x^{-1}` might allow LaTeX notation authors to write `\\mathcal{A}(B)`, but
    I have not yet tested it.
 
+Notation we might eventually want one day as part of the default set of concepts
+that come built into this parser
+ - Intervals `(1,2)`, `[1,2]`, `[1,2)`, `(1,2]`
+ - Absolute values, using `|...|` or `\vert...\vert` (opt.w/`\left/\right`)
+ - Norms/distances, using `||...||` or `\Vert...\Vert` (opt.w/`\left/\right`)
+ - All upper and lower case Greek letters, with variants
 
 Tests used in the Earley testing library that we can use here:
 (Note that these are written here in LaTeX notation, but they can be used to
 test any language, not just LaTeX.)
 ```
-// LaTeX                        What MathLive produces (iff different)
+// LaTeX
 // basics:
-6 + k                           6+k
-1.9 - T                         1.9-T
-0.2 \cdot 0.3                   0.2\cdot0.3
-v \div w                        v\div w
-v \pm w                         v\pm w
-2^k                             2^{k}
-5.0 - K + e                     5.0-K+e
-5.0 \times K \div e             5.0\times K\div e
-(a^b)^c                         \left(a^{b}\right)^{c}
-5.0 - K\cdot e                  5.0-K\cdot e
+6 + k
+1.9 - T
+0.2 \cdot 0.3
+v \div w
+v \pm w
+2^k
+5.0 - K + e
+5.0 \times K \div e
+(a^b)^c
+5.0 - K\cdot e
 5.0\times K+e
-u^v\times w^x                   u^{v}\times w^{x}
+u^v\times w^x
 -7                          
 A+-B                        
 -A+B
--A^B                            -A^{B}
-i                               \imaginaryI
+-A^B
+i
 
 // respects parens:
 6+k+5 // == (6+k)+5         
-6+(k+5)                         6+\left(k+5\right)
-(5.0-K)\cdot e                  \left(5.0-K\right)\cdot e
-5.0\times(K+e)                  5.0\times\left(K+e\right)
--(K+e)                          -\left(K+e\right)
--(A^B)                          -\left(A^{B}\right)
+6+(k+5)
+(5.0-K)\cdot e
+5.0\times(K+e)
+-(K+e)
+-(A^B)
 
 // fractions
-\frac{1}{2}                     \frac12
+\frac{1}{2}
 \frac{p}{q}                 
 \frac{1+t}{3}
 \frac{a+b}{a-b}
 \frac{1+2\times v}{-w}
 
 // radicals:
-\sqrt 2                         \sqrt2
+\sqrt 2
 \sqrt{10-k+9.6}                 
 \sqrt[p]{2}
 \sqrt[50]{10-k+9.6}
-\frac{6}{\sqrt{\frac{1}{2}}}    \frac{6}{\sqrt{\frac12}}
-\sqrt{1+\sqrt{5}}+1             \sqrt{1+\sqrt5}+1
+\frac{6}{\sqrt{\frac{1}{2}}}
+\sqrt{1+\sqrt{5}}+1
 \sqrt[2+t]{1\div\infty}         
 
 // logs:
 \ln x
-\log 1000                       \log1000
-\log e^x\times y                \log e^{x}\times y
-                                \log\exp\left(x\right)\times y
-                                \log\exponentialE^{x}\times y
+\log 1000
+\log e^x\times y
 \log_{31}65                     
-\log_{-t}{k+5}                  \log_{-t}\left(k+5\right)
+\log_{-t}{k+5}
 
 // sentences:
 2<3
 -6>k
 t+u=t+v
-t+u\neq t+v                     t+u\ne t+v
-\frac{a}{7+b}\approx 0.75       \frac{a}{7+b}\approx0.75
-t^2\leq 10                      t^2\le10
-1+2+3\geq 6                     1+2+3\ge6
-k\cong 1                        k\cong1
-\therefore 1<2                  \therefore1<2
-\neg A+B=C^D                    \neg A+B=C^{D}
-\neg\neg x=x                    \lnot\lnot x=x
+t+u\neq t+v
+\frac{a}{7+b}\approx 0.75
+t^2\leq 10
+1+2+3\geq 6
+k\cong 1
+\therefore 1<2
+\neg A+B=C^D
+\neg\neg x=x
 
 // intervals:
-(1,2]                           \left(1,2\right\rbrack
-(t,k)                           \left(t,k\right)
-[I,J]                           \left\lbrack I,J\right\rbrack
-[30,52.9)                       \left\lbrack30,52.9\right)
-(5\times(t+u),2^9]              \left(5\times\left(t+u\right),2^9\right\rbrack
-(3-[1,2])\times 4 // assuming you can multiply any two nouns???
-                                \left(3-\left\lbrack1,2\right\rbrack\right)\times4
-[(2,3],(j,j+1]) // assuming you can put any two nouns into an interval???
-                                \left\lbrack\left(2,3\right\rbrack,\left(j,j+1\right\rbrack\right)
+(1,2]
+(t,k)
+[I,J]
+[30,52.9)
+(5\times(t+u),2^9]
+(3-[1,2])\times 4
+[(2,3],(j,j+1])
 
 // absolute values:
-|a|                             \left\vert a\right\vert // will use this form below
-                                \left|a\right|
-                                \mathrm{abs}\left(a\right)
-                                // for double-bars, uses \left\Vert...
-|-962|                          \left\vert-962\right\vert
-|\frac{a^b}{10}|                \left\vert\frac{a^{b}}{10}\right\vert
-|9-8+7-6|                       \left\vert9-8+7-6\right\vert
-|6+r|-|6-r|                     \left\vert6+r\right\vert-\left\vert6-r\right\vert
-|\frac{|x|}{x}|                 \left\vert\frac{\left\vert x\right\vert}{x}\right\vert
-||1|+|1||                       \left\vert\left\vert1\right\vert+\left\vert1\right\vert\right\vert
+|a|
+|-962|
+|\frac{a^b}{10}|
+|9-8+7-6|
+|6+r|-|6-r|
+|\frac{|x|}{x}|
+||1|+|1||
 
 // trig:
 \sin x
 \tan\pi
 \sec^{-1}0
-\cos x + 1                      \cos x+1
-\cot(a-9.9)                     \cot\left(a-9.9\right)
-|\csc^{-1}(1+g)|^2              \left\vert\csc^{-1}\left(1+g\right)\right\vert^2
+\cos x + 1
+\cot(a-9.9)
+|\csc^{-1}(1+g)|^2
 
 // factorials:
 10!
 W\times R!
-(W+R)!                          \left(W+R\right)!
+(W+R)!
 
 // limits:
 \lim_{x\to t_0}\sin x
 3\times\lim_{a\to1}\frac a 1 +9
-                                3\times\lim_{a\to1}\frac{a}{1}+9
 
 // sums:
-\sum_{x=1}^5 x^2                \sum_{x=1}^5x^2
+\sum_{x=1}^5 x^2
 \sum^{n+1}_{m=0}m-1 // where the -1 is outside the sum
 
 // differential and integral calculus:
