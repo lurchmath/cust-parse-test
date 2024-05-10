@@ -379,6 +379,12 @@ export class Language {
         const lowPriority = Object.keys( Language.regularExpressions )
             .map( key => `^(?:${Language.regularExpressions[key].source})` )
         const shouldBeLater = re => lowPriority.includes( re.source ) ? 1 : 0
+        const tokenSort = ( a, b ) => a == '' && b == '' ? 0 :
+                                      a.length == 0 ? 1 : // sort Xsuffix < X
+                                      b.length == 0 ? -1 : // sort Xsuffix < X
+                                      a[0] < b[0] ? -1 :
+                                      a[0] > b[0] ? 1 :
+                                      tokenSort( a.substring( 1 ), b.substring( 1 ) )
         this.tokenizer.tokenTypes.sort( ( a, b ) => {
             const aLater = shouldBeLater( a.regexp )
             const bLater = shouldBeLater( b.regexp )
@@ -387,9 +393,7 @@ export class Language {
             b = b.regexp.source
             a = a.substring( 4, a.length - 1 ) // turn ^(?:foo) into foo
             b = b.substring( 4, b.length - 1 ) // same
-            if ( a.startsWith( b ) ) return -1 // sort Xsuffix before X
-            if ( b.startsWith( a ) ) return 1  // same
-            return a.localeCompare( b )        // alphabetical order
+            return tokenSort( a, b )
         } )
     }
 
