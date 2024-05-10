@@ -139,6 +139,7 @@ latex.addNotation( 'percentage',      'A\\%' )
 latex.addNotation( 'factorial',       'A!' )
 
 latex.addNotation( 'division',        'A\\div B' )
+latex.addNotation( 'division',        '\\frac A B' )
 latex.addNotation( 'multiplication',  'A\\times B' )
 latex.addNotation( 'multiplication',  'A\\cdot B' )
 latex.addNotation( 'numbernegation',  '-A' )
