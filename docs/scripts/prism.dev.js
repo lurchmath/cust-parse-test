@@ -775,8 +775,8 @@ if (typeof self === 'undefined' || !self.Prism || !self.document || !document.qu
 	return;
 }
 
-function $$(Expression, con) {
-	return Array.prototype.slice.call((con || document).querySelectorAll(Expression));
+function $$(expr, con) {
+	return Array.prototype.slice.call((con || document).querySelectorAll(expr));
 }
 
 function hasClass(element, className) {
