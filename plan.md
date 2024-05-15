@@ -1,24 +1,37 @@
 
-To verify that this project can be presented simply to users:
- - Create a simple JSON-based API that lets the user select a subset of the
-   concepts from the (no-longer-example) converter and specify the notation for
-   them in the new language.  Phrase the keys in the API in a natural language
-   way to make clear the kinds of natural language sentences that would be used
-   in a document when "calling" this API.  Test this API by:
-    - converting the LaTeX file to use this instead of its current set of
-      function calls
-    - creating a new LaTeX file for just a subset of the full set of concepts,
-      and verify that it works for precisely that subset, since any user who
-      defines their own language will typically be picking a subset of the full
-      set of concepts defined in the example converter
+To verify that this project can be presented simply to users, make it so that a
+converter can be created from a single JSON notation definition, as follows:
+ - Move `getConverter()` from `built-in-concepts.js` into a member function of
+   the `Converter` class, `addBuiltInConcepts()`, which imports the JSON data
+   from `built-in-concepts.js`, which then literally contains only JSON data.
+   It takes an optional parameter listing the concepts to import, but defaults
+   to all of them.  If you provide a list, it ensures that any concepts on which
+   one of those depends is on the list before importing.  Ensure that the method
+   can be called many times on the same concept but adds it only one time.
+ - Upgrade `example-converter.js` to use this new method with no arguments.
+ - Add a new static function to the Language class called `fromJSON()`, which
+   lets you build a new Language from a name, a Converter instance, and a JSON
+   definition formatted just like the one in `latex-notation.js`.  Call that
+   function from `example-converter.js`, using the JSON in `latex-notation.js`,
+   so that `latex-notation.js` can now be a file that only defines one JSON
+   object.
+ - Upgrade the `Language.fromJSON()` function so that it computes a list of all
+   the concepts used in its JSON definition and first asks the Converter to add
+   all of them using `addBuiltInConcepts()` (but make it so that you can disable
+   this with an optional parameter, for anyone rolling their own concept
+   hierarchy).  Ensure that this works by NOT calling `addBuiltInConcepts()`
+   before calling `Language.fromJSON()` in `example-converer.js`.
+ - This should mean that `example-converter.js` is now just one line of code
+   that reads everything it needs from JSON data structures, thereby proving
+   that this repository lets you define a new language just from simple
+   information.
 
 To verify that this project is also viable for parsing Lurch notation:
  - Use the scraper tool in the lurchmath repo's grading tools folder to get a
    list of all unique Lurch notation expressions used in Math299 in Spring 2024.
- - Define a new language of Lurch notation and verify that all (or almost all)
-   of the expressions scraped from Math299 can be parsed by this tool.  Use the
-   new JSON API to define this language, to give a full, robust test of that
-   simpler API.
+ - Use the new JSON API described above to define a new language of Lurch
+   notation and verify that all (or almost all) of the expressions scraped from
+   Math299 can be parsed correctly by the converter defined in that way.
 
 Bug fix:
  - Associativity right now works well in that it will produce ASTs that are
