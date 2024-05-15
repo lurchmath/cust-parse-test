@@ -232,7 +232,6 @@ export class Converter {
      * @param {Object?} options - see supported fields above
      */
     addConcept ( name, parentType, putdown, options = { } ) {
-        if ( !putdown ) putdown = name
         options = Object.assign( {
             primitive : true,
             associative : [ ]
