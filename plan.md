@@ -1,23 +1,4 @@
 
-To verify that this project can be presented simply to users, make it so that a
-converter can be created from a single JSON notation definition, as follows:
- - Add a new static function to the Language class called `fromJSON()`, which
-   lets you build a new Language from a name, a Converter instance, and a JSON
-   definition formatted just like the one in `latex-notation.js`.  Call that
-   function from `example-converter.js`, using the JSON in `latex-notation.js`,
-   so that `latex-notation.js` can now be a file that only defines one JSON
-   object.
- - Upgrade the `Language.fromJSON()` function so that it computes a list of all
-   the concepts used in its JSON definition and first asks the Converter to add
-   all of them using `addBuiltInConcepts()` (but make it so that you can disable
-   this with an optional parameter, for anyone rolling their own concept
-   hierarchy).  Ensure that this works by NOT calling `addBuiltInConcepts()`
-   before calling `Language.fromJSON()` in `example-converer.js`.
- - This should mean that `example-converter.js` is now just one line of code
-   that reads everything it needs from JSON data structures, thereby proving
-   that this repository lets you define a new language just from simple
-   information.
-
 To verify that this project is also viable for parsing Lurch notation:
  - Use the scraper tool in the lurchmath repo's grading tools folder to get a
    list of all unique Lurch notation expressions used in Math299 in Spring 2024.
@@ -69,6 +50,8 @@ Polishing:
     - alphabetically least JSON parsing leads to right association in most cases
       (which is good for conditional, f.ex., and irrelevant for associative
       stuff)
+    - when you say how to write a variable, that's how it will be written in ANY
+      language
  - Also add to the overview documentation the procedure for adding new concepts
    and tests to the example converter, which is:
     1. Add a new `addConcept()` call to the `example-converter.js` file, with

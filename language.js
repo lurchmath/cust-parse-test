@@ -3,6 +3,7 @@ import { Grammar, Tokenizer } from 'earley-parser'
 import { AST } from './ast.js'
 import SyntacticTypes from './syntactic-types.js'
 import { notationStringToArray } from './utilities.js'
+import { builtInConcepts } from './built-in-concepts.js'
 
 /**
  * The Language class represents one of the languages among which a
@@ -360,8 +361,23 @@ export class Language {
      *   this class's constructor
      * @param {Object} json - the JSON representation of the language, as
      *   described above
+     * @param {boolean} addConceptsAlso - if true, before constructing the
+     *   Language, examine all built-in concepts mentioned in any of its
+     *   notations, and add them to the `converter` using
+     *   {@link Converter#addBuiltIns addBuiltIns()}.
      */
-    static fromJSON ( name, converter, json ) {
+    static fromJSON ( name, converter, json, addConceptsAlso = true ) {
+        if ( addConceptsAlso ) {
+            // Add all concepts explicitly mentioned in the language
+            const conceptNames = json.notations.filter( entry => entry.concept )
+                                               .map( entry => entry.concept )
+            converter.addBuiltIns( [ ...new Set( conceptNames ) ] )
+            // But every language also contains the concepts defined by regular
+            // expressions, so we have to add them too
+            const regexpNames = builtInConcepts.filter(
+                entry => entry.regularExpression ).map( entry => entry.name )
+            converter.addBuiltIns( regexpNames )
+        }
         const result = new Language( name, converter, json.groupers )
         json.notations.forEach( entry => result.addNotation(
             entry.concept, entry.notation, entry.options ) )
