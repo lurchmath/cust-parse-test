@@ -109,4 +109,48 @@ describe( 'Converter instance', () => {
         expect( prefix.convertTo( '+ * 10 20 40', infix ) ).to.equal( '10*20+40' )
     } )
 
+    it( 'should be able to import built-in concepts', () => {
+        // First, a brand new converter contains no concepts other than those
+        // necessitated by groupers.
+        const converter = new Converter()
+        const originalConcepts = Array.from( converter.concepts.keys() )
+        expect( originalConcepts.every( key =>
+            key.startsWith( 'GroupedAtomic' ) ) ).to.equal( true )
+        // Next, if we add to it a few new concepts with no dependencies, then
+        // the new ones should be present, and nothing else should be.
+        const toAdd = [ 'Pi', 'Factorial' ]
+        converter.addBuiltIns( toAdd )
+        const newConcepts = Array.from( converter.concepts.keys() )
+        expect( newConcepts.length ).to.equal(
+            originalConcepts.length + toAdd.length )
+        expect( newConcepts.every( key =>
+            originalConcepts.includes( key ) || toAdd.includes( key )
+        ) ).to.equal( true )
+        // Next, if we add to it a concept with dependencies, then those
+        // dependencies come in as well.
+        const toAddWithDeps = [ 'UniversalQuantifier', 'ExistentialQuantifier' ]
+        const depsThatShouldComeIn = [ 'NumberVariable' ]
+        expect( toAddWithDeps.some( concept =>
+            newConcepts.includes( concept ) ) ).to.equal( false )
+        expect( depsThatShouldComeIn.some( concept =>
+            newConcepts.includes( concept ) ) ).to.equal( false )
+        converter.addBuiltIns( toAddWithDeps )
+        const newConcepts2 = Array.from( converter.concepts.keys() )
+        expect( newConcepts2.length ).to.equal( originalConcepts.length +
+            toAdd.length + toAddWithDeps.length + depsThatShouldComeIn.length )
+        expect( newConcepts2.every( key =>
+            originalConcepts.includes( key ) || toAdd.includes( key ) ||
+            toAddWithDeps.includes( key ) || depsThatShouldComeIn.includes( key )
+        ) ).to.equal( true )
+        // If we add some of those things again, there should be no change.
+        converter.addBuiltIns( toAdd )
+        converter.addBuiltIns( toAddWithDeps )
+        expect( newConcepts2 ).to.deep.equal(
+            Array.from( converter.concepts.keys() ) )
+        // If we add all the concepts, there should be a LOT more.
+        converter.addBuiltIns()
+        expect( Array.from( converter.concepts.keys() ).length )
+            .to.be.greaterThan( newConcepts2.length * 2 )
+    } )
+
 } )

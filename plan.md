@@ -1,14 +1,6 @@
 
 To verify that this project can be presented simply to users, make it so that a
 converter can be created from a single JSON notation definition, as follows:
- - Move `getConverter()` from `built-in-concepts.js` into a member function of
-   the `Converter` class, `addBuiltInConcepts()`, which imports the JSON data
-   from `built-in-concepts.js`, which then literally contains only JSON data.
-   It takes an optional parameter listing the concepts to import, but defaults
-   to all of them.  If you provide a list, it ensures that any concepts on which
-   one of those depends is on the list before importing.  Ensure that the method
-   can be called many times on the same concept but adds it only one time.
- - Upgrade `example-converter.js` to use this new method with no arguments.
  - Add a new static function to the Language class called `fromJSON()`, which
    lets you build a new Language from a name, a Converter instance, and a JSON
    definition formatted just like the one in `latex-notation.js`.  Call that

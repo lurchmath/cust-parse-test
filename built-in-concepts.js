@@ -1,7 +1,4 @@
 
-import { Converter } from './converter.js'
-import { Language } from './language.js'
-
 export const builtInConcepts = [
 
 	// Atomic number expressions
@@ -556,16 +553,3 @@ export const builtInConcepts = [
 		"options": {"primitive":false},
 	},
 ]
-
-builtInConcepts.getConverter = () => {
-	const result = new Converter()
-	builtInConcepts.forEach( concept =>
-		result.addConcept(
-			concept.name,
-			concept.parentType,
-			concept.putdown || Language.regularExpressions[concept.regularExpression],
-			concept.options
-		)
-	)
-	return result
-}

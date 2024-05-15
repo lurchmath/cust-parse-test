@@ -3,6 +3,7 @@ import { AST } from './ast.js'
 import SyntacticTypes from './syntactic-types.js'
 import { putdownLeaves } from './utilities.js'
 import { Language } from './language.js'
+import { builtInConcepts } from './built-in-concepts.js'
 
 /**
  * ## Class overview
@@ -290,6 +291,56 @@ export class Converter {
      */
     concept ( name ) {
         return this.concepts.get( name )
+    }
+
+    /**
+     * A set of common mathematical concepts are built into this repository.
+     * (See the file `built-in-concepts.js`.)  This function can import all or
+     * some of those concepts into this converter.
+     * 
+     * If you call it with no arguments, all the built-in concepts are imported,
+     * including basic operators and concepts from arithmetic, algebra, logic,
+     * naive set theory, functions, relations, and more.
+     * 
+     * If you call it with an array of strings, they are treated as the names of
+     * the concepts you want imported.  If those concepts are defined in terms
+     * of other concepts, then the others are also imported, and so on,
+     * recursively.  (For example, even if you do not import the concepts of
+     * variables, if you were to import the concept of quantifiers, they require
+     * variables, and thus those concepts would be imported also.)
+     * 
+     * @param {String[]} [names] - the names of those concepts to import, or
+     *   leave empty to import all
+     */
+    addBuiltIns ( names ) {
+        // If they provided a list of names, ensure it contains all
+        // prerequisites, recursively.
+        if ( names ) {
+            names = names.slice() // Don't mess with caller's copy
+            for ( let i = 0 ; i < names.length ; i++ ) {
+                const concept = builtInConcepts.find( concept =>
+                    concept.name == names[i] )
+                if ( !concept )
+                    throw new Error( `Not a built-in concept name: ${names[i]}` )
+                if ( !concept.hasOwnProperty( 'putdown' ) ) continue
+                putdownLeaves( concept.putdown ).forEach( leaf => {
+                    if ( builtInConcepts.some( concept => concept.name == leaf )
+                      && !names.includes( leaf ) )
+                        names.push( leaf )
+                } )
+            }
+        }
+        // Add all requested concepts (or all built-ins if none were requested)
+        builtInConcepts.forEach( concept => {
+            if ( !names || names.includes( concept.name ) )
+                this.addConcept(
+                    concept.name,
+                    concept.parentType,
+                    concept.putdown ||
+                        Language.regularExpressions[concept.regularExpression],
+                    concept.options
+                )
+        } )
     }
 
     /**
