@@ -50,65 +50,65 @@
  * assumed relationship between any `A_i` and `B_j` unless the same type appears
  * in both chains.
  * 
- * The topmost type in the hierarchy is `expr`, and there should be no
+ * The topmost type in the hierarchy is `Expression`, and there should be no
  * types above it.  The lowest types in the hierarchy must all begin with the
- * word `atomic`, as in `atomicpropexpr` or `atomicnumberexpr`.
+ * word `atomic`, as in `AtomicPropositionalExpression` or `AtomicNumberExpression`.
  * 
  * @see {@link module:SyntacticTypes.types}
  * @see {@link module:SyntacticTypes.isAtomic}
  */
 export const hierarchies = [
     [
-        'expr',
-        'nounexpr',
-        'numberexpr',
-        'sumexpr',
-        'prodexpr',
-        'factorexpr',
-        'atomicnumberexpr'
+        'Expression',
+        'NounExpression',
+        'NumberExpression',
+        'SumExpression',
+        'ProductExpression',
+        'FactorExpression',
+        'AtomicNumberExpression'
     ],
     [
-        'expr',
-        'sentenceexpr',
-        'condexpr',
-        'disjunctexpr',
-        'conjunctexpr',
-        'atomicpropexpr'
+        'Expression',
+        'SentenceExpression',
+        'ConditionalExpression',
+        'DisjunctionExpression',
+        'ConjunctionExpression',
+        'AtomicPropositionalExpression'
     ],
     [
-        'expr',
-        'nounexpr',
-        'setexpr',
-        'unionexpr',
-        'intersectionexpr',
-        'atomicsetexpr'
+        'Expression',
+        'NounExpression',
+        'SetExpression',
+        'SetUnionExpression',
+        'SetIntersectionExpression',
+        'AtomicSetExpression'
     ],
     [
-        'sequenceexpr'
+        'SequenceExpression'
     ],
     [
-        'numsequenceexpr' // not a subtype of sequenceexpr,
+        'NumberSequenceExpression' // not a subtype of SequenceExpression,
         // or else putdown will let all sequenceexprs be numsequenceexprs
     ],
     [
-        'binaryrelation' // operators, like ~ and |
+        'BinaryRelationExpression' // operators, like ~ and |
     ],
     [
-        'typephrase' // such as "a set" or "an equivalence relation"
+        'TypePhraseExpression' // such as "a set" or "an equivalence relation"
     ],
     [
-        'expr',
-        'nounexpr',
-        'tupleexpr'
+        'Expression',
+        'NounExpression',
+        'TupleExpression'
     ],
     [
-        'expr',
-        'funcexpr',
-        'atomicfuncexpr'
+        'Expression',
+        'FunctionExpression',
+        'AtomicFunctionExpression'
     ],
     [
-        'expr',
-        'prefixfuncexpr' // the kind you write without parens, like sin/ln/etc.
+        'Expression',
+        'PrefixFunctionExpression' // the kind you write without parens, like sin/ln/etc.
     ]
 ]
 
@@ -139,7 +139,7 @@ export const types = Array.from( new Set( hierarchies.flat() ) )
  * 
  * @see {@link module:SyntacticTypes.hierarchies hierarchies}
  */
-export const isAtomic = name => name.startsWith( 'atomic' )
+export const isAtomic = name => name.startsWith( 'Atomic' )
 
 /**
  * A syntactic type has a lowest subtype if that syntactic type appears in

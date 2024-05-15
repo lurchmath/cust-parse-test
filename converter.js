@@ -135,7 +135,7 @@ export class Converter {
         SyntacticTypes.hierarchies.forEach( hierarchy => {
             const last = hierarchy[hierarchy.length-1]
             if ( SyntacticTypes.isAtomic( last ) )
-                this.addConcept( `grouped${last}`, last, hierarchy[1] )
+                this.addConcept( `Grouped${last}`, last, hierarchy[1] )
         } )
         new Language( 'putdown', this, null, x => 
             x.replaceAll( '( ', '(' ).replaceAll( ' )', ')' ) )
@@ -195,10 +195,6 @@ export class Converter {
      *    call this function, passing the word "intsum" as the concept name,
      *    "sum" as the parent type, and the putdown notation
      *    `"(+ integer integer)"`.
-     *  * If you omit the third argument, the concept name is used as the
-     *    default putdown notation.  This is useful in some cases, such as
-     *    `addConcept('infinity','number')`, which will make the default putdown
-     *    notation just the word "infinity".
      * 
      * Note that this function does not allow you to specify how the concept is
      * written in any language other than putdown.  To do so, you must make

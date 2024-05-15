@@ -44,20 +44,9 @@ Bug fix:
       text between them) as many times as necessary to handle the extras.
 
 Polishing:
- - It's silly that we have to use different words for syntactic types than for
-   putdown operators (most of the time!) because of the coincidences of how
-   notation strings are parsed at various times.  Solving this is several steps:
-    - Rename all syntactic and semantic types to use upper camel case, so that
-      they can be trivially represented in a human readable way (e.g., in a UI)
-      as short phrases with spaces.  Now they are disjoint from the set of
-      putdown operators, all of which use lower case exclusively.
-    - Change all calls to `addConcept()` in the example converter and all tests
-      to use this convention.
-    - Update all putdown operator names to be as natural as possible now that we
-      have no more restrictions on naming them non-conflicting stuff.  This will
-      require changing them not only in the example converter, but throughout
-      the test suite, of course.  Note that in some cases, what needs to change
-      is not the putdown, but the semantic type name (e.g., `sinfunc` -> `sin`).
+ - Change the JSON in latex-notation.js so that it doesn't have
+   `{name,notation}` pairs, but `{concept,notation}` pairs, which is much
+   clearer.
  - Add the capability of asking for all possible parsings, rather than just
    getting the first one.
     - Run tests on this, especially anywhere the test suite mentioned

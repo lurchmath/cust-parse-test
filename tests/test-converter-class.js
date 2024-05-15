@@ -22,11 +22,11 @@ describe( 'Converter instance', () => {
         //  - infix-lang:  2 + 3, 2 * 3, 2 x 3
         //  - prefix-lang: + 2 3, * 2 3, x 2 3
         const converter = new Converter()
-        converter.addConcept( 'int', 'atomicnumberexpr',
+        converter.addConcept( 'int', 'AtomicNumberExpression',
             Language.regularExpressions.integer )
-        converter.addConcept( 'add', 'sumexpr', '(+ sumexpr sumexpr)' )
-        converter.addConcept( 'mul', 'prodexpr', '(* prodexpr prodexpr)' )
-        converter.addConcept( 'xmul', 'prodexpr', '(* prodexpr prodexpr)', false )
+        converter.addConcept( 'add', 'SumExpression', '(+ SumExpression SumExpression)' )
+        converter.addConcept( 'mul', 'ProductExpression', '(* ProductExpression ProductExpression)' )
+        converter.addConcept( 'xmul', 'ProductExpression', '(* ProductExpression ProductExpression)', false )
         const infix = new Language( 'infix-lang', converter )
         infix.addNotation( 'add', 'A+B' )
         infix.addNotation( 'mul', 'A*B' )
@@ -69,10 +69,10 @@ describe( 'Converter instance', () => {
         // Define the same converter as in the previous test, but with no
         // notation names, so that all multiplications should become *-type.
         const converter = new Converter()
-        converter.addConcept( 'int', 'atomicnumberexpr',
+        converter.addConcept( 'int', 'AtomicNumberExpression',
             Language.regularExpressions.integer )
-        converter.addConcept( 'add', 'sumexpr', '(+ sumexpr sumexpr)' )
-        converter.addConcept( 'mul', 'prodexpr', '(* prodexpr prodexpr)' )
+        converter.addConcept( 'add', 'SumExpression', '(+ SumExpression SumExpression)' )
+        converter.addConcept( 'mul', 'ProductExpression', '(* ProductExpression ProductExpression)' )
         const infix = new Language( 'infix-lang', converter )
         infix.addNotation( 'add', 'A+B' )
         infix.addNotation( 'mul', 'A*B' )

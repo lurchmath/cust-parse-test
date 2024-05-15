@@ -110,7 +110,7 @@ describe( 'Converting LaTeX to putdown', () => {
         check( '(-x)^{2\\cdot(-3)}', '(^ (- x) (* 2 (- 3)))' )
         check( '{-3}^{1+2}', '(^ (- 3) (+ 1 2))' )
         check( 'k^{1-y}\\cdot(2+k)', '(* (^ k (- 1 y)) (+ 2 k))' )
-        check( '0.99\\approx1.01', '(applyrel ~~ 0.99 1.01)' )
+        check( '0.99\\approx1.01', '(relationholds ~~ 0.99 1.01)' )
     } )
 
     it( 'can convert relations of numeric expressions', () => {
@@ -121,11 +121,11 @@ describe( 'Converting LaTeX to putdown', () => {
         check( '\\neg 1 = 2', '(not (= 1 2))' )
         check( '2 \\ge 1 \\wedge 2 \\le 3', '(and (>= 2 1) (<= 2 3))' )
         check( '2\\geq1\\wedge2\\leq3', '(and (>= 2 1) (<= 2 3))' )
-        check( '7 | 14', '(applyrel | 7 14)' )
-        check( '7 \\vert 14', '(applyrel | 7 14)' )
-        check( 'A ( k ) | n !', '(applyrel | (apply A k) (! n))' )
-        check( 'A ( k )\\vert n !', '(applyrel | (apply A k) (! n))' )
-        check( '1 - k \\sim 1 + k', '(applyrel ~ (- 1 k) (+ 1 k))' )
+        check( '7 | 14', '(relationholds | 7 14)' )
+        check( '7 \\vert 14', '(relationholds | 7 14)' )
+        check( 'A ( k ) | n !', '(relationholds | (apply A k) (! n))' )
+        check( 'A ( k )\\vert n !', '(relationholds | (apply A k) (! n))' )
+        check( '1 - k \\sim 1 + k', '(relationholds ~ (- 1 k) (+ 1 k))' )
     } )
 
     it( 'creates the canonical form for inequality', () => {
@@ -165,10 +165,11 @@ describe( 'Converting LaTeX to putdown', () => {
 
     it( 'correctly converts propositional logic biconditionals', () => {
         check( 'A\\Leftrightarrow Q\\wedge\\neg P', '(iff A (and Q (not P)))' )
-        // Implication should right-associate, including double implications:
+        // This is how iff and implies associate right now, due to alphabetical
+        // ordering, but we will be tweaking this in a future update.
         check(
             'P\\vee Q\\Leftrightarrow Q\\wedge P\\Rightarrow T',
-            '(iff (or P Q) (implies (and Q P) T))'
+            '(implies (iff (or P Q) (and Q P)) T)'
         )
     } )
 
@@ -190,7 +191,7 @@ describe( 'Converting LaTeX to putdown', () => {
         check( '\\exists t,\\neg Q', '(exists (t , (not Q)))' )
         check(
             '\\exists! k,m\\Rightarrow n',
-            '(existsunique (k , (implies m n)))'
+            '(exists! (k , (implies m n)))'
         )
     } )
 
@@ -212,7 +213,7 @@ describe( 'Converting LaTeX to putdown', () => {
         check( '\\left\\{ 3 , x \\right\\}', '(finiteset (elts 3 (elts x)))' )
         check(
             '\\{ A \\cup B , A \\cap B \\}',
-            '(finiteset (elts (setuni A B) (elts (setint A B))))'
+            '(finiteset (elts (union A B) (elts (intersection A B))))'
         )
         check(
             '\\{ 1 , 2 , \\emptyset , K , P \\}',
@@ -225,7 +226,7 @@ describe( 'Converting LaTeX to putdown', () => {
         check( '( 5 , 6 )', '(tuple (elts 5 (elts 6)))' )
         check(
             '( 5 , A \\cup B , k )',
-            '(tuple (elts 5 (elts (setuni A B) (elts k))))'
+            '(tuple (elts 5 (elts (union A B) (elts k))))'
         )
         // vectors containing at least two numbers are valid
         check( '\\langle 5 , 6 \\rangle', '(vector (elts 5 (elts 6)))' )
@@ -252,39 +253,39 @@ describe( 'Converting LaTeX to putdown', () => {
 
     it( 'can convert simple set memberships and subsets', () => {
         // As before, when a variable could be any type, the alphabetically
-        // least type is numbervariable
+        // least type is NumberVariable
         check( 'b \\in B', '(in b B)' )
         check( '2 \\in \\{ 1 , 2 \\}', '(in 2 (finiteset (elts 1 (elts 2))))' )
-        check( 'X \\in a \\cup b', '(in X (setuni a b))' )
-        check( 'A \\cup B \\in X \\cup Y', '(in (setuni A B) (setuni X Y))' )
-        check( 'A \\subset \\bar B', '(subset A (setcomp B))' )
+        check( 'X \\in a \\cup b', '(in X (union a b))' )
+        check( 'A \\cup B \\in X \\cup Y', '(in (union A B) (union X Y))' )
+        check( 'A \\subset \\bar B', '(subset A (complement B))' )
         check(
             'u \\cap v \\subseteq u \\cup v',
-            '(subseteq (setint u v) (setuni u v))'
+            '(subseteq (intersection u v) (union u v))'
         )
         check(
             '\\{1\\}\\subseteq\\{1\\}\\cup\\{2\\}',
-            '(subseteq (finiteset (elts 1)) (setuni (finiteset (elts 1)) (finiteset (elts 2))))'
+            '(subseteq (finiteset (elts 1)) (union (finiteset (elts 1)) (finiteset (elts 2))))'
         )
-        check( 'p \\in U \\times V', '(in p (setprod U V))' )
+        check( 'p \\in U \\times V', '(in p (cartesianproduct U V))' )
         check(
             'q \\in \\bar U \\cup V \\times W',
-            '(in q (setuni (setcomp U) (setprod V W)))'
+            '(in q (union (complement U) (cartesianproduct V W)))'
         )
         check(
             '( a , b ) \\in A \\times B',
-            '(in (tuple (elts a (elts b))) (setprod A B))'
+            '(in (tuple (elts a (elts b))) (cartesianproduct A B))'
         )
         check(
             '\\langle a , b \\rangle \\in A \\times B',
-            '(in (vector (elts a (elts b))) (setprod A B))'
+            '(in (vector (elts a (elts b))) (cartesianproduct A B))'
         )
     } )
 
     it( 'expands "notin" notation into canonical form', () => {
         check( 'a\\notin A', '(not (in a A))' )
         check( '\\emptyset \\notin \\emptyset', '(not (in emptyset emptyset))' )
-        check( '3-5\\notin K\\cap P', '(not (in (- 3 5) (setint K P)))' )
+        check( '3-5\\notin K\\cap P', '(not (in (- 3 5) (intersection K P)))' )
     } )
 
     it( 'can convert sentences built from set operators', () => {
@@ -298,21 +299,21 @@ describe( 'Converting LaTeX to putdown', () => {
         // humorously enough, the following is not treated as sets!  that's ok!
         check( 'R = A \\times B', '(= R (* A B))' )
         // so let's try one that has to be sets...
-        check( 'R = A \\cup B', '(= R (setuni A B))' )
-        check( '\\forall n , n | n !', '(forall (n , (applyrel | n (! n))))' )
+        check( 'R = A \\cup B', '(= R (union A B))' )
+        check( '\\forall n , n | n !', '(forall (n , (relationholds | n (! n))))' )
         check(
             'a \\sim b \\Rightarrow b \\sim a',
-            '(implies (applyrel ~ a b) (applyrel ~ b a))'
+            '(implies (relationholds ~ a b) (relationholds ~ b a))'
         )
     } )
 
     it( 'can convert notation related to functions', () => {
         check( 'f:A\\to B', '(function f A B)' )
         check( 'f\\colon A\\to B', '(function f A B)' )
-        check( '\\neg F:X\\cup Y\\to Z', '(not (function F (setuni X Y) Z))' )
+        check( '\\neg F:X\\cup Y\\to Z', '(not (function F (union X Y) Z))' )
         check(
             '\\neg F\\colon X\\cup Y\\to Z',
-            '(not (function F (setuni X Y) Z))'
+            '(not (function F (union X Y) Z))'
         )
         check( 'f \\circ g : A \\to C', '(function (compose f g) A C)' )
         check( 'f(x)', '(apply f x)' )
@@ -320,8 +321,8 @@ describe( 'Converting LaTeX to putdown', () => {
             'f ^ {-1} ( g ^ {-1} ( 10 ) )',
             '(apply (inverse f) (apply (inverse g) 10))'
         )
-        check( 'E(\\bar L)', '(apply E (setcomp L))' )
-        check( '\\emptyset\\cap f(2)', '(setint emptyset (apply f 2))' )
+        check( 'E(\\bar L)', '(apply E (complement L))' )
+        check( '\\emptyset\\cap f(2)', '(intersection emptyset (apply f 2))' )
         check(
             'P(e)\\wedge Q(3+b)',
             '(and (apply P eulersnumber) (apply Q (+ 3 b)))'
@@ -348,18 +349,18 @@ describe( 'Converting LaTeX to putdown', () => {
     } )
 
     it( 'can convert equivalence classes and expressions that use them', () => {
-        check( '[ 1 , \\approx ]', '(eqclass 1 ~~)' )
-        check( '\\left[ 1 , \\approx \\right]', '(eqclass 1 ~~)' )
+        check( '[ 1 , \\approx ]', '(equivclass 1 ~~)' )
+        check( '\\left[ 1 , \\approx \\right]', '(equivclass 1 ~~)' )
         checkFail( '\\left[ 1 , \\approx ]' )
         checkFail( '[ 1 , \\approx \\right]' )
-        check( '[ x + 2 , \\sim ]', '(eqclass (+ x 2) ~)' )
+        check( '[ x + 2 , \\sim ]', '(equivclass (+ x 2) ~)' )
         check(
             '[ 1 , \\approx ] \\cup [ 2 , \\approx ]',
-            '(setuni (eqclass 1 ~~) (eqclass 2 ~~))'
+            '(union (equivclass 1 ~~) (equivclass 2 ~~))'
         )
-        check( '7 \\in [ 7 , \\sim ]', '(in 7 (eqclass 7 ~))' )
-        check( '[P]', '(eqclass P ~)' )
-        check( '\\left[P\\right]', '(eqclass P ~)' )
+        check( '7 \\in [ 7 , \\sim ]', '(in 7 (equivclass 7 ~))' )
+        check( '[P]', '(equivclass P ~)' )
+        check( '\\left[P\\right]', '(equivclass P ~)' )
     } )
 
     it( 'can convert equivalence and classes mod a number', () => {
@@ -393,10 +394,10 @@ describe( 'Converting LaTeX to putdown', () => {
     it( 'can convert notation for expression function application', () => {
         check( '\\mathcal{f} (x)', '(efa f x)' )
         check( 'F(\\mathcal{k} (10))', '(apply F (efa k 10))' )
-        check( '\\mathcal{E} (\\bar L)', '(efa E (setcomp L))' )
+        check( '\\mathcal{E} (\\bar L)', '(efa E (complement L))' )
         check(
             '\\emptyset\\cap \\mathcal{f} (2)',
-            '(setint emptyset (efa f 2))'
+            '(intersection emptyset (efa f 2))'
         )
         check(
             '\\mathcal{P} (x)\\wedge \\mathcal{Q} (y)',

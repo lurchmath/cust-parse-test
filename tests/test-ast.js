@@ -152,14 +152,14 @@ describe( 'Abstract Syntax Tree class (AST)', () => {
 
     it( 'should be able to look up concepts in its converter', () => {
         // add some concepts to the converter
-        converter.addConcept( 'test1', 'sumexpr', '(## sumexpr sumexpr)' )
-        converter.addConcept( 'test3', 'sentenceexpr', '(@@ sumexpr sumexpr)' )
-        converter.addConcept( 'test4', 'atomicnumberexpr', 'pi' )
+        converter.addConcept( 'test1', 'SumExpression', '(## SumExpression SumExpression)' )
+        converter.addConcept( 'test3', 'SentenceExpression', '(@@ SumExpression SumExpression)' )
+        converter.addConcept( 'test4', 'AtomicNumberExpression', 'Pi' )
         // make an AST whose head is one of those concepts and test
         let ast = new AST( dummy, [ 'test1', 'foo', 'bar' ] )
         expect( ast.isConcept() ).to.equal( true )
-        expect( ast.concept().parentType ).to.equal( 'sumexpr' )
-        expect( ast.concept().putdown ).to.equal( '(## sumexpr sumexpr)' )
+        expect( ast.concept().parentType ).to.equal( 'SumExpression' )
+        expect( ast.concept().putdown ).to.equal( '(## SumExpression SumExpression)' )
         // make an AST whose head is NOT one of those concepts and test
         ast = new AST( dummy, [ 'test2', 'sugar bowl' ] )
         expect( ast.isConcept() ).to.equal( false )
@@ -167,13 +167,13 @@ describe( 'Abstract Syntax Tree class (AST)', () => {
         // make an AST whose head is a different one of those concepts and test
         ast = new AST( dummy, [ 'test3', '-10', '10' ] )
         expect( ast.isConcept() ).to.equal( true )
-        expect( ast.concept().parentType ).to.equal( 'sentenceexpr' )
-        expect( ast.concept().putdown ).to.equal( '(@@ sumexpr sumexpr)' )
+        expect( ast.concept().parentType ).to.equal( 'SentenceExpression' )
+        expect( ast.concept().putdown ).to.equal( '(@@ SumExpression SumExpression)' )
         // make an AST that is just atomic (the number pi)
         ast = new AST( dummy, 'test4' )
         expect( ast.isConcept() ).to.equal( true )
-        expect( ast.concept().parentType ).to.equal( 'atomicnumberexpr' )
-        expect( ast.concept().putdown ).to.equal( 'pi' )
+        expect( ast.concept().parentType ).to.equal( 'AtomicNumberExpression' )
+        expect( ast.concept().putdown ).to.equal( 'Pi' )
     } )
 
     it( 'should compute the correct string representation in every case', () => {
@@ -210,9 +210,9 @@ describe( 'Abstract Syntax Tree class (AST)', () => {
         // converter and language for addition of numbers, it should make
         // hierarchies of binary additions
         const tempConv1 = new Converter()
-        tempConv1.addConcept( 'int', 'atomicnumberexpr',
+        tempConv1.addConcept( 'int', 'AtomicNumberExpression',
             Language.regularExpressions.integer )
-        tempConv1.addConcept( 'add', 'sumexpr', '(+ sumexpr sumexpr)' )
+        tempConv1.addConcept( 'add', 'SumExpression', '(+ SumExpression SumExpression)' )
         const tempLang1 = new Language( 'tempLang1', tempConv1 )
         tempLang1.addNotation( 'add', 'A+B' )
         // check two hierarchies of additions
@@ -225,9 +225,9 @@ describe( 'Abstract Syntax Tree class (AST)', () => {
         // converter and language for addition of numbers, it should flatten
         // hierarchies of binary additions
         const tempConv2 = new Converter()
-        tempConv2.addConcept( 'int', 'atomicnumberexpr',
+        tempConv2.addConcept( 'int', 'AtomicNumberExpression',
             Language.regularExpressions.integer )
-        tempConv2.addConcept( 'add', 'sumexpr', '(+ sumexpr sumexpr)',
+        tempConv2.addConcept( 'add', 'SumExpression', '(+ SumExpression SumExpression)',
             { associative : 'add' } )
         const tempLang2 = new Language( 'tempLang2', tempConv2 )
         tempLang2.addNotation( 'add', 'A+B' )

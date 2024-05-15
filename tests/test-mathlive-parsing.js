@@ -19,237 +19,239 @@ describe( 'Parsing MathLive-style LaTeX', () => {
 
     it( 'correctly parses basic expressions', () => {
         check( '6+k',
-            [ 'addition', [ 'number', '6' ], [ 'numbervariable', 'k' ] ] )
+            [ 'Addition', [ 'Number', '6' ], [ 'NumberVariable', 'k' ] ] )
         check( '1.9-T',
-            [ 'subtraction', [ 'number', '1.9' ], [ 'numbervariable', 'T' ] ] )
+            [ 'Subtraction', [ 'Number', '1.9' ], [ 'NumberVariable', 'T' ] ] )
         check( '0.2\\cdot0.3',
-            [ 'multiplication', [ 'number', '0.2' ], [ 'number', '0.3' ] ] )
+            [ 'Multiplication', [ 'Number', '0.2' ], [ 'Number', '0.3' ] ] )
         check( '0.2\\ast0.3',
-            [ 'multiplication', [ 'number', '0.2' ], [ 'number', '0.3' ] ] )
+            [ 'Multiplication', [ 'Number', '0.2' ], [ 'Number', '0.3' ] ] )
         check( 'v\\div w',
-            [ 'division', [ 'numbervariable', 'v' ], [ 'numbervariable', 'w' ] ] )
+            [ 'Division', [ 'NumberVariable', 'v' ], [ 'NumberVariable', 'w' ] ] )
         check( '2^{k}',
-            [ 'exponentiation', [ 'number', '2' ], [ 'numbervariable', 'k' ] ] )
+            [ 'Exponentiation', [ 'Number', '2' ], [ 'NumberVariable', 'k' ] ] )
         check( '5.0-K+e',
-            [ 'addition',
-                [ 'subtraction', [ 'number', '5.0' ], [ 'numbervariable', 'K' ] ],
-                'eulersnumber' ] )
+            [ 'Addition',
+                [ 'Subtraction', [ 'Number', '5.0' ], [ 'NumberVariable', 'K' ] ],
+                'EulersNumber' ] )
         check( '5.0\\times K\\div e',
-            [ 'division',
-                [ 'multiplication', [ 'number', '5.0' ], [ 'numbervariable', 'K' ] ],
-                'eulersnumber' ] )
+            [ 'Division',
+                [ 'Multiplication', [ 'Number', '5.0' ], [ 'NumberVariable', 'K' ] ],
+                'EulersNumber' ] )
         check( '\\left(a^{b}\\right)^{c}',
-            [ 'exponentiation',
-                [ 'exponentiation',
-                    [ 'numbervariable', 'a' ], [ 'numbervariable', 'b' ] ],
-                [ 'numbervariable', 'c' ] ] )
+            [ 'Exponentiation',
+                [ 'Exponentiation',
+                    [ 'NumberVariable', 'a' ], [ 'NumberVariable', 'b' ] ],
+                [ 'NumberVariable', 'c' ] ] )
         check( '5.0-K\\cdot e',
-            [ 'subtraction', [ 'number', '5.0' ],
-                [ 'multiplication',
-                    [ 'numbervariable', 'K' ], 'eulersnumber' ] ] )
+            [ 'Subtraction', [ 'Number', '5.0' ],
+                [ 'Multiplication',
+                    [ 'NumberVariable', 'K' ], 'EulersNumber' ] ] )
         check( 'u^{v}\\times w^{x}',
-            [ 'multiplication',
-                [ 'exponentiation',
-                    [ 'numbervariable', 'u' ], [ 'numbervariable', 'v' ] ],
-                [ 'exponentiation',
-                    [ 'numbervariable', 'w' ], [ 'numbervariable', 'x' ] ] ] )
+            [ 'Multiplication',
+                [ 'Exponentiation',
+                    [ 'NumberVariable', 'u' ], [ 'NumberVariable', 'v' ] ],
+                [ 'Exponentiation',
+                    [ 'NumberVariable', 'w' ], [ 'NumberVariable', 'x' ] ] ] )
         check( '-A^{B}',
-            [ 'numbernegation',
-                [ 'exponentiation',
-                    [ 'numbervariable', 'A' ], [ 'numbervariable', 'B' ] ] ] )
+            [ 'NumberNegation',
+                [ 'Exponentiation',
+                    [ 'NumberVariable', 'A' ], [ 'NumberVariable', 'B' ] ] ] )
     } )
 
     it( 'respects groupers while parsing', () => {
         check( '6+\\left(k+5\\right)',
-            [ 'addition',
-                [ 'number', '6' ],
-                [ 'addition', [ 'numbervariable', 'k' ], [ 'number', '5' ] ] ] )
+            [ 'Addition',
+                [ 'Number', '6' ],
+                [ 'Addition', [ 'NumberVariable', 'k' ], [ 'Number', '5' ] ] ] )
         check( '\\left(5.0-K\\right)\\cdot e',
-            [ 'multiplication',
-                [ 'subtraction', [ 'number', '5.0' ], [ 'numbervariable', 'K' ] ],
-                'eulersnumber' ] )
+            [ 'Multiplication',
+                [ 'Subtraction', [ 'Number', '5.0' ], [ 'NumberVariable', 'K' ] ],
+                'EulersNumber' ] )
         check( '5.0\\times\\left(K+e\\right)',
-            [ 'multiplication',
-                [ 'number', '5.0' ],
-                [ 'addition', [ 'numbervariable', 'K' ], 'eulersnumber' ] ] )
+            [ 'Multiplication',
+                [ 'Number', '5.0' ],
+                [ 'Addition', [ 'NumberVariable', 'K' ], 'EulersNumber' ] ] )
         check( '-\\left(K+e\\right)',
-            [ 'numbernegation',
-                [ 'addition', [ 'numbervariable', 'K' ], 'eulersnumber' ] ] )
+            [ 'NumberNegation',
+                [ 'Addition', [ 'NumberVariable', 'K' ], 'EulersNumber' ] ] )
         check( '-\\left(A^{B}\\right)',
-            [ 'numbernegation',
-                [ 'exponentiation',
-                    [ 'numbervariable', 'A' ], [ 'numbervariable', 'B' ] ] ] )
+            [ 'NumberNegation',
+                [ 'Exponentiation',
+                    [ 'NumberVariable', 'A' ], [ 'NumberVariable', 'B' ] ] ] )
     } )
 
     it( 'correctly parses logarithms', () => {
         check(
             '\\log1000',
-            [ 'prefixfuncapp', 'logarithm', [ 'number', '1000' ] ]
+            [ 'PrefixFunctionApplication', 'Logarithm', [ 'Number', '1000' ] ]
         )
         check(
             '\\log e^{x}\\times y',
-            [ 'prefixfuncapp', 'logarithm', [ 'multiplication',
-                [ 'exponentiation', 'eulersnumber', [ 'numbervariable', 'x' ] ],
-                [ 'numbervariable', 'y' ] ] ]
+            [ 'PrefixFunctionApplication', 'Logarithm', [ 'Multiplication',
+                [ 'Exponentiation', 'EulersNumber', [ 'NumberVariable', 'x' ] ],
+                [ 'NumberVariable', 'y' ] ] ]
         )
         check(
             '\\log_{-t}\\left(k+5\\right)',
-            [ 'prefixfuncapp',
-                [ 'logwithbase', [ 'numbernegation', [ 'numbervariable', 't' ] ] ],
-                [ 'addition', [ 'numbervariable', 'k' ], [ 'number', '5' ] ] ]
+            [ 'PrefixFunctionApplication',
+                [ 'LogarithmWithBase', [ 'NumberNegation', [ 'NumberVariable', 't' ] ] ],
+                [ 'Addition', [ 'NumberVariable', 'k' ], [ 'Number', '5' ] ] ]
         )
     } )
 
     it( 'correctly parses fractions', () => {
         check(
             '\\frac 1 2',
-            [ 'division', [ 'number', '1' ], [ 'number', '2' ] ]
+            [ 'Division', [ 'Number', '1' ], [ 'Number', '2' ] ]
         )
         check(
             '\\frac{7-k}{1+x^2}',
-            [ 'division',
-                [ 'subtraction', [ 'number', '7' ], [ 'numbervariable', 'k' ] ],
-                [ 'addition',
-                    [ 'number', '1' ],
-                    [ 'exponentiation',
-                        [ 'numbervariable', 'x' ], [ 'number', '2' ] ] ] ]
+            [ 'Division',
+                [ 'Subtraction', [ 'Number', '7' ], [ 'NumberVariable', 'k' ] ],
+                [ 'Addition',
+                    [ 'Number', '1' ],
+                    [ 'Exponentiation',
+                        [ 'NumberVariable', 'x' ], [ 'Number', '2' ] ] ] ]
         )
     } )
 
     it( 'correctly parses sentences of arithmetic and algebra', () => {
         check(
             't+u\\ne t+v',
-            [ 'inequality',
-                [ 'addition', [ 'numbervariable', 't' ], [ 'numbervariable', 'u' ] ],
-                [ 'addition', [ 'numbervariable', 't' ], [ 'numbervariable', 'v' ] ] ]
+            [ 'NotEqual',
+                [ 'Addition', [ 'NumberVariable', 't' ], [ 'NumberVariable', 'u' ] ],
+                [ 'Addition', [ 'NumberVariable', 't' ], [ 'NumberVariable', 'v' ] ] ]
         )
         check(
             'a\\div{7+b}\\approx0.75',
-            [ 'binrelapp', 'approximately',
-                [ 'division',
-                    [ 'numbervariable', 'a' ],
-                    [ 'addition', [ 'number', '7' ], [ 'numbervariable', 'b' ] ] ],
-                [ 'number', '0.75' ] ]
+            [ 'BinaryRelationHolds', 'ApproximatelyEqual',
+                [ 'Division',
+                    [ 'NumberVariable', 'a' ],
+                    [ 'Addition', [ 'Number', '7' ], [ 'NumberVariable', 'b' ] ] ],
+                [ 'Number', '0.75' ] ]
         )
         check(
             '\\frac{a}{7+b}\\approx0.75',
-            [ 'binrelapp', 'approximately',
-                [ 'division',
-                    [ 'numbervariable', 'a' ],
-                    [ 'addition', [ 'number', '7' ], [ 'numbervariable', 'b' ] ] ],
-                [ 'number', '0.75' ] ]
+            [ 'BinaryRelationHolds', 'ApproximatelyEqual',
+                [ 'Division',
+                    [ 'NumberVariable', 'a' ],
+                    [ 'Addition', [ 'Number', '7' ], [ 'NumberVariable', 'b' ] ] ],
+                [ 'Number', '0.75' ] ]
         )
         check(
             't^2\\le10',
-            [ 'lessthanoreq',
-                [ 'exponentiation', [ 'numbervariable', 't' ], [ 'number', '2' ] ],
-                [ 'number', '10' ] ]
+            [ 'LessThanOrEqual',
+                [ 'Exponentiation', [ 'NumberVariable', 't' ], [ 'Number', '2' ] ],
+                [ 'Number', '10' ] ]
         )
         check(
             '1+2+3\\ge6',
-            [ 'greaterthanoreq',
-                [ 'addition',
-                    [ 'addition', [ 'number', '1' ], [ 'number', '2' ] ],
-                    [ 'number', '3' ] ],
-                [ 'number', '6' ] ]
+            [ 'GreaterThanOrEqual',
+                [ 'Addition',
+                    [ 'Addition', [ 'Number', '1' ], [ 'Number', '2' ] ],
+                    [ 'Number', '3' ] ],
+                [ 'Number', '6' ] ]
         )
         check(
             '\\neg A+B=C^{D}',
-            [ 'logicnegation',
-                [ 'equality',
-                    [ 'addition',
-                        [ 'numbervariable', 'A' ], [ 'numbervariable', 'B' ] ],
-                    [ 'exponentiation',
-                        [ 'numbervariable', 'C' ], [ 'numbervariable', 'D' ] ] ] ]
+            [ 'LogicalNegation',
+                [ 'Equals',
+                    [ 'Addition',
+                        [ 'NumberVariable', 'A' ], [ 'NumberVariable', 'B' ] ],
+                    [ 'Exponentiation',
+                        [ 'NumberVariable', 'C' ], [ 'NumberVariable', 'D' ] ] ] ]
         )
+        // Equality of two variables comes out as equality of two functions,
+        // just due to alphabetical order.  This will be fixed in a future update.
         check(
             '\\lnot\\lnot x=x',
-            [ 'logicnegation',
-                [ 'logicnegation',
-                    [ 'equality',
-                        [ 'numbervariable', 'x' ], [ 'numbervariable', 'x' ] ] ] ]
+            [ 'LogicalNegation',
+                [ 'LogicalNegation',
+                    [ 'EqualFunctions',
+                        [ 'FunctionVariable', 'x' ], [ 'FunctionVariable', 'x' ] ] ] ]
         )
         check(
             '3\\vert 9',
-            [ 'binrelapp', 'divisibility', [ 'number', '3' ], [ 'number', '9' ] ]
+            [ 'BinaryRelationHolds', 'Divides', [ 'Number', '3' ], [ 'Number', '9' ] ]
         )
     } )
 
     it( 'correctly parses trigonometric function applications', () => {
         check(
             '\\cos x+1',
-            [ 'addition',
-                [ 'prefixfuncapp', 'cosfunc', [ 'numbervariable', 'x' ] ],
-                [ 'number', '1' ] ]
+            [ 'Addition',
+                [ 'PrefixFunctionApplication', 'CosineFunction', [ 'NumberVariable', 'x' ] ],
+                [ 'Number', '1' ] ]
         )
         check(
             '\\cot\\left(a-9.9\\right)',
-            [ 'prefixfuncapp', 'cotfunc',
-                [ 'subtraction',
-                    [ 'numbervariable', 'a' ], [ 'number', '9.9' ] ] ],
+            [ 'PrefixFunctionApplication', 'CotangentFunction',
+                [ 'Subtraction',
+                    [ 'NumberVariable', 'a' ], [ 'Number', '9.9' ] ] ],
         )
         check(
             '\\csc^{-1}\\left(1+g\\right)',
-            [ 'prefixfuncapp',
-                [ 'prefixfuncinv', 'cscfunc' ],
-                [ 'addition', [ 'number', '1' ], [ 'numbervariable', 'g' ] ] ]
+            [ 'PrefixFunctionApplication',
+                [ 'PrefixFunctionInverse', 'CosecantFunction' ],
+                [ 'Addition', [ 'Number', '1' ], [ 'NumberVariable', 'g' ] ] ]
         )
     } )
 
     it( 'correctly parses factorials', () => {
         check(
             '\\left(W+R\\right)!',
-            [ 'factorial',
-                [ 'addition',
-                    [ 'numbervariable', 'W' ], [ 'numbervariable', 'R' ] ] ]
+            [ 'Factorial',
+                [ 'Addition',
+                    [ 'NumberVariable', 'W' ], [ 'NumberVariable', 'R' ] ] ]
         )
     } )
 
     it( 'correctly parses unusual implication symbols', () => {
         check(
             'P\\Rarr Q',
-            [ 'implication', [ 'logicvariable', 'P' ], [ 'logicvariable', 'Q' ] ]
+            [ 'Implication', [ 'LogicVariable', 'P' ], [ 'LogicVariable', 'Q' ] ]
         )
         check(
             'P\\rArr Q',
-            [ 'implication', [ 'logicvariable', 'P' ], [ 'logicvariable', 'Q' ] ]
+            [ 'Implication', [ 'LogicVariable', 'P' ], [ 'LogicVariable', 'Q' ] ]
         )
         check(
             'Q\\Larr P',
-            [ 'implication', [ 'logicvariable', 'P' ], [ 'logicvariable', 'Q' ] ]
+            [ 'Implication', [ 'LogicVariable', 'P' ], [ 'LogicVariable', 'Q' ] ]
         )
         check(
             'Q\\lArr P',
-            [ 'implication', [ 'logicvariable', 'P' ], [ 'logicvariable', 'Q' ] ]
+            [ 'Implication', [ 'LogicVariable', 'P' ], [ 'LogicVariable', 'Q' ] ]
         )
         check(
             'P\\lrArr Q',
-            [ 'iff', [ 'logicvariable', 'P' ], [ 'logicvariable', 'Q' ] ]
+            [ 'LogicalEquivalence', [ 'LogicVariable', 'P' ], [ 'LogicVariable', 'Q' ] ]
         )
         check(
             'P\\Lrarr Q',
-            [ 'iff', [ 'logicvariable', 'P' ], [ 'logicvariable', 'Q' ] ]
+            [ 'LogicalEquivalence', [ 'LogicVariable', 'P' ], [ 'LogicVariable', 'Q' ] ]
         )
     } )
 
     it( 'correctly parses unusual set theory notation', () => {
         check(
             '(A\\cup B)^{\\complement}',
-            [ 'complement',
-                [ 'union', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ] ]
+            [ 'SetComplement',
+                [ 'SetUnion', [ 'SetVariable', 'A' ], [ 'SetVariable', 'B' ] ] ]
         )
     } )
 
     it( 'correctly parses unusual function signature notation', () => {
         check(
             'f:A\\rarr B',
-            [ 'funcsignature', [ 'funcvariable', 'f' ],
-                [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ]
+            [ 'FunctionSignature', [ 'FunctionVariable', 'f' ],
+                [ 'SetVariable', 'A' ], [ 'SetVariable', 'B' ] ]
         )
         check(
             'f\\colon A\\rarr B',
-            [ 'funcsignature', [ 'funcvariable', 'f' ],
-                [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ]
+            [ 'FunctionSignature', [ 'FunctionVariable', 'f' ],
+                [ 'SetVariable', 'A' ], [ 'SetVariable', 'B' ] ]
         )
     } )
 

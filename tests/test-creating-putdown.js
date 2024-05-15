@@ -16,115 +16,115 @@ describe( 'Rendering JSON into putdown', () => {
 
     it( 'can convert JSON numbers to putdown', () => {
         // non-negative integers
-        check( [ 'number', '0' ], '0' )
-        check( [ 'number', '453789' ], '453789' )
+        check( [ 'Number', '0' ], '0' )
+        check( [ 'Number', '453789' ], '453789' )
         check(
-            [ 'number', '99999999999999999999999999999999999999999' ],
+            [ 'Number', '99999999999999999999999999999999999999999' ],
             '99999999999999999999999999999999999999999'
         )
         // negative integers are parsed as the negation of positive integers
         check(
-            [ 'numbernegation', [ 'number', '453789' ] ],
+            [ 'NumberNegation', [ 'Number', '453789' ] ],
             '(- 453789)'
         )
         check(
-            [ 'numbernegation',
-                [ 'number', '99999999999999999999999999999999999999999' ] ],
+            [ 'NumberNegation',
+                [ 'Number', '99999999999999999999999999999999999999999' ] ],
             '(- 99999999999999999999999999999999999999999)'
         )
         // non-negative decimals
-        check( [ 'number', '0.0' ], '0.0' )
-        check( [ 'number', '29835.6875940' ], '29835.6875940' )
-        check( [ 'number', '653280458689.' ], '653280458689.' )
-        check( [ 'number', '.000006327589' ], '.000006327589' )
+        check( [ 'Number', '0.0' ], '0.0' )
+        check( [ 'Number', '29835.6875940' ], '29835.6875940' )
+        check( [ 'Number', '653280458689.' ], '653280458689.' )
+        check( [ 'Number', '.000006327589' ], '.000006327589' )
         // negative decimals are the negation of positive decimals
         check(
-            [ 'numbernegation', [ 'number', '29835.6875940' ] ],
+            [ 'NumberNegation', [ 'Number', '29835.6875940' ] ],
             '(- 29835.6875940)'
         )
         check(
-            [ 'numbernegation', [ 'number', '653280458689.' ] ],
+            [ 'NumberNegation', [ 'Number', '653280458689.' ] ],
             '(- 653280458689.)'
         )
         check(
-            [ 'numbernegation', [ 'number', '.000006327589' ] ],
+            [ 'NumberNegation', [ 'Number', '.000006327589' ] ],
             '(- .000006327589)'
         )
     } )
 
     it( 'can convert any size variable name from JSON to putdown', () => {
         // one-letter names work
-        check( [ 'numbervariable', 'x' ], 'x' )
-        check( [ 'numbervariable', 'E' ], 'E' )
-        check( [ 'numbervariable', 'q' ], 'q' )
+        check( [ 'NumberVariable', 'x' ], 'x' )
+        check( [ 'NumberVariable', 'E' ], 'E' )
+        check( [ 'NumberVariable', 'q' ], 'q' )
         // multi-letter names work, too
-        check( [ 'numbervariable', 'foo' ], 'foo' )
-        check( [ 'numbervariable', 'bar' ], 'bar' )
-        check( [ 'numbervariable', 'to' ], 'to' )
+        check( [ 'NumberVariable', 'foo' ], 'foo' )
+        check( [ 'NumberVariable', 'bar' ], 'bar' )
+        check( [ 'NumberVariable', 'to' ], 'to' )
     } )
 
     it( 'can convert numeric constants from JSON to putdown', () => {
-        check( 'infinity', 'infinity' )
-        check( 'pi', 'pi' )
-        check( 'eulersnumber', 'eulersnumber' )
+        check( 'Infinity', 'infinity' )
+        check( 'Pi', 'pi' )
+        check( 'EulersNumber', 'eulersnumber' )
     } )
 
     it( 'can convert exponentiation of atomics to putdown', () => {
         check(
-            [ 'exponentiation', [ 'number', '1' ], [ 'number', '2' ] ],
+            [ 'Exponentiation', [ 'Number', '1' ], [ 'Number', '2' ] ],
             '(^ 1 2)'
         )
         check(
-            [ 'exponentiation',
-                [ 'numbervariable', 'e' ], [ 'numbervariable', 'x' ] ],
+            [ 'Exponentiation',
+                [ 'NumberVariable', 'e' ], [ 'NumberVariable', 'x' ] ],
             '(^ e x)'
         )
         check(
-            [ 'exponentiation', [ 'number', '1' ], 'infinity' ],
+            [ 'Exponentiation', [ 'Number', '1' ], 'Infinity' ],
             '(^ 1 infinity)'
         )
     } )
 
     it( 'can convert atomic percentages and factorials to putdown', () => {
-        check( [ 'percentage', [ 'number', '10' ] ], '(% 10)' )
-        check( [ 'percentage', [ 'numbervariable', 't' ] ], '(% t)' )
-        check( [ 'factorial', [ 'number', '100' ] ], '(! 100)' )
-        check( [ 'factorial', [ 'numbervariable', 'J' ] ], '(! J)' )
+        check( [ 'Percentage', [ 'Number', '10' ] ], '(% 10)' )
+        check( [ 'Percentage', [ 'NumberVariable', 't' ] ], '(% t)' )
+        check( [ 'Factorial', [ 'Number', '100' ] ], '(! 100)' )
+        check( [ 'Factorial', [ 'NumberVariable', 'J' ] ], '(! J)' )
     } )
 
     it( 'can convert division of atomics or factors to putdown', () => {
         // division of atomics
-        check( [ 'division', [ 'number', '1' ], [ 'number', '2' ] ], '(/ 1 2)' )
+        check( [ 'Division', [ 'Number', '1' ], [ 'Number', '2' ] ], '(/ 1 2)' )
         check(
-            [ 'division',
-                [ 'numbervariable', 'x' ], [ 'numbervariable', 'y' ] ],
+            [ 'Division',
+                [ 'NumberVariable', 'x' ], [ 'NumberVariable', 'y' ] ],
             '(/ x y)'
         )
         check(
-            [ 'division', [ 'number', '0' ], 'infinity' ],
+            [ 'Division', [ 'Number', '0' ], 'Infinity' ],
             '(/ 0 infinity)'
         )
         // division of factors
         check(
-            [ 'division',
-                [ 'exponentiation',
-                    [ 'numbervariable', 'x' ], [ 'number', '2' ] ],
-                [ 'number', '3' ]
+            [ 'Division',
+                [ 'Exponentiation',
+                    [ 'NumberVariable', 'x' ], [ 'Number', '2' ] ],
+                [ 'Number', '3' ]
             ],
             '(/ (^ x 2) 3)'
         )
         check(
-            [ 'division',
-                [ 'number', '1' ],
-                [ 'exponentiation',
-                    [ 'numbervariable', 'e' ], [ 'numbervariable', 'x' ] ]
+            [ 'Division',
+                [ 'Number', '1' ],
+                [ 'Exponentiation',
+                    [ 'NumberVariable', 'e' ], [ 'NumberVariable', 'x' ] ]
             ],
             '(/ 1 (^ e x))'
         )
         check(
-            [ 'division',
-                [ 'percentage', [ 'number', '10' ] ],
-                [ 'exponentiation', [ 'number', '2' ], [ 'number', '100' ] ]
+            [ 'Division',
+                [ 'Percentage', [ 'Number', '10' ] ],
+                [ 'Exponentiation', [ 'Number', '2' ], [ 'Number', '100' ] ]
             ],
             '(/ (% 10) (^ 2 100))'
         )
@@ -133,38 +133,38 @@ describe( 'Rendering JSON into putdown', () => {
     it( 'can convert multiplication of atomics or factors to putdown', () => {
         // multiplication of atomics
         check(
-            [ 'multiplication', [ 'number', '1' ], [ 'number', '2' ] ],
+            [ 'Multiplication', [ 'Number', '1' ], [ 'Number', '2' ] ],
             '(* 1 2)'
         )
         check(
-            [ 'multiplication',
-                [ 'numbervariable', 'x' ], [ 'numbervariable', 'y' ] ],
+            [ 'Multiplication',
+                [ 'NumberVariable', 'x' ], [ 'NumberVariable', 'y' ] ],
             '(* x y)'
         )
         check(
-            [ 'multiplication', [ 'number', '0' ], 'infinity' ],
+            [ 'Multiplication', [ 'Number', '0' ], 'Infinity' ],
             '(* 0 infinity)'
         )
         // multiplication of factors
         check(
-            [ 'multiplication',
-                [ 'exponentiation', [ 'numbervariable', 'x' ], [ 'number', '2' ] ],
-                [ 'number', '3' ]
+            [ 'Multiplication',
+                [ 'Exponentiation', [ 'NumberVariable', 'x' ], [ 'Number', '2' ] ],
+                [ 'Number', '3' ]
             ],
             '(* (^ x 2) 3)'
         )
         check(
-            [ 'multiplication',
-                [ 'number', '1' ],
-                [ 'exponentiation',
-                [ 'numbervariable', 'e' ], [ 'numbervariable', 'x' ] ]
+            [ 'Multiplication',
+                [ 'Number', '1' ],
+                [ 'Exponentiation',
+                [ 'NumberVariable', 'e' ], [ 'NumberVariable', 'x' ] ]
             ],
             '(* 1 (^ e x))'
         )
         check(
-            [ 'multiplication',
-                [ 'percentage', [ 'number', '10' ] ],
-                [ 'exponentiation', [ 'number', '2' ], [ 'number', '100' ] ]
+            [ 'Multiplication',
+                [ 'Percentage', [ 'Number', '10' ] ],
+                [ 'Exponentiation', [ 'Number', '2' ], [ 'Number', '100' ] ]
             ],
             '(* (% 10) (^ 2 100))'
         )
@@ -172,56 +172,56 @@ describe( 'Rendering JSON into putdown', () => {
 
     it( 'can convert negations of atomics or factors to putdown', () => {
         check(
-            [ 'multiplication',
-                [ 'numbernegation', [ 'number', '1' ] ],
-                [ 'number', '2' ]
+            [ 'Multiplication',
+                [ 'NumberNegation', [ 'Number', '1' ] ],
+                [ 'Number', '2' ]
             ],
             '(* (- 1) 2)'
         )
         check(
-            [ 'multiplication',
-                [ 'numbervariable', 'x' ],
-                [ 'numbernegation', [ 'numbervariable', 'y' ] ]
+            [ 'Multiplication',
+                [ 'NumberVariable', 'x' ],
+                [ 'NumberNegation', [ 'NumberVariable', 'y' ] ]
             ],
             '(* x (- y))'
         )
         check(
-            [ 'multiplication',
-                [ 'numbernegation',
-                [ 'exponentiation',
-                    [ 'numbervariable', 'x' ], [ 'number', '2' ] ] ],
-                [ 'numbernegation', [ 'number', '3' ] ]
+            [ 'Multiplication',
+                [ 'NumberNegation',
+                [ 'Exponentiation',
+                    [ 'NumberVariable', 'x' ], [ 'Number', '2' ] ] ],
+                [ 'NumberNegation', [ 'Number', '3' ] ]
             ],
             '(* (- (^ x 2)) (- 3))'
         )
         check(
-            [ 'numbernegation', [ 'numbernegation', [ 'numbernegation',
-                [ 'numbernegation', [ 'number', '1000' ] ] ] ] ],
+            [ 'NumberNegation', [ 'NumberNegation', [ 'NumberNegation',
+                [ 'NumberNegation', [ 'Number', '1000' ] ] ] ] ],
             '(- (- (- (- 1000))))'
         )
     } )
 
     it( 'can convert additions and subtractions to putdown', () => {
         check(
-            [ 'addition',
-                [ 'numbervariable', 'x' ],
-                [ 'numbervariable', 'y' ]
+            [ 'Addition',
+                [ 'NumberVariable', 'x' ],
+                [ 'NumberVariable', 'y' ]
             ],
             '(+ x y)'
         )
         check(
-            [ 'subtraction',
-                [ 'number', '1' ],
-                [ 'numbernegation', [ 'number', '3' ] ]
+            [ 'Subtraction',
+                [ 'Number', '1' ],
+                [ 'NumberNegation', [ 'Number', '3' ] ]
             ],
             '(- 1 (- 3))'
         )
         check(
-            [ 'addition',
-                [ 'exponentiation',
-                    [ 'numbervariable', 'A' ], [ 'numbervariable', 'B' ] ],
-                [ 'subtraction',
-                    [ 'numbervariable', 'C' ], 'pi' ]
+            [ 'Addition',
+                [ 'Exponentiation',
+                    [ 'NumberVariable', 'A' ], [ 'NumberVariable', 'B' ] ],
+                [ 'Subtraction',
+                    [ 'NumberVariable', 'C' ], 'Pi' ]
             ],
             '(+ (^ A B) (- C pi))'
         )
@@ -229,121 +229,121 @@ describe( 'Rendering JSON into putdown', () => {
 
     it( 'can convert number expressions with groupers to putdown', () => {
         check(
-            [ 'numbernegation',
-                [ 'multiplication',
-                    [ 'number', '1' ], [ 'number', '2' ] ] ],
+            [ 'NumberNegation',
+                [ 'Multiplication',
+                    [ 'Number', '1' ], [ 'Number', '2' ] ] ],
             '(- (* 1 2))'
         )
         check(
-            [ 'factorial',
-                [ 'exponentiation', [ 'numbervariable', 'x' ], [ 'number', '2' ] ] ],
+            [ 'Factorial',
+                [ 'Exponentiation', [ 'NumberVariable', 'x' ], [ 'Number', '2' ] ] ],
             '(! (^ x 2))'
         )
         check(
-            [ 'exponentiation',
-                [ 'numbernegation',
-                    [ 'numbervariable', 'x' ] ],
-                [ 'multiplication',
-                    [ 'number', '2' ],
-                        [ 'numbernegation', [ 'number', '3' ] ] ]
+            [ 'Exponentiation',
+                [ 'NumberNegation',
+                    [ 'NumberVariable', 'x' ] ],
+                [ 'Multiplication',
+                    [ 'Number', '2' ],
+                        [ 'NumberNegation', [ 'Number', '3' ] ] ]
             ],
             '(^ (- x) (* 2 (- 3)))'
         )
         check(
-            [ 'exponentiation',
-                [ 'numbernegation', [ 'number', '3' ] ],
-                [ 'addition', [ 'number', '1' ], [ 'number', '2' ] ] ],
+            [ 'Exponentiation',
+                [ 'NumberNegation', [ 'Number', '3' ] ],
+                [ 'Addition', [ 'Number', '1' ], [ 'Number', '2' ] ] ],
             '(^ (- 3) (+ 1 2))'
         )
     } )
 
     it( 'can convert relations of numeric expressions to putdown', () => {
         check(
-            [ 'greaterthan',
-                [ 'number', '1' ],
-                [ 'number', '2' ]
+            [ 'GreaterThan',
+                [ 'Number', '1' ],
+                [ 'Number', '2' ]
             ],
             '(> 1 2)'
         )
         check(
-            [ 'lessthan',
-                [ 'subtraction', [ 'number', '1' ], [ 'number', '2' ] ],
-                [ 'addition', [ 'number', '1' ], [ 'number', '2' ] ]
+            [ 'LessThan',
+                [ 'Subtraction', [ 'Number', '1' ], [ 'Number', '2' ] ],
+                [ 'Addition', [ 'Number', '1' ], [ 'Number', '2' ] ]
             ],
             '(< (- 1 2) (+ 1 2))'
         )
         check(
-            [ 'logicnegation',
-                [ 'equality', [ 'number', '1' ], [ 'number', '2' ] ] ],
+            [ 'LogicalNegation',
+                [ 'Equals', [ 'Number', '1' ], [ 'Number', '2' ] ] ],
             '(not (= 1 2))'
         )
         check(
-            [ 'conjunction',
-                [ 'greaterthanoreq', [ 'number', '2' ], [ 'number', '1' ] ],
-                [ 'lessthanoreq', [ 'number', '2' ], [ 'number', '3' ] ] ],
+            [ 'Conjunction',
+                [ 'GreaterThanOrEqual', [ 'Number', '2' ], [ 'Number', '1' ] ],
+                [ 'LessThanOrEqual', [ 'Number', '2' ], [ 'Number', '3' ] ] ],
             '(and (>= 2 1) (<= 2 3))'
         )
         check(
-            [ 'binrelapp', 'divisibility', [ 'number', '7' ], [ 'number', '14' ] ],
-            '(applyrel | 7 14)'
+            [ 'BinaryRelationHolds', 'Divides', [ 'Number', '7' ], [ 'Number', '14' ] ],
+            '(relationholds | 7 14)'
         )
         check(
-            [ 'binrelapp', 'divisibility',
-                [ 'numfuncapp', [ 'funcvariable', 'A' ], [ 'numbervariable', 'k' ] ],
-                [ 'factorial', [ 'numbervariable', 'n' ] ] ],
-            '(applyrel | (apply A k) (! n))'
+            [ 'BinaryRelationHolds', 'Divides',
+                [ 'NumberFunctionApplication', [ 'FunctionVariable', 'A' ], [ 'NumberVariable', 'k' ] ],
+                [ 'Factorial', [ 'NumberVariable', 'n' ] ] ],
+            '(relationholds | (apply A k) (! n))'
         )
         check(
-            [ 'binrelapp', 'genericrelation',
-                [ 'subtraction', [ 'number', '1' ], [ 'numbervariable', 'k' ] ],
-                [ 'addition', [ 'number', '1' ], [ 'numbervariable', 'k' ] ] ],
-            '(applyrel ~ (- 1 k) (+ 1 k))'
+            [ 'BinaryRelationHolds', 'GenericBinaryRelation',
+                [ 'Subtraction', [ 'Number', '1' ], [ 'NumberVariable', 'k' ] ],
+                [ 'Addition', [ 'Number', '1' ], [ 'NumberVariable', 'k' ] ] ],
+            '(relationholds ~ (- 1 k) (+ 1 k))'
         )
         check(
-            [ 'binrelapp', 'approximately',
-                [ 'number', '0.99' ], [ 'number', '1.01' ] ],
-            '(applyrel ~~ 0.99 1.01)'
+            [ 'BinaryRelationHolds', 'ApproximatelyEqual',
+                [ 'Number', '0.99' ], [ 'Number', '1.01' ] ],
+            '(relationholds ~~ 0.99 1.01)'
         )
     } )
 
     it( 'creates the canonical form for inequality', () => {
         check(
-            [ 'inequality', [ 'funcvariable', 'f' ], [ 'funcvariable', 'g' ] ],
+            [ 'NotEqual', [ 'FunctionVariable', 'f' ], [ 'FunctionVariable', 'g' ] ],
             '(not (= f g))'
         )
     } )
 
     it( 'can convert propositional logic atomics to putdown', () => {
-        check( 'logicaltrue', 'true' )
-        check( 'logicalfalse', 'false' )
-        check( 'contradiction', 'contradiction' )
-        check( [ 'logicvariable', 'P' ], 'P' )
-        check( [ 'logicvariable', 'a' ], 'a' )
-        check( [ 'logicvariable', 'somethingLarge' ], 'somethingLarge' )
+        check( 'LogicalTrue', 'true' )
+        check( 'LogicalFalse', 'false' )
+        check( 'Contradiction', 'contradiction' )
+        check( [ 'LogicVariable', 'P' ], 'P' )
+        check( [ 'LogicVariable', 'a' ], 'a' )
+        check( [ 'LogicVariable', 'somethingLarge' ], 'somethingLarge' )
     } )
 
     it( 'can convert propositional logic conjuncts to putdown', () => {
         check(
-            [ 'conjunction',
-                'logicaltrue',
-                'logicalfalse'
+            [ 'Conjunction',
+                'LogicalTrue',
+                'LogicalFalse'
             ],
             '(and true false)'
         )
         check(
-            [ 'conjunction',
-                [ 'logicnegation', [ 'logicvariable', 'P' ] ],
-                [ 'logicnegation', 'logicaltrue' ]
+            [ 'Conjunction',
+                [ 'LogicalNegation', [ 'LogicVariable', 'P' ] ],
+                [ 'LogicalNegation', 'LogicalTrue' ]
             ],
             '(and (not P) (not true))'
         )
         check(
-            [ 'conjunction',
-                [ 'conjunction',
-                    [ 'logicvariable', 'a' ],
-                    [ 'logicvariable', 'b' ]
+            [ 'Conjunction',
+                [ 'Conjunction',
+                    [ 'LogicVariable', 'a' ],
+                    [ 'LogicVariable', 'b' ]
                 ],
-                [ 'logicvariable', 'c' ]
+                [ 'LogicVariable', 'c' ]
             ],
             '(and (and a b) c)'
         )
@@ -351,16 +351,16 @@ describe( 'Rendering JSON into putdown', () => {
 
     it( 'can convert propositional logic disjuncts to putdown', () => {
         check(
-            [ 'disjunction',
-                'logicaltrue',
-                [ 'logicnegation', [ 'logicvariable', 'A' ] ]
+            [ 'Disjunction',
+                'LogicalTrue',
+                [ 'LogicalNegation', [ 'LogicVariable', 'A' ] ]
             ],
             '(or true (not A))'
         )
         check(
-            [ 'disjunction',
-                [ 'conjunction', [ 'logicvariable', 'P' ], [ 'logicvariable', 'Q' ] ],
-                [ 'conjunction', [ 'logicvariable', 'Q' ], [ 'logicvariable', 'P' ] ]
+            [ 'Disjunction',
+                [ 'Conjunction', [ 'LogicVariable', 'P' ], [ 'LogicVariable', 'Q' ] ],
+                [ 'Conjunction', [ 'LogicVariable', 'Q' ], [ 'LogicVariable', 'P' ] ]
             ],
             '(or (and P Q) (and Q P))'
         )
@@ -368,26 +368,26 @@ describe( 'Rendering JSON into putdown', () => {
 
     it( 'can convert propositional logic conditionals to putdown', () => {
         check(
-            [ 'implication',
-                [ 'logicvariable', 'A' ],
-                [ 'conjunction',
-                    [ 'logicvariable', 'Q' ],
-                    [ 'logicnegation', [ 'logicvariable', 'P' ] ]
+            [ 'Implication',
+                [ 'LogicVariable', 'A' ],
+                [ 'Conjunction',
+                    [ 'LogicVariable', 'Q' ],
+                    [ 'LogicalNegation', [ 'LogicVariable', 'P' ] ]
                 ]
             ],
             '(implies A (and Q (not P)))'
         )
         check(
-            [ 'implication',
-                [ 'implication',
-                    [ 'disjunction',
-                        [ 'logicvariable', 'P' ], [ 'logicvariable', 'Q' ] ],
-                    [ 'conjunction',
-                        [ 'logicvariable', 'Q' ],
-                        [ 'logicvariable', 'P' ]
+            [ 'Implication',
+                [ 'Implication',
+                    [ 'Disjunction',
+                        [ 'LogicVariable', 'P' ], [ 'LogicVariable', 'Q' ] ],
+                    [ 'Conjunction',
+                        [ 'LogicVariable', 'Q' ],
+                        [ 'LogicVariable', 'P' ]
                     ]
                 ],
-                [ 'logicvariable', 'T' ]
+                [ 'LogicVariable', 'T' ]
             ],
             '(implies (implies (or P Q) (and Q P)) T)'
         )
@@ -395,26 +395,26 @@ describe( 'Rendering JSON into putdown', () => {
 
     it( 'can convert propositional logic biconditionals to putdown', () => {
         check(
-            [ 'iff',
-                [ 'logicvariable', 'A' ],
-                [ 'conjunction',
-                    [ 'logicvariable', 'Q' ],
-                    [ 'logicnegation', [ 'logicvariable', 'P' ] ]
+            [ 'LogicalEquivalence',
+                [ 'LogicVariable', 'A' ],
+                [ 'Conjunction',
+                    [ 'LogicVariable', 'Q' ],
+                    [ 'LogicalNegation', [ 'LogicVariable', 'P' ] ]
                 ]
             ],
             '(iff A (and Q (not P)))'
         )
         check(
-            [ 'implication',
-                [ 'iff',
-                    [ 'disjunction',
-                        [ 'logicvariable', 'P' ], [ 'logicvariable', 'Q' ] ],
-                    [ 'conjunction',
-                        [ 'logicvariable', 'Q' ],
-                        [ 'logicvariable', 'P' ]
+            [ 'Implication',
+                [ 'LogicalEquivalence',
+                    [ 'Disjunction',
+                        [ 'LogicVariable', 'P' ], [ 'LogicVariable', 'Q' ] ],
+                    [ 'Conjunction',
+                        [ 'LogicVariable', 'Q' ],
+                        [ 'LogicVariable', 'P' ]
                     ]
                 ],
-                [ 'logicvariable', 'T' ]
+                [ 'LogicVariable', 'T' ]
             ],
             '(implies (iff (or P Q) (and Q P)) T)'
         )
@@ -422,23 +422,23 @@ describe( 'Rendering JSON into putdown', () => {
 
     it( 'can convert propositional expressions with groupers to putdown', () => {
         check(
-            [ 'disjunction',
-                [ 'logicvariable', 'P' ],
-                [ 'conjunction',
-                    [ 'iff',
-                        [ 'logicvariable', 'Q' ],
-                        [ 'logicvariable', 'Q' ]
+            [ 'Disjunction',
+                [ 'LogicVariable', 'P' ],
+                [ 'Conjunction',
+                    [ 'LogicalEquivalence',
+                        [ 'LogicVariable', 'Q' ],
+                        [ 'LogicVariable', 'Q' ]
                     ],
-                    [ 'logicvariable', 'P' ]
+                    [ 'LogicVariable', 'P' ]
                 ]
             ],
             '(or P (and (iff Q Q) P))'
         )
         check(
-            [ 'logicnegation',
-                [ 'iff',
-                    'logicaltrue',
-                    'logicalfalse'
+            [ 'LogicalNegation',
+                [ 'LogicalEquivalence',
+                    'LogicalTrue',
+                    'LogicalFalse'
                 ]
             ],
             '(not (iff true false))'
@@ -447,83 +447,83 @@ describe( 'Rendering JSON into putdown', () => {
 
     it( 'can convert simple predicate logic expressions to putdown', () => {
         check(
-            [ 'universal',
-                [ 'numbervariable', 'x' ],
-                [ 'logicvariable', 'P' ]
+            [ 'UniversalQuantifier',
+                [ 'NumberVariable', 'x' ],
+                [ 'LogicVariable', 'P' ]
             ],
             '(forall (x , P))'
         )
         check(
-            [ 'existential',
-                [ 'numbervariable', 't' ],
-                [ 'logicnegation', [ 'logicvariable', 'Q' ] ]
+            [ 'ExistentialQuantifier',
+                [ 'NumberVariable', 't' ],
+                [ 'LogicalNegation', [ 'LogicVariable', 'Q' ] ]
             ],
             '(exists (t , (not Q)))'
         )
         check(
-            [ 'existsunique',
-                [ 'numbervariable', 'k' ],
-                [ 'implication',
-                    [ 'logicvariable', 'm' ], [ 'logicvariable', 'n' ] ]
+            [ 'UniqueExistentialQuantifier',
+                [ 'NumberVariable', 'k' ],
+                [ 'Implication',
+                    [ 'LogicVariable', 'm' ], [ 'LogicVariable', 'n' ] ]
             ],
-            '(existsunique (k , (implies m n)))'
+            '(exists! (k , (implies m n)))'
         )
     } )
 
     it( 'can convert finite and empty sets to putdown', () => {
         // { }
-        check( 'emptyset', 'emptyset' )
+        check( 'EmptySet', 'emptyset' )
         // { 1 }
         check(
-            [ 'finiteset', [ 'oneeltseq', [ 'number', '1' ] ] ],
+            [ 'FiniteSet', [ 'OneElementSequence', [ 'Number', '1' ] ] ],
             '(finiteset (elts 1))'
         )
         // { 1, 2 }
         check(
-            [ 'finiteset', [ 'eltthenseq', [ 'number', '1' ],
-                [ 'oneeltseq', [ 'number', '2' ] ] ] ],
+            [ 'FiniteSet', [ 'ElementThenSequence', [ 'Number', '1' ],
+                [ 'OneElementSequence', [ 'Number', '2' ] ] ] ],
             '(finiteset (elts 1 (elts 2)))'
         )
         // { 1, 2, 3 }
         check(
-            [ 'finiteset', [ 'eltthenseq', [ 'number', '1' ],
-                [ 'eltthenseq', [ 'number', '2' ],
-                    [ 'oneeltseq', [ 'number', '3' ] ] ] ] ],
+            [ 'FiniteSet', [ 'ElementThenSequence', [ 'Number', '1' ],
+                [ 'ElementThenSequence', [ 'Number', '2' ],
+                    [ 'OneElementSequence', [ 'Number', '3' ] ] ] ] ],
             '(finiteset (elts 1 (elts 2 (elts 3))))'
         )
         // { { }, { } }
         check(
-            [ 'finiteset', [ 'eltthenseq', 'emptyset',
-                [ 'oneeltseq', 'emptyset' ] ] ],
+            [ 'FiniteSet', [ 'ElementThenSequence', 'EmptySet',
+                [ 'OneElementSequence', 'EmptySet' ] ] ],
             '(finiteset (elts emptyset (elts emptyset)))'
         )
         // { { { } } }
         check(
-            [ 'finiteset', [ 'oneeltseq',
-                [ 'finiteset', [ 'oneeltseq', 'emptyset' ] ] ] ],
+            [ 'FiniteSet', [ 'OneElementSequence',
+                [ 'FiniteSet', [ 'OneElementSequence', 'EmptySet' ] ] ] ],
             '(finiteset (elts (finiteset (elts emptyset))))'
         )
         // { 3, x }
         check(
-            [ 'finiteset', [ 'eltthenseq', [ 'number', '3' ],
-                [ 'oneeltseq', [ 'numbervariable', 'x' ] ] ] ],
+            [ 'FiniteSet', [ 'ElementThenSequence', [ 'Number', '3' ],
+                [ 'OneElementSequence', [ 'NumberVariable', 'x' ] ] ] ],
             '(finiteset (elts 3 (elts x)))'
         )
         // { A cup B, A cap B }
         check(
-            [ 'finiteset', [ 'eltthenseq',
-                [ 'union', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
-                [ 'oneeltseq',
-                    [ 'intersection', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ] ] ] ],
-            '(finiteset (elts (setuni A B) (elts (setint A B))))'
+            [ 'FiniteSet', [ 'ElementThenSequence',
+                [ 'SetUnion', [ 'SetVariable', 'A' ], [ 'SetVariable', 'B' ] ],
+                [ 'OneElementSequence',
+                    [ 'SetIntersection', [ 'SetVariable', 'A' ], [ 'SetVariable', 'B' ] ] ] ] ],
+            '(finiteset (elts (union A B) (elts (intersection A B))))'
         )
         // { 1, 2, emptyset, K, P }
         check(
-            [ 'finiteset', [ 'eltthenseq', [ 'number', '1' ],
-                [ 'eltthenseq', [ 'number', '2' ],
-                    [ 'eltthenseq', 'emptyset',
-                        [ 'eltthenseq', [ 'numbervariable', 'K' ],
-                            [ 'oneeltseq', [ 'numbervariable', 'P' ] ] ] ] ] ] ],
+            [ 'FiniteSet', [ 'ElementThenSequence', [ 'Number', '1' ],
+                [ 'ElementThenSequence', [ 'Number', '2' ],
+                    [ 'ElementThenSequence', 'EmptySet',
+                        [ 'ElementThenSequence', [ 'NumberVariable', 'K' ],
+                            [ 'OneElementSequence', [ 'NumberVariable', 'P' ] ] ] ] ] ] ],
             '(finiteset (elts 1 (elts 2 (elts emptyset (elts K (elts P))))))'
         )
     } )
@@ -531,488 +531,488 @@ describe( 'Rendering JSON into putdown', () => {
     it( 'can convert tuples and vectors to putdown', () => {
         // tuples containing at least two elements are valid
         check(
-            [ 'tuple', [ 'eltthenseq', [ 'number', '5' ],
-                [ 'oneeltseq', [ 'number', '6' ] ] ] ],
+            [ 'Tuple', [ 'ElementThenSequence', [ 'Number', '5' ],
+                [ 'OneElementSequence', [ 'Number', '6' ] ] ] ],
             '(tuple (elts 5 (elts 6)))'
         )
         check(
-            [ 'tuple', [ 'eltthenseq', [ 'number', '5' ], [ 'eltthenseq',
-                [ 'union', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
-                [ 'oneeltseq', [ 'numbervariable', 'k' ] ] ] ] ],
-            '(tuple (elts 5 (elts (setuni A B) (elts k))))'
+            [ 'Tuple', [ 'ElementThenSequence', [ 'Number', '5' ], [ 'ElementThenSequence',
+                [ 'SetUnion', [ 'SetVariable', 'A' ], [ 'SetVariable', 'B' ] ],
+                [ 'OneElementSequence', [ 'NumberVariable', 'k' ] ] ] ] ],
+            '(tuple (elts 5 (elts (union A B) (elts k))))'
         )
         // vectors containing at least two numbers are valid
         check(
-            [ 'vector', [ 'numthenseq', [ 'number', '5' ],
-                [ 'onenumseq', [ 'number', '6' ] ] ] ],
+            [ 'Vector', [ 'NumberThenSequence', [ 'Number', '5' ],
+                [ 'OneNumberSequence', [ 'Number', '6' ] ] ] ],
             '(vector (elts 5 (elts 6)))'
         )
         check(
-            [ 'vector', [ 'numthenseq', [ 'number', '5' ], [ 'numthenseq',
-                [ 'numbernegation', [ 'number', '7' ] ],
-                [ 'onenumseq', [ 'numbervariable', 'k' ] ] ] ] ],
+            [ 'Vector', [ 'NumberThenSequence', [ 'Number', '5' ], [ 'NumberThenSequence',
+                [ 'NumberNegation', [ 'Number', '7' ] ],
+                [ 'OneNumberSequence', [ 'NumberVariable', 'k' ] ] ] ] ],
             '(vector (elts 5 (elts (- 7) (elts k))))'
         )
         // tuples can contain other tuples
         check(
-            [ 'tuple', [ 'eltthenseq',
-                [ 'tuple', [ 'eltthenseq', [ 'number', '1' ],
-                    [ 'oneeltseq', [ 'number', '2' ] ] ] ],
-                [ 'oneeltseq', [ 'number', '6' ] ] ] ],
+            [ 'Tuple', [ 'ElementThenSequence',
+                [ 'Tuple', [ 'ElementThenSequence', [ 'Number', '1' ],
+                    [ 'OneElementSequence', [ 'Number', '2' ] ] ] ],
+                [ 'OneElementSequence', [ 'Number', '6' ] ] ] ],
             '(tuple (elts (tuple (elts 1 (elts 2))) (elts 6)))'
         )
     } )
 
     it( 'can convert simple set memberships and subsets to putdown', () => {
         check(
-            [ 'nounisin', [ 'numbervariable', 'b' ], [ 'setvariable', 'B' ] ],
+            [ 'NounIsElement', [ 'NumberVariable', 'b' ], [ 'SetVariable', 'B' ] ],
             '(in b B)'
         )
         check(
-            [ 'nounisin', [ 'number', '2' ],
-                [ 'finiteset', [ 'eltthenseq', [ 'number', '1' ],
-                    [ 'oneeltseq', [ 'number', '2' ] ] ] ] ],
+            [ 'NounIsElement', [ 'Number', '2' ],
+                [ 'FiniteSet', [ 'ElementThenSequence', [ 'Number', '1' ],
+                    [ 'OneElementSequence', [ 'Number', '2' ] ] ] ] ],
             '(in 2 (finiteset (elts 1 (elts 2))))'
         )
         check(
-            [ 'nounisin', [ 'numbervariable', 'X' ],
-                [ 'union', [ 'setvariable', 'a' ], [ 'setvariable', 'b' ] ] ],
-            '(in X (setuni a b))'
+            [ 'NounIsElement', [ 'NumberVariable', 'X' ],
+                [ 'SetUnion', [ 'SetVariable', 'a' ], [ 'SetVariable', 'b' ] ] ],
+            '(in X (union a b))'
         )
         check(
-            [ 'nounisin',
-                [ 'union', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
-                [ 'union', [ 'setvariable', 'X' ], [ 'setvariable', 'Y' ] ] ],
-            '(in (setuni A B) (setuni X Y))'
+            [ 'NounIsElement',
+                [ 'SetUnion', [ 'SetVariable', 'A' ], [ 'SetVariable', 'B' ] ],
+                [ 'SetUnion', [ 'SetVariable', 'X' ], [ 'SetVariable', 'Y' ] ] ],
+            '(in (union A B) (union X Y))'
         )
         check(
-            [ 'subset',
-                [ 'setvariable', 'A' ],
-                [ 'complement', [ 'setvariable', 'B' ] ] ],
-            '(subset A (setcomp B))'
+            [ 'Subset',
+                [ 'SetVariable', 'A' ],
+                [ 'SetComplement', [ 'SetVariable', 'B' ] ] ],
+            '(subset A (complement B))'
         )
         check(
-            [ 'subseteq',
-                [ 'intersection', [ 'setvariable', 'u' ], [ 'setvariable', 'v' ] ],
-                [ 'union', [ 'setvariable', 'u' ], [ 'setvariable', 'v' ] ] ],
-            '(subseteq (setint u v) (setuni u v))'
+            [ 'SubsetOrEqual',
+                [ 'SetIntersection', [ 'SetVariable', 'u' ], [ 'SetVariable', 'v' ] ],
+                [ 'SetUnion', [ 'SetVariable', 'u' ], [ 'SetVariable', 'v' ] ] ],
+            '(subseteq (intersection u v) (union u v))'
         )
         check(
-            [ 'subseteq',
-                [ 'finiteset', [ 'oneeltseq', [ 'number', '1' ] ] ],
-                [ 'union',
-                    [ 'finiteset', [ 'oneeltseq', [ 'number', '1' ] ] ],
-                    [ 'finiteset', [ 'oneeltseq', [ 'number', '2' ] ] ] ] ],
-            '(subseteq (finiteset (elts 1)) (setuni (finiteset (elts 1)) (finiteset (elts 2))))'
+            [ 'SubsetOrEqual',
+                [ 'FiniteSet', [ 'OneElementSequence', [ 'Number', '1' ] ] ],
+                [ 'SetUnion',
+                    [ 'FiniteSet', [ 'OneElementSequence', [ 'Number', '1' ] ] ],
+                    [ 'FiniteSet', [ 'OneElementSequence', [ 'Number', '2' ] ] ] ] ],
+            '(subseteq (finiteset (elts 1)) (union (finiteset (elts 1)) (finiteset (elts 2))))'
         )
         check(
-            [ 'nounisin', [ 'numbervariable', 'p' ],
-                [ 'setproduct', [ 'setvariable', 'U' ], [ 'setvariable', 'V' ] ] ],
-            '(in p (setprod U V))'
+            [ 'NounIsElement', [ 'NumberVariable', 'p' ],
+                [ 'SetCartesianProduct', [ 'SetVariable', 'U' ], [ 'SetVariable', 'V' ] ] ],
+            '(in p (cartesianproduct U V))'
         )
         check(
-            [ 'nounisin', [ 'numbervariable', 'q' ],
-                [ 'union',
-                    [ 'complement', [ 'setvariable', 'U' ] ],
-                    [ 'setproduct', [ 'setvariable', 'V' ], [ 'setvariable', 'W' ] ] ] ],
-            '(in q (setuni (setcomp U) (setprod V W)))'
+            [ 'NounIsElement', [ 'NumberVariable', 'q' ],
+                [ 'SetUnion',
+                    [ 'SetComplement', [ 'SetVariable', 'U' ] ],
+                    [ 'SetCartesianProduct', [ 'SetVariable', 'V' ], [ 'SetVariable', 'W' ] ] ] ],
+            '(in q (union (complement U) (cartesianproduct V W)))'
         )
         check(
-            [ 'nounisin',
-                [ 'tuple',
-                    [ 'eltthenseq',
-                        [ 'numbervariable', 'a' ],
-                        [ 'oneeltseq', [ 'numbervariable', 'b' ] ] ] ],
-                    [ 'setproduct', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ] ],
-            '(in (tuple (elts a (elts b))) (setprod A B))'
+            [ 'NounIsElement',
+                [ 'Tuple',
+                    [ 'ElementThenSequence',
+                        [ 'NumberVariable', 'a' ],
+                        [ 'OneElementSequence', [ 'NumberVariable', 'b' ] ] ] ],
+                    [ 'SetCartesianProduct', [ 'SetVariable', 'A' ], [ 'SetVariable', 'B' ] ] ],
+            '(in (tuple (elts a (elts b))) (cartesianproduct A B))'
         )
         check(
-            [ 'nounisin',
-                [ 'vector',
-                    [ 'numthenseq',
-                        [ 'numbervariable', 'a' ],
-                        [ 'onenumseq', [ 'numbervariable', 'b' ] ] ] ],
-                    [ 'setproduct', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ] ],
-            '(in (vector (elts a (elts b))) (setprod A B))'
+            [ 'NounIsElement',
+                [ 'Vector',
+                    [ 'NumberThenSequence',
+                        [ 'NumberVariable', 'a' ],
+                        [ 'OneNumberSequence', [ 'NumberVariable', 'b' ] ] ] ],
+                    [ 'SetCartesianProduct', [ 'SetVariable', 'A' ], [ 'SetVariable', 'B' ] ] ],
+            '(in (vector (elts a (elts b))) (cartesianproduct A B))'
         )
     } )
 
     it( 'creates the canonical form for "notin" notation', () => {
         check(
-            [ 'nounisnotin', [ 'numbervariable', 'a' ], [ 'setvariable', 'A' ] ],
+            [ 'NounIsNotElement', [ 'NumberVariable', 'a' ], [ 'SetVariable', 'A' ] ],
             '(not (in a A))'
         )
         check(
-            [ 'logicnegation', [ 'nounisin', 'emptyset', 'emptyset' ] ],
+            [ 'LogicalNegation', [ 'NounIsElement', 'EmptySet', 'EmptySet' ] ],
             '(not (in emptyset emptyset))'
         )
         check(
-            [ 'nounisnotin',
-                [ 'subtraction', [ 'number', '3' ], [ 'number', '5' ] ],
-                [ 'intersection', [ 'setvariable', 'K' ], [ 'setvariable', 'P' ] ]
+            [ 'NounIsNotElement',
+                [ 'Subtraction', [ 'Number', '3' ], [ 'Number', '5' ] ],
+                [ 'SetIntersection', [ 'SetVariable', 'K' ], [ 'SetVariable', 'P' ] ]
             ],
-            '(not (in (- 3 5) (setint K P)))'
+            '(not (in (- 3 5) (intersection K P)))'
         )
     } )
 
     it( 'can convert to putdown sentences built from various relations', () => {
         check(
-            [ 'disjunction',
-                [ 'logicvariable', 'P' ],
-                [ 'nounisin',
-                    [ 'numbervariable', 'b' ], [ 'setvariable', 'B' ] ] ],
+            [ 'Disjunction',
+                [ 'LogicVariable', 'P' ],
+                [ 'NounIsElement',
+                    [ 'NumberVariable', 'b' ], [ 'SetVariable', 'B' ] ] ],
             '(or P (in b B))'
         )
         check(
-            [ 'universal',
-                [ 'numbervariable', 'x' ],
-                [ 'nounisin',
-                    [ 'numbervariable', 'x' ], [ 'setvariable', 'X' ] ] ],
+            [ 'UniversalQuantifier',
+                [ 'NumberVariable', 'x' ],
+                [ 'NounIsElement',
+                    [ 'NumberVariable', 'x' ], [ 'SetVariable', 'X' ] ] ],
             '(forall (x , (in x X)))'
         )
         check(
-            [ 'conjunction',
-                [ 'subseteq', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
-                [ 'subseteq', [ 'setvariable', 'B' ], [ 'setvariable', 'A' ] ] ],
+            [ 'Conjunction',
+                [ 'SubsetOrEqual', [ 'SetVariable', 'A' ], [ 'SetVariable', 'B' ] ],
+                [ 'SubsetOrEqual', [ 'SetVariable', 'B' ], [ 'SetVariable', 'A' ] ] ],
             '(and (subseteq A B) (subseteq B A))'
         )
         check(
-            [ 'equality',
-                [ 'numbervariable', 'R' ], // it guesses wrong, oh well
-                [ 'setproduct', [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ] ],
-            '(= R (setprod A B))'
+            [ 'Equals',
+                [ 'NumberVariable', 'R' ], // it guesses wrong, oh well
+                [ 'SetCartesianProduct', [ 'SetVariable', 'A' ], [ 'SetVariable', 'B' ] ] ],
+            '(= R (cartesianproduct A B))'
         )
         check(
-            [ 'universal',
-                [ 'numbervariable', 'n' ],
-                [ 'binrelapp', 'divisibility',
-                    [ 'numbervariable', 'n' ],
-                    [ 'factorial', [ 'numbervariable', 'n' ] ] ] ],
-            '(forall (n , (applyrel | n (! n))))'
+            [ 'UniversalQuantifier',
+                [ 'NumberVariable', 'n' ],
+                [ 'BinaryRelationHolds', 'Divides',
+                    [ 'NumberVariable', 'n' ],
+                    [ 'Factorial', [ 'NumberVariable', 'n' ] ] ] ],
+            '(forall (n , (relationholds | n (! n))))'
         )
         check(
-            [ 'implication',
-                [ 'binrelapp', 'genericrelation',
-                    [ 'numbervariable', 'a' ], [ 'numbervariable', 'b' ] ],
-                [ 'binrelapp', 'genericrelation',
-                    [ 'numbervariable', 'b' ], [ 'numbervariable', 'a' ] ] ],
-            '(implies (applyrel ~ a b) (applyrel ~ b a))'
+            [ 'Implication',
+                [ 'BinaryRelationHolds', 'GenericBinaryRelation',
+                    [ 'NumberVariable', 'a' ], [ 'NumberVariable', 'b' ] ],
+                [ 'BinaryRelationHolds', 'GenericBinaryRelation',
+                    [ 'NumberVariable', 'b' ], [ 'NumberVariable', 'a' ] ] ],
+            '(implies (relationholds ~ a b) (relationholds ~ b a))'
         )
     } )
 
     it( 'can create putdown notation related to functions', () => {
         check(
-            [ 'funcsignature', [ 'funcvariable', 'f' ],
-                [ 'setvariable', 'A' ], [ 'setvariable', 'B' ] ],
+            [ 'FunctionSignature', [ 'FunctionVariable', 'f' ],
+                [ 'SetVariable', 'A' ], [ 'SetVariable', 'B' ] ],
             '(function f A B)'
         )
         check(
-            [ 'logicnegation',
-                [ 'funcsignature', [ 'funcvariable', 'F' ],
-                    [ 'union', [ 'setvariable', 'X' ], [ 'setvariable', 'Y' ] ],
-                    [ 'setvariable', 'Z' ] ] ],
-            '(not (function F (setuni X Y) Z))'
+            [ 'LogicalNegation',
+                [ 'FunctionSignature', [ 'FunctionVariable', 'F' ],
+                    [ 'SetUnion', [ 'SetVariable', 'X' ], [ 'SetVariable', 'Y' ] ],
+                    [ 'SetVariable', 'Z' ] ] ],
+            '(not (function F (union X Y) Z))'
         )
         check(
-            [ 'funcsignature',
-                [ 'funccomp', [ 'funcvariable', 'f' ], [ 'funcvariable', 'g' ] ],
-                [ 'setvariable', 'A' ], [ 'setvariable', 'C' ] ],
+            [ 'FunctionSignature',
+                [ 'FunctionComposition', [ 'FunctionVariable', 'f' ], [ 'FunctionVariable', 'g' ] ],
+                [ 'SetVariable', 'A' ], [ 'SetVariable', 'C' ] ],
             '(function (compose f g) A C)'
         )
         check(
-            [ 'numfuncapp', [ 'funcvariable', 'f' ], [ 'numbervariable', 'x' ] ],
+            [ 'NumberFunctionApplication', [ 'FunctionVariable', 'f' ], [ 'NumberVariable', 'x' ] ],
             '(apply f x)'
         )
         check(
-            [ 'numfuncapp',
-                [ 'funcinverse', [ 'funcvariable', 'f' ] ],
-                [ 'numfuncapp',
-                    [ 'funcinverse', [ 'funcvariable', 'g' ] ], [ 'number', '10' ] ] ],
+            [ 'NumberFunctionApplication',
+                [ 'FunctionInverse', [ 'FunctionVariable', 'f' ] ],
+                [ 'NumberFunctionApplication',
+                    [ 'FunctionInverse', [ 'FunctionVariable', 'g' ] ], [ 'Number', '10' ] ] ],
             '(apply (inverse f) (apply (inverse g) 10))'
         )
         check(
-            [ 'numfuncapp', // this is the output type, not the input type
-                [ 'funcvariable', 'E' ],
-                [ 'complement', [ 'setvariable', 'L' ] ] ],
-            '(apply E (setcomp L))'
+            [ 'NumberFunctionApplication', // this is the output type, not the input type
+                [ 'FunctionVariable', 'E' ],
+                [ 'SetComplement', [ 'SetVariable', 'L' ] ] ],
+            '(apply E (complement L))'
         )
         check(
-            [ 'intersection',
-                'emptyset',
-                [ 'setfuncapp', [ 'funcvariable', 'f' ], [ 'number', '2' ] ] ],
-            '(setint emptyset (apply f 2))'
+            [ 'SetIntersection',
+                'EmptySet',
+                [ 'SetFunctionApplication', [ 'FunctionVariable', 'f' ], [ 'Number', '2' ] ] ],
+            '(intersection emptyset (apply f 2))'
         )
         check(
-            [ 'conjunction',
-                [ 'propfuncapp', [ 'funcvariable', 'P' ], [ 'numbervariable', 'e' ] ],
-                [ 'propfuncapp', [ 'funcvariable', 'Q' ],
-                    [ 'addition', [ 'number', '3' ], [ 'numbervariable', 'b' ] ] ] ],
+            [ 'Conjunction',
+                [ 'PropositionFunctionApplication', [ 'FunctionVariable', 'P' ], [ 'NumberVariable', 'e' ] ],
+                [ 'PropositionFunctionApplication', [ 'FunctionVariable', 'Q' ],
+                    [ 'Addition', [ 'Number', '3' ], [ 'NumberVariable', 'b' ] ] ] ],
             '(and (apply P e) (apply Q (+ 3 b)))'
         )
         check(
-            [ 'funcequality',
-                [ 'funcvariable', 'F' ],
-                [ 'funccomp',
-                    [ 'funcvariable', 'G' ],
-                    [ 'funcinverse', [ 'funcvariable', 'H' ] ] ] ],
+            [ 'EqualFunctions',
+                [ 'FunctionVariable', 'F' ],
+                [ 'FunctionComposition',
+                    [ 'FunctionVariable', 'G' ],
+                    [ 'FunctionInverse', [ 'FunctionVariable', 'H' ] ] ] ],
             '(= F (compose G (inverse H)))'
         )
     } )
 
     it( 'can express trigonometric functions correctly', () => {
         check(
-            [ 'numfuncapp', 'sinfunc', [ 'numbervariable', 'x' ] ],
+            [ 'NumberFunctionApplication', 'SineFunction', [ 'NumberVariable', 'x' ] ],
             '(apply sin x)'
         )
         check(
-            [ 'numfuncapp', 'cosfunc',
-                [ 'multiplication', 'pi', [ 'numbervariable', 'x' ] ] ],
+            [ 'NumberFunctionApplication', 'CosineFunction',
+                [ 'Multiplication', 'Pi', [ 'NumberVariable', 'x' ] ] ],
             '(apply cos (* pi x))'
         )
         check(
-            [ 'numfuncapp', 'tanfunc', [ 'numbervariable', 't' ] ],
+            [ 'NumberFunctionApplication', 'TangentFunction', [ 'NumberVariable', 't' ] ],
             '(apply tan t)'
         )
         check(
-            [ 'division', [ 'number', '1' ],
-                [ 'numfuncapp', 'cotfunc', 'pi' ] ],
+            [ 'Division', [ 'Number', '1' ],
+                [ 'NumberFunctionApplication', 'CotangentFunction', 'Pi' ] ],
             '(/ 1 (apply cot pi))'
         )
         check(
-            [ 'equality',
-                [ 'numfuncapp', 'secfunc', [ 'numbervariable', 'y' ] ],
-                [ 'numfuncapp', 'cscfunc', [ 'numbervariable', 'y' ] ] ],
+            [ 'Equals',
+                [ 'NumberFunctionApplication', 'SecantFunction', [ 'NumberVariable', 'y' ] ],
+                [ 'NumberFunctionApplication', 'CosecantFunction', [ 'NumberVariable', 'y' ] ] ],
             '(= (apply sec y) (apply csc y))'
         )
     } )
 
     it( 'can express logarithms correctly', () => {
         check(
-            [ 'prefixfuncapp', 'logarithm', [ 'numbervariable', 'n' ] ],
+            [ 'PrefixFunctionApplication', 'Logarithm', [ 'NumberVariable', 'n' ] ],
             '(apply log n)'
         )
         check(
-            [ 'addition',
-                [ 'number', '1' ],
-                [ 'prefixfuncapp', 'naturallog', [ 'numbervariable', 'x' ] ] ],
+            [ 'Addition',
+                [ 'Number', '1' ],
+                [ 'PrefixFunctionApplication', 'NaturalLogarithm', [ 'NumberVariable', 'x' ] ] ],
             '(+ 1 (apply ln x))'
         )
         check(
-            [ 'prefixfuncapp',
-                [ 'logwithbase', [ 'number', '2' ] ], [ 'number', '1024' ] ],
+            [ 'PrefixFunctionApplication',
+                [ 'LogarithmWithBase', [ 'Number', '2' ] ], [ 'Number', '1024' ] ],
             '(apply (logbase 2) 1024)'
         )
         check(
-            [ 'division',
-                [ 'prefixfuncapp', 'logarithm', [ 'numbervariable', 'n' ] ],
-                [ 'prefixfuncapp', 'logarithm',
-                    [ 'prefixfuncapp', 'logarithm', [ 'numbervariable', 'n' ] ] ] ],
+            [ 'Division',
+                [ 'PrefixFunctionApplication', 'Logarithm', [ 'NumberVariable', 'n' ] ],
+                [ 'PrefixFunctionApplication', 'Logarithm',
+                    [ 'PrefixFunctionApplication', 'Logarithm', [ 'NumberVariable', 'n' ] ] ] ],
             '(/ (apply log n) (apply log (apply log n)))'
         )
     } )
 
     it( 'can express equivalence classes and expressions that use them', () => {
         check(
-            [ 'equivclass', [ 'number', '1' ], 'approximately' ],
-            '(eqclass 1 ~~)'
+            [ 'EquivalenceClass', [ 'Number', '1' ], 'ApproximatelyEqual' ],
+            '(equivclass 1 ~~)'
         )
         check(
-            [ 'equivclass',
-                [ 'addition', [ 'numbervariable', 'x' ], [ 'number', '2' ] ],
-                'genericrelation' ],
-            '(eqclass (+ x 2) ~)'
+            [ 'EquivalenceClass',
+                [ 'Addition', [ 'NumberVariable', 'x' ], [ 'Number', '2' ] ],
+                'GenericBinaryRelation' ],
+            '(equivclass (+ x 2) ~)'
         )
         check(
-            [ 'union',
-                [ 'equivclass', [ 'number', '1' ], 'approximately' ],
-                [ 'equivclass', [ 'number', '2' ], 'approximately' ] ],
-            '(setuni (eqclass 1 ~~) (eqclass 2 ~~))'
+            [ 'SetUnion',
+                [ 'EquivalenceClass', [ 'Number', '1' ], 'ApproximatelyEqual' ],
+                [ 'EquivalenceClass', [ 'Number', '2' ], 'ApproximatelyEqual' ] ],
+            '(union (equivclass 1 ~~) (equivclass 2 ~~))'
         )
         check(
-            [ 'nounisin', [ 'number', '7' ],
-                [ 'equivclass', [ 'number', '7' ], 'genericrelation' ] ],
-            '(in 7 (eqclass 7 ~))'
+            [ 'NounIsElement', [ 'Number', '7' ],
+                [ 'EquivalenceClass', [ 'Number', '7' ], 'GenericBinaryRelation' ] ],
+            '(in 7 (equivclass 7 ~))'
         )
         check(
-            [ 'equivclass', [ 'funcvariable', 'P' ], 'genericrelation' ],
-            '(eqclass P ~)'
+            [ 'EquivalenceClass', [ 'FunctionVariable', 'P' ], 'GenericBinaryRelation' ],
+            '(equivclass P ~)'
         )
     } )
 
     it( 'can express equivalence and classes mod a number', () => {
         check(
-            [ 'equivmodulo',
-                [ 'number', '5' ], [ 'number', '11' ], [ 'number', '3' ] ],
+            [ 'EquivalentModulo',
+                [ 'Number', '5' ], [ 'Number', '11' ], [ 'Number', '3' ] ],
             '(=mod 5 11 3)'
         )
         check(
-            [ 'equivmodulo', [ 'numbervariable', 'k' ],
-                [ 'numbervariable', 'm' ], [ 'numbervariable', 'n' ] ],
+            [ 'EquivalentModulo', [ 'NumberVariable', 'k' ],
+                [ 'NumberVariable', 'm' ], [ 'NumberVariable', 'n' ] ],
             '(=mod k m n)'
         )
         check(
-            [ 'subset', 'emptyset',
-                [ 'eqmodclass', [ 'numbernegation', [ 'number', '1' ] ],
-                    [ 'number', '10' ] ] ],
+            [ 'Subset', 'EmptySet',
+                [ 'EquivalenceClassModulo', [ 'NumberNegation', [ 'Number', '1' ] ],
+                    [ 'Number', '10' ] ] ],
             '(subset emptyset (modclass (- 1) 10))'
         )
     } )
 
     it( 'can construct type sentences and combinations of them', () => {
         check(
-            [ 'hastype', [ 'numbervariable', 'x' ], 'settype' ],
+            [ 'HasType', [ 'NumberVariable', 'x' ], 'SetType' ],
             '(hastype x settype)'
         )
         check(
-            [ 'hastype', [ 'numbervariable', 'n' ], 'numbertype' ],
+            [ 'HasType', [ 'NumberVariable', 'n' ], 'NumberType' ],
             '(hastype n numbertype)'
         )
         check(
-            [ 'hastype', [ 'numbervariable', 'S' ], 'partialordtype' ],
+            [ 'HasType', [ 'NumberVariable', 'S' ], 'PartialOrderType' ],
             '(hastype S partialordertype)'
         )
         check(
-            [ 'conjunction',
-                [ 'hastype', [ 'number', '1' ], 'numbertype' ],
-                [ 'hastype', [ 'number', '10' ], 'numbertype' ] ],
+            [ 'Conjunction',
+                [ 'HasType', [ 'Number', '1' ], 'NumberType' ],
+                [ 'HasType', [ 'Number', '10' ], 'NumberType' ] ],
             '(and (hastype 1 numbertype) (hastype 10 numbertype))'
         )
         check(
-            [ 'implication',
-                [ 'hastype', [ 'numbervariable', 'R' ], 'equivreltype' ],
-                [ 'hastype', [ 'numbervariable', 'R' ], 'reltype' ] ],
+            [ 'Implication',
+                [ 'HasType', [ 'NumberVariable', 'R' ], 'EquivalenceRelationType' ],
+                [ 'HasType', [ 'NumberVariable', 'R' ], 'RelationType' ] ],
             '(implies (hastype R equivalencerelationtype) (hastype R relationtype))'
         )
     } )
 
     it( 'can create notation for expression function application', () => {
         check(
-            [ 'numefa', [ 'funcvariable', 'f' ], [ 'numbervariable', 'x' ] ],
+            [ 'NumberEFA', [ 'FunctionVariable', 'f' ], [ 'NumberVariable', 'x' ] ],
             '(efa f x)'
         )
         check(
-            [ 'numfuncapp',
-                [ 'funcvariable', 'F' ],
-                [ 'numefa', [ 'funcvariable', 'k' ], [ 'number', '10' ] ] ],
+            [ 'NumberFunctionApplication',
+                [ 'FunctionVariable', 'F' ],
+                [ 'NumberEFA', [ 'FunctionVariable', 'k' ], [ 'Number', '10' ] ] ],
             '(apply F (efa k 10))'
         )
         check(
-            [ 'numefa', // this is the output type, not the input type
-                [ 'funcvariable', 'E' ],
-                [ 'complement', [ 'setvariable', 'L' ] ] ],
-            '(efa E (setcomp L))'
+            [ 'NumberEFA', // this is the output type, not the input type
+                [ 'FunctionVariable', 'E' ],
+                [ 'SetComplement', [ 'SetVariable', 'L' ] ] ],
+            '(efa E (complement L))'
         )
         check(
-            [ 'intersection',
-                'emptyset',
-                [ 'setefa', [ 'funcvariable', 'f' ], [ 'number', '2' ] ] ],
-            '(setint emptyset (efa f 2))'
+            [ 'SetIntersection',
+                'EmptySet',
+                [ 'SetEFA', [ 'FunctionVariable', 'f' ], [ 'Number', '2' ] ] ],
+            '(intersection emptyset (efa f 2))'
         )
         check(
-            [ 'conjunction',
-                [ 'propefa', [ 'funcvariable', 'P' ], [ 'numbervariable', 'x' ] ],
-                [ 'propefa', [ 'funcvariable', 'Q' ], [ 'numbervariable', 'y' ] ] ],
+            [ 'Conjunction',
+                [ 'PropositionEFA', [ 'FunctionVariable', 'P' ], [ 'NumberVariable', 'x' ] ],
+                [ 'PropositionEFA', [ 'FunctionVariable', 'Q' ], [ 'NumberVariable', 'y' ] ] ],
             '(and (efa P x) (efa Q y))'
         )
     } )
 
     it( 'can create notation for assumptions', () => {
-        check( [ 'givenvariant1', [ 'logicvariable', 'X' ] ], ':X' )
-        check( [ 'givenvariant2', [ 'logicvariable', 'X' ] ], ':X' )
-        check( [ 'givenvariant3', [ 'logicvariable', 'X' ] ], ':X' )
-        check( [ 'givenvariant4', [ 'logicvariable', 'X' ] ], ':X' )
+        check( [ 'Given_Variant1', [ 'LogicVariable', 'X' ] ], ':X' )
+        check( [ 'Given_Variant2', [ 'LogicVariable', 'X' ] ], ':X' )
+        check( [ 'Given_Variant3', [ 'LogicVariable', 'X' ] ], ':X' )
+        check( [ 'Given_Variant4', [ 'LogicVariable', 'X' ] ], ':X' )
         check(
-            [ 'givenvariant1',
-                [ 'equality', [ 'numbervariable', 'k' ], [ 'number', '1000' ] ] ],
+            [ 'Given_Variant1',
+                [ 'Equals', [ 'NumberVariable', 'k' ], [ 'Number', '1000' ] ] ],
             ':(= k 1000)'
         )
         check(
-            [ 'givenvariant2',
-                [ 'equality', [ 'numbervariable', 'k' ], [ 'number', '1000' ] ] ],
+            [ 'Given_Variant2',
+                [ 'Equals', [ 'NumberVariable', 'k' ], [ 'Number', '1000' ] ] ],
             ':(= k 1000)'
         )
         check(
-            [ 'givenvariant3',
-                [ 'equality', [ 'numbervariable', 'k' ], [ 'number', '1000' ] ] ],
+            [ 'Given_Variant3',
+                [ 'Equals', [ 'NumberVariable', 'k' ], [ 'Number', '1000' ] ] ],
             ':(= k 1000)'
         )
         check(
-            [ 'givenvariant4',
-            [ 'equality', [ 'numbervariable', 'k' ], [ 'number', '1000' ] ] ],
+            [ 'Given_Variant4',
+            [ 'Equals', [ 'NumberVariable', 'k' ], [ 'Number', '1000' ] ] ],
             ':(= k 1000)'
         )
-        check( [ 'givenvariant1', 'logicaltrue' ], ':true' )
-        check( [ 'givenvariant2', 'logicaltrue' ], ':true' )
-        check( [ 'givenvariant3', 'logicaltrue' ], ':true' )
-        check( [ 'givenvariant4', 'logicaltrue' ], ':true' )
+        check( [ 'Given_Variant1', 'LogicalTrue' ], ':true' )
+        check( [ 'Given_Variant2', 'LogicalTrue' ], ':true' )
+        check( [ 'Given_Variant3', 'LogicalTrue' ], ':true' )
+        check( [ 'Given_Variant4', 'LogicalTrue' ], ':true' )
     } )
 
     it( 'can create notation for Let-style declarations', () => {
         // You can declare variables by themselves
-        check( [ 'letvariant1', [ 'numbervariable', 'x' ] ], ':[x]' )
-        check( [ 'letvariant1', [ 'numbervariable', 'T' ] ], ':[T]' )
+        check( [ 'Let_Variant1', [ 'NumberVariable', 'x' ] ], ':[x]' )
+        check( [ 'Let_Variant1', [ 'NumberVariable', 'T' ] ], ':[T]' )
         // You can declare variables with predicates attached
         check(
-            [ 'letbevariant1', [ 'numbervariable', 'x' ],
-                [ 'greaterthan', [ 'numbervariable', 'x' ], [ 'number', '0' ] ] ],
+            [ 'LetBeSuchThat_Variant1', [ 'NumberVariable', 'x' ],
+                [ 'GreaterThan', [ 'NumberVariable', 'x' ], [ 'Number', '0' ] ] ],
             ':[x , (> x 0)]'
         )
         check(
-            [ 'letbevariant1', [ 'numbervariable', 'T' ],
-                [ 'disjunction',
-                    [ 'equality', [ 'numbervariable', 'T' ], [ 'number', '5' ] ],
-                    [ 'nounisin', [ 'numbervariable', 'T' ], [ 'setvariable', 'S' ] ] ] ],
+            [ 'LetBeSuchThat_Variant1', [ 'NumberVariable', 'T' ],
+                [ 'Disjunction',
+                    [ 'Equals', [ 'NumberVariable', 'T' ], [ 'Number', '5' ] ],
+                    [ 'NounIsElement', [ 'NumberVariable', 'T' ], [ 'SetVariable', 'S' ] ] ] ],
             ':[T , (or (= T 5) (in T S))]'
         )
     } )
 
     it( 'can create notation for For Some-style declarations', () => {
         check(
-            [ 'forsomevariant1', [ 'numbervariable', 'x' ],
-                [ 'greaterthan', [ 'numbervariable', 'x' ], [ 'number', '0' ] ] ],
+            [ 'ForSome_Variant1', [ 'NumberVariable', 'x' ],
+                [ 'GreaterThan', [ 'NumberVariable', 'x' ], [ 'Number', '0' ] ] ],
             '[x , (> x 0)]'
         )
         check(
-            [ 'forsomevariant2', [ 'numbervariable', 'x' ],
-                [ 'greaterthan', [ 'numbervariable', 'x' ], [ 'number', '0' ] ] ],
+            [ 'ForSome_Variant2', [ 'NumberVariable', 'x' ],
+                [ 'GreaterThan', [ 'NumberVariable', 'x' ], [ 'Number', '0' ] ] ],
             '[x , (> x 0)]'
         )
         check(
-            [ 'forsomevariant3', [ 'numbervariable', 'x' ],
-                [ 'greaterthan', [ 'numbervariable', 'x' ], [ 'number', '0' ] ] ],
+            [ 'ForSome_Variant3', [ 'NumberVariable', 'x' ],
+                [ 'GreaterThan', [ 'NumberVariable', 'x' ], [ 'Number', '0' ] ] ],
             '[x , (> x 0)]'
         )
         check(
-            [ 'forsomevariant4', [ 'numbervariable', 'x' ],
-                [ 'greaterthan', [ 'numbervariable', 'x' ], [ 'number', '0' ] ] ],
+            [ 'ForSome_Variant4', [ 'NumberVariable', 'x' ],
+                [ 'GreaterThan', [ 'NumberVariable', 'x' ], [ 'Number', '0' ] ] ],
             '[x , (> x 0)]'
         )
         check(
-            [ 'forsomevariant1', [ 'numbervariable', 'T' ],
-                [ 'disjunction',
-                    [ 'equality', [ 'numbervariable', 'T' ], [ 'number', '5' ] ],
-                    [ 'nounisin', [ 'numbervariable', 'T' ], [ 'setvariable', 'S' ] ] ] ],
+            [ 'ForSome_Variant1', [ 'NumberVariable', 'T' ],
+                [ 'Disjunction',
+                    [ 'Equals', [ 'NumberVariable', 'T' ], [ 'Number', '5' ] ],
+                    [ 'NounIsElement', [ 'NumberVariable', 'T' ], [ 'SetVariable', 'S' ] ] ] ],
             '[T , (or (= T 5) (in T S))]'
         )
         check(
-            [ 'forsomevariant2', [ 'numbervariable', 'T' ],
-                [ 'disjunction',
-                    [ 'equality', [ 'numbervariable', 'T' ], [ 'number', '5' ] ],
-                    [ 'nounisin', [ 'numbervariable', 'T' ], [ 'setvariable', 'S' ] ] ] ],
+            [ 'ForSome_Variant2', [ 'NumberVariable', 'T' ],
+                [ 'Disjunction',
+                    [ 'Equals', [ 'NumberVariable', 'T' ], [ 'Number', '5' ] ],
+                    [ 'NounIsElement', [ 'NumberVariable', 'T' ], [ 'SetVariable', 'S' ] ] ] ],
             '[T , (or (= T 5) (in T S))]'
         )
         check(
-            [ 'forsomevariant3', [ 'numbervariable', 'T' ],
-                [ 'disjunction',
-                    [ 'equality', [ 'numbervariable', 'T' ], [ 'number', '5' ] ],
-                    [ 'nounisin', [ 'numbervariable', 'T' ], [ 'setvariable', 'S' ] ] ] ],
+            [ 'ForSome_Variant3', [ 'NumberVariable', 'T' ],
+                [ 'Disjunction',
+                    [ 'Equals', [ 'NumberVariable', 'T' ], [ 'Number', '5' ] ],
+                    [ 'NounIsElement', [ 'NumberVariable', 'T' ], [ 'SetVariable', 'S' ] ] ] ],
             '[T , (or (= T 5) (in T S))]'
         )
         check(
-            [ 'forsomevariant4', [ 'numbervariable', 'T' ],
-                [ 'disjunction',
-                    [ 'equality', [ 'numbervariable', 'T' ], [ 'number', '5' ] ],
-                    [ 'nounisin', [ 'numbervariable', 'T' ], [ 'setvariable', 'S' ] ] ] ],
+            [ 'ForSome_Variant4', [ 'NumberVariable', 'T' ],
+                [ 'Disjunction',
+                    [ 'Equals', [ 'NumberVariable', 'T' ], [ 'Number', '5' ] ],
+                    [ 'NounIsElement', [ 'NumberVariable', 'T' ], [ 'SetVariable', 'S' ] ] ] ],
             '[T , (or (= T 5) (in T S))]'
         )
     } )

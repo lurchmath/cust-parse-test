@@ -320,7 +320,7 @@ export class AST {
     // semantic types.  For example, the expression `x+y` might not be
     // represented as the simple `[ 'addition', 'x', 'y' ]` array, but as the
     // unnecessarily complex array
-    // `[ 'expr', [ 'numberexpr', [ 'sumexpr', [ 'addition', 'x', 'y' ] ] ] ]`.
+    // `[ 'Expression', [ 'NumberExpression', [ 'SumExpression', [ 'addition', 'x', 'y' ] ] ] ]`.
     // Compact form removes all wrappers that serve only to label an AST with
     // its syntactic type, leaving only a hierarchy of semantic information.
     // This function also flattens associative operators, where an associative
@@ -338,7 +338,7 @@ export class AST {
         }
         // If it's just groupers around an expression, take them off:
         const head = this.head().contents
-        if ( head.startsWith( 'groupedatomic' ) && this.numArgs() == 1 ) {
+        if ( head.startsWith( 'GroupedAtomic' ) && this.numArgs() == 1 ) {
             // console.log( '\t\tgrouped atomic' )
             return this.arg( 0 ).compact()
         }

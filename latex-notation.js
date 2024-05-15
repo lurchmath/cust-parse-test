@@ -15,585 +15,585 @@ export const latexNotation = {
 
 		// Atomic number expressions
 		{
-			"name": "infinity",
+			"name": "Infinity",
 			"notation": "\\infty",
 		},
 		{
-			"name": "pi",
+			"name": "Pi",
 			"notation": "\\pi",
 		},
 		{
-			"name": "eulersnumber",
+			"name": "EulersNumber",
 			"notation": "e",
 		},
 
 		// Foundational arithmetic operations and related operators like %, !
 		{
-			"name": "exponentiation",
+			"name": "Exponentiation",
 			"notation": "A^B",
 		},
 		{
-			"name": "percentage",
+			"name": "Percentage",
 			"notation": "A\\%",
 		},
 		{
-			"name": "factorial",
+			"name": "Factorial",
 			"notation": "A!",
 		},
 		{
-			"name": "division",
+			"name": "Division",
 			"notation": "A\\div B",
 		},
 		{
-			"name": "division",
+			"name": "Division",
 			"notation": "\\frac A B",
 		},
 		{
-			"name": "multiplication",
+			"name": "Multiplication",
 			"notation": "A\\times B",
 		},
 		{
-			"name": "multiplication",
+			"name": "Multiplication",
 			"notation": "A\\cdot B",
 		},
 		{
-			"name": "multiplication",
+			"name": "Multiplication",
 			"notation": "A\\ast B",
 		},
 		{
-			"name": "numbernegation",
+			"name": "NumberNegation",
 			"notation": "-A",
 		},
 		{
-			"name": "addition",
+			"name": "Addition",
 			"notation": "A+B",
 		},
 		{
-			"name": "subtraction",
+			"name": "Subtraction",
 			"notation": "A-B",
 		},
 
 		// Logical constants
 		{
-			"name": "logicaltrue",
+			"name": "LogicalTrue",
 			"notation": "\\top",
 		},
 		{
-			"name": "logicalfalse",
+			"name": "LogicalFalse",
 			"notation": "\\bot",
 		},
 		{
-			"name": "contradiction",
+			"name": "Contradiction",
 			"notation": "\\rightarrow \\leftarrow",
 		},
 
 		// Propositional logical operators
 		{
-			"name": "logicnegation",
+			"name": "LogicalNegation",
 			"notation": "\\neg A",
 		},
 		{
-			"name": "logicnegation",
+			"name": "LogicalNegation",
 			"notation": "\\lnot A",
 		},
 		{
-			"name": "conjunction",
+			"name": "Conjunction",
 			"notation": "A\\wedge B",
 		},
 		{
-			"name": "conjunction",
+			"name": "Conjunction",
 			"notation": "A\\land B",
 		},
 		{
-			"name": "disjunction",
+			"name": "Disjunction",
 			"notation": "A\\vee B",
 		},
 		{
-			"name": "disjunction",
+			"name": "Disjunction",
 			"notation": "A\\lor B",
 		},
 		{
-			"name": "implication",
+			"name": "Implication",
 			"notation": "A\\Rightarrow B",
 		},
 		{
-			"name": "implication",
+			"name": "Implication",
 			"notation": "A\\Rarr B",
 		},
 		{
-			"name": "implication",
+			"name": "Implication",
 			"notation": "A\\rArr B",
 		},
 		{
-			"name": "implication",
+			"name": "Implication",
 			"notation": "B\\Leftarrow A",
 		},
 		{
-			"name": "implication",
+			"name": "Implication",
 			"notation": "B\\Larr A",
 		},
 		{
-			"name": "implication",
+			"name": "Implication",
 			"notation": "B\\lArr A",
 		},
 		{
-			"name": "iff",
+			"name": "LogicalEquivalence",
 			"notation": "A\\Leftrightarrow B",
 		},
 		{
-			"name": "iff",
+			"name": "LogicalEquivalence",
 			"notation": "A\\Lrarr B",
 		},
 		{
-			"name": "iff",
+			"name": "LogicalEquivalence",
 			"notation": "A\\lrArr B",
 		},
 
 		// Predicate logical operators
 		{
-			"name": "universal",
+			"name": "UniversalQuantifier",
 			"notation": "\\forall A, B",
 		},
 		{
-			"name": "existential",
+			"name": "ExistentialQuantifier",
 			"notation": "\\exists A, B",
 		},
 		{
-			"name": "existsunique",
+			"name": "UniqueExistentialQuantifier",
 			"notation": "\\exists ! A, B",
 		},
 
 		// Atomic set expressions
 		{
-			"name": "emptyset",
+			"name": "EmptySet",
 			"notation": "\\emptyset",
 		},
 		{
-			"name": "emptyset",
+			"name": "EmptySet",
 			"notation": "\\{ \\}",
 		},
 		{
-			"name": "emptyset",
+			"name": "EmptySet",
 			"notation": "\\left\\{ \\right\\}",
 		},
 		{
-			"name": "finiteset",
+			"name": "FiniteSet",
 			"notation": "\\{A\\}",
 		},
 		{
-			"name": "finiteset",
+			"name": "FiniteSet",
 			"notation": "\\left\\{A\\right\\}",
 		},
 		{
-			"name": "oneeltseq",
+			"name": "OneElementSequence",
 			"notation": "A",
 		},
 		{
-			"name": "eltthenseq",
+			"name": "ElementThenSequence",
 			"notation": "A,B",
 		},
 		{
-			"name": "onenumseq",
+			"name": "OneNumberSequence",
 			"notation": "A",
 		},
 		{
-			"name": "numthenseq",
+			"name": "NumberThenSequence",
 			"notation": "A,B",
 		},
 
 		// Set operators
 		{
-			"name": "union",
+			"name": "SetUnion",
 			"notation": "A\\cup B",
 		},
 		{
-			"name": "intersection",
+			"name": "SetIntersection",
 			"notation": "A\\cap B",
 		},
 		{
-			"name": "setdifference",
-			"notation": "A\\setminus B",
+			"name": "SetDifference",
+			"notation": "A\\setdiff B",
 		},
 		{
-			"name": "setdifference",
+			"name": "SetDifference",
 			"notation": "A-B",
 		},
 		{
-			"name": "complement",
+			"name": "SetComplement",
 			"notation": "\\bar A",
 		},
 		{
-			"name": "complement",
+			"name": "SetComplement",
 			"notation": "A'",
 		},
 		{
-			"name": "complement",
+			"name": "SetComplement",
 			"notation": "A ^ { \\complement }",
 		},
 		{
-			"name": "setproduct",
+			"name": "SetCartesianProduct",
 			"notation": "A\\times B",
 		},
 
 		// Set relations
 		{
-			"name": "subset",
+			"name": "Subset",
 			"notation": "A\\subset B",
 		},
 		{
-			"name": "subseteq",
+			"name": "SubsetOrEqual",
 			"notation": "A\\subseteq B",
 		},
 		{
-			"name": "nounisin",
+			"name": "NounIsElement",
 			"notation": "A\\in B",
 		},
 		{
-			"name": "propisin",
+			"name": "PropositionIsElement",
 			"notation": "A\\in B",
 		},
 		{
-			"name": "nounisnotin",
+			"name": "NounIsNotElement",
 			"notation": "A\\notin B",
 		},
 		{
-			"name": "propisnotin",
+			"name": "PropositionIsNotElement",
 			"notation": "A\\notin B",
 		},
 
 		// Tuples and vectors
 		{
-			"name": "tuple",
+			"name": "Tuple",
 			"notation": "(A)",
 		},
 		{
-			"name": "vector",
+			"name": "Vector",
 			"notation": "\\langle A\\rangle",
 		},
 
 		// Function signatures (f:A->B)
 		{
-			"name": "funcsignature",
+			"name": "FunctionSignature",
 			"notation": "A:B\\to C",
 		},
 		{
-			"name": "funcsignature",
+			"name": "FunctionSignature",
 			"notation": "A:B\\rightarrow C",
 		},
 		{
-			"name": "funcsignature",
+			"name": "FunctionSignature",
 			"notation": "A:B\\rarr C",
 		},
 		{
-			"name": "funcsignature",
+			"name": "FunctionSignature",
 			"notation": "A\\colon B\\to C",
 		},
 		{
-			"name": "funcsignature",
+			"name": "FunctionSignature",
 			"notation": "A\\colon B\\rightarrow C",
 		},
 		{
-			"name": "funcsignature",
+			"name": "FunctionSignature",
 			"notation": "A\\colon B\\rarr C",
 		},
 
 		// Function application (various kinds)
 		{
-			"name": "prefixfuncapp",
+			"name": "PrefixFunctionApplication",
 			"notation": "A B",
 		},
 		{
-			"name": "numfuncapp",
+			"name": "NumberFunctionApplication",
 			"notation": "A(B)",
 		},
 		{
-			"name": "propfuncapp",
+			"name": "PropositionFunctionApplication",
 			"notation": "A(B)",
 		},
 		{
-			"name": "setfuncapp",
+			"name": "SetFunctionApplication",
 			"notation": "A(B)",
 		},
 
 		// Function composition and inverting
 		{
-			"name": "funccomp",
+			"name": "FunctionComposition",
 			"notation": "A\\circ B",
 		},
 		{
-			"name": "funcinverse",
+			"name": "FunctionInverse",
 			"notation": "A ^ { - 1 }",
 		},
 		{
-			"name": "prefixfuncinv",
+			"name": "PrefixFunctionInverse",
 			"notation": "A ^ { - 1 }",
 		},
 
 		// Trig functions
 		{
-			"name": "sinfunc",
+			"name": "SineFunction",
 			"notation": "\\sin",
 		},
 		{
-			"name": "cosfunc",
+			"name": "CosineFunction",
 			"notation": "\\cos",
 		},
 		{
-			"name": "tanfunc",
+			"name": "TangentFunction",
 			"notation": "\\tan",
 		},
 		{
-			"name": "cotfunc",
+			"name": "CotangentFunction",
 			"notation": "\\cot",
 		},
 		{
-			"name": "secfunc",
+			"name": "SecantFunction",
 			"notation": "\\sec",
 		},
 		{
-			"name": "cscfunc",
+			"name": "CosecantFunction",
 			"notation": "\\csc",
 		},
 
 		// Logarithms
 		{
-			"name": "logarithm",
+			"name": "Logarithm",
 			"notation": "\\log",
 		},
 		{
-			"name": "naturallog",
+			"name": "NaturalLogarithm",
 			"notation": "\\ln",
 		},
 		{
-			"name": "logwithbase",
+			"name": "LogarithmWithBase",
 			"notation": "\\log_A",
 		},
 
 		// Equalities and inequalities
 		{
-			"name": "equality",
+			"name": "Equals",
 			"notation": "A=B",
 		},
 		{
-			"name": "inequality",
+			"name": "NotEqual",
 			"notation": "A\\ne B",
 		},
 		{
-			"name": "inequality",
+			"name": "NotEqual",
 			"notation": "A\\neq B",
 		},
 		{
-			"name": "funcequality",
+			"name": "EqualFunctions",
 			"notation": "A=B",
 		},
 		{
-			"name": "funcinequality",
+			"name": "NotEqualFunctions",
 			"notation": "A\\ne B",
 		},
 		{
-			"name": "funcinequality",
+			"name": "NotEqualFunctions",
 			"notation": "A\\neq B",
 		},
 		{
-			"name": "lessthan",
+			"name": "LessThan",
 			"notation": "A<B",
 		},
 		{
-			"name": "lessthan",
+			"name": "LessThan",
 			"notation": "A\\lt B",
 		},
 		{
-			"name": "lessthanoreq",
+			"name": "LessThanOrEqual",
 			"notation": "A\\le B",
 		},
 		{
-			"name": "lessthanoreq",
+			"name": "LessThanOrEqual",
 			"notation": "A\\leq B",
 		},
 		{
-			"name": "greaterthan",
+			"name": "GreaterThan",
 			"notation": "A>B",
 		},
 		{
-			"name": "greaterthan",
+			"name": "GreaterThan",
 			"notation": "A\\gt B",
 		},
 		{
-			"name": "greaterthanoreq",
+			"name": "GreaterThanOrEqual",
 			"notation": "A\\ge B",
 		},
 		{
-			"name": "greaterthanoreq",
+			"name": "GreaterThanOrEqual",
 			"notation": "A\\geq B",
 		},
 
 		// Other types of relations
 		{
-			"name": "binrelapp",
+			"name": "BinaryRelationHolds",
 			"notation": "B A C",
 		},
 		{
-			"name": "divisibility",
+			"name": "Divides",
 			"notation": "|",
 		},
 		{
-			"name": "divisibility",
+			"name": "Divides",
 			"notation": "\\vert",
 		},
 		{
-			"name": "approximately",
+			"name": "ApproximatelyEqual",
 			"notation": "\\approx",
 		},
 		{
-			"name": "genericrelation",
+			"name": "GenericBinaryRelation",
 			"notation": "\\sim",
 		},
 		{
-			"name": "equivmodulo",
+			"name": "EquivalentModulo",
 			"notation": "A \\equiv B \\mod C",
 		},
 		{
-			"name": "equivmodulo",
+			"name": "EquivalentModulo",
 			"notation": "A \\equiv _ C B",
 		},
 
 		// Equivalence classes using the above relations
 		{
-			"name": "equivclass",
+			"name": "EquivalenceClass",
 			"notation": "[A,B]",
 		},
 		{
-			"name": "equivclass",
+			"name": "EquivalenceClass",
 			"notation": "\\lbrack A,B\\rbrack",
 		},
 		{
-			"name": "equivclass",
+			"name": "EquivalenceClass",
 			"notation": "\\left[A,B\\right]",
 		},
 		{
-			"name": "equivclass",
+			"name": "EquivalenceClass",
 			"notation": "\\left\\lbrack A,B\\right\\rbrack",
 		},
 		{
-			"name": "bareequivclass",
+			"name": "GenericEquivalenceClass",
 			"notation": "[A]",
 		},
 		{
-			"name": "bareequivclass",
+			"name": "GenericEquivalenceClass",
 			"notation": "\\lbrack A\\rbrack",
 		},
 		{
-			"name": "bareequivclass",
+			"name": "GenericEquivalenceClass",
 			"notation": "\\left[A\\right]",
 		},
 		{
-			"name": "bareequivclass",
+			"name": "GenericEquivalenceClass",
 			"notation": "\\left\\lbrack A\\right\\rbrack",
 		},
 		{
-			"name": "eqmodclass",
+			"name": "EquivalenceClassModulo",
 			"notation": "[A, \\equiv _ B]",
 		},
 		{
-			"name": "eqmodclass",
+			"name": "EquivalenceClassModulo",
 			"notation": "\\lbrack A, \\equiv _ B\\rbrack",
 		},
 		{
-			"name": "eqmodclass",
+			"name": "EquivalenceClassModulo",
 			"notation": "\\left[A, \\equiv _ B\\right]",
 		},
 		{
-			"name": "eqmodclass",
+			"name": "EquivalenceClassModulo",
 			"notation": "\\left\\lbrack A, \\equiv _ B\\right\\rbrack",
 		},
 
 		// Type phrases and sentences (such as "S is a set")
 		{
-			"name": "settype",
+			"name": "SetType",
 			"notation": "a set",
 		},
 		{
-			"name": "numbertype",
+			"name": "NumberType",
 			"notation": "a number",
 		},
 		{
-			"name": "reltype",
+			"name": "RelationType",
 			"notation": "a relation",
 		},
 		{
-			"name": "partialordtype",
+			"name": "PartialOrderType",
 			"notation": "a partial order",
 		},
 		{
-			"name": "equivreltype",
+			"name": "EquivalenceRelationType",
 			"notation": "an equivalence relation",
 		},
 		{
-			"name": "hastype",
+			"name": "HasType",
 			"notation": "A \\text{is B}",
 		},
 		{
-			"name": "hastype",
+			"name": "HasType",
 			"notation": "A \\text{is } \\text{B}",
 		},
 		{
-			"name": "hastype",
+			"name": "HasType",
 			"notation": "A \\text{is} ~ \\text{B}",
 		},
 
 		// Expression Function Applications, used only for rule-building
 		{
-			"name": "numefa",
+			"name": "NumberEFA",
 			"notation": "\\mathcal{A} (B)",
 		},
 		{
-			"name": "propefa",
+			"name": "PropositionEFA",
 			"notation": "\\mathcal{A} (B)",
 		},
 		{
-			"name": "setefa",
+			"name": "SetEFA",
 			"notation": "\\mathcal{A} (B)",
 		},
 
 		// Givens (assumptions)
 		// (We use multiple variants here to permit alternative spellings/notations)
 		{
-			"name": "givenvariant1",
+			"name": "Given_Variant1",
 			"notation": "\\text{Assume }X",
 			"options": {"variables":["X"]},
 		},
 		{
-			"name": "givenvariant1",
+			"name": "Given_Variant1",
 			"notation": "\\text{Assume}~X",
 			"options": {"variables":["X"]},
 		},
 		{
-			"name": "givenvariant2",
+			"name": "Given_Variant2",
 			"notation": "\\text{assume }X",
 			"options": {"variables":["X"]},
 		},
 		{
-			"name": "givenvariant2",
+			"name": "Given_Variant2",
 			"notation": "\\text{assume}~X",
 			"options": {"variables":["X"]},
 		},
 		{
-			"name": "givenvariant3",
+			"name": "Given_Variant3",
 			"notation": "\\text{Given }X",
 			"options": {"variables":["X"]},
 		},
 		{
-			"name": "givenvariant3",
+			"name": "Given_Variant3",
 			"notation": "\\text{Given}~X",
 			"options": {"variables":["X"]},
 		},
 		{
-			"name": "givenvariant4",
+			"name": "Given_Variant4",
 			"notation": "\\text{given }X",
 			"options": {"variables":["X"]},
 		},
 		{
-			"name": "givenvariant4",
+			"name": "Given_Variant4",
 			"notation": "\\text{given}~X",
 			"options": {"variables":["X"]},
 		},
@@ -601,35 +601,35 @@ export const latexNotation = {
 		// Variable declarations (both let and for some, with and without body)
 		// (We use multiple variants here to permit alternative spellings/notations)
 		{
-			"name": "letvariant1",
+			"name": "Let_Variant1",
 			"notation": "\\text{Let }A",
 		},
 		{
-			"name": "letvariant2",
+			"name": "Let_Variant2",
 			"notation": "\\text{let }A",
 		},
 		{
-			"name": "letbevariant1",
+			"name": "LetBeSuchThat_Variant1",
 			"notation": "\\text{Let }A \\text{ be such that }B",
 		},
 		{
-			"name": "letbevariant2",
+			"name": "LetBeSuchThat_Variant2",
 			"notation": "\\text{let }A \\text{ be such that }B",
 		},
 		{
-			"name": "forsomevariant1",
+			"name": "ForSome_Variant1",
 			"notation": "\\text{For some }A, B",
 		},
 		{
-			"name": "forsomevariant2",
+			"name": "ForSome_Variant2",
 			"notation": "\\text{for some }A, B",
 		},
 		{
-			"name": "forsomevariant3",
+			"name": "ForSome_Variant3",
 			"notation": "B \\text{ for some } A",
 		},
 		{
-			"name": "forsomevariant4",
+			"name": "ForSome_Variant4",
 			"notation": "B~\\text{for some}~A",
 		},
 	]

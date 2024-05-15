@@ -121,7 +121,7 @@ export class Language {
                     for ( let i = 0 ; i < groupers.length - 1 ; i += 2 ) {
                         const left = groupers[i]
                         const right = groupers[i+1]
-                        this.addNotation( `grouped${last}`, `${left} A ${right}` )
+                        this.addNotation( `Grouped${last}`, `${left} A ${right}` )
                     }
                 }
             }
