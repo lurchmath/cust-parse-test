@@ -44,9 +44,6 @@ Bug fix:
       text between them) as many times as necessary to handle the extras.
 
 Polishing:
- - Change the JSON in latex-notation.js so that it doesn't have
-   `{name,notation}` pairs, but `{concept,notation}` pairs, which is much
-   clearer.
  - Add the capability of asking for all possible parsings, rather than just
    getting the first one.
     - Run tests on this, especially anywhere the test suite mentioned
