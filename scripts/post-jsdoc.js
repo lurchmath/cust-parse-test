@@ -5,6 +5,8 @@
 import path from 'node:path'
 import url from 'node:url'
 import fs from 'node:fs'
+import { hierarchies } from '../syntactic-types.js'
+import { spawn } from 'node:child_process'
 
 console.log( 'Adding MathJax header to all jsDoc-generated files...' )
 
@@ -39,3 +41,19 @@ fs.readdirSync( docsFolder ).forEach( ( filename ) => {
 } )
 
 console.log( `Done (${numDone} files changed).` )
+
+console.log( 'Generating syntactic types hierarchy graph...' )
+
+const lines = [ ]
+hierarchies.forEach( hierarchy => {
+    for ( let i = 1 ; i < hierarchy.length ; i++ ) {
+        const newLine = '  ' + hierarchy[i-1] + ' -> ' + hierarchy[i]
+        if ( !lines.includes( newLine ) )
+            lines.push( newLine )
+    }
+} )
+
+const dot = spawn( 'dot', [ '-Tpng', '-o', 'docs/syntactic-types.png' ] )
+dot.on( 'close', () => console.log( 'Diagram generated: syntactic-types.png.' ) )
+dot.stdin.write( 'digraph {\n' + lines.join( '\n' ) + '\n}\n' )
+dot.stdin.end()
