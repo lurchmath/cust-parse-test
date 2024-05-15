@@ -334,6 +334,40 @@ export class Language {
         number : /-?\.[0-9]+|[0-9]+\.?[0-9]*/
     }
 
+    /**
+     * Rather than creating an empty language using this class's constructor,
+     * then adding each notation with a separate function call, you can
+     * construct an instance and add all the notations in one function call with
+     * this method.
+     * 
+     * The format for the JSON data structure passed as the third argument is as
+     * follows.
+     * 
+     *  * It should have a `"groupers"` field that is an array of strings
+     *    containing the exact same data you would pass as the `groupers`
+     *    argument to the constructor.
+     *  * It should have a `"notations"` field that is an array of objects,
+     *    each object having the fields `"concept"`, `"notation"`, and
+     *    `"options"`, which correspond directly to the three parameters of the
+     *    {@link Language#addNotation addNotation()} function.
+     * 
+     * To see an example of such a data structure, examine the contents of the
+     * file `latex-notation.js` in this repository.
+     * 
+     * @param {string} name - the name of the language, just as in this class's
+     *   constructor
+     * @param {Converter} converter - a {@link Converter} instance, just as in
+     *   this class's constructor
+     * @param {Object} json - the JSON representation of the language, as
+     *   described above
+     */
+    static fromJSON ( name, converter, json ) {
+        const result = new Language( name, converter, json.groupers )
+        json.notations.forEach( entry => result.addNotation(
+            entry.concept, entry.notation, entry.options ) )
+        return result
+    }
+
     // Internal use only
     // The default variable names, as documented in the addNotation() function
     static defaultVarNames = 'ABC'

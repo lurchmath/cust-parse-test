@@ -231,6 +231,9 @@ export class Converter {
      * @param {String|RegExp} putdown - the notation for this concept in the
      *   putdown language
      * @param {Object?} options - see supported fields above
+     * @see {@link Converter#concept concept()}
+     * @see {@link Converter#isConcept isConcept()}
+     * @see {@link Converter#addBuiltIns addBuiltIns()}
      */
     addConcept ( name, parentType, putdown, options = { } ) {
         options = Object.assign( {
@@ -311,6 +314,9 @@ export class Converter {
      * 
      * @param {String[]} [names] - the names of those concepts to import, or
      *   leave empty to import all
+     * @see {@link Converter#addConcept addConcept()}
+     * @see {@link Converter#isConcept isConcept()}
+     * @see {@link Converter#concept concept()}
      */
     addBuiltIns ( names ) {
         // If they provided a list of names, ensure it contains all

@@ -634,10 +634,3 @@ export const latexNotation = {
 		},
 	]
 }
-
-latexNotation.addTo = converter => {
-	const language = new Language( 'latex', converter, latexNotation.groupers )
-	latexNotation.notations.forEach( entry => language.addNotation(
-		entry.concept, entry.notation, entry.options ) )
-	return language
-}
