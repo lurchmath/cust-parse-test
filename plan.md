@@ -83,9 +83,6 @@ Polishing:
        tests run above.
     8. Add an `it()` call to `test-latex-to-putdown.js` to compose two of the
        tests run above.
- - Automate the creation of a nice diagram of the syntactic types hierarchy and
-   add to the docs build process the regeneration of that diagram and the
-   integration of it into the docs themselves.
  - Right now the spacing in the LaTeX notation in the example converter is
    inconsistent.  Some things are like `x ^ { - 1 }`, to permit whatever spacing
    the user wants, and some things are like `[x,y]`, which do not.  Two fixes:
