@@ -104,28 +104,26 @@ export class Template {
      * @see {@link Template#defaultVariableNames defaultVariableNames}
      */
     fillIn ( values ) {
+        // Ensure we have extra arguments only if that makes sense
         if ( values.length < this.arity()
           || ( values.length > this.arity() && this.arity() < 2 ) )
             throw new Error(
                 `Template of arity ${this.arity()} received ${values.length} values` )
-        const result = this.parts.slice()
-        let operatorIndex = this.variables.includes( result[0] ) ? 1 : 2
-        for ( let i = 0 ; i < values.length ; i++ ) {
-            if ( i < this.arity() ) {
-                result.forEach( ( item, index ) => {
-                    if ( item == this.variables[i] ) result[index] = values[i]
-                } )
-            } else {
-                result.splice( operatorIndex + 2, 0,
-                    result[operatorIndex], values[i] )
-                operatorIndex += 2
-            }
+        // handle all arguments within our arity (the typical cases)
+        const result = this.parts.map( part => {
+            const variableIndex = this.variables.indexOf( part )
+            return variableIndex > -1 ? values[variableIndex] : part
+        } )
+        // if any extra arguments were provided, handle them in a manner
+        // commensurate with a flattened, associative, binary operator
+        let operatorIndex = this.variables.includes( this.parts[0] ) ? 1 : 2
+        for ( let i = this.arity() ; i < values.length ; i++ ) {
+            result.splice( operatorIndex + 2, 0,
+                result[operatorIndex], values[i] )
+            operatorIndex += 2
         }
+        // return the result
         return result.join( '' )
-        // return this.parts.map( part => {
-        //     const variableIndex = this.variables.indexOf( part )
-        //     return variableIndex > -1 ? values[variableIndex] : part
-        // } ).join( '' )
     }
 
     /**
