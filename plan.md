@@ -11,15 +11,6 @@ Bug fix:
    flattened, but it fails in that those ASTs will then be unable to convert to
    putdown because they have the wrong number of arguments for the putdown form
    as originally defined.  This needs a redesign, probably like so:
-    - Create a `Template` class that will take a string and a variables list and
-      (at construction time) split the string to also store a template array
-      internally, like the code at about `ast.js:500` does.
-    - Add a `Template.fillIn(...args)` method that does what it says on the tin,
-      by re-using the code from the very end of `AST.toLanguage()`.  Now replace
-      the last approx.30 lines of code in `AST.toLanguage()` with a construction
-      of a `Template` instance and then use of it thereafter.
-    - See if there are any other places you might want to use the new `Template`
-      class.
     - When you flatten, give the resulting AST an attribute that says it was
       flattened, so that this is recorded.
     - When you check for the correct arity in `AST.toLanguage()`, if the AST is
@@ -28,6 +19,8 @@ Bug fix:
     - Enhance `Template.fillIn(...args)` so that if it receives too many
       arguments, it does something sensible by repeating the last two (and the
       text between them) as many times as necessary to handle the extras.
+    - See if there are any other places you might want to use the new `Template`
+      class.
 
 Polishing:
  - Add the capability of asking for all possible parsings, rather than just

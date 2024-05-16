@@ -4,6 +4,7 @@ import { AST } from './ast.js'
 import SyntacticTypes from './syntactic-types.js'
 import { notationStringToArray } from './utilities.js'
 import { builtInConcepts } from './built-in-concepts.js'
+import { Template } from './template.js'
 
 /**
  * The Language class represents one of the languages among which a
@@ -100,7 +101,7 @@ export class Language {
                 }
                 if ( !( concept.putdown instanceof RegExp ) ) {
                     const array = notationStringToArray( concept.putdown,
-                        Array.from( Language.defaultVarNames ) )
+                        Array.from( Template.defaultVariableNames ) )
                     if ( array.length != 1 ) return
                     if ( !( array[0] instanceof RegExp ) ) return
                 }
@@ -182,7 +183,7 @@ export class Language {
     addNotation ( conceptName, notation, options = { } ) {
         const originalNotation = notation
         options = Object.assign( {
-            variables : Array.from( Language.defaultVarNames )
+            variables : Array.from( Template.defaultVariableNames )
         }, options )
         // ensure concept is valid
         const concept = this.converter.concept( conceptName )
@@ -383,10 +384,6 @@ export class Language {
             entry.concept, entry.notation, entry.options ) )
         return result
     }
-
-    // Internal use only
-    // The default variable names, as documented in the addNotation() function
-    static defaultVarNames = 'ABC'
 
     // Internal use only
     // Does this language have a token in its tokenizer that is equal to the

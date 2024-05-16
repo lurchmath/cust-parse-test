@@ -1,6 +1,6 @@
 
 import SyntacticTypes from './syntactic-types.js'
-import { escapeRegExp } from './utilities.js'
+import { Template } from './template.js'
 
 /**
  * An abstract syntax tree (AST) is a data structure typically created by
@@ -490,31 +490,11 @@ export class AST {
             }
         } )
         // get the default way to write that concept in this language
+        // and use it as a template to fill in to get the result
         const rhs = language.rulesFor( this )[0]
-        let notation = rhs.notation
-        // now split that into an array to make template substitution easier
-        const template = [ ]
-        const splitter = new RegExp( rhs.variables.map( escapeRegExp ).join( '|' ) )
-        while ( notation.length > 0 ) {
-            const match = splitter.exec( notation )
-            if ( match ) {
-                if ( match.index > 0 )
-                    template.push( notation.substring( 0, match.index ) )
-                template.push( match[0] )
-                notation = notation.substring( match.index + match[0].length )
-            } else {
-                template.push( notation )
-                notation = ''
-            }
-        }
+        const template = new Template( rhs.notation, rhs.variables )
         // console.log( `\tabout to use template = ${template}` )
-        // fill the recursively computed results into the template
-        return language.linter(
-            template.map( piece => {
-                const variableIndex = rhs.variables.indexOf( piece )
-                return variableIndex > -1 ? recur[variableIndex] : piece
-            } ).join( '' ).replace( /\s+/g, ' ' )
-        )
+        return language.linter( template.fillIn( recur ).replace( /\s+/g, ' ' ) )
     }
 
 }

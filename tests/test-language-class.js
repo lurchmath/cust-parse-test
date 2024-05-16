@@ -17,8 +17,6 @@ describe( 'Language instance', () => {
         expect(
             Language.regularExpressions.number
         ).to.be.instanceOf( RegExp )
-        // defaultVarNames is a string
-        expect( typeof Language.defaultVarNames ).to.equal( 'string' )
     } )
 
 } )

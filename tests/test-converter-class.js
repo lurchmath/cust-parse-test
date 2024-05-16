@@ -3,7 +3,7 @@ import { expect } from 'chai'
 import { Converter } from '../converter.js'
 import { Language } from '../language.js'
 
-describe( 'Converter instance', () => {
+describe( 'Converter class', () => {
 
     it( 'should be defined', () => {
         expect( Converter ).to.be.ok

@@ -4,6 +4,7 @@ import SyntacticTypes from './syntactic-types.js'
 import { putdownLeaves } from './utilities.js'
 import { Language } from './language.js'
 import { builtInConcepts } from './built-in-concepts.js'
+import { Template } from './template.js'
 
 /**
  * ## Class overview
@@ -254,7 +255,7 @@ export class Converter {
             if ( putdown instanceof RegExp ) {
                 this.languages.get( 'putdown' ).addNotation( name, putdown )
             } else if ( typeof( putdown ) == 'string' ) {
-                const variables = Array.from( Language.defaultVarNames )
+                const variables = Array.from( Template.defaultVariableNames )
                 let putdownForParsing = putdown.replace( /([()])/g, ' $1 ' ).trim()
                 conceptData.typeSequence.forEach( ( type, index ) =>
                     putdownForParsing = putdownForParsing.replace(
