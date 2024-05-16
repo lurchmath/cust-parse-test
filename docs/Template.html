@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Customizable Parsing Test Repository: Global</title>
+    <title>Customizable Parsing Test Repository: Template</title>
     
       <link type="text/css" rel="stylesheet" href="styles/vendor/prism-default.css">
     
@@ -43,8 +43,8 @@
 
 <main class="layout-main ">
   <div class="container">
-    <p class="page-kind"></p>
-    <h1 class="page-title">Global</h1>
+    <p class="page-kind">Class</p>
+    <h1 class="page-title">Template</h1>
     
 
 
@@ -53,17 +53,25 @@
 <section>
 
 
-<header class="not-class">
+<header class="class">
 
 
     
         
-        <!-- <h2></h2> -->
+        <!-- <h2>Template</h2> -->
 
         
 
         
 
+        
+            
+            <div class="class-description"><p>A string such as <code>&quot;x+y&quot;</code> can be viewed as a template to fill in by replacing
+the x and y with new values.  For example, if we substitute x=3 and y=f(x) we
+get <code>&quot;3+f(x)&quot;</code>.  This class represents a template that can be filled in.  One
+constructs the template by providing the string like <code>&quot;x+y&quot;</code> together with
+the list of variable names that are to be treated as placeholders.  See the
+constructor for more details.</p></div>
         
     
 </header>
@@ -76,7 +84,118 @@
     
         
 
-        
+
+
+
+
+    
+
+
+    
+    <h3 class="subtitle">Constructor</h3>
+    
+
+    <div class="method-type">
+    
+    </div>
+
+    <h4 class="method-name" id="Template">new Template<span class="signature">(text, variables)</span><span class="return-type-signature"></span>
+    </h4>
+
+
+
+
+
+<div class="method-description">
+    
+    <p>A template is constructed from a string and a list of variable names.  By
+default, the variables are the names A, B, and C, so one can write
+templates such as <code>&quot;A+B&quot;</code> and <code>&quot;sin^{-1}(A)&quot;</code> and <code>&quot;A=B mod C&quot;</code> and so
+on.  If one needs to write a template that contains one of those three
+letters (such as <code>&quot;Assume P&quot;</code> which contains the letter A) then one can
+specify a different set of variables to be recognized instead.  (In that
+example, one could provide just the letter <code>&quot;P&quot;</code>.)</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h4 class="method-heading">Parameters</h4>
+    
+
+<ul class="method-params">
+    
+
+        <li>
+            
+                <span class="param-name">text</span>
+            
+
+            
+                
+
+
+    <span class="param-type">
+        <code>string</code>
+    </span>
+    
+
+            
+
+            
+
+            
+
+            <div class="param-description"><p>the text that functions as a template, once the
+variables within it have been recognized as placeholders to be filled
+in later with values</p></div>
+            
+        </li>
+
+    
+
+        <li>
+            
+                <span class="param-name">variables</span>
+            
+
+            
+                
+
+
+    <span class="param-type">
+        <code>string</code>
+    </span>
+    |
+
+    <span class="param-type">
+        <code>Array.&lt;string></code>
+    </span>
+    
+
+            
+
+            
+
+            
+
+            <div class="param-description"><p>the names of the variables in the
+template, which can be provided as a single string (meaning that each
+of its characters is a one-letter variable) or as an array of strings,
+each of whose entries is a variable</p></div>
+            
+        </li>
+
+    
+</ul>
+
+
+
 
 
 <div class="details">
@@ -107,17 +226,55 @@
     
 
     
+        <h4 class="method-heading">See</h4>
+        <ul>
+            
+                <li><a href="Template.html#defaultVariableNames">defaultVariableNames</a></li>
+            
+        </ul>
+    
 
     
 </div>
 
 
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h4 class="method-heading">Source</h4>
+    <ul>
+        <li class="method-source">
+            <a href="template.js.html">template.js</a><a href="template.js.html#source.12">, line 12</a>
+        </li>
+    </ul>
+
+
+
     
     </div>
 
     
 
+    
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="Template.html">Template</a></dt>
+            <dd></dd>
+        </dl>
     
 
      
@@ -135,19 +292,17 @@
 
 <article class="member">
     <div class="method-type">
-        <span class="method-type-signature is-constant">constant</span>
+        
     </div>
-<h4 class="member-name" id="escapeRegExp">escapeRegExp<span class="type-signature"></span></h4>
+<h4 class="member-name" id="defaultVariableNames">defaultVariableNames<span class="type-signature"></span></h4>
 
 
 
 
 <div class="description">
-    <p>Escape all characters in the given string so that it can be used as a regular
-expression that will match only the literal string given.  For example, if
-the input is <code>&quot;[x]&quot;</code>, this function will escape it to <code>&quot;\[x\]&quot;</code>, so that if a
-regular expression is constructed from the result, it will match only the
-original string <code>&quot;[x]&quot;</code>, rather than the string <code>&quot;x&quot;</code>.</p>
+    <p>The default set of variables used when parsing templates.  That is, every
+one-letter variable mentioned in this string will be used as a &quot;hole&quot; in
+the template, and all other letters will not be treated as variables.</p>
 </div>
 
 
@@ -197,38 +352,60 @@ original string <code>&quot;[x]&quot;</code>, rather than the string <code>&quot
     <h4>Source</h4>
     <ul>
         <li class="method-source">
-            <a href="utilities.js.html">utilities.js</a><a href="utilities.js.html#source.12">, line 12</a>
+            <a href="template.js.html">template.js</a><a href="template.js.html#source.19">, line 19</a>
         </li>
     </ul>
 
 
 </article>
+        
+    
+
+    
+        <h3 class="subtitle">Methods</h3>
+
         
             
 
-<article class="member">
+
+    <article class="method">
+
+
+
+
+    
+
+
+    
+
     <div class="method-type">
-        <span class="method-type-signature is-constant">constant</span>
+    
     </div>
-<h4 class="member-name" id="notationStringToArray">notationStringToArray<span class="type-signature"></span></h4>
+
+    <h4 class="method-name" id="arity">arity<span class="signature">()</span><span class="return-type-signature"> &rarr; {number}</span>
+    </h4>
 
 
 
 
-<div class="description">
-    <p>The Earley parsing library used in this repository expects grammar rules to
-be defined by an array containing a mixture of strings and regular
-expressions.  A string is used to represent a non-terminal symbol, and a
-regular expression is used to represent a terminal symbol.  But it is
-typically more convenient to write a rule as a single string.  For example, a
-standard summation of two variables is more convenient to write as <code>&quot;x+y&quot;</code>
-instead of as <code>[&quot;x&quot;,/\+/,&quot;y&quot;]</code>.  This function converts strings in the
-simpler form to arrays of strings and regular expressions in the more
-complex form.  It treats any identifier mentioned in the <code>variables</code> array as
-a nonterminal, and represents it as a string, and any other sequence of
-non-space characters as a terminal, and represents it as a regular
-expression.</p>
+
+<div class="method-description">
+    
+    <p>The arity of a template is the number of variables in it.  This
+determines the number of arguments that the template accepts when one
+calls <a href="Template.html#fillIn">fillIn()</a>.</p>
+<p>This is not the same as the number of variables provided at construction
+time, because not all variables provided at construction time may have
+been included in the text of the template.  For example, the default list
+of variables is <code>&quot;ABC&quot;</code> but templates may be simple, such as <code>&quot;A^2&quot;</code>,
+using only one variable and thus having arity 1.</p>
 </div>
+
+
+
+
+
+
 
 
 
@@ -264,48 +441,271 @@ expression.</p>
     
 
     
+        <h4 class="method-heading">See</h4>
+        <ul>
+            
+                <li><a href="Template.html#defaultVariableNames">defaultVariableNames</a></li>
+            
+        </ul>
+    
 
     
 </div>
 
 
 
+    <h4 class="method-heading">Returns</h4>
+    <ul>
+    
+        <li class="method-returns">
+            
+                <code>number</code>
+            
+            
+                <p>the number of variables used in the template</p>
+            
+        </li>
+    
+    </ul>
 
 
 
 
-    <h4>Source</h4>
+
+
+
+
+
+
+
+
+
+
+
+
+    <h4 class="method-heading">Source</h4>
     <ul>
         <li class="method-source">
-            <a href="utilities.js.html">utilities.js</a><a href="utilities.js.html#source.56">, line 56</a>
+            <a href="template.js.html">template.js</a><a href="template.js.html#source.74">, line 74</a>
         </li>
     </ul>
 
 
-</article>
+
+    </article>
+
         
             
 
-<article class="member">
+
+    <article class="method">
+
+
+
+
+    
+
+
+    
+
     <div class="method-type">
-        <span class="method-type-signature is-constant">constant</span>
+    
     </div>
-<h4 class="member-name" id="putdownLeaves">putdownLeaves<span class="type-signature"></span></h4>
+
+    <h4 class="method-name" id="fillIn">fillIn<span class="signature">(values)</span><span class="return-type-signature"> &rarr; {string}</span>
+    </h4>
 
 
 
 
-<div class="description">
-    <p>A putdown expression represents a syntax tree in a straightforward way.  The
-leaves of that tree are the symbols appearing in it, because they have no
-children.  This function extracts the list of leaves (as an array, not a set,
-so they are ordered and may repeat) from the given putdown expression.</p>
-<p>It does so via a trivial string processing operation that does not involve
-parsing the putdown code into a string.  Consequently, this function can
-accept partial putdown code that is not a fully syntactically correct
-expression (such as <code>(+ 1 2</code> for example) and will still return the leaves
-(in that case, the array <code>[&quot;+&quot;, &quot;1&quot;, &quot;2&quot;]</code>]).</p>
+
+<div class="method-description">
+    
+    <p>Assuming that the variables used when constructing the template were
+A, B, and C, then calling this function with an array of values will
+replace all occurrences of A in the template with the first entry in the
+values list, all occurrences of B with the second entry, and so on.</p>
+<p>Obviously, if a different list of variables were used, then the values
+will be substituted for those variables, in whatever order they appeared
+in the list of variables provided to the constructor.</p>
+<p>Example: <code>new Template( &quot;A+B&quot; ).fillIn( [ 3, 4 ] )</code> returns <code>&quot;3+4&quot;</code>.</p>
+<p>If the wrong number of valeus are provided (that is, the length of the
+values array is not the <a href="Template.html#arity">arity</a> of the template)
+then one of two actions is taken.  If the length of the values array is
+greater than the arity of the template, and that arity is at least 2,
+then we assume that the template represents a binary operator, and we
+repeat its second section as many times as required (e.g., <code>A+B</code> becoming
+<code>A+B+C+D</code> or whatever is needed).  If those conditions do not hold, then
+an error is thrown.</p>
 </div>
+
+
+
+
+
+
+
+
+
+    <h4 class="method-heading">Parameters</h4>
+    
+
+<ul class="method-params">
+    
+
+        <li>
+            
+                <span class="param-name">values</span>
+            
+
+            
+                
+
+
+    <span class="param-type">
+        <code>Array.&lt;string></code>
+    </span>
+    
+
+            
+
+            
+
+            
+
+            <div class="param-description"><p>the values to fill into the template</p></div>
+            
+        </li>
+
+    
+</ul>
+
+
+
+
+
+<div class="details">
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h4 class="method-heading">See</h4>
+        <ul>
+            
+                <li><a href="Template.html#arity">arity()</a></li>
+            
+                <li><a href="Template.html#defaultVariableNames">defaultVariableNames</a></li>
+            
+        </ul>
+    
+
+    
+</div>
+
+
+
+    <h4 class="method-heading">Returns</h4>
+    <ul>
+    
+        <li class="method-returns">
+            
+                <code>string</code>
+            
+            
+                <p>the result of filling in the template</p>
+            
+        </li>
+    
+    </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h4 class="method-heading">Source</h4>
+    <ul>
+        <li class="method-source">
+            <a href="template.js.html">template.js</a><a href="template.js.html#source.106">, line 106</a>
+        </li>
+    </ul>
+
+
+
+    </article>
+
+        
+            
+
+
+    <article class="method">
+
+
+
+
+    
+
+
+    
+
+    <div class="method-type">
+    
+    </div>
+
+    <h4 class="method-name" id="toString">toString<span class="signature">()</span><span class="return-type-signature"> &rarr; {string}</span>
+    </h4>
+
+
+
+
+
+<div class="method-description">
+    
+    <p>The string representation of the template is the JSON representation of
+the template as an array of strings that is equal to the original text
+given at construction time, split at the boundaries around variable
+names.  E.g., <code>new Template( &quot;\\frac{A}{B}&quot; ).toString()</code> returns
+<code>[&quot;\\frac{&quot;, &quot;A&quot;, &quot;}{&quot;, &quot;B&quot;, &quot;}&quot;]</code>.</p>
+</div>
+
+
+
+
+
+
 
 
 
@@ -341,28 +741,60 @@ expression (such as <code>(+ 1 2</code> for example) and will still return the l
     
 
     
+        <h4 class="method-heading">See</h4>
+        <ul>
+            
+                <li><a href="Template.html#defaultVariableNames">defaultVariableNames</a></li>
+            
+        </ul>
+    
 
     
 </div>
 
 
 
+    <h4 class="method-heading">Returns</h4>
+    <ul>
+    
+        <li class="method-returns">
+            
+                <code>string</code>
+            
+            
+                <p>a string representation of this template</p>
+            
+        </li>
+    
+    </ul>
 
 
 
 
-    <h4>Source</h4>
+
+
+
+
+
+
+
+
+
+
+
+
+    <h4 class="method-heading">Source</h4>
     <ul>
         <li class="method-source">
-            <a href="utilities.js.html">utilities.js</a><a href="utilities.js.html#source.30">, line 30</a>
+            <a href="template.js.html">template.js</a><a href="template.js.html#source.139">, line 139</a>
         </li>
     </ul>
 
 
-</article>
-        
-    
 
+    </article>
+
+        
     
 
     
