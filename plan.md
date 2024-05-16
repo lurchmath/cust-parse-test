@@ -1,12 +1,17 @@
 
-To verify that this project is also viable for parsing Lurch notation:
+# Prove this project is viable
+
+Can it handle Lurch notation?
  - Use the scraper tool in the lurchmath repo's grading tools folder to get a
    list of all unique Lurch notation expressions used in Math299 in Spring 2024.
  - Use the new JSON API described above to define a new language of Lurch
    notation and verify that all (or almost all) of the expressions scraped from
    Math299 can be parsed correctly by the converter defined in that way.
 
-Polishing:
+# Polish the project's features
+
+Support left- and right-associativity for operators (which is kind of the
+opposite of associative flattening, which you already support).
  - Add the capability of asking for all possible parsings, rather than just
    getting the first one.
     - Run tests on this, especially anywhere the test suite mentioned
@@ -20,46 +25,10 @@ Polishing:
  - Add a feature where you can specify, for any given operator, whether it
    associates right or left, and if you do, then we will filter out of the list
    of valid parsings any result that contains a nesting different than what you
-   specified.
- - Make overview documentation for the main docs index page.  It should include
-   all the assumptions baked into this implementation, such as:
-    - whitespace is not meaningful
-    - alphabetically least JSON parsing leads to right association in most cases
-      (which is good for conditional, f.ex., and irrelevant for associative
-      stuff)
-    - when you say how to write a variable, that's how it will be written in ANY
-      language
- - Also add to the overview documentation the procedure for adding new concepts
-   and tests to the example converter, which is:
-    1. Add a new `addConcept()` call to the `example-converter.js` file, with
-       the appropriate putdown notation included.
-    2. Add an `it()` call to `test-parsing-putdown.js` to ensure that the new
-       concept can be parsed from putdown notation.
-        - Possibly also add a test to an `it()` whose purpose is to test nesting
-          of expressions in one another, using the new type you just introduced.
-    3. Add an `it()` call to `test-creating-putdown.js` to ensure that the new
-       concept can be rendered to putdown notation.  (You can probably copy and
-       paste the test you created in item 2., but rename the function call and
-       swap the two arguments' order.)
-        - Possibly also add a test to an `it()` whose purpose is to test nesting
-          of expressions in one another, using the new type you just introduced.
-    4. Add a new `addNotation()` call to the `example-converter.js` file, with
-       one or more LaTeX notations for the new concept.
-    5. Add an `it()` call to `test-parsing-latex.js` to ensure that the new
-       concept can be parsed from latex notation.
-        - Possibly also add a test to an `it()` whose purpose is to test
-          precedence of your new operator (if indeed it is one) compared to
-          pre-existing ones.
-    6. Add an `it()` call to `test-creating-latex.js` to ensure that the new
-       concept can be rendered to latex notation.  (You can probably copy and
-       paste the test you created in item 5., but rename the function call and
-       swap the two arguments' order.)
-        - Possibly also add a test to an `it()` whose purpose is to test that
-          rendering puts groupers where needed to respect relative precedence.
-    7. Add an `it()` call to `test-putdown-to-latex.js` to compose two of the
-       tests run above.
-    8. Add an `it()` call to `test-latex-to-putdown.js` to compose two of the
-       tests run above.
+   specified.  (Suggestion: Use the option with key "associates" instead of the
+   key "associative," because these operators are explicitly NOT associative.)
+
+Make it easier for language designers to use whatever spacing they want.
  - Right now the spacing in the LaTeX notation in the example converter is
    inconsistent.  Some things are like `x ^ { - 1 }`, to permit whatever spacing
    the user wants, and some things are like `[x,y]`, which do not.  Two fixes:
@@ -73,16 +42,64 @@ Polishing:
    impossible to then parse `f^{-1}(x)`.  Creating the lower-priority parsing of
    `x^{-1}` might allow LaTeX notation authors to write `\\mathcal{A}(B)`, but
    I have not yet tested it.
+ - If this works, add support for a new option in the final argument to
+   `addNotation()` that shows where spaces are permitted in the notation, as in
+   `addNotation( 'inverse', 'f^{-1}', { spaces:'f ^ { - 1 }' } )`.  In that
+   case, the system will add both notations for you, in the correct priority
+   order, so that the desired behavior happens automatically.
 
-Notation we might eventually want one day as part of the default set of concepts
-that come built into this parser
- - Intervals `(1,2)`, `[1,2]`, `[1,2)`, `(1,2]`
- - Absolute values, using `|...|` or `\vert...\vert` (opt.w/`\left/\right`)
- - Norms/distances, using `||...||` or `\Vert...\Vert` (opt.w/`\left/\right`)
- - All upper and lower case Greek letters, with variants
+# Document things
 
-List of symbols that can be entered with MathLive but for which the current
-example converter has no concepts:
+Overview documentation with assumptions, like these:
+ - whitespace is not meaningful
+ - alphabetically least JSON parsing leads to right association in most cases
+   (which is good for conditional, f.ex., and irrelevant for associative stuff)
+ - when you say how to write a variable, that's how it will be written in ANY
+   language
+
+The procedure for adding new concepts and tests to the example converter:
+ 1. Add a new `addConcept()` call to the `example-converter.js` file, with
+    the appropriate putdown notation included.
+ 2. Add an `it()` call to `test-parsing-putdown.js` to ensure that the new
+    concept can be parsed from putdown notation.
+     - Possibly also add a test to an `it()` whose purpose is to test nesting
+       of expressions in one another, using the new type you just introduced.
+ 3. Add an `it()` call to `test-creating-putdown.js` to ensure that the new
+    concept can be rendered to putdown notation.  (You can probably copy and
+    paste the test you created in item 2., but rename the function call and
+    swap the two arguments' order.)
+     - Possibly also add a test to an `it()` whose purpose is to test nesting
+       of expressions in one another, using the new type you just introduced.
+ 4. Add a new `addNotation()` call to the `example-converter.js` file, with
+    one or more LaTeX notations for the new concept.
+ 5. Add an `it()` call to `test-parsing-latex.js` to ensure that the new
+    concept can be parsed from latex notation.
+     - Possibly also add a test to an `it()` whose purpose is to test
+       precedence of your new operator (if indeed it is one) compared to
+       pre-existing ones.
+ 6. Add an `it()` call to `test-creating-latex.js` to ensure that the new
+    concept can be rendered to latex notation.  (You can probably copy and
+    paste the test you created in item 5., but rename the function call and
+    swap the two arguments' order.)
+     - Possibly also add a test to an `it()` whose purpose is to test that
+       rendering puts groupers where needed to respect relative precedence.
+ 7. Add an `it()` call to `test-putdown-to-latex.js` to compose two of the
+    tests run above.
+ 8. Add an `it()` call to `test-latex-to-putdown.js` to compose two of the
+    tests run above.
+
+Limitations of the current version
+ - Common mathematical concepts we do not currently have in our default set
+    - Intervals `(1,2)`, `[1,2]`, `[1,2)`, `(1,2]`
+    - Absolute values, using `|...|` or `\vert...\vert` (opt.w/`\left/\right`)
+    - Norms/distances, using `||...||` or `\Vert...\Vert` (opt.w/`\left/\right`)
+    - All upper and lower case Greek letters, with variants
+ - The fact that our LaTeX parser currently can't handle `\frac12` and similar
+   things because of tokenization of 12 as twelve.  Note that this does not play
+   nicely with MathLive at present.
+ - The fact that there are some symbols that you can enter with the MathLive
+   keyboard (in its default configuration) that we don't support (listed below)
+
 ```
 \pm as in v\pm w
 \imaginaryI
@@ -121,150 +138,7 @@ X^{\prime}, X^{\doubleprime}
 {\displaylines x\\ y} is like a fraction with no bar
 ```
 
-Plus one LaTeX form that MathLive creates but that this parser cannot handle:
-```
-\frac12   because the 12 tokenizes as a single integer (solution is probably
-          to preprocess anything coming out of MathLive and add curlies to
-          clarify the parameters of the fraction command)
-```
-
-Tests used in the Earley testing library that we can use here:
-(Note that these are written here in LaTeX notation, but they can be used to
-test any language, not just LaTeX.)
-```
-// LaTeX
-// basics:
-6 + k
-1.9 - T
-0.2 \cdot 0.3
-v \div w
-v \pm w
-2^k
-5.0 - K + e
-5.0 \times K \div e
-(a^b)^c
-5.0 - K\cdot e
-5.0\times K+e
-u^v\times w^x
--7                          
-A+-B                        
--A+B
--A^B
-i
-
-// respects parens:
-6+k+5 // == (6+k)+5         
-6+(k+5)
-(5.0-K)\cdot e
-5.0\times(K+e)
--(K+e)
--(A^B)
-
-// fractions
-\frac{1}{2}
-\frac{p}{q}                 
-\frac{1+t}{3}
-\frac{a+b}{a-b}
-\frac{1+2\times v}{-w}
-
-// radicals:
-\sqrt 2
-\sqrt{10-k+9.6}                 
-\sqrt[p]{2}
-\sqrt[50]{10-k+9.6}
-\frac{6}{\sqrt{\frac{1}{2}}}
-\sqrt{1+\sqrt{5}}+1
-\sqrt[2+t]{1\div\infty}         
-
-// logs:
-\ln x
-\log 1000
-\log e^x\times y
-\log_{31}65                     
-\log_{-t}{k+5}
-
-// sentences:
-2<3
--6>k
-t+u=t+v
-t+u\neq t+v
-\frac{a}{7+b}\approx 0.75
-t^2\leq 10
-1+2+3\geq 6
-k\cong 1
-\therefore 1<2
-\neg A+B=C^D
-\neg\neg x=x
-
-// intervals:
-(1,2]
-(t,k)
-[I,J]
-[30,52.9)
-(5\times(t+u),2^9]
-(3-[1,2])\times 4
-[(2,3],(j,j+1])
-
-// absolute values:
-|a|
-|-962|
-|\frac{a^b}{10}|
-|9-8+7-6|
-|6+r|-|6-r|
-|\frac{|x|}{x}|
-||1|+|1||
-
-// trig:
-\sin x
-\tan\pi
-\sec^{-1}0
-\cos x + 1
-\cot(a-9.9)
-|\csc^{-1}(1+g)|^2
-
-// factorials:
-10!
-W\times R!
-(W+R)!
-
-// limits:
-\lim_{x\to t_0}\sin x
-3\times\lim_{a\to1}\frac a 1 +9
-
-// sums:
-\sum_{x=1}^5 x^2
-\sum^{n+1}_{m=0}m-1 // where the -1 is outside the sum
-
-// differential and integral calculus:
-dx
-dQ
-\frac{d}{dx}
-\int x^2 \cdot dx
-\int (\frac x k - 10)\cdot dk
-\int_0^2 (s+t)\cdot dt
-\int^b_a |x-1|\cdot dx
-
-// arithmetic around limit-like things
-\int A\cdot B // == \int (A\cdot B)
-B\cdot\int A
-\int A\div B // == \int (A\div B)
-B\div\int A
-\int A+B // == (\int A)+B
-B+\int A
-\int A-B // == (\int A)-B
-B-\int A
-\lim_{x\to t}A\cdot B // == \lim_{x\to t}(A\cdot B)
-B\cdot\lim_{x\to t}A
-\lim_{x\to t}A\div B // == \lim_{x\to t}(A\div B)
-B\div\lim_{x\to t}A
-\lim_{x\to t}A+B // == (\lim_{x\to t}A)+B
-B+\lim_{x\to t}A
-\lim_{x\to t}A-B // == (\lim_{x\to t}A)-B
-B-\lim_{x\to t}A
-
-// difficult pitfalls:
-\lim_{x\to\infty}\tan^{-1}x // == \lim_{x\to\intfy}(\arctan x)
-```
+# Lurch notation reference
 
 Latest version of the things that Lurch notation parses (as of Mar 26, 2024),
 so that you can try to build a Lurch notation parser eventually:
