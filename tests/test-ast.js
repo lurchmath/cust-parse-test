@@ -228,7 +228,7 @@ describe( 'Abstract Syntax Tree class (AST)', () => {
         tempConv2.addConcept( 'int', 'AtomicNumberExpression',
             Language.regularExpressions.integer )
         tempConv2.addConcept( 'add', 'SumExpression',
-            '(+ SumExpression SumExpression)', { associative : 'add' } )
+            '(+ SumExpression SumExpression)', { associative : [ 'add' ] } )
         const tempLang2 = new Language( 'tempLang2', tempConv2 )
         tempLang2.addNotation( 'add', 'A+B' )
         // check two hierarchies of additions
@@ -244,7 +244,7 @@ describe( 'Abstract Syntax Tree class (AST)', () => {
         tempConv3.addConcept( 'int', 'AtomicNumberExpression',
             Language.regularExpressions.integer )
         tempConv3.addConcept( 'add', 'SumExpression',
-            '(+ SumExpression SumExpression)', { associative : 'add' } )
+            '(+ SumExpression SumExpression)', { associative : [ 'add' ] } )
         const tempLang3 = new Language( 'tempLang3', tempConv3 )
         tempLang3.addNotation( 'add', '(SUM A B)' )
         expect( () => ast = tempLang3.parse( '(SUM 1 (SUM 2 3))' ) ).to.not.throw()
