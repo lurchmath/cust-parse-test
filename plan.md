@@ -6,22 +6,6 @@ To verify that this project is also viable for parsing Lurch notation:
    notation and verify that all (or almost all) of the expressions scraped from
    Math299 can be parsed correctly by the converter defined in that way.
 
-Bug fix:
- - Associativity right now works well in that it will produce ASTs that are
-   flattened, but it fails in that those ASTs will then be unable to convert to
-   putdown because they have the wrong number of arguments for the putdown form
-   as originally defined.  This needs a redesign, probably like so:
-    - When you flatten, give the resulting AST an attribute that says it was
-      flattened, so that this is recorded.
-    - When you check for the correct arity in `AST.toLanguage()`, if the AST is
-      a flattened one and the concept permits some types of associative
-      flattening, then do not throw the error.
-    - Enhance `Template.fillIn(...args)` so that if it receives too many
-      arguments, it does something sensible by repeating the last two (and the
-      text between them) as many times as necessary to handle the extras.
-    - See if there are any other places you might want to use the new `Template`
-      class.
-
 Polishing:
  - Add the capability of asking for all possible parsings, rather than just
    getting the first one.

@@ -50,7 +50,7 @@ describe( 'Template class', () => {
         expect( template.arity() ).to.equal( 4 )
     } )
 
-    it( 'should fill in templates correctly', () => {
+    it( 'should correctly fill in templates with the same arity', () => {
         let template = new Template( 'A+B' )
         expect( template.fillIn( [ '1', '2' ] ) ).to.equal( '1+2' )
         template = new Template( 'A+B+C' )
@@ -75,7 +75,6 @@ describe( 'Template class', () => {
         let template = new Template( 'A+B' )
         expect( () => template.fillIn( [] ) ).to.throw( / arity 2 / )
         expect( () => template.fillIn( [ '1' ] ) ).to.throw( / arity 2 / )
-        expect( () => template.fillIn( [ '1', '2', '3' ] ) ).to.throw( / arity 2 / )
         template = new Template( 'A+B+C' )
         expect( () => template.fillIn( [] ) ).to.throw( / arity 3 / )
         expect( () => template.fillIn( [ '1' ] ) ).to.throw( / arity 3 / )
@@ -91,6 +90,20 @@ describe( 'Template class', () => {
         expect( () => template.fillIn( [ '1' ] ) ).to.throw( / arity 4 / )
         expect( () => template.fillIn( [ '1', '2' ] ) ).to.throw( / arity 4 / )
         expect( () => template.fillIn( [ '1', '2', '3' ] ) ).to.throw( / arity 4 / )
+    } )
+
+    it( 'should correctly fill in binary templates with extra arguments', () => {
+        let template = new Template( 'A+B' )
+        expect( template.fillIn( [ '1', '2' ] ) ).to.equal( '1+2' )
+        expect( template.fillIn( [ '1', '2', '3' ] ) ).to.equal( '1+2+3' )
+        expect( template.fillIn( [ '1', '2', '3', '4' ] ) ).to.equal( '1+2+3+4' )
+        template = new Template( 'list(A,B)' )
+        expect( template.fillIn( [ 'hi', 'friend' ] ) )
+            .to.equal( 'list(hi,friend)' )
+        expect( template.fillIn( [ 'hi', 'my', 'friend' ] ) )
+            .to.equal( 'list(hi,my,friend)' )
+        expect( template.fillIn( [ 'hi', 'my', 'best', 'friend' ] ) )
+            .to.equal( 'list(hi,my,best,friend)' )
     } )
 
 } )

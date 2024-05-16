@@ -89,8 +89,14 @@ export class Template {
      *
      * Example: `new Template( "A+B" ).fillIn( [ 3, 4 ] )` returns `"3+4"`.
      * 
-     * Throws an error if the wrong number of values are provided.  The correct
-     * number is the {@link Template#arity arity} of the template.
+     * If the wrong number of valeus are provided (that is, the length of the
+     * values array is not the {@link Template#arity arity} of the template)
+     * then one of two actions is taken.  If the length of the values array is
+     * greater than the arity of the template, and that arity is at least 2,
+     * then we assume that the template represents a binary operator, and we
+     * repeat its second section as many times as required (e.g., `A+B` becoming
+     * `A+B+C+D` or whatever is needed).  If those conditions do not hold, then
+     * an error is thrown.
      * 
      * @param {string[]} values - the values to fill into the template
      * @returns {string} the result of filling in the template
@@ -98,13 +104,28 @@ export class Template {
      * @see {@link Template#defaultVariableNames defaultVariableNames}
      */
     fillIn ( values ) {
-        if ( values.length !== this.arity() )
+        if ( values.length < this.arity()
+          || ( values.length > this.arity() && this.arity() < 2 ) )
             throw new Error(
                 `Template of arity ${this.arity()} received ${values.length} values` )
-        return this.parts.map( part => {
-            const variableIndex = this.variables.indexOf( part )
-            return variableIndex > -1 ? values[variableIndex] : part
-        } ).join( '' )
+        const result = this.parts.slice()
+        let operatorIndex = this.variables.includes( result[0] ) ? 1 : 2
+        for ( let i = 0 ; i < values.length ; i++ ) {
+            if ( i < this.arity() ) {
+                result.forEach( ( item, index ) => {
+                    if ( item == this.variables[i] ) result[index] = values[i]
+                } )
+            } else {
+                result.splice( operatorIndex + 2, 0,
+                    result[operatorIndex], values[i] )
+                operatorIndex += 2
+            }
+        }
+        return result.join( '' )
+        // return this.parts.map( part => {
+        //     const variableIndex = this.variables.indexOf( part )
+        //     return variableIndex > -1 ? values[variableIndex] : part
+        // } ).join( '' )
     }
 
     /**

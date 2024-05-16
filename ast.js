@@ -241,7 +241,7 @@ export class AST {
      * addition were marked associative (in the {@link Converter}'s list of
      * concepts), then this function will not create a nested tree imitating
      * that JSON, but will create one isomorphic to `['addition','x','y','z']`
-     * instead.  (Note that associativity is actually a predicate about each
+     * instead.  (Note that associativity is actually not a predicate about each
      * operator separately, but a binary relation between the outer and inner
      * operators, so this example is a special case.)
      * 
@@ -262,7 +262,7 @@ export class AST {
         }
         // If the head does not represent a concept, then it must be a syntactic
         // type only, so the only processing we do is call .compact() iff this
-        // is the top-level call (which incluedes associativity flattening).
+        // is the top-level call (which includes associativity flattening).
         if ( json.length == 0 )
             throw new Error( 'Cannot build AST from empty array' )
         const concept = language.converter.concepts.get( json[0] )
@@ -381,10 +381,12 @@ export class AST {
         // It has at least 1 argument, so we need to recur on it/them:
         const recur = this.args().map( arg => arg.compact() )
         // Apply any associativity flattening permitted by the concept:
+        let didFlatten = false
         for ( let i = recur.length - 1 ; i >= 0 ; i-- ) {
             if ( recur[i].isCompound()
               && concept.associative.includes( recur[i].head().contents ) ) {
                 recur.splice( i, 1, ...recur[i].args() )
+                didFlatten = true
                 // console.log( `\t\tassociativity flattening: ${recur}` )
             } else {
                 // console.log( `\t\tno flattening: ${recur[i]} not in [${concept.associative}]` )
@@ -392,6 +394,7 @@ export class AST {
         }
         // Done:
         const result = new AST( this.language, [ head, ...recur ] )
+        result.wasFlattened = didFlatten
         // console.log( `\t\t\tbuilt from recursive results: ${result}` )
         return result
     }
@@ -469,11 +472,19 @@ export class AST {
         // recursively compute the representation of the arguments, wrapping
         // them in groupers if necessary
         // console.log( `\tnon-atomic concept ${head}...recurring...` )
-        if ( concept.typeSequence.length != this.numArgs() )
-            throw new Error( `Invalid type sequence for AST: ${this}` )
+        if ( concept.typeSequence.length != this.numArgs() ) {
+            // wrong arity, but is it because of associativity flattening?
+            // only throw an error if it could not have been from that:
+            if ( !this.wasFlattened || concept.typeSequence.length < 2
+              || this.numArgs() < concept.typeSequence.length )
+                throw new Error( `Invalid type sequence for AST: ${this}` )
+        }
         const recur = this.args().map( ( piece, index ) => {
             const result = piece.toLanguage( language )
-            const outerType = concept.typeSequence[index]
+            // the following line rounds down to support associative flattening
+            // (if there are too many args, treat extras like the last arg)
+            const outerType = concept.typeSequence[
+                Math.min(index,concept.typeSequence.length-1)]
             const pieceType = piece.head()?.contents
             const innerType = piece.isConcept() ? piece.concept().parentType
                                                 : pieceType

@@ -212,11 +212,11 @@ describe( 'Abstract Syntax Tree class (AST)', () => {
         const tempConv1 = new Converter()
         tempConv1.addConcept( 'int', 'AtomicNumberExpression',
             Language.regularExpressions.integer )
-        tempConv1.addConcept( 'add', 'SumExpression', '(+ SumExpression SumExpression)' )
+        tempConv1.addConcept( 'add', 'SumExpression',
+            '(+ SumExpression SumExpression)' )
         const tempLang1 = new Language( 'tempLang1', tempConv1 )
         tempLang1.addNotation( 'add', 'A+B' )
         // check two hierarchies of additions
-        tempLang1.parse( '1+2+3' )
         expect( () => ast = tempLang1.parse( '1+2+3' ) ).to.not.throw()
         expect( ast.toString() ).to.equal( 'add(add(int(1),int(2)),int(3))' )
         expect( () => ast = tempLang1.parse( '1+(2+3)' ) ).to.not.throw()
@@ -227,8 +227,8 @@ describe( 'Abstract Syntax Tree class (AST)', () => {
         const tempConv2 = new Converter()
         tempConv2.addConcept( 'int', 'AtomicNumberExpression',
             Language.regularExpressions.integer )
-        tempConv2.addConcept( 'add', 'SumExpression', '(+ SumExpression SumExpression)',
-            { associative : 'add' } )
+        tempConv2.addConcept( 'add', 'SumExpression',
+            '(+ SumExpression SumExpression)', { associative : 'add' } )
         const tempLang2 = new Language( 'tempLang2', tempConv2 )
         tempLang2.addNotation( 'add', 'A+B' )
         // check two hierarchies of additions
@@ -236,6 +236,20 @@ describe( 'Abstract Syntax Tree class (AST)', () => {
         expect( ast.toString() ).to.equal( 'add(int(1),int(2),int(3))' )
         expect( () => ast = tempLang2.parse( '(1+2)+3' ) ).to.not.throw()
         expect( ast.toString() ).to.equal( 'add(int(1),int(2),int(3))' )
+        // and it will even render them back correctly as well
+        expect( ast.toLanguage( tempLang2 ) ).to.equal( '1+2+3' )
+        // and that rendering should work even in weirder languages,
+        // one of which we create here for testing
+        const tempConv3 = new Converter()
+        tempConv3.addConcept( 'int', 'AtomicNumberExpression',
+            Language.regularExpressions.integer )
+        tempConv3.addConcept( 'add', 'SumExpression',
+            '(+ SumExpression SumExpression)', { associative : 'add' } )
+        const tempLang3 = new Language( 'tempLang3', tempConv3 )
+        tempLang3.addNotation( 'add', '(SUM A B)' )
+        expect( () => ast = tempLang3.parse( '(SUM 1 (SUM 2 3))' ) ).to.not.throw()
+        expect( ast.toString() ).to.equal( 'add(int(1),int(2),int(3))' )
+        expect( ast.toLanguage( tempLang3 ) ).to.equal( '(SUM 1 2 3)' )
     } )
 
 } )
