@@ -30,61 +30,7 @@ Make it easier for language designers to use whatever spacing they want.
    case, the system will add both notations for you, in the correct priority
    order, so that the desired behavior happens automatically.
 
-# Document things
-
-Overview documentation with assumptions, like these:
- - whitespace is not meaningful
- - alphabetically least JSON parsing leads to right association in most cases
-   (which is good for conditional, f.ex., and irrelevant for associative stuff)
- - when you say how to write a variable, that's how it will be written in ANY
-   language
-
-The procedure for adding new concepts and tests to the example converter:
- 1. Add a new `addConcept()` call to the `example-converter.js` file, with
-    the appropriate putdown notation included.
- 2. Add an `it()` call to `test-parsing-putdown.js` to ensure that the new
-    concept can be parsed from putdown notation.
-     - Possibly also add a test to an `it()` whose purpose is to test nesting
-       of expressions in one another, using the new type you just introduced.
- 3. Add an `it()` call to `test-creating-putdown.js` to ensure that the new
-    concept can be rendered to putdown notation.  (You can probably copy and
-    paste the test you created in item 2., but rename the function call and
-    swap the two arguments' order.)
-     - Possibly also add a test to an `it()` whose purpose is to test nesting
-       of expressions in one another, using the new type you just introduced.
- 4. Add a new `addNotation()` call to the `example-converter.js` file, with
-    one or more LaTeX notations for the new concept.
- 5. Add an `it()` call to `test-parsing-latex.js` to ensure that the new
-    concept can be parsed from latex notation.
-     - Possibly also add a test to an `it()` whose purpose is to test
-       precedence of your new operator (if indeed it is one) compared to
-       pre-existing ones.
- 6. Add an `it()` call to `test-creating-latex.js` to ensure that the new
-    concept can be rendered to latex notation.  (You can probably copy and
-    paste the test you created in item 5., but rename the function call and
-    swap the two arguments' order.)
-     - Possibly also add a test to an `it()` whose purpose is to test that
-       rendering puts groupers where needed to respect relative precedence.
- 7. Add an `it()` call to `test-putdown-to-latex.js` to compose two of the
-    tests run above.
- 8. Add an `it()` call to `test-latex-to-putdown.js` to compose two of the
-    tests run above.
-
-Limitations of the current version
- - Common mathematical concepts we do not currently have in our default set
-    - Intervals `(1,2)`, `[1,2]`, `[1,2)`, `(1,2]`
-    - Absolute values, using `|...|` or `\vert...\vert` (opt.w/`\left/\right`)
-    - Norms/distances, using `||...||` or `\Vert...\Vert` (opt.w/`\left/\right`)
-    - All upper and lower case Greek letters, with variants
- - The fact that our LaTeX parser currently can't handle `\frac12` and similar
-   things because of tokenization of 12 as twelve.  Note that this does not play
-   nicely with MathLive at present.
- - The fact that there are some symbols that you can enter with the MathLive
-   keyboard (in its default configuration) that we don't support (listed below)
- - Did not bother adding "arcsin" and "asin" and so on for all trig functions
-   because doing so does not add any functionality and just clutters things
-   up, given that we already have `^{-1}` notation for all functions.
-   Could be done if needed.
+# MathLive symbols and/or notation we don't currently support:
 
 ```
 \pm as in v\pm w
@@ -311,7 +257,8 @@ x⁻
 undefined
 ```
 
-Information we may need later:
+# Information we may need later:
+
  - infinity      = '\u221e' = ∞
  - longMinus     = '\u2212' = −
  - divide        = '\u00f7' = ÷

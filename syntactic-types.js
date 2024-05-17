@@ -27,6 +27,11 @@
  * around them to change the default precedence.  This has nothing to do with
  * what adding or multiplying means, so we call them syntactic types.
  * 
+ * Their hierarchy is shown in the following diagram, which was
+ * machine-generated from the data in this file.
+ * 
+ * ![Syntactic types hierarchy](./syntactic-types.png)
+ * 
  * A user of this repository can define notations by adding semantic types as
  * subtypes of the syntactic types.  For example, the language author might say
  * that `number_multiplication` is a subtype of `product` and is written using

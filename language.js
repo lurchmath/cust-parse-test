@@ -382,7 +382,7 @@ export class Language {
      *    {@link Language#addNotation addNotation()} function.
      * 
      * To see an example of such a data structure, examine the contents of the
-     * file `latex-notation.js` in this repository.
+     * file {@link latex-notation.js} in this repository.
      * 
      * @param {string} name - the name of the language, just as in this class's
      *   constructor

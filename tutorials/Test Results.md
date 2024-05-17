@@ -61,21 +61,12 @@ satisfy the requirements of the test suite) are shown below.
 ### can convert any size variable name to JSON
 
 - Test 1
-   - input: putdown `x`
-   - output: JSON `["FunctionVariable","x"]`
-- Test 2
-   - input: putdown `E`
-   - output: JSON `["FunctionVariable","E"]`
-- Test 3
-   - input: putdown `q`
-   - output: JSON `["FunctionVariable","q"]`
-- Test 4
    - input: putdown `foo`
    - output: JSON `null`
-- Test 5
+- Test 2
    - input: putdown `bar`
    - output: JSON `null`
-- Test 6
+- Test 3
    - input: putdown `to`
    - output: JSON `null`
 
@@ -237,13 +228,6 @@ satisfy the requirements of the test suite) are shown below.
 - Test 8
    - input: putdown `(relationholds ~~ 0.99 1.01)`
    - output: JSON `["BinaryRelationHolds","ApproximatelyEqual",["Number","0.99"],["Number","1.01"]]`
-
-
-### does not undo the canonical form for inequality
-
-- Test 1
-   - input: putdown `(not (= x y))`
-   - output: JSON `["LogicalNegation",["EqualFunctions",["FunctionVariable","x"],["FunctionVariable","y"]]]`
 
 
 ### can convert propositional logic atomics to JSON
@@ -549,14 +533,8 @@ satisfy the requirements of the test suite) are shown below.
    - input: putdown `(equivclass 1 ~~)`
    - output: JSON `["EquivalenceClass",["Number","1"],"ApproximatelyEqual"]`
 - Test 2
-   - input: putdown `(equivclass (+ x 2) ~)`
-   - output: JSON `["EquivalenceClass",["Addition",["NumberVariable","x"],["Number","2"]],"GenericBinaryRelation"]`
-- Test 3
    - input: putdown `(union (equivclass 1 ~~) (equivclass 2 ~~))`
    - output: JSON `["SetUnion",["EquivalenceClass",["Number","1"],"ApproximatelyEqual"],["EquivalenceClass",["Number","2"],"ApproximatelyEqual"]]`
-- Test 4
-   - input: putdown `(in 7 (equivclass 7 ~))`
-   - output: JSON `["NounIsElement",["Number","7"],["EquivalenceClass",["Number","7"],"GenericBinaryRelation"]]`
 
 
 ### can parse equivalence and classes mod a Number
@@ -1417,21 +1395,12 @@ satisfy the requirements of the test suite) are shown below.
 ### can parse one-letter variable names to JSON
 
 - Test 1
-   - input: LaTeX `x`, typeset $x$
-   - output: JSON `["FunctionVariable","x"]`
-- Test 2
-   - input: LaTeX `E`, typeset $E$
-   - output: JSON `["FunctionVariable","E"]`
-- Test 3
-   - input: LaTeX `q`, typeset $q$
-   - output: JSON `["FunctionVariable","q"]`
-- Test 4
    - input: LaTeX `foo`, typeset $foo$
    - output: JSON `null`
-- Test 5
+- Test 2
    - input: LaTeX `bar`, typeset $bar$
    - output: JSON `null`
-- Test 6
+- Test 3
    - input: LaTeX `to`, typeset $to$
    - output: JSON `null`
 
@@ -1444,9 +1413,6 @@ satisfy the requirements of the test suite) are shown below.
 - Test 2
    - input: LaTeX `\pi`, typeset $\pi$
    - output: JSON `"Pi"`
-- Test 3
-   - input: LaTeX `e`, typeset $e$
-   - output: JSON `["FunctionVariable","e"]`
 
 
 ### can parse exponentiation of atomics to JSON
@@ -1549,9 +1515,6 @@ satisfy the requirements of the test suite) are shown below.
 - Test 2
    - input: LaTeX `1--3`, typeset $1--3$
    - output: JSON `["Subtraction",["Number","1"],["NumberNegation",["Number","3"]]]`
-- Test 3
-   - input: LaTeX `A^B+C-\pi`, typeset $A^B+C-\pi$
-   - output: JSON `["Addition",["Exponentiation",["NumberVariable","A"],["NumberVariable","B"]],["Subtraction",["NumberVariable","C"],"Pi"]]`
 
 
 ### can parse number expressions with groupers to JSON
@@ -1668,9 +1631,6 @@ satisfy the requirements of the test suite) are shown below.
 - Test 2
    - input: LaTeX `\neg P\wedge\neg\top`, typeset $\neg P\wedge\neg\top$
    - output: JSON `["Conjunction",["LogicalNegation",["LogicVariable","P"]],["LogicalNegation","LogicalTrue"]]`
-- Test 3
-   - input: LaTeX `a\wedge b\wedge c`, typeset $a\wedge b\wedge c$
-   - output: JSON `["Conjunction",["LogicVariable","a"],["Conjunction",["LogicVariable","b"],["LogicVariable","c"]]]`
 
 
 ### can parse propositional logic disjuncts to JSON
@@ -1698,9 +1658,6 @@ satisfy the requirements of the test suite) are shown below.
 - Test 1
    - input: LaTeX `A\Leftrightarrow Q\wedge\neg P`, typeset $A\Leftrightarrow Q\wedge\neg P$
    - output: JSON `["LogicalEquivalence",["LogicVariable","A"],["Conjunction",["LogicVariable","Q"],["LogicalNegation",["LogicVariable","P"]]]]`
-- Test 2
-   - input: LaTeX `P\vee Q\Leftrightarrow Q\wedge P\Rightarrow T`, typeset $P\vee Q\Leftrightarrow Q\wedge P\Rightarrow T$
-   - output: JSON `["Implication",["LogicalEquivalence",["Disjunction",["LogicVariable","P"],["LogicVariable","Q"]],["Conjunction",["LogicVariable","Q"],["LogicVariable","P"]]],["LogicVariable","T"]]`
 
 
 ### can parse propositional expressions with groupers to JSON
@@ -3456,14 +3413,8 @@ satisfy the requirements of the test suite) are shown below.
    - input: putdown `(equivclass 1 ~~)`
    - output: LaTeX `[1,\approx]`, typeset $[1,\approx]$
 - Test 2
-   - input: putdown `(equivclass (+ x 2) ~)`
-   - output: LaTeX `[x+2,\sim]`, typeset $[x+2,\sim]$
-- Test 3
    - input: putdown `(union (equivclass 1 ~~) (equivclass 2 ~~))`
    - output: LaTeX `[1,\approx]\cup [2,\approx]`, typeset $[1,\approx]\cup [2,\approx]$
-- Test 4
-   - input: putdown `(in 7 (equivclass 7 ~))`
-   - output: LaTeX `7\in [7,\sim]`, typeset $7\in [7,\sim]$
 
 
 ### can convert equivalence and classes mod a number
@@ -3679,9 +3630,6 @@ satisfy the requirements of the test suite) are shown below.
 - Test 2
    - input: LaTeX `\pi`, typeset $\pi$
    - output: putdown `pi`
-- Test 3
-   - input: LaTeX `e`, typeset $e$
-   - output: putdown `e`
 
 
 ### correctly converts exponentiation of atomics
@@ -3787,9 +3735,6 @@ satisfy the requirements of the test suite) are shown below.
 - Test 2
    - input: LaTeX `1 - - 3`, typeset $1 - - 3$
    - output: putdown `(- 1 (- 3))`
-- Test 3
-   - input: LaTeX `A ^ B + C - \pi`, typeset $A ^ B + C - \pi$
-   - output: putdown `(+ (^ A B) (- C pi))`
 
 
 ### correctly converts number expressions with groupers
@@ -3912,9 +3857,6 @@ satisfy the requirements of the test suite) are shown below.
 - Test 2
    - input: LaTeX `\neg P\wedge\neg\top`, typeset $\neg P\wedge\neg\top$
    - output: putdown `(and (not P) (not true))`
-- Test 3
-   - input: LaTeX `a\wedge b\wedge c`, typeset $a\wedge b\wedge c$
-   - output: putdown `(and a (and b c))`
 
 
 ### correctly converts propositional logic disjuncts
@@ -3942,9 +3884,6 @@ satisfy the requirements of the test suite) are shown below.
 - Test 1
    - input: LaTeX `A\Leftrightarrow Q\wedge\neg P`, typeset $A\Leftrightarrow Q\wedge\neg P$
    - output: putdown `(iff A (and Q (not P)))`
-- Test 2
-   - input: LaTeX `P\vee Q\Leftrightarrow Q\wedge P\Rightarrow T`, typeset $P\vee Q\Leftrightarrow Q\wedge P\Rightarrow T$
-   - output: putdown `(implies (iff (or P Q) (and Q P)) T)`
 
 
 ### correctly converts propositional expressions with groupers

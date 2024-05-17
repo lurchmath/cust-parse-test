@@ -315,8 +315,8 @@ export class Converter {
 
     /**
      * A set of common mathematical concepts are built into this repository.
-     * (See the file `built-in-concepts.js`.)  This function can import all or
-     * some of those concepts into this converter.
+     * (See the file {@link built-in-concepts.js}.)  This function can import
+     * all or some of those concepts into this converter.
      * 
      * If you call it with no arguments, all the built-in concepts are imported,
      * including basic operators and concepts from arithmetic, algebra, logic,
