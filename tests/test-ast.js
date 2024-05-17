@@ -205,51 +205,104 @@ describe( 'Abstract Syntax Tree class (AST)', () => {
     } )
 
     it( 'should respect associativity attribute of concepts', () => {
-        let ast
+        let conv, lang, ast
         // by default, concepts are not associative, so if we define a tiny
         // converter and language for addition of numbers, it should make
         // hierarchies of binary additions
-        const tempConv1 = new Converter()
-        tempConv1.addConcept( 'int', 'AtomicNumberExpression',
+        conv = new Converter()
+        conv.addConcept( 'int', 'AtomicNumberExpression',
             Language.regularExpressions.integer )
-        tempConv1.addConcept( 'add', 'SumExpression',
+        conv.addConcept( 'add', 'SumExpression',
             '(+ SumExpression SumExpression)' )
-        const tempLang1 = new Language( 'tempLang1', tempConv1 )
-        tempLang1.addNotation( 'add', 'A+B' )
+        lang = new Language( 'lang', conv )
+        lang.addNotation( 'add', 'A+B' )
         // check two hierarchies of additions
-        expect( () => ast = tempLang1.parse( '1+2+3' ) ).to.not.throw()
+        expect( () => ast = lang.parse( '1+2+3' ) ).to.not.throw()
         expect( ast.toString() ).to.equal( 'add(add(int(1),int(2)),int(3))' )
-        expect( () => ast = tempLang1.parse( '1+(2+3)' ) ).to.not.throw()
+        expect( () => ast = lang.parse( '1+(2+3)' ) ).to.not.throw()
         expect( ast.toString() ).to.equal( 'add(int(1),add(int(2),int(3)))' )
         // but we can mark concepts as associative, and if we do so in a tiny
         // converter and language for addition of numbers, it should flatten
         // hierarchies of binary additions
-        const tempConv2 = new Converter()
-        tempConv2.addConcept( 'int', 'AtomicNumberExpression',
+        conv = new Converter()
+        conv.addConcept( 'int', 'AtomicNumberExpression',
             Language.regularExpressions.integer )
-        tempConv2.addConcept( 'add', 'SumExpression',
+        conv.addConcept( 'add', 'SumExpression',
             '(+ SumExpression SumExpression)', { associative : [ 'add' ] } )
-        const tempLang2 = new Language( 'tempLang2', tempConv2 )
-        tempLang2.addNotation( 'add', 'A+B' )
+        lang = new Language( 'lang', conv )
+        lang.addNotation( 'add', 'A+B' )
         // check two hierarchies of additions
-        expect( () => ast = tempLang2.parse( '1+2+3' ) ).to.not.throw()
+        expect( () => ast = lang.parse( '1+2+3' ) ).to.not.throw()
         expect( ast.toString() ).to.equal( 'add(int(1),int(2),int(3))' )
-        expect( () => ast = tempLang2.parse( '(1+2)+3' ) ).to.not.throw()
+        expect( () => ast = lang.parse( '(1+2)+3' ) ).to.not.throw()
         expect( ast.toString() ).to.equal( 'add(int(1),int(2),int(3))' )
         // and it will even render them back correctly as well
-        expect( ast.toLanguage( tempLang2 ) ).to.equal( '1+2+3' )
+        expect( ast.toLanguage( lang ) ).to.equal( '1+2+3' )
         // and that rendering should work even in weirder languages,
         // one of which we create here for testing
-        const tempConv3 = new Converter()
-        tempConv3.addConcept( 'int', 'AtomicNumberExpression',
+        conv = new Converter()
+        conv.addConcept( 'int', 'AtomicNumberExpression',
             Language.regularExpressions.integer )
-        tempConv3.addConcept( 'add', 'SumExpression',
+        conv.addConcept( 'add', 'SumExpression',
             '(+ SumExpression SumExpression)', { associative : [ 'add' ] } )
-        const tempLang3 = new Language( 'tempLang3', tempConv3 )
-        tempLang3.addNotation( 'add', '(SUM A B)' )
-        expect( () => ast = tempLang3.parse( '(SUM 1 (SUM 2 3))' ) ).to.not.throw()
+        lang = new Language( 'lang', conv )
+        lang.addNotation( 'add', '(SUM A B)' )
+        expect( () => ast = lang.parse( '(SUM 1 (SUM 2 3))' ) ).to.not.throw()
         expect( ast.toString() ).to.equal( 'add(int(1),int(2),int(3))' )
-        expect( ast.toLanguage( tempLang3 ) ).to.equal( '(SUM 1 2 3)' )
+        expect( ast.toLanguage( lang ) ).to.equal( '(SUM 1 2 3)' )
+    } )
+
+    it( 'should correctly check how operators associate when parsing', () => {
+        let asts, conv, lang
+        // Define a tiny converter and language for addition of numbers, and say
+        // nothing about how addition associates.  This should make it possible
+        // to return multiple parsings for 1+2+3.
+        conv = new Converter()
+        conv.addConcept( 'int', 'AtomicNumberExpression',
+            Language.regularExpressions.integer )
+        conv.addConcept( 'add', 'SumExpression',
+            '(+ SumExpression SumExpression)' )
+        lang = new Language( 'lang', conv )
+        lang.addNotation( 'add', 'A+B' )
+        lang.parse( '1+2+3', true )
+        expect( () => asts = lang.parse( '1+2+3', true ) ).to.not.throw()
+        expect( asts.length ).to.equal( 2 )
+        expect( asts[0].toString() ).to.equal( 'add(add(int(1),int(2)),int(3))' )
+        expect( asts[1].toString() ).to.equal( 'add(int(1),add(int(2),int(3)))' )
+        // And then verify that parsing without ambiguous=true returns just the
+        // first one from that list.
+        expect( lang.parse( '1+2+3' ).toString() )
+            .to.equal( 'add(add(int(1),int(2)),int(3))' )
+        // Define the same converter and language, but this time, say that the
+        // one operator associates left.  Then there should be one parsing only,
+        // just the first one.
+        conv = new Converter()
+        conv.addConcept( 'int', 'AtomicNumberExpression',
+            Language.regularExpressions.integer )
+        conv.addConcept( 'add', 'SumExpression',
+            '(+ SumExpression SumExpression)', { associates : 'left' } )
+        lang = new Language( 'lang', conv )
+        lang.addNotation( 'add', 'A+B' )
+        expect( () => asts = lang.parse( '1+2+3', true ) ).to.not.throw()
+        expect( asts.length ).to.equal( 1 )
+        expect( asts[0].toString() ).to.equal( 'add(add(int(1),int(2)),int(3))' )
+        expect( lang.parse( '1+2+3' ).toString() )
+            .to.equal( 'add(add(int(1),int(2)),int(3))' )
+        // Define the same converter and language, but this time, say that the
+        // one operator associates rioght.  Again, there should be one parsing
+        // only, but this time it's the other one.
+        conv = new Converter()
+        conv.addConcept( 'int', 'AtomicNumberExpression',
+            Language.regularExpressions.integer )
+        conv.addConcept( 'add', 'SumExpression',
+            '(+ SumExpression SumExpression)', { associates : 'right' } )
+        lang = new Language( 'lang', conv )
+        lang.addNotation( 'add', 'A+B' )
+        expect( () => asts = lang.parse( '1+2+3', true ) ).to.not.throw()
+        expect( asts.length ).to.equal( 1 )
+        expect( asts[0].toString() ).to.equal( 'add(int(1),add(int(2),int(3)))' )
+        expect( lang.parse( '1+2+3' ).toString() )
+            .to.equal( 'add(int(1),add(int(2),int(3)))' )
     } )
 
 } )

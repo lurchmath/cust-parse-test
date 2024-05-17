@@ -14,6 +14,12 @@ describe( 'Converting putdown to LaTeX', () => {
         expect( putdown.convertTo( putdownText, latex ) ).to.be.undefined
         global.log?.( 'putdown', putdownText, 'LaTeX', null )
     }
+    const checkAll = ( putdownText, ...latexTexts ) => {
+        const all = putdown.convertTo( putdownText, latex, true )
+        expect( all.length ).to.equal( latexTexts.length )
+        for ( let i = 0 ; i < latexTexts.length ; i++ )
+            expect( all.includes( latexTexts[i] ) ).to.equal( true )
+    }
 
     it( 'correctly converts many kinds of numbers but not malformed ones', () => {
         check( '0', '0' )
@@ -326,16 +332,22 @@ describe( 'Converting putdown to LaTeX', () => {
 
     it( 'can convert equivalence classes and expressions that use them', () => {
         check( '(equivclass 1 ~~)', '[1,\\approx]' )
-        // The following result is due only to alphabetical order.
-        // This will be fixed in a future update.
-        check( '(equivclass (+ x 2) ~)', '[x+2,\\sim]' )
+        // Check both cases for the following ambiguous expression:
+        checkAll(
+            '(equivclass (+ x 2) ~)',
+            '[x+2,\\sim]',
+            '[x+2]'
+        )
         check(
             '(union (equivclass 1 ~~) (equivclass 2 ~~))',
             '[1,\\approx]\\cup [2,\\approx]'
         )
-        // The following result is due only to alphabetical order.
-        // This will be fixed in a future update.
-        check( '(in 7 (equivclass 7 ~))', '7\\in [7,\\sim]' )
+        // Check both cases for the following ambiguous expression:
+        checkAll(
+            '(in 7 (equivclass 7 ~))',
+            '7\\in [7,\\sim]',
+            '7\\in [7]'
+        )
     } )
 
     it( 'can convert equivalence and classes mod a number', () => {

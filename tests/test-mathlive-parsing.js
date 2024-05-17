@@ -16,6 +16,14 @@ describe( 'Parsing MathLive-style LaTeX', () => {
         expect( latex.parse( latexText ) ).to.be.undefined
         global.log?.( 'LaTeX', latexText, 'JSON', null )
     }
+    const checkAll = ( latexText, ...jsons ) => {
+        const all = latex.parse( latexText, true )
+        expect( all.length ).to.equal( jsons.length )
+        for ( let i = 0 ; i < jsons.length ; i++ )
+            expect( all.some( result =>
+                JSON.stringify(result) == JSON.stringify(jsons[i])
+            ) ).to.equal( true )
+    }
 
     it( 'correctly parses basic expressions', () => {
         check( '6+k',
@@ -162,8 +170,8 @@ describe( 'Parsing MathLive-style LaTeX', () => {
                     [ 'Exponentiation',
                         [ 'NumberVariable', 'C' ], [ 'NumberVariable', 'D' ] ] ] ]
         )
-        // Equality of two variables comes out as equality of two functions,
-        // just due to alphabetical order.  This will be fixed in a future update.
+        // Equality of two variables does not uniquely determine which type of
+        // variables they are, so we list all possibilities here.
         check(
             '\\lnot\\lnot x=x',
             [ 'LogicalNegation',

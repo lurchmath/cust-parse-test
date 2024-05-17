@@ -10,24 +10,6 @@ Can it handle Lurch notation?
 
 # Polish the project's features
 
-Support left- and right-associativity for operators (which is kind of the
-opposite of associative flattening, which you already support).
- - Add the capability of asking for all possible parsings, rather than just
-   getting the first one.
-    - Run tests on this, especially anywhere the test suite mentioned
-      "alphabetical order."
-    - Rewrite one-result parsing functions so that they call this one and then
-      index/filter the result.
-    - Did not bother adding "arcsin" and "asin" and so on for all trig functions
-      because doing so does not add any functionality and just clutters things
-      up, given that we already have `^{-1}` notation for all functions.
-      Could be done if needed.
- - Add a feature where you can specify, for any given operator, whether it
-   associates right or left, and if you do, then we will filter out of the list
-   of valid parsings any result that contains a nesting different than what you
-   specified.  (Suggestion: Use the option with key "associates" instead of the
-   key "associative," because these operators are explicitly NOT associative.)
-
 Make it easier for language designers to use whatever spacing they want.
  - Right now the spacing in the LaTeX notation in the example converter is
    inconsistent.  Some things are like `x ^ { - 1 }`, to permit whatever spacing
@@ -99,6 +81,10 @@ Limitations of the current version
    nicely with MathLive at present.
  - The fact that there are some symbols that you can enter with the MathLive
    keyboard (in its default configuration) that we don't support (listed below)
+ - Did not bother adding "arcsin" and "asin" and so on for all trig functions
+   because doing so does not add any functionality and just clutters things
+   up, given that we already have `^{-1}` notation for all functions.
+   Could be done if needed.
 
 ```
 \pm as in v\pm w

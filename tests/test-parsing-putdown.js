@@ -14,6 +14,14 @@ describe( 'Parsing putdown', () => {
         expect( putdown.parse( putdownText ) ).to.be.undefined
         global.log?.( 'putdown', putdownText, 'JSON', null )
     }
+    const checkAll = ( putdownText, ...jsons ) => {
+        const all = putdown.parse( putdownText, true )
+        expect( all.length ).to.equal( jsons.length )
+        for ( let i = 0 ; i < jsons.length ; i++ )
+            expect( all.some( result =>
+                JSON.stringify(result) == JSON.stringify(jsons[i])
+            ) ).to.equal( true )
+    }
 
     it( 'can convert putdown numbers to JSON', () => {
         // non-negative integers
@@ -51,12 +59,28 @@ describe( 'Parsing putdown', () => {
     } )
 
     it( 'can convert any size variable name to JSON', () => {
-        // one-letter names work, and the least possible parsing of them (for
-        // many possible parsings, using alphabetical ordering) is as function
-        // variables:
-        check( 'x', [ 'FunctionVariable', 'x' ] )
-        check( 'E', [ 'FunctionVariable', 'E' ] )
-        check( 'q', [ 'FunctionVariable', 'q' ] )
+        // one-letter names work, and could be any type of variable:
+        checkAll(
+            'x',
+            [ 'NumberVariable', 'x' ],
+            [ 'FunctionVariable', 'x' ],
+            [ 'SetVariable', 'x' ],
+            [ 'LogicVariable', 'x' ]
+        )
+        checkAll(
+            'E',
+            [ 'NumberVariable', 'E' ],
+            [ 'FunctionVariable', 'E' ],
+            [ 'SetVariable', 'E' ],
+            [ 'LogicVariable', 'E' ]
+        )
+        checkAll(
+            'q',
+            [ 'NumberVariable', 'q' ],
+            [ 'FunctionVariable', 'q' ],
+            [ 'SetVariable', 'q' ],
+            [ 'LogicVariable', 'q' ]
+        )
         // multi-letter names don't work; it just does nothing with them
         // because it can't find any concept to which they belong
         checkFail( 'foo' )
@@ -306,13 +330,24 @@ describe( 'Parsing putdown', () => {
     } )
 
     it( 'does not undo the canonical form for inequality', () => {
-        // Equality of two variables comes out as equality of two functions,
-        // just due to alphabetical order.  This will be fixed in a future update.
-        check(
+        // Check all possibilities for this ambiguous expression
+        checkAll(
             '(not (= x y))',
             [ 'LogicalNegation',
                 [ 'EqualFunctions',
-                    [ 'FunctionVariable', 'x' ], [ 'FunctionVariable', 'y' ] ] ]
+                    [ 'FunctionVariable', 'x' ], [ 'FunctionVariable', 'y' ] ] ],
+            [ 'LogicalNegation',
+                [ 'Equals',
+                    [ 'NumberVariable', 'x' ], [ 'NumberVariable', 'y' ] ] ],
+            [ 'LogicalNegation',
+                [ 'Equals',
+                    [ 'NumberVariable', 'x' ], [ 'SetVariable', 'y' ] ] ],
+            [ 'LogicalNegation',
+                [ 'Equals',
+                    [ 'SetVariable', 'x' ], [ 'NumberVariable', 'y' ] ] ],
+            [ 'LogicalNegation',
+                [ 'Equals',
+                    [ 'SetVariable', 'x' ], [ 'SetVariable', 'y' ] ] ]
         )
     } )
 
@@ -831,13 +866,14 @@ describe( 'Parsing putdown', () => {
             '(equivclass 1 ~~)',
             [ 'EquivalenceClass', [ 'Number', '1' ], 'ApproximatelyEqual' ]
         )
-        // The following result is due only to alphabetical order.
-        // This will be fixed in a future update.
-        check(
+        // Check both possibilities for this ambiguous expression:
+        checkAll(
             '(equivclass (+ x 2) ~)',
             [ 'EquivalenceClass',
                 [ 'Addition', [ 'NumberVariable', 'x' ], [ 'Number', '2' ] ],
-                'GenericBinaryRelation' ]
+                'GenericBinaryRelation' ],
+            [ 'GenericEquivalenceClass',
+                [ 'Addition', [ 'NumberVariable', 'x' ], [ 'Number', '2' ] ] ]
         )
         check(
             '(union (equivclass 1 ~~) (equivclass 2 ~~))',
@@ -845,12 +881,13 @@ describe( 'Parsing putdown', () => {
                 [ 'EquivalenceClass', [ 'Number', '1' ], 'ApproximatelyEqual' ],
                 [ 'EquivalenceClass', [ 'Number', '2' ], 'ApproximatelyEqual' ] ]
         )
-        // The following result is due only to alphabetical order.
-        // This will be fixed in a future update.
-        check(
+        // Check both possibilities for this ambiguous expression:
+        checkAll(
             '(in 7 (equivclass 7 ~))',
             [ 'NounIsElement', [ 'Number', '7' ],
-                [ 'EquivalenceClass', [ 'Number', '7' ], 'GenericBinaryRelation' ] ]
+                [ 'EquivalenceClass', [ 'Number', '7' ], 'GenericBinaryRelation' ] ],
+            [ 'NounIsElement', [ 'Number', '7' ],
+                [ 'GenericEquivalenceClass', [ 'Number', '7' ] ] ]
         )
     } )
 

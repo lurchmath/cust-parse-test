@@ -14,6 +14,12 @@ describe( 'Converting LaTeX to putdown', () => {
         expect( latex.convertTo( latexText, putdown ) ).to.be.undefined
         global.log?.( 'LaTeX', latexText, 'putdown', null )
     }
+    const checkAll = ( latexText, ...putdownTexts ) => {
+        const all = latex.convertTo( latexText, putdown, true )
+        expect( all.length ).to.equal( putdownTexts.length )
+        for ( let i = 0 ; i < putdownTexts.length ; i++ )
+            expect( all.includes( putdownTexts[i] ) ).to.equal( true )
+    }
 
     it( 'correctly converts many kinds of numbers but not malformed ones', () => {
         check( '0', '0' )
@@ -38,10 +44,8 @@ describe( 'Converting LaTeX to putdown', () => {
     it( 'correctly converts numeric constants', () => {
         check( '\\infty', 'infinity' )
         check( '\\pi', 'pi' )
-        // The following happens because, even though the parser detects the
-        // parsing of e as Euler's number is valid, it's not the first in the
-        // alphabetical ordering of the possible parsed results:
-        check( 'e', 'e' )
+        // two possible meanings of e:
+        checkAll( 'e', 'e', 'eulersnumber' )
     } )
 
     it( 'correctly converts exponentiation of atomics', () => {
@@ -91,9 +95,10 @@ describe( 'Converting LaTeX to putdown', () => {
     it( 'correctly converts additions and subtractions', () => {
         check( 'x + y', '(+ x y)' )
         check( '1 - - 3', '(- 1 (- 3))' )
-        // Following could also be (- (+ (^ A B) C) pi), both of which are OK,
-        // but the one shown below is alphabetically earlier:
-        check( 'A ^ B + C - \\pi', '(+ (^ A B) (- C pi))' )
+        checkAll(
+            'A ^ B + C - \\pi',
+            '(+ (^ A B) (- C pi))', '(- (+ (^ A B) C) pi)'
+        )
     } )
     
     it( 'correctly converts number expressions with groupers', () => {
@@ -144,9 +149,10 @@ describe( 'Converting LaTeX to putdown', () => {
     it( 'correctly converts propositional logic conjuncts', () => {
         check( '\\top\\wedge\\bot', '(and true false)' )
         check( '\\neg P\\wedge\\neg\\top', '(and (not P) (not true))' )
-        // Following could also be (and (and a b) c), both of which are OK,
-        // but the one shown below is alphabetically earlier:
-        check( 'a\\wedge b\\wedge c', '(and a (and b c))' )
+        checkAll(
+            'a\\wedge b\\wedge c',
+            '(and a (and b c))', '(and (and a b) c)'
+        )
     } )
 
     it( 'correctly converts propositional logic disjuncts', () => {
@@ -165,11 +171,10 @@ describe( 'Converting LaTeX to putdown', () => {
 
     it( 'correctly converts propositional logic biconditionals', () => {
         check( 'A\\Leftrightarrow Q\\wedge\\neg P', '(iff A (and Q (not P)))' )
-        // This is how iff and implies associate right now, due to alphabetical
-        // ordering, but we will be tweaking this in a future update.
-        check(
+        checkAll(
             'P\\vee Q\\Leftrightarrow Q\\wedge P\\Rightarrow T',
-            '(implies (iff (or P Q) (and Q P)) T)'
+            '(implies (iff (or P Q) (and Q P)) T)',
+            '(iff (or P Q) (implies (and Q P) T))'
         )
     } )
 

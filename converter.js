@@ -225,6 +225,21 @@ export class Converter {
      *    want to do this in the definitions for all of those concepts, forming
      *    an equivalence class, so all will merge with one another in any order
      *    in which they might be nested.
+     *  * `associates` - this allows you to specify, for concepts that are
+     *    binary operators, how they should be parsed when they are nested
+     *    without groupers to disambiguate.  For example, in the case of
+     *    ordinary addition, if we write `1+2+3`, does it mean `(+ (+ 1 2) 3)`
+     *    or `(+ 1 (+ 2 3))`?  The default is to permit both forms, and
+     *    whichever is alphabetically sooner will be the default returned by
+     *    parsing.  (Also, varioius parsing functions like
+     *    {@link Language#parse parse()} and {@link Converter#convertTo
+     *    convertTo()} allow you to specify whether to return all parsings in
+     *    the case of ambiguity, or stick with the default of returning just
+     *    one.)  If you set the `associates` option to `"left"`, then all
+     *    parsings that contain structures of the form `(+ x (+ y z))` will be
+     *    omitted from the possible results.  If you set it to `"right"` then
+     *    all parsings with `(+ (+ x y) z)` are omitted.  If you do not set this
+     *    option, then all parsings are permitted.
      * 
      * @param {String} name - the name of the concept to add
      * @param {String} parentType - the name of the parent type, which must be a
@@ -246,6 +261,7 @@ export class Converter {
             parentType,
             putdown,
             associative : options.associative,
+            associates : options.associates,
             typeSequence : putdown instanceof RegExp ? [ ] :
                 putdownLeaves( putdown ).filter( leaf => this.isConcept( leaf )
                     || SyntacticTypes.types.includes( leaf ) )
@@ -363,19 +379,22 @@ export class Converter {
      *   is expressed
      * @param {String} destLang - the name of the language into which to convert
      *   the input
-     * @param {String} text - the input to be converter
-     * @returns {String} the converted output
+     * @param {String} text - the input to be converted
+     * @param {boolean} [ambiguous] - passed to the {@link Converter#parse
+     *   parse()} function, and thus determines whether the result of this is a
+     *   string or an array thereof (default is false)
+     * @returns {String|String[]} the converted output(s)
      * @see {@link Language#convertTo convertTo()}
      */
-    convert ( sourceLang, destLang, data ) {
-        if ( sourceLang == destLang ) return data
+    convert ( sourceLang, destLang, text, ambiguous = false ) {
+        if ( sourceLang == destLang ) return text
         const source = this.language( sourceLang )
         if ( !source )
             throw new Error( 'Unknown language: ' + sourceLang )
         const destination = this.language( destLang )
         if ( !destination )
             throw new Error( 'Unknown language: ' + destLang )
-        return source.convertTo( data, destination )
+        return source.convertTo( text, destination, ambiguous )
     }
 
 }    

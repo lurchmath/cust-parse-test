@@ -16,6 +16,14 @@ describe( 'Parsing LaTeX', () => {
         expect( latex.parse( latexText ) ).to.be.undefined
         global.log?.( 'LaTeX', latexText, 'JSON', null )
     }
+    const checkAll = ( latexText, ...jsons ) => {
+        const all = latex.parse( latexText, true )
+        expect( all.length ).to.equal( jsons.length )
+        for ( let i = 0 ; i < jsons.length ; i++ )
+            expect( all.some( result =>
+                JSON.stringify(result) == JSON.stringify(jsons[i])
+            ) ).to.equal( true )
+    }
 
     it( 'can parse many kinds of numbers to JSON', () => {
         // non-negative integers
@@ -53,12 +61,28 @@ describe( 'Parsing LaTeX', () => {
     } )
 
     it( 'can parse one-letter variable names to JSON', () => {
-        // one-letter names work, and the least possible parsing of them (for
-        // many possible parsings, using alphabetical ordering) is as function
-        // variables:
-        check( 'x', [ 'FunctionVariable', 'x' ] )
-        check( 'E', [ 'FunctionVariable', 'E' ] )
-        check( 'q', [ 'FunctionVariable', 'q' ] )
+        // one-letter names work, and could be any type of variable:
+        checkAll(
+            'x',
+            [ 'NumberVariable', 'x' ],
+            [ 'FunctionVariable', 'x' ],
+            [ 'SetVariable', 'x' ],
+            [ 'LogicVariable', 'x' ]
+        )
+        checkAll(
+            'E',
+            [ 'NumberVariable', 'E' ],
+            [ 'FunctionVariable', 'E' ],
+            [ 'SetVariable', 'E' ],
+            [ 'LogicVariable', 'E' ]
+        )
+        checkAll(
+            'q',
+            [ 'NumberVariable', 'q' ],
+            [ 'FunctionVariable', 'q' ],
+            [ 'SetVariable', 'q' ],
+            [ 'LogicVariable', 'q' ]
+        )
         // multi-letter names do not work
         checkFail( 'foo' )
         checkFail( 'bar' )
@@ -68,10 +92,15 @@ describe( 'Parsing LaTeX', () => {
     it( 'can parse LaTeX numeric constants to JSON', () => {
         check( '\\infty', 'Infinity' )
         check( '\\pi', 'Pi' )
-        // The following happens because, even though the parser detects the
-        // parsing of e as Euler's number is valid, it's not the first in the
-        // alphabetical ordering of the possible parsed results:
-        check( 'e', [ 'FunctionVariable', 'e' ] )
+        // e can be not only any type of variable, but also Euler's number:
+        checkAll(
+            'e',
+            [ 'NumberVariable', 'e' ],
+            [ 'FunctionVariable', 'e' ],
+            [ 'SetVariable', 'e' ],
+            [ 'LogicVariable', 'e' ],
+            'EulersNumber'
+        )
     } )
 
     it( 'can parse exponentiation of atomics to JSON', () => {
@@ -230,15 +259,20 @@ describe( 'Parsing LaTeX', () => {
                 [ 'NumberNegation', [ 'Number', '3' ] ]
             ]
         )
-        // Following could also be a Subtraction of a sum and a variable, which
-        // is also OK, but the one shown below is alphabetically earlier:
-        check(
+        // Check all possibilities of this ambiguous expression:
+        checkAll(
             'A^B+C-\\pi',
             [ 'Addition',
                 [ 'Exponentiation',
                     [ 'NumberVariable', 'A' ], [ 'NumberVariable', 'B' ] ],
                 [ 'Subtraction',
-                    [ 'NumberVariable', 'C' ], 'Pi' ] ]
+                    [ 'NumberVariable', 'C' ], 'Pi' ] ],
+            [ 'Subtraction',
+                [ 'Addition',
+                    [ 'Exponentiation',
+                        [ 'NumberVariable', 'A' ], [ 'NumberVariable', 'B' ] ],
+                    [ 'NumberVariable', 'C' ] ],
+                'Pi' ]
         )
     } )
 
@@ -437,9 +471,8 @@ describe( 'Parsing LaTeX', () => {
                 [ 'LogicalNegation', 'LogicalTrue' ]
             ]
         )
-        // Following could also be left-associated, which is also a valid
-        // parsing, but the one shown below is alphabetically earlier:
-        check(
+        // Check all possibilities of this ambiguous expression:
+        checkAll(
             'a\\wedge b\\wedge c',
             [ 'Conjunction',
                 [ 'LogicVariable', 'a' ],
@@ -447,6 +480,12 @@ describe( 'Parsing LaTeX', () => {
                     [ 'LogicVariable', 'b' ],
                     [ 'LogicVariable', 'c' ]
                 ]
+            ],
+            [ 'Conjunction',
+                [ 'Conjunction',
+                    [ 'LogicVariable', 'a' ],
+                    [ 'LogicVariable', 'b' ] ],
+                [ 'LogicVariable', 'c' ]
             ]
         )
     } )
@@ -505,9 +544,8 @@ describe( 'Parsing LaTeX', () => {
                 ]
             ]
         )
-        // This is how iff and implies associate right now, due to alphabetical
-        // ordering, but we will be tweaking this in a future update.
-        check(
+        // Check all possibilities of this ambiguous expression:
+        checkAll(
             'P\\vee Q\\Leftrightarrow Q\\wedge P\\Rightarrow T',
             [ 'Implication',
                 [ 'LogicalEquivalence',
@@ -519,6 +557,17 @@ describe( 'Parsing LaTeX', () => {
                     ]
                 ],
                 [ 'LogicVariable', 'T' ]
+            ],
+            [ 'LogicalEquivalence',
+                [ 'Disjunction',
+                    [ 'LogicVariable', 'P' ], [ 'LogicVariable', 'Q' ] ],
+                [ 'Implication',
+                    [ 'Conjunction',
+                        [ 'LogicVariable', 'Q' ],
+                        [ 'LogicVariable', 'P' ]
+                    ],
+                    [ 'LogicVariable', 'T' ]
+                ]
             ]
         )
     } )

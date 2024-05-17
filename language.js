@@ -251,13 +251,21 @@ export class Language {
     /**
      * Treat the given text as an expression in this language and attempt to
      * parse it.  Return an abstract syntax tree ({@link AST}) on success, or
-     * `undefined` on failure.
+     * `undefined` on failure.  Or, if you set the optional second parameter to
+     * true, it will return an array of all possible parsings, each as an
+     * {@link AST}.
      * 
      * @param {String} text - the input text to parse
-     * @returns {AST} - the parsed AST, or undefined if parsing failed
+     * @param {boolean} ambiguous - if true, return all possible meanings of the
+     *   given text, which will be more than one if the text is ambiguous;
+     *   defaults to false, which returns just one AST or undefined
+     * @returns {AST|AST[]} - if `ambiguous` is set to false, returns the parsed
+     *   AST, or undefined if parsing failed; if `ambiguous` is set to true,
+     *   returns all parsed ASTs as an array, which may be empty
      * @see {@link AST#compact compact()}
      */
-    parse ( text ) {
+    parse ( text, ambiguous = false ) {
+        // Ensure tokenization succeeds, or throw an appropriate error
         const tokens = this.tokenizer.tokenize( text )
         if ( !tokens ) {
             if ( this._debug ) {
@@ -266,13 +274,22 @@ export class Language {
             }
             return
         }
+        // Find all possible parsings and sort them alphabetically
         const all = this.grammar.parse( tokens, {
             showDebuggingOutput : this._debug
         } )
-        if ( all.length > 0 ) {
-            all.sort( ( a, b ) =>
-                JSON.stringify( a ).localeCompare( JSON.stringify( b ) ) )
-            return AST.fromJSON( this, all[0] )
+        all.sort( ( a, b ) =>
+            JSON.stringify( a ).localeCompare( JSON.stringify( b ) ) )
+        // If they asked for multiple results, return an array (but filter out
+        // the ones that don't associate correctly).
+        if ( ambiguous )
+            return all.map( json => AST.fromJSON( this, json ) )
+                      .filter( ast => ast.associatesCorrectly() )
+        // They want just one result, so find the first AST that associates
+        // correctly and return it.
+        for ( let i = 0 ; i < all.length ; i++ ) {
+            const ast = AST.fromJSON( this, all[i] )
+            if ( ast.associatesCorrectly() ) return ast
         }
     }
 
@@ -285,13 +302,24 @@ export class Language {
      * @param {String} text - the text in this language to be converter to the
      *   other language
      * @param {Language} language - the destination language
-     * @returns {String} the converted text, if the conversion was possible, and
-     *   undefined otherwise
+     * @param {boolean} ambiguous - passed to the {@link Converter#parse
+     *   parse()} function, and thus determines whether the result of this is a
+     *   string or an array thereof
+     * @returns {String|String[]} the converted text, if the conversion was
+     *   possible, and undefined otherwise (or an array of strings if
+     *   `ambiguous` is true)
      */
-    convertTo ( text, language ) {
+    convertTo ( text, language, ambiguous = false ) {
         if ( this.converter != language.converter )
             throw new Error( 'The two languages do not share a Converter' )
-        return this.parse( text )?.toLanguage( language )
+        // return one result:
+        if ( !ambiguous )
+            return this.parse( text )?.toLanguage( language )
+        // return multiple results, with duplicates removed, order preserved:
+        const all = this.parse( text, true )
+                        .map( ast => ast.toLanguage( language ) )
+        return all.filter( ( item, index ) =>
+            !all.slice( 0, index ).includes( item ) )
     }
 
     /**
