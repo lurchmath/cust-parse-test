@@ -273,6 +273,29 @@ describe( 'Abstract Syntax Tree class (AST)', () => {
         // first one from that list.
         expect( lang.parse( '1+2+3' ).toString() )
             .to.equal( 'add(add(int(1),int(2)),int(3))' )
+        // And while we're here, let's check a bigger example with nesting, so
+        // that we verify that this all works recursively, too.
+        conv.addConcept( 'equal', 'SentenceExpression',
+            '(equal SumExpression SumExpression)' )
+        lang.addNotation( 'equal', 'A=B' )
+        expect( () => asts = lang.parse( '1+2+3=4+5+6', true ) ).to.not.throw()
+        expect( asts.length ).to.equal( 4 )
+        expect( asts.some(
+            ast => ast.toString() ==
+                'equal(add(add(int(1),int(2)),int(3)),add(add(int(4),int(5)),int(6)))'
+        ) ).to.equal( true )
+        expect( asts.some(
+            ast => ast.toString() ==
+                'equal(add(int(1),add(int(2),int(3))),add(add(int(4),int(5)),int(6)))'
+        ) ).to.equal( true )
+        expect( asts.some(
+            ast => ast.toString() ==
+                'equal(add(add(int(1),int(2)),int(3)),add(int(4),add(int(5),int(6))))'
+        ) ).to.equal( true )
+        expect( asts.some(
+            ast => ast.toString() ==
+                'equal(add(int(1),add(int(2),int(3))),add(int(4),add(int(5),int(6))))'
+        ) ).to.equal( true )
         // Define the same converter and language, but this time, say that the
         // one operator associates left.  Then there should be one parsing only,
         // just the first one.
@@ -283,11 +306,20 @@ describe( 'Abstract Syntax Tree class (AST)', () => {
             '(+ SumExpression SumExpression)', { associates : 'left' } )
         lang = new Language( 'lang', conv )
         lang.addNotation( 'add', 'A+B' )
+        conv.addConcept( 'equal', 'SentenceExpression',
+            '(equal SumExpression SumExpression)' )
+        lang.addNotation( 'equal', 'A=B' )
         expect( () => asts = lang.parse( '1+2+3', true ) ).to.not.throw()
         expect( asts.length ).to.equal( 1 )
         expect( asts[0].toString() ).to.equal( 'add(add(int(1),int(2)),int(3))' )
         expect( lang.parse( '1+2+3' ).toString() )
             .to.equal( 'add(add(int(1),int(2)),int(3))' )
+        // And the bigger example, too
+        expect( () => asts = lang.parse( '1+2+3=4+5+6', true ) ).to.not.throw()
+        expect( asts.length ).to.equal( 1 )
+        expect( asts[0].toString() ).to.equal(
+            'equal(add(add(int(1),int(2)),int(3)),add(add(int(4),int(5)),int(6)))'
+        )
         // Define the same converter and language, but this time, say that the
         // one operator associates rioght.  Again, there should be one parsing
         // only, but this time it's the other one.
@@ -298,11 +330,20 @@ describe( 'Abstract Syntax Tree class (AST)', () => {
             '(+ SumExpression SumExpression)', { associates : 'right' } )
         lang = new Language( 'lang', conv )
         lang.addNotation( 'add', 'A+B' )
+        conv.addConcept( 'equal', 'SentenceExpression',
+            '(equal SumExpression SumExpression)' )
+        lang.addNotation( 'equal', 'A=B' )
         expect( () => asts = lang.parse( '1+2+3', true ) ).to.not.throw()
         expect( asts.length ).to.equal( 1 )
         expect( asts[0].toString() ).to.equal( 'add(int(1),add(int(2),int(3)))' )
         expect( lang.parse( '1+2+3' ).toString() )
             .to.equal( 'add(int(1),add(int(2),int(3)))' )
+        // And the bigger example, too
+        expect( () => asts = lang.parse( '1+2+3=4+5+6', true ) ).to.not.throw()
+        expect( asts.length ).to.equal( 1 )
+        expect( asts[0].toString() ).to.equal(
+            'equal(add(int(1),add(int(2),int(3))),add(int(4),add(int(5),int(6))))'
+        )
     } )
 
 } )
